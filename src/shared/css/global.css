@@ -41,27 +41,27 @@ body {
   border-color: var(--foreground);
 }
 
-.background-void-10 {
+.bg-void-10 {
   background: var(--void-10);
 }
 
-.background-void-20 {
+.bg-void-20 {
   background: var(--void-20);
 }
 
-.background-void-50 {
+.bg-void-50 {
   background: var(--void-50);
 }
 
-.background-void-80 {
+.bg-void-80 {
   background: var(--void-80);
 }
 
-.background-green {
+.bg-green {
   background: var(--green);
 }
 
-.background-red {
+.bg-red {
   background: var(--red);
 }
 

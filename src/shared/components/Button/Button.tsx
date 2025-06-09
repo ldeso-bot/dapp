@@ -21,7 +21,7 @@ export default function Button({
   className = clsx(
     'flex items-center justify-center gap-2 border-1 border-foreground cursor-pointer',
     colors === 'primary' && 'background-white text-void-80',
-    colors === 'secondary' && 'background-void-80 text-white',
+    colors === 'secondary' && 'bg-void-80 text-white',
     context === 'main' && 'rounded-lg px-3 py-1',
     context === 'flow' && 'w-full px-6 py-3',
     className

@@ -8,8 +8,6 @@ interface SkeletonProps {
 
 export default function Skeleton({ className }: SkeletonProps) {
   return (
-    <div
-      className={clsx('animate-pulse rounded-lg background-void-20', className)}
-    />
+    <div className={clsx('animate-pulse rounded-lg bg-void-20', className)} />
   );
 }

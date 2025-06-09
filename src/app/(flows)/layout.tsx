@@ -15,7 +15,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <div className="flex flex-row w-full h-screen justify-center items-center background-void-10">
+          <div className="flex flex-row w-full h-screen justify-center items-center bg-void-10">
             {children}
           </div>
         </Providers>

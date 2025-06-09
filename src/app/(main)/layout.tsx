@@ -20,7 +20,7 @@ export default function RootLayout({
           <div className="flex flex-row">
             <NavBar />
             <div className="flex flex-col flex-1">
-              <div className="flex-1 background-void-10 p-6">{children}</div>
+              <div className="flex-1 bg-void-10 p-6">{children}</div>
               <Footer />
             </div>
           </div>

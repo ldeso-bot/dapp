@@ -45,7 +45,7 @@ export default function NavBar() {
           styles.navbarWidth
         )}
       >
-        <button className="flex items-center gap-2 rounded-3xl background-void-50 text-white cursor-pointer py-2 px-4">
+        <button className="flex items-center gap-2 rounded-3xl bg-void-50 text-white cursor-pointer py-2 px-4">
           <Image src={helpIcon} alt={'Help'} width={16} height={16} />
           Show me around
         </button>

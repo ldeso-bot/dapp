@@ -34,7 +34,7 @@ export default function StatCard(props: Props) {
 function ChangePercent({ value }: { value: number }) {
   const valueStr = (Math.abs(value) * 100)?.toFixed(0);
   const arrow = value > 0 ? '↑' : '↓';
-  const className = value > 0 ? 'background-green' : 'background-red';
+  const className = value > 0 ? 'bg-green' : 'bg-red';
   return (
     <div
       className={clsx('flex flex-row gap-1 px-2 py-1 rounded-3xl', className)}
