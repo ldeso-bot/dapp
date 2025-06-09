@@ -1,5 +1,5 @@
-import PurchaseBondPage from '@/application/PurchaseBond/purchaseBondPage';
+import PurchaseBondFlow from '@/application/PurchaseBond/PurchaseBondFlow';
 
 export default function Home() {
-  return <PurchaseBondPage />;
+  return <PurchaseBondFlow />;
 }

@@ -33,6 +33,7 @@ body {
   line-height: 2rem;
 }
 
+/* Tailwind styles extensions */
 .border-void-20 {
   border-color: var(--void-20);
 }
