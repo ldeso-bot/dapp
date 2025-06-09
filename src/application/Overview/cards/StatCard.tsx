@@ -8,10 +8,11 @@ type Props = CardProps & {
   value: number;
   icon: string;
   changePercent: number;
+  buttonHref?: string;
 };
 
 export default function StatCard(props: Props) {
-  const { icon, value, title, buttonText, changePercent } = props;
+  const { icon, value, title, buttonText, buttonHref, changePercent } = props;
   return (
     <Card {...props} tooltipPosition="far">
       <div className="flex flex-col gap-3 w-full">
@@ -22,7 +23,9 @@ export default function StatCard(props: Props) {
             <ChangePercent value={changePercent} />
           </div>
         </div>
-        <Button className="w-full">{buttonText}</Button>
+        <Button className="w-full" href={buttonHref}>
+          {buttonText}
+        </Button>
       </div>
     </Card>
   );

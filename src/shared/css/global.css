@@ -77,6 +77,10 @@ body {
   color: var(--void-20);
 }
 
+.text-void-80 {
+  color: var(--void-80);
+}
+
 .text-green-40 {
   color: var(--green-40);
 }
@@ -87,6 +91,10 @@ body {
 
 .text-size-12 {
   font-size: 1.2rem;
+}
+
+.w-flowcard {
+  width: 38.2rem;
 }
 
 h1 {

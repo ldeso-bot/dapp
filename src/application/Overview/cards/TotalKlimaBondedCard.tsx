@@ -7,6 +7,7 @@ export default function TotalKlimaBondedCard(props: CardProps) {
     <StatCard
       {...props}
       buttonText="Bond KLIMA"
+      buttonHref="/flows/purchase-bond"
       title="Total KLIMA Bonded"
       tooltip="Bonds are fixed income instruments that offer yield which is claimable at maturity."
       tooltipPosition="far"
