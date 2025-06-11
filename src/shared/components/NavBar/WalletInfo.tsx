@@ -1,7 +1,7 @@
 'use client';
 import cardStyles from '@/shared/css/card.module.css';
 
-import { formatAddress } from '@/shared/utils/web3.utils';
+import { formatAddress } from '@/shared/dal/web3/web3.utils';
 import { useAccount } from 'wagmi';
 
 export default function WalletInfo() {

@@ -20,4 +20,6 @@ const contracts: Record<string, contractInfo> = {
   },
 };
 
+export type ContractName = keyof typeof contracts;
+
 export default contracts;
