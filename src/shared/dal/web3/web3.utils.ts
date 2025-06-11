@@ -13,6 +13,7 @@ import {
   toBytes,
   getContract as viemGetContract,
 } from 'viem';
+import { ViemError } from './web3.types';
 
 export function formatAddress(
   address: string | undefined,
@@ -51,4 +52,25 @@ export const getMethodHash = (methodSignature: string) => {
 
 export const getMethodKeccak = (methodSignature: string) => {
   return keccak256(toBytes(methodSignature));
+};
+
+export const isViemError = (error: unknown): error is ViemError => {
+  return typeof error == 'object' && error !== null && 'shortMessage' in error;
+};
+
+export const handleWeb3Error = (error: unknown) => {
+  if (isViemError(error)) {
+    return {
+      error: error.shortMessage,
+    };
+  }
+  if (error instanceof Error) {
+    return {
+      error: error.message,
+    };
+  }
+  console.warn('Found unknown error type', error, typeof error);
+  return {
+    error: 'An unknown error occurred',
+  };
 };
