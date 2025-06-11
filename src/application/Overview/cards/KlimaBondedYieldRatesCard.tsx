@@ -1,7 +1,7 @@
 'use client';
 
 import Card, { CardProps } from '@/shared/components/Card/Card';
-import { BondYieldRate } from '@/shared/dal/klimaBondYieldRates';
+import { BondYieldRate } from '@/shared/dal/subgraph/klimaBondYieldRates';
 import {
   CartesianGrid,
   Line,

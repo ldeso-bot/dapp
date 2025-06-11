@@ -1,5 +1,5 @@
 import { CardProps } from '@/shared/components/Card/Card';
-import { getMetrics } from '@/shared/dal/metrics';
+import { getMetrics } from '@/shared/dal/subgraph/metrics';
 import UsdIcon from '@/shared/images/usd.svg';
 import StatCard from './StatCard';
 

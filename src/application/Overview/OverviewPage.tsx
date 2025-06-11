@@ -1,5 +1,5 @@
 import cardStyles from '@/shared/css/card.module.css';
-import { getKlimaBondYieldRates } from '@/shared/dal/klimaBondYieldRates';
+import { getKlimaBondYieldRates } from '@/shared/dal/subgraph/klimaBondYieldRates';
 import clsx from 'clsx';
 import CarbonBackingCard from './cards/CarbonBackingCard';
 import CarbonMarketCard from './cards/CarbonMarketCard';

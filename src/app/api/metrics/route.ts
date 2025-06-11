@@ -1,4 +1,4 @@
-import { getMetrics } from '@/shared/dal/metrics';
+import { getMetrics } from '@/shared/dal/subgraph/metrics';
 
 export const dynamic = 'force-static';
 
