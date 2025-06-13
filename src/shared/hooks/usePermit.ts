@@ -1,9 +1,10 @@
 import constants from '@/shared/constants/';
-import { getPublicClient } from '@/shared/dal/web3/web3.utils';
 import { useCallback } from 'react';
 import { useWalletClient } from 'wagmi';
 import { ContractName } from '../constants/contracts.constants';
+import Permit from '../dal/web3/abis/Permit.json';
 import { PermitReturn } from '../dal/web3/web3.types';
+import { is0xString, isString } from '../utils/typeguards';
 import { useGetContract } from './useGetContract';
 
 type UsePermitParams = {
@@ -35,74 +36,35 @@ export function usePermit(params: UsePermitParams) {
       const spender = spenderContract.address;
 
       // Set deadline to 1 hour from now
-      const deadline = 1759649540n; //BigInt(Math.floor(Date.now() / 1000) + 60 * 60 * 24);
-
-      // Create publicClient from walletClient's chain
-      const publicClient = getPublicClient();
+      const deadline = BigInt(Math.floor(Date.now() / 1000) + 60 * 60 * 24);
 
       // Get owner nonce from the token contract
       const nonce = await tokenContract.read.nonces([owner]);
 
-      // Get Domain separator from the token contract
-      const domainSeparator = await publicClient.readContract({
-        address: tokenContract.address,
-        abi: tokenContract.abi,
-        functionName: 'DOMAIN_SEPARATOR',
-      });
+      // Compute the EIP712 domain information.
+      // TODO: This could be cached at the server level
+      const name = await tokenContract.read.name();
+      const version = await tokenContract.read.version();
+
+      if (!isString(name)) {
+        throw new Error('Name is not a string');
+      }
+      if (!isString(version)) {
+        throw new Error('Version is not a number');
+      }
 
       const domain = {
-        name: 'USDC' as unknown as string,
-        /** We assume 1 if permit version is not specified */
-        version: '1' as unknown as string,
-        chainId: constants.CHAIN.id as unknown as number,
-        verifyingContract: tokenContract.address as string,
+        name: name,
+        version: version,
+        chainId: constants.CHAIN.id,
+        verifyingContract: tokenContract.address,
       };
 
       const types = {
-        EIP712Domain: [
-          {
-            name: 'name',
-            type: 'string',
-          },
-          {
-            name: 'version',
-            type: 'string',
-          },
-          {
-            name: 'chainId',
-            type: 'uint256',
-          },
-          {
-            name: 'verifyingContract',
-            type: 'address',
-          },
-        ],
-        Permit: [
-          {
-            name: 'owner',
-            type: 'address',
-          },
-          {
-            name: 'spender',
-            type: 'address',
-          },
-          {
-            name: 'value',
-            type: 'uint256',
-          },
-          {
-            name: 'nonce',
-            type: 'uint256',
-          },
-          {
-            name: 'deadline',
-            type: 'uint256',
-          },
-        ],
+        Permit,
       };
 
       const values = {
-        //      permitKeccak,
         owner,
         spender,
         value,
@@ -113,22 +75,21 @@ export function usePermit(params: UsePermitParams) {
       // Use walletClient for signing
       const signature = await walletClient.signTypedData({
         account: walletClient.account,
-        domain: {
-          name: 'USD Coin',
-          version: '2',
-          chainId: constants.CHAIN.id,
-          verifyingContract: tokenContract.address,
-        },
+        domain,
         types,
         primaryType: 'Permit',
         message: values,
       });
 
       const [r, s, v] = [
-        signature.slice(0, 66) as `0x${string}`, // TODO: use a type guard
-        ('0x' + signature.slice(66, 130)) as `0x${string}`, // TODO: use a type guard
+        signature.slice(0, 66),
+        '0x' + signature.slice(66, 130),
         BigInt(parseInt(signature.slice(130, 132), 16)),
       ];
+
+      if (!is0xString(r) || !is0xString(s)) {
+        throw new Error('Invalid signature');
+      }
 
       return { deadline, owner, spender, value, r, s, v };
     }, [walletClient, tokenContract, spenderContract, value]);
