@@ -1,9 +1,9 @@
 'use client';
 
-import cardStyles from '@/shared/css/card.module.css';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useState } from 'react';
+import { Separator } from '../Separator/Separator';
 import ConnectButton from './ConnectButton';
 import hamburgerIcon from './images/hamburger.svg';
 import KlimaProtocolLogo from './KlimaProtocolLogo';
@@ -16,7 +16,7 @@ export default function MobileNavBar() {
     <>
       <div
         className={clsx(
-          `flex lg:hidden relative flex-col border-r-1 border-void-20 px-3 py-6`
+          `flex lg:hidden relative flex-col  border-void-20 px-3 py-6`
         )}
       >
         <div className="flex flex-col gap-3">
@@ -32,10 +32,10 @@ export default function MobileNavBar() {
             />
           </div>
           <div className={clsx('flex flex-col gap-3', !open && 'hidden')}>
-            <div className={cardStyles.separator} />
+            <Separator />
             <WalletInfo />
             <NavbarItems />
-            <div className={cardStyles.separator} />
+            <Separator />
             <ConnectButton />
           </div>
         </div>

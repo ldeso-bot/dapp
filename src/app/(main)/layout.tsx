@@ -1,6 +1,7 @@
 import Footer from '@/shared/components/Footer/footer';
 import DesktopNavBar from '@/shared/components/NavBar/DesktopNavBar';
 import MobileNavBar from '@/shared/components/NavBar/MobileNavBar';
+import '@/shared/css/cards.css';
 import '@/shared/css/global.css';
 import { Inter } from 'next/font/google';
 import { Providers } from '../providers';

@@ -18,7 +18,7 @@ export default async function OverviewPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-row ">
+      <div className="flex stacked-cards ">
         <TotalKlimaBondedCard
           className={clsx('grow-1', cardStyles.rightLinked)}
         />

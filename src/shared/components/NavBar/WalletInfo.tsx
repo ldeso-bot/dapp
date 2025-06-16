@@ -1,9 +1,9 @@
 'use client';
-import cardStyles from '@/shared/css/card.module.css';
 
 import { formatAddress } from '@/shared/dal/web3/web3.utils';
 import { base, baseSepolia } from 'viem/chains';
 import { useAccount, useSwitchChain } from 'wagmi';
+import { Separator } from '../Separator/Separator';
 
 export default function WalletInfo() {
   const { address, chain } = useAccount();
@@ -35,7 +35,7 @@ export default function WalletInfo() {
         </div>
       </div>
 
-      <div className={cardStyles.separator} />
+      <Separator />
     </>
   );
 }

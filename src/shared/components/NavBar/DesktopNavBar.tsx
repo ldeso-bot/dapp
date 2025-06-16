@@ -1,5 +1,5 @@
-import cardStyles from '@/shared/css/card.module.css';
 import clsx from 'clsx';
+import { Separator } from '../Separator/Separator';
 import ConnectButton from './ConnectButton';
 import KlimaProtocolLogo from './KlimaProtocolLogo';
 import styles from './navbar.module.css';
@@ -17,7 +17,7 @@ export default function DesktopNavBar() {
       >
         <div className="flex flex-col gap-3">
           <KlimaProtocolLogo />
-          <div className={cardStyles.separator} />
+          <Separator />
           <WalletInfo />
           <NavbarItems />
         </div>
@@ -28,7 +28,7 @@ export default function DesktopNavBar() {
           styles.wNavbar
         )}
       >
-        <div className={cardStyles.separator} />
+        <Separator />
         <ConnectButton />
       </div>
     </div>
