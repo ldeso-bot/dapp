@@ -16,7 +16,7 @@ export default function MobileNavBar() {
     <>
       <div
         className={clsx(
-          `flex lg:hidden relative flex-col  border-void-20 px-3 py-6`
+          `flex lg:hidden relative flex-col  border-void-20 px-3 py-6 box-shadow`
         )}
       >
         <div className="flex flex-col gap-3">
@@ -32,7 +32,6 @@ export default function MobileNavBar() {
             />
           </div>
           <div className={clsx('flex flex-col gap-3', !open && 'hidden')}>
-            <Separator />
             <WalletInfo />
             <NavbarItems />
             <Separator />

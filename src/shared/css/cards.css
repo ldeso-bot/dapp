@@ -1,3 +1,7 @@
+.solo-card {
+  border-radius: 0.8rem 0.8rem 0.8rem 0.8rem;
+}
+
 .stacked-cards {
   display: flex;
   flex-direction: column;

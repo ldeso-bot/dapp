@@ -1,4 +1,3 @@
-import cardStyles from '@/shared/css/card.module.css';
 import clsx from 'clsx';
 import Tooltip from '../Tooltip/Tooltip';
 
@@ -19,13 +18,18 @@ export default function Card({
   tooltipPosition = 'close',
 }: Props) {
   return (
-    <div className={clsx(cardStyles.card, className)}>
+    <div
+      className={clsx(
+        'flex flex-col box-shadow border-void-20 border-1 p-5',
+        className
+      )}
+    >
       <div
         className={clsx('flex flex-row w-full items-center gap-1 pb-2', {
           'justify-between': tooltipPosition == 'far',
         })}
       >
-        <div className={cardStyles.title}>{title}</div>
+        <div className="text-void-50 text-size-16">{title}</div>
         {tooltip && <Tooltip content={tooltip} />}
       </div>
       {children}

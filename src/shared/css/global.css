@@ -71,6 +71,10 @@ body {
   color: var(--white);
 }
 
+.text-void-50 {
+  color: var(--void-50);
+}
+
 .text-void-40 {
   color: var(--void-40);
 }
@@ -91,6 +95,10 @@ body {
   color: var(--red);
 }
 
+.text-size-16 {
+  font-size: 1.6rem;
+}
+
 .text-size-14 {
   font-size: 1.4rem;
 }
@@ -109,4 +117,10 @@ h1 {
   font-size: 3.6rem;
   line-height: 4rem;
   letter-spacing: 0%;
+}
+
+.box-shadow {
+  box-shadow:
+    0px 1px 3px 0px rgba(0, 0, 0, 0.1),
+    0px 1px 2px -1px rgba(0, 0, 0, 0.1);
 }

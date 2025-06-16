@@ -1,6 +1,4 @@
-import cardStyles from '@/shared/css/card.module.css';
 import { getKlimaBondYieldRates } from '@/shared/dal/subgraph/klimaBondYieldRates';
-import clsx from 'clsx';
 import CarbonBackingCard from './cards/CarbonBackingCard';
 import CarbonMarketCard from './cards/CarbonMarketCard';
 import CarbonYieldCard from './cards/CarbonYieldCard';
@@ -18,36 +16,22 @@ export default async function OverviewPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex stacked-cards ">
-        <TotalKlimaBondedCard
-          className={clsx('grow-1', cardStyles.rightLinked)}
-        />
-        <KlimaPriceCard
-          className={clsx(
-            'grow-1',
-            cardStyles.leftLinked,
-            cardStyles.rightLinked
-          )}
-        />
-        <TotalKlimaXLockedCard
-          className={clsx(
-            'grow-1',
-            cardStyles.leftLinked,
-            cardStyles.rightLinked
-          )}
-        />
-        <KlimaXPriceCard className={clsx('grow-1', cardStyles.leftLinked)} />
+      <div className="stacked-cards">
+        <TotalKlimaBondedCard className="grow-1" />
+        <KlimaPriceCard className="grow-1" />
+        <TotalKlimaXLockedCard className="grow-1" />
+        <KlimaXPriceCard className="grow-1" />
       </div>
-      <KlimaBondYieldRatesCard data={data} />
-      <LiquidityPoolsCard />
-      <LiquidityPoolRiskyYieldCard />
-      <LiquidityPoolRiskyYieldCard />
-      <div className="flex flex-row ">
-        <CarbonBackingCard className={clsx('grow-1', cardStyles.rightLinked)} />
-        <LiquidityCard className={clsx('grow-1', cardStyles.leftLinked)} />
+      <KlimaBondYieldRatesCard data={data} className="solo-card" />
+      <LiquidityPoolsCard className="solo-card" />
+      <LiquidityPoolRiskyYieldCard className="solo-card" />
+      <LiquidityPoolRiskyYieldCard className="solo-card" />
+      <div className="stacked-cards">
+        <CarbonBackingCard className="grow-1" />
+        <LiquidityCard className="grow-1" />
       </div>
-      <CarbonYieldCard />
-      <CarbonMarketCard />
+      <CarbonYieldCard className="solo-card" />
+      <CarbonMarketCard className="solo-card" />
     </div>
   );
 }
