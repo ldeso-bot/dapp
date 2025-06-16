@@ -1,11 +1,6 @@
 import { createConfig, http } from 'wagmi';
 import { base, baseSepolia } from 'wagmi/chains';
 
-export const validChains = [base, baseSepolia];
-export const validChainIds = validChains.map((chain) => chain.id);
-export type ValidNetworkId = (typeof validChainIds)[number];
-export const defaultChain = validChains[0];
-
 export const wagmiConfig = createConfig({
   chains: [base, baseSepolia],
   transports: {

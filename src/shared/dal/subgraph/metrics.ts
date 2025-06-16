@@ -7,5 +7,3 @@ export const getMetrics = async () => {
     },
   };
 };
-
-export type Metrics = Awaited<ReturnType<typeof getMetrics>>;

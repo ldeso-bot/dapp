@@ -7,10 +7,6 @@ import {
   type Address,
   type PublicClient,
   type WalletClient,
-  createPublicClient,
-  http,
-  keccak256,
-  toBytes,
   getContract as viemGetContract,
 } from 'viem';
 import { ViemError } from './web3.types';
@@ -26,13 +22,6 @@ export function formatAddress(
   return `${address.slice(0, startLength + 2)}...${address.slice(-endLength)}`;
 }
 
-export function getPublicClient() {
-  return createPublicClient({
-    chain: constants.CHAIN,
-    transport: http(),
-  });
-}
-
 export function getContract(
   name: ContractName,
   client: PublicClient | WalletClient
@@ -46,15 +35,7 @@ export function getContract(
   });
 }
 
-export const getMethodHash = (methodSignature: string) => {
-  return getMethodKeccak(methodSignature).slice(0, 10);
-};
-
-export const getMethodKeccak = (methodSignature: string) => {
-  return keccak256(toBytes(methodSignature));
-};
-
-export const isViemError = (error: unknown): error is ViemError => {
+const isViemError = (error: unknown): error is ViemError => {
   return typeof error == 'object' && error !== null && 'shortMessage' in error;
 };
 
