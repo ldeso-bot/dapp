@@ -20,7 +20,7 @@ export default function Card({
   return (
     <div
       className={clsx(
-        'flex flex-col box-shadow border-void-20 border-1 p-5',
+        'flex flex-col box-shadow border-void-20 border-1 bg-background p-5',
         className
       )}
     >
@@ -32,7 +32,7 @@ export default function Card({
         <div className="text-void-50 text-size-16">{title}</div>
         {tooltip && <Tooltip content={tooltip} />}
       </div>
-      {children}
+      <div className="flex flex-col gap-2">{children}</div>
     </div>
   );
 }

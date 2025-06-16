@@ -43,6 +43,10 @@ body {
   border-color: var(--foreground);
 }
 
+.bg-background {
+  background: var(--background);
+}
+
 .bg-void-10 {
   background: var(--void-10);
 }

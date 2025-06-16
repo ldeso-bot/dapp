@@ -12,7 +12,19 @@ export default function LiquidityPoolsCard(props: CardProps) {
         for this transaction, allowing you to earn even higher rewards. Learn
         more.
       </div>
-      <div>Chart goes there</div>
+
+      <table className="table-auto">
+        <tr>
+          <td>Klima/USDC</td>
+          <td>TVL</td>
+          <td>APY</td>
+        </tr>
+        <tr>
+          <td>Klima/KlimaX</td>
+          <td>TVL</td>
+          <td>APY</td>
+        </tr>
+      </table>
     </Card>
   );
 }
