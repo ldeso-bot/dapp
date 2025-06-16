@@ -13,7 +13,7 @@ export default function ConnectButton() {
   const isMounted = useIsMounted();
 
   return (
-    <div>
+    <>
       {address ? (
         <>
           <Button onClick={() => disconnect()} className="w-full">
@@ -37,6 +37,6 @@ export default function ConnectButton() {
           {!isMounted && <Skeleton className="h-10 w-full" />}
         </>
       )}
-    </div>
+    </>
   );
 }
