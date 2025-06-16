@@ -2,19 +2,40 @@
 import cardStyles from '@/shared/css/card.module.css';
 
 import { formatAddress } from '@/shared/dal/web3/web3.utils';
-import { useAccount } from 'wagmi';
+import { base, baseSepolia } from 'viem/chains';
+import { useAccount, useSwitchChain } from 'wagmi';
 
 export default function WalletInfo() {
-  const { address } = useAccount();
+  const { address, chain } = useAccount();
+  const { switchChain } = useSwitchChain();
+
+  const chainText =
+    chain == baseSepolia
+      ? 'Testnet'
+      : chain == base
+        ? ''
+        : 'Unsupported chain. Please switch to Base.';
+
+  const doSwitchChain = () => {
+    switchChain({ chainId: base.id });
+  };
+
   if (!address) return null;
 
   return (
     <>
-      <div className={cardStyles.separator} />
       <div>
         <div>My Wallet Address:</div>
         <div className="text-void-40">{`${formatAddress(address)}`}</div>
+        <div
+          className="text-void-40 text-sm text-red cursor-pointer"
+          onClick={doSwitchChain}
+        >
+          {chainText}
+        </div>
       </div>
+
+      <div className={cardStyles.separator} />
     </>
   );
 }

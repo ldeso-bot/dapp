@@ -6,6 +6,7 @@ import klimaProtocolIcon from './images/klimaProtocol.svg';
 import styles from './navbar.module.css';
 import { navItems } from './navbar.utils';
 import NavBarItem from './NavBarItem';
+import WalletInfo from './WalletInfo';
 
 export default function NavBar() {
   return (
@@ -24,6 +25,7 @@ export default function NavBar() {
             priority
           />
           <div className={cardStyles.separator} />
+          <WalletInfo />
           <div>
             {navItems.map((item) => (
               <NavBarItem

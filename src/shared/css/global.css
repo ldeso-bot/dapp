@@ -9,7 +9,8 @@
   --white: #ffffff;
   --green: #e6faeb;
   --green-40: #00cc33;
-  --red: rgba(220, 38, 38, 0.2);
+  --light-red: rgba(220, 38, 38, 0.2);
+  --red: rgba(220, 38, 38);
   --void-80: #1e1e1e;
   --void-70: #2c2c2c;
   --void-60: #464646;
@@ -63,7 +64,7 @@ body {
 }
 
 .bg-red {
-  background: var(--red);
+  background: var(--light-red);
 }
 
 .text-white {
@@ -84,6 +85,10 @@ body {
 
 .text-green-40 {
   color: var(--green-40);
+}
+
+.text-red {
+  color: var(--red);
 }
 
 .text-size-14 {
