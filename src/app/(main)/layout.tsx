@@ -1,5 +1,6 @@
 import Footer from '@/shared/components/Footer/footer';
-import NavBar from '@/shared/components/NavBar/NavBar';
+import DesktopNavBar from '@/shared/components/NavBar/DesktopNavBar';
+import MobileNavBar from '@/shared/components/NavBar/MobileNavBar';
 import '@/shared/css/global.css';
 import { Inter } from 'next/font/google';
 import { Providers } from '../providers';
@@ -17,8 +18,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <div className="flex flex-row">
-            <NavBar />
+          <div className="flex flex-col lg:flex-row">
+            <DesktopNavBar />
+            <MobileNavBar />
             <div className="flex flex-col flex-1">
               <div className="flex-1 bg-void-10 p-6">{children}</div>
               <Footer />
