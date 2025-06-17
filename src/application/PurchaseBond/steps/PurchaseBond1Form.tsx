@@ -2,6 +2,7 @@
 
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
+import Input from '@/shared/components/Input/Input';
 import SelectInput from '@/shared/components/SelectInput/SelectInput';
 import Yield from '@/shared/components/Yield/Yield';
 import { tokens } from '@/shared/constants/tokens.constants';
@@ -18,6 +19,7 @@ const PurchaseBondForm: PurchaseBondFC = ({ next }) => {
             icon: token.icon,
           }))}
         />
+        <Input label="Amount" type="number" icon={tokens.klima.icon} />
         <Yield baseApy={0.06} riskyYield={0.14}></Yield>
       </div>
       <div className="flex flex-col gap-3 w-full">

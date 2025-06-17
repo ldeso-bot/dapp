@@ -21,10 +21,14 @@ export default function SelectInput({
   value,
 }: Props) {
   return (
-    <>
+    <div className="flex flex-col gap-2 items-start w-full">
       <label className="text-size-14 font-semibold">{label}</label>
-      <Select.Root onValueChange={onValueChange} value={value}>
-        <Select.Trigger>
+      <Select.Root
+        onValueChange={onValueChange}
+        value={value}
+        defaultValue={String(items[0]?.value)}
+      >
+        <Select.Trigger className="w-full">
           <Select.Value placeholder="Select an option" />
         </Select.Trigger>
         <Select.Portal>
@@ -49,6 +53,6 @@ export default function SelectInput({
           </Select.Content>
         </Select.Portal>
       </Select.Root>
-    </>
+    </div>
   );
 }
