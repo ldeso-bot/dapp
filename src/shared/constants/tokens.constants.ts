@@ -1,0 +1,18 @@
+import KlimaIcon from '@/shared/images/klima.svg';
+import KlimaXIcon from '@/shared/images/klimax.svg';
+import USDCIcon from '@/shared/images/usdc.svg';
+
+export const tokens = {
+  usdc: {
+    symbol: 'USDC',
+    icon: USDCIcon,
+  },
+  klimax: {
+    symbol: 'KlimaX',
+    icon: KlimaXIcon,
+  },
+  klima: {
+    symbol: 'KLIMA',
+    icon: KlimaIcon,
+  },
+};

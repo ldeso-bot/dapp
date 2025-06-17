@@ -1,6 +1,6 @@
 import { CardProps } from '@/shared/components/Card/Card';
-import KlimaIcon from '@/shared/images/klima.svg';
-import StatCard from './StatCard';
+import { tokens } from '@/shared/constants/tokens.constants';
+import StatCard from '../StatCard/StatCard';
 
 export default function TotalKlimaBondedCard(props: CardProps) {
   return (
@@ -12,7 +12,7 @@ export default function TotalKlimaBondedCard(props: CardProps) {
       tooltip="Bonds are fixed income instruments that offer yield which is claimable at maturity."
       tooltipPosition="far"
       value={0}
-      icon={KlimaIcon}
+      icon={tokens.klima.icon}
       changePercent={-0.1}
     />
   );

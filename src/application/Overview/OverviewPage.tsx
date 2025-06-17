@@ -1,15 +1,15 @@
 import { getKlimaBondYieldRates } from '@/shared/dal/subgraph/klimaBondYieldRates';
-import CarbonBackingCard from './cards/CarbonBackingCard';
-import CarbonMarketCard from './cards/CarbonMarketCard';
-import CarbonYieldCard from './cards/CarbonYieldCard';
-import KlimaBondYieldRatesCard from './cards/KlimaBondedYieldRatesCard';
-import KlimaPriceCard from './cards/KlimaPriceCard';
-import KlimaXPriceCard from './cards/KlimaXPriceCard';
-import LiquidityCard from './cards/LiquidityCard';
-import LiquidityPoolRiskyYieldCard from './cards/LiquidityPoolRiskyYieldCard';
-import LiquidityPoolsCard from './cards/LiquidityPoolsCard';
-import TotalKlimaBondedCard from './cards/TotalKlimaBondedCard';
-import TotalKlimaXLockedCard from './cards/TotalKlimaXLockedCard';
+import CarbonBackingCard from './cards/CarbonBackingCard/CarbonBackingCard';
+import CarbonMarketCard from './cards/CarbonMarketCard/CarbonMarketCard';
+import CarbonYieldCard from './cards/CarbonYieldCard/CarbonYieldCard';
+import KlimaBondYieldRatesCard from './cards/KlimaBondedYieldRatesCard/KlimaBondedYieldRatesCard';
+import KlimaPriceCard from './cards/KlimaPriceCard/KlimaPriceCard';
+import KlimaXPriceCard from './cards/KlimaXPriceCard/KlimaXPriceCard';
+import LiquidityCard from './cards/LiquidityCard/LiquidityCard';
+import LiquidityPoolRiskyYieldCard from './cards/LiquidityPoolRiskyYieldCard/LiquidityPoolRiskyYieldCard';
+import LiquidityPoolsCard from './cards/LiquidityPoolsCard/LiquidityPoolsCard';
+import TotalKlimaBondedCard from './cards/TotalKlimaBondedCard/TotalKlimaBondedCard';
+import TotalKlimaXLockedCard from './cards/TotalKlimaXLockedCard/TotalKlimaXLockedCard';
 
 export default async function OverviewPage() {
   const data = await getKlimaBondYieldRates();

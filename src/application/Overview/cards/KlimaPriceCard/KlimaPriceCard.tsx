@@ -1,7 +1,7 @@
 import { CardProps } from '@/shared/components/Card/Card';
+import { tokens } from '@/shared/constants/tokens.constants';
 import { getMetrics } from '@/shared/dal/subgraph/metrics';
-import UsdIcon from '@/shared/images/usd.svg';
-import StatCard from './StatCard';
+import StatCard from '../StatCard/StatCard';
 
 export default async function KlimaPriceCard(props: CardProps) {
   const metrics = await getMetrics();
@@ -13,7 +13,7 @@ export default async function KlimaPriceCard(props: CardProps) {
       buttonText="Buy KLIMA"
       value={metrics.klima.priceUSD}
       changePercent={metrics.klima.priceChangePercentage24h}
-      icon={UsdIcon}
+      icon={tokens.usdc.icon}
     />
   );
 }
