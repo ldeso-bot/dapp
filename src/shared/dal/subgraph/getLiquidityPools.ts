@@ -23,7 +23,7 @@ export const getLiquidityPools = async () => {
       id: '2',
       token1: 'klima',
       token2: 'klimax',
-      description: 'Lorem Ipsum Dolor Sit Amet',
+      description: 'Lorem Ipsum Dolor',
       tvl: 1200000,
       apy: 0.174,
     },

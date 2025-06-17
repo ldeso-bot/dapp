@@ -16,7 +16,7 @@ export default function Icon({ icon, alt, size = 32, className }: Props) {
       alt={alt}
       width={size}
       height={size}
-      className={clsx('w-auto h-auto', className)}
+      className={clsx('h-auto w-auto', className)}
     />
   );
 }

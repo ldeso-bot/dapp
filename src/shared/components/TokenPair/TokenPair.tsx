@@ -9,7 +9,7 @@ type Props = {
 
 export default async function TokenPair({ token1, token2, size = 32 }: Props) {
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row" style={{ height: `${size}px` }}>
       <Icon
         icon={token1.icon}
         alt={token1.symbol}
