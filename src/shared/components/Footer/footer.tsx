@@ -1,5 +1,5 @@
 import '@/shared/css/global.css';
-import Image from 'next/image';
+import Icon from '../Icon/Icon';
 import discordIcon from './images/discord.svg';
 import telegramIcon from './images/telegram.svg';
 import twitterIcon from './images/twitter.svg';
@@ -20,9 +20,9 @@ export default function Footer() {
           </div>
         </div>
         <div className="flex flex-rox gap-4">
-          <Image src={twitterIcon} alt="Twitter" />
-          <Image src={discordIcon} alt="Discord" />
-          <Image src={telegramIcon} alt="Telegram" />
+          <Icon icon={twitterIcon} alt="Twitter" size={20} />
+          <Icon icon={discordIcon} alt="Discord" size={20} />
+          <Icon icon={telegramIcon} alt="Telegram" size={20} />
         </div>
       </div>
     </div>

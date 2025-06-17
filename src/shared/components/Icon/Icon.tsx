@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import Image from 'next/image';
 
 type Props = {
@@ -7,12 +8,7 @@ type Props = {
   className?: string;
 };
 
-export default async function TokenPair({
-  icon,
-  alt,
-  size = 32,
-  className,
-}: Props) {
+export default function Icon({ icon, alt, size = 32, className }: Props) {
   alt = alt || icon;
   return (
     <Image
@@ -20,7 +16,7 @@ export default async function TokenPair({
       alt={alt}
       width={size}
       height={size}
-      className={className}
+      className={clsx('w-auto h-auto', className)}
     />
   );
 }

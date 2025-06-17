@@ -7,11 +7,10 @@ import Pair from './Pair';
 
 type Props = {
   poolInfo: LiquidityPoolInfo;
-  className: string;
 };
-export default async function PoolRowDesktop({ poolInfo, className }: Props) {
+export default async function PoolRowDesktop({ poolInfo }: Props) {
   return (
-    <tr className={className}>
+    <>
       <td>
         <Pair
           token1={tokens[poolInfo.token1]}
@@ -31,6 +30,6 @@ export default async function PoolRowDesktop({ poolInfo, className }: Props) {
           <Button>Lock Liquidity Tokens</Button>
         </div>
       </td>
-    </tr>
+    </>
   );
 }

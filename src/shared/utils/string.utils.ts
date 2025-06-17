@@ -15,9 +15,9 @@ export function formatPercentage(
 ): string {
   const { decimals = 2 } = options;
 
-  if (isNaN(value)) return '0.00%';
+  if (isNaN(value)) value = 0;
 
-  return `${value.toFixed(decimals)}%`;
+  return `${(value * 100).toFixed(decimals)}%`;
 }
 
 export function formatUSD(value: number): string {

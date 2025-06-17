@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { ConnectKitButton, useIsMounted } from 'connectkit';
 import { useAccount, useDisconnect } from 'wagmi';
 import Button from '../Button/Button';
+import ClientOnly from '../ClientOnly/ClientOnly';
 import Icon from '../Icon/Icon';
 import Skeleton from '../Skeleton/Skeleton';
 
@@ -18,7 +19,7 @@ export default function ConnectButton({ className }: Props) {
   const isMounted = useIsMounted();
 
   return (
-    <>
+    <ClientOnly>
       {address ? (
         <>
           <Button onClick={() => disconnect()} className={className}>
@@ -42,6 +43,6 @@ export default function ConnectButton({ className }: Props) {
           {!isMounted && <Skeleton className={clsx('h-10', className)} />}
         </>
       )}
-    </>
+    </ClientOnly>
   );
 }

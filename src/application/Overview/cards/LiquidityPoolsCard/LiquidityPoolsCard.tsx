@@ -18,20 +18,18 @@ export default async function LiquidityPoolsCard(props: CardProps) {
       </div>
 
       <table className="table-auto">
-        {data.map((poolInfo) => (
-          <>
-            <PoolRowDesktop
-              key={poolInfo.id}
-              poolInfo={poolInfo}
-              className="hidden lg:table-row"
-            />
-            <PoolRowMobile
-              key={poolInfo.id}
-              poolInfo={poolInfo}
-              className="lg:hidden"
-            />
-          </>
-        ))}
+        <tbody>
+          {data.map((poolInfo) => (
+            <tr className="hidden lg:table-row" key={`${poolInfo.id}`}>
+              <PoolRowDesktop poolInfo={poolInfo} />
+            </tr>
+          ))}
+          {data.map((poolInfo) => (
+            <tr className="lg:hidden" key={`${poolInfo.id}`}>
+              <PoolRowMobile poolInfo={poolInfo} />
+            </tr>
+          ))}
+        </tbody>
       </table>
     </Card>
   );
