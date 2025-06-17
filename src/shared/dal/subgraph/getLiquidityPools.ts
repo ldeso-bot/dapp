@@ -1,6 +1,6 @@
 import { Token } from '@/shared/constants/tokens.constants';
 
-export type LiquidityPool = {
+export type LiquidityPoolInfo = {
   id: string;
   token1: Token; // e.g., 'klima'
   token2: Token; // e.g., 'usdc'
