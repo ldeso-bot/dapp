@@ -3,6 +3,7 @@
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
 import SelectInput from '@/shared/components/SelectInput/SelectInput';
+import Yield from '@/shared/components/Yield/Yield';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { PurchaseBondFC } from '../purchaseBond.types';
 
@@ -17,6 +18,7 @@ const PurchaseBondForm: PurchaseBondFC = ({ next }) => {
             icon: token.icon,
           }))}
         />
+        <Yield baseApy={0.06} riskyYield={0.14}></Yield>
       </div>
       <div className="flex flex-col gap-3 w-full">
         <Button colors="secondary" context="flow" onClick={next}>
