@@ -2,15 +2,21 @@
 
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
-import TokenInput from '@/shared/components/TokenInput/TokenInput';
+import SelectInput from '@/shared/components/SelectInput/SelectInput';
+import { tokens } from '@/shared/constants/tokens.constants';
 import { PurchaseBondFC } from '../purchaseBond.types';
 
 const PurchaseBondForm: PurchaseBondFC = ({ next }) => {
   return (
     <Card title="Purchase a Bond" className="w-flowcard">
-      Form
-      <div className="flex flex-col gap-4">
-        <TokenInput />
+      <div className="flex flex-col gap-4 pt-3">
+        <SelectInput
+          items={Object.values(tokens).map((token) => ({
+            value: token.symbol,
+            label: token.symbol,
+            icon: token.icon,
+          }))}
+        />
       </div>
       <div className="flex flex-col gap-3 w-full">
         <Button colors="secondary" context="flow" onClick={next}>
