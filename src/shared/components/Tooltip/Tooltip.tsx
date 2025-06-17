@@ -1,6 +1,6 @@
 import helpIcon from '@/shared/images/help.svg';
-import Image from 'next/image';
 import { Tooltip } from 'radix-ui';
+import Icon from '../Icon/Icon';
 import styles from './tooltip.module.css';
 
 type Props = {
@@ -12,7 +12,7 @@ export default function Card({ content }: Props) {
       <Tooltip.Root>
         <Tooltip.Trigger asChild>
           <div>
-            <Image src={helpIcon} alt={'Help'} width={16} height={16} />
+            <Icon icon={helpIcon} alt={'Help'} size={16} />
           </div>
         </Tooltip.Trigger>
         <Tooltip.Portal>

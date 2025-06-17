@@ -1,9 +1,9 @@
 'use client';
 
 import clsx from 'clsx';
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Icon from '../Icon/Icon';
 
 type NavBarItemProps = {
   icon: string;
@@ -24,7 +24,7 @@ export default function NavBarItem({ icon, label, href }: NavBarItemProps) {
         !isActive && 'hover:opacity-80'
       )}
     >
-      <Image src={icon} alt={label} width={20} height={20} />
+      <Icon icon={icon} alt={label} size={20} />
       <div>{label}</div>
     </Link>
   );

@@ -1,7 +1,7 @@
 import Button from '@/shared/components/Button/Button';
 import Card, { CardProps } from '@/shared/components/Card/Card';
+import Icon from '@/shared/components/Icon/Icon';
 import clsx from 'clsx';
-import Image from 'next/image';
 
 type Props = CardProps & {
   buttonText: string;
@@ -17,7 +17,7 @@ export default function StatCard(props: Props) {
     <Card {...props} tooltipPosition="far">
       <div className="flex flex-col gap-3 w-full">
         <div className="flex flex-row gap-2 w-full items-center">
-          <Image src={icon} alt={title ?? ''} width={20} height={20} />
+          <Icon icon={icon} alt={title ?? ''} size={20} />
           <div className="grow-1">{value}</div>
           <div>
             <ChangePercent value={changePercent} />

@@ -3,9 +3,9 @@
 import logoutIcon from '@/shared/images/logout.svg';
 import clsx from 'clsx';
 import { ConnectKitButton, useIsMounted } from 'connectkit';
-import Image from 'next/image';
 import { useAccount, useDisconnect } from 'wagmi';
 import Button from '../Button/Button';
+import Icon from '../Icon/Icon';
 import Skeleton from '../Skeleton/Skeleton';
 
 type Props = {
@@ -22,7 +22,7 @@ export default function ConnectButton({ className }: Props) {
       {address ? (
         <>
           <Button onClick={() => disconnect()} className={className}>
-            <Image src={logoutIcon} alt={'Logout'} width={16} height={16} />
+            <Icon icon={logoutIcon} alt={'Logout'} size={16} />
             Logout
           </Button>
         </>

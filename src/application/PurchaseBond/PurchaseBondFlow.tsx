@@ -1,6 +1,6 @@
 import Steps from '@/shared/components/Steps/steps';
-import PurchaseBondConfirm from './steps/PurchaseBondConfirm';
-import PurchaseBondForm from './steps/PurchaseBondForm';
+import PurchaseBondForm from './steps/PurchaseBond1Form';
+import PurchaseBondConfirm from './steps/PurchaseBond2Confirm';
 
 export default async function PurchaseBondFlow() {
   return (
