@@ -2,7 +2,12 @@ import KlimaIcon from '@/shared/images/klima.svg';
 import KlimaXIcon from '@/shared/images/klimax.svg';
 import USDCIcon from '@/shared/images/usdc.svg';
 
-export const tokens = {
+export type TokenInfo = {
+  symbol: string;
+  icon: string;
+};
+
+export const tokens: Record<string, TokenInfo> = {
   usdc: {
     symbol: 'USDC',
     icon: USDCIcon,
@@ -16,3 +21,5 @@ export const tokens = {
     icon: KlimaIcon,
   },
 };
+
+export type Token = keyof typeof tokens;

@@ -1,6 +1,6 @@
 'use client';
 
-import { formatAddress } from '@/shared/dal/web3/web3.utils';
+import { formatAddress } from '@/shared/utils/string.utils';
 import { base, baseSepolia } from 'viem/chains';
 import { useAccount, useSwitchChain } from 'wagmi';
 import { Separator } from '../Separator/Separator';

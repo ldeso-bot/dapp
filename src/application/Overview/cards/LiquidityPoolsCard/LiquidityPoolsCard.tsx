@@ -1,6 +1,12 @@
 import Card, { CardProps } from '@/shared/components/Card/Card';
+import { tokens } from '@/shared/constants/tokens.constants';
+import { getLiquidityPools } from '@/shared/dal/subgraph/getLiquidityPools';
+import { formatPercentage, formatUSD } from '@/shared/utils/string.utils';
+import Metric from './Metric';
+import Pair from './Pair';
 
-export default function LiquidityPoolsCard(props: CardProps) {
+export default async function LiquidityPoolsCard(props: CardProps) {
+  const data = await getLiquidityPools();
   return (
     <Card
       {...props}
@@ -14,16 +20,23 @@ export default function LiquidityPoolsCard(props: CardProps) {
       </div>
 
       <table className="table-auto">
-        <tr>
-          <td>Klima/USDC</td>
-          <td>TVL</td>
-          <td>APY</td>
-        </tr>
-        <tr>
-          <td>Klima/KlimaX</td>
-          <td>TVL</td>
-          <td>APY</td>
-        </tr>
+        {data.map((pool) => (
+          <tr key={pool.id}>
+            <td>
+              <Pair
+                token1={tokens[pool.token1]}
+                token2={tokens[pool.token2]}
+                description={pool.description}
+              />
+            </td>
+            <td>
+              <Metric label="TVL" value={formatUSD(pool.tvl)} />
+            </td>
+            <td>
+              <Metric label="APY" value={formatPercentage(pool.apy)} />
+            </td>
+          </tr>
+        ))}
       </table>
     </Card>
   );
