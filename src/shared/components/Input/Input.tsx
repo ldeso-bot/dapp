@@ -13,7 +13,11 @@ export default function Input({ label = 'Token', icon, ...props }: Props) {
       <label className="text-size-14 font-semibold">{label}</label>
       <input
         {...props}
-        className={clsx('p-3 rounded-lg border-1 gap-2 ', !!icon && 'pl-10')}
+        className={clsx(
+          'p-3 rounded-lg gap-2 ',
+          !!icon && 'pl-10',
+          !props.disabled && 'border-1'
+        )}
         style={{
           backgroundImage: `url(${icon?.src})`,
           backgroundRepeat: 'no-repeat',

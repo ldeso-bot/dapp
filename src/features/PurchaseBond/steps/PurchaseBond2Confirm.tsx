@@ -2,7 +2,7 @@
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
 import { useState } from 'react';
-import { PurchaseBondFC } from '../purchaseBond.types';
+import { PurchaseBondFC } from '../purchaseBond.constants';
 import { useTransferWithPermit } from '../PurchaseBond.utils';
 
 const PurchaseBondConfirm: PurchaseBondFC = ({ previous }) => {

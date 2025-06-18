@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { StaticImageData } from 'next/image';
 import { Select } from 'radix-ui';
 import Icon from '../Icon/Icon';
@@ -8,29 +9,25 @@ export type SelectInputItem = {
   icon?: StaticImageData;
 };
 
-type Props = {
+type Props = Select.SelectProps & {
   label?: string;
   items: SelectInputItem[];
-  onValueChange?: (value: string) => void;
-  value?: string;
 };
 
-export default function SelectInput({
-  label = 'Token',
-  items,
-  onValueChange,
-  value,
-}: Props) {
+export default function SelectInput({ label, items, ...props }: Props) {
   return (
     <div className="flex flex-col gap-2 items-start w-full">
       <label className="text-size-14 font-semibold">{label}</label>
-      <Select.Root
-        onValueChange={onValueChange}
-        value={value}
-        defaultValue={String(items[0]?.value)}
-      >
+      <Select.Root {...props} defaultValue={String(items[0]?.value)}>
         <Select.Trigger className="w-full">
-          <Select.Value placeholder="Select an option" />
+          <div
+            className={clsx(
+              'bg-void-10 rounded-lg',
+              !props.disabled && 'border-1'
+            )}
+          >
+            <Select.Value placeholder="Select one" />
+          </div>
         </Select.Trigger>
         <Select.Portal>
           <Select.Content>
