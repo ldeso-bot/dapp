@@ -8,7 +8,8 @@ type Props = {
   href?: string;
   colors?: 'primary' | 'secondary';
   context?: 'main' | 'flow';
-};
+} & React.ButtonHTMLAttributes<HTMLButtonElement> &
+  React.LinkHTMLAttributes<HTMLAnchorElement>;
 
 export default function Button({
   children,
@@ -17,6 +18,7 @@ export default function Button({
   href,
   colors = 'primary',
   context = 'main',
+  ...props
 }: Props) {
   className = clsx(
     'flex items-center justify-center gap-2 border-1 border-foreground cursor-pointer',
@@ -29,11 +31,11 @@ export default function Button({
   return (
     <>
       {!href ? (
-        <button className={className} onClick={onClick}>
+        <button className={className} onClick={onClick} {...props}>
           {children}
         </button>
       ) : (
-        <Link href={href} className={className}>
+        <Link href={href} className={className} {...props}>
           {children}
         </Link>
       )}

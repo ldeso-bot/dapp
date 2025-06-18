@@ -16,7 +16,9 @@ const PurchaseBondConfirm: PurchaseBondFC = ({ previous }) => {
 
   return (
     <Card title="Purchase a Bond" className="w-flowcard">
-      Test: Clicking Submit will make a USDC transfer with permit
+      To complete this transaction, please allow our smart contract to transfer
+      tokens on your behalf. Test: Clicking Submit will make a USDC transfer
+      with permit
       <div className="flex flex-col gap-3 w-full">
         <Button colors="secondary" context="flow" onClick={onSubmit}>
           Submit

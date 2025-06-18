@@ -1,17 +1,30 @@
 import { StepProps } from '@/shared/components/Steps/steps';
 import { FC } from 'react';
+import { UseFormReturn } from 'react-hook-form';
 
-type PurchaseBondData = null;
+export const MATURITY_DATES = ['1m', '1y'] as const;
 
-export type PurchaseBondFC = FC<StepProps<PurchaseBondData>>;
-
-export const maturityDates = [
+export const MATURITY_DATES_OPTIONS = [
   {
-    value: '30',
+    value: '1m',
     label: '1 month',
   },
   {
-    value: '365',
+    value: '1y',
     label: '1 year',
   },
 ];
+
+export type MaturityDate = (typeof MATURITY_DATES)[number];
+
+export type PurchaseBondFields = {
+  token: string;
+  amount: number;
+  maturityDate: MaturityDate;
+};
+
+type PurchaseBondData = {
+  form: UseFormReturn<PurchaseBondFields>;
+};
+
+export type PurchaseBondFC = FC<StepProps<PurchaseBondData>>;

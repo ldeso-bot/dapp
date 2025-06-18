@@ -1,24 +1,48 @@
 import clsx from 'clsx';
 import { StaticImageData } from 'next/image';
 import { Select } from 'radix-ui';
+import React from 'react';
 import Icon from '../Icon/Icon';
 
 export type SelectInputItem = {
-  value: string | number;
+  value: string;
   label: string;
   icon?: StaticImageData;
 };
 
-type Props = Select.SelectProps & {
+type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   items: SelectInputItem[];
+  defaultValue?: string;
 };
 
-export default function SelectInput({ label, items, ...props }: Props) {
+export default function SelectInput({
+  label,
+  items,
+  defaultValue,
+  ...props
+}: Props) {
+  const onValueChange = (value: string) => {
+    if (props.onChange && props.name) {
+      props.onChange({
+        target: { name: props.name, value },
+        // TODO: a little cheat here. See: https://stackoverflow.com/questions/75815473/how-can-i-implement-react-hook-form-with-radix-ui-select
+      } as React.ChangeEvent<HTMLInputElement>);
+    }
+  };
+
+  // Convert value to string for compatibility
+  const stringValue = props.value ? String(props.value) : undefined;
+
   return (
     <div className="flex flex-col gap-2 items-start w-full">
       <label className="text-size-14 font-semibold">{label}</label>
-      <Select.Root {...props} defaultValue={String(items[0]?.value)}>
+      <Select.Root
+        value={stringValue}
+        disabled={props.disabled}
+        onValueChange={onValueChange}
+        defaultValue={defaultValue}
+      >
         <Select.Trigger className="w-full">
           <div
             className={clsx(
