@@ -34,11 +34,11 @@ export default function SelectInput({
         <Select.Portal>
           <Select.Content>
             <Select.ScrollUpButton />
-            <Select.Viewport className="bg-background rounded-lg p-2 w-full">
+            <Select.Viewport className="bg-background rounded-lg p-2 pl-3 w-full">
               {items.map((item) => (
                 <Select.Item key={item.value} value={String(item.value)}>
                   <Select.ItemText>
-                    <div className="bg-void-10 rounded-lg p-2">
+                    <div className="bg-void-10 rounded-lg p-2 pl-3">
                       <div className="flex flex-row gap-2 font-size-14">
                         {item.icon && <Icon icon={item.icon} size={20} />}
                         {item.label}
