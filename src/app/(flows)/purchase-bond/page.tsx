@@ -1,4 +1,4 @@
-import PurchaseBondFlow from '@/application/PurchaseBond/PurchaseBondFlow';
+import PurchaseBondFlow from '@/features/PurchaseBond/PurchaseBondFlow';
 
 export default function Home() {
   return <PurchaseBondFlow />;

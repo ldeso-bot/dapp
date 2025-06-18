@@ -1,4 +1,4 @@
-import OverviewPage from "@/application/Overview/OverviewPage";
+import OverviewPage from '@/features/Overview/OverviewPage';
 
 export default function Home() {
   return <OverviewPage />;
