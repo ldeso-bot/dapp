@@ -3,11 +3,12 @@ import Card, { CardProps } from '@/shared/components/Card/Card';
 import Icon from '@/shared/components/Icon/Icon';
 import { formatPercentage } from '@/shared/utils/string.utils';
 import clsx from 'clsx';
+import { StaticImageData } from 'next/image';
 
 type Props = CardProps & {
   buttonText: string;
   value: number;
-  icon: string;
+  icon: StaticImageData;
   changePercent: number;
   buttonHref?: string;
 };

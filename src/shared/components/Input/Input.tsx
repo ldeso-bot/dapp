@@ -1,21 +1,10 @@
-import { ImageMetadata } from '@/shared/constants/tokens.constants';
 import clsx from 'clsx';
+import { StaticImageData } from 'next/image';
 import { InputHTMLAttributes } from 'react';
-
-function getBackgroundImage(srcSet = '') {
-  const imageSet = srcSet
-    .split(', ')
-    .map((str) => {
-      const [url, dpi] = str.split(' ');
-      return `url("${url}") ${dpi}`;
-    })
-    .join(', ');
-  return `image-set(${imageSet})`;
-}
 
 type Props = {
   label?: string;
-  icon?: ImageMetadata;
+  icon?: StaticImageData;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 export default function Input({ label = 'Token', icon, ...props }: Props) {

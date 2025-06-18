@@ -1,10 +1,11 @@
+import { StaticImageData } from 'next/image';
 import { Select } from 'radix-ui';
 import Icon from '../Icon/Icon';
 
 export type SelectInputItem = {
   value: string | number;
   label: string;
-  icon?: string;
+  icon?: StaticImageData;
 };
 
 type Props = {

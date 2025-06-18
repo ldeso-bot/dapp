@@ -1,12 +1,13 @@
 'use client';
 
 import clsx from 'clsx';
+import { StaticImageData } from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Icon from '../Icon/Icon';
 
 type NavBarItemProps = {
-  icon: string;
+  icon: StaticImageData;
   label: string;
   href: string;
 };

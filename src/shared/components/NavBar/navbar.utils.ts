@@ -1,3 +1,4 @@
+import { StaticImageData } from 'next/image';
 import allocateIcon from './images/allocate.svg';
 import burnCarbonIcon from './images/burn-carbon.svg';
 import carbonUniversityIcon from './images/carbon-university.svg';
@@ -6,7 +7,7 @@ import protocolOverviewIcon from './images/protocol-overview.svg';
 import sellCarbonIcon from './images/sell-carbon.svg';
 
 type NavItem = {
-  icon: string;
+  icon: StaticImageData;
   label: string;
   href: string;
 };
