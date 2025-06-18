@@ -13,7 +13,10 @@ npm run dev
 
 - `/src` : All the sources
 - `/src/app` : We use NextJS App router. See https://nextjs.org/docs/app
-- `/src/application`: The application "Pages". One subdirectory per page
+- `/src/app/(main)` : Pages that use the main layout
+- `/src/app/(flows)` : Pages that use the flows layout
+- `/src/app/api` : API routes
+- `/src/features`: The application "Features". One subdirectory per feature
 - `/src/shared`: Code shared between pages
 - `/src/shared/components`: Shared components
 - `/src/shared/css`: Global CSS

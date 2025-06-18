@@ -1,10 +1,11 @@
 import KlimaIcon from '@/shared/images/klima.svg';
 import KlimaXIcon from '@/shared/images/klimax.svg';
 import USDCIcon from '@/shared/images/usdc.svg';
+import Image from 'next/image';
 
 export type TokenInfo = {
   symbol: string;
-  icon: string;
+  icon: typeof Image;
 };
 
 export const tokens: Record<string, TokenInfo> = {
