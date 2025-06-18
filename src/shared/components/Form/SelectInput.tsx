@@ -2,10 +2,12 @@ import clsx from 'clsx';
 import { StaticImageData } from 'next/image';
 import { Select } from 'radix-ui';
 import React from 'react';
+import { FieldError } from 'react-hook-form';
 import Icon from '../Icon/Icon';
+import InputWrapper from './InputWrapper';
 
 export type SelectInputItem = {
-  value: string;
+  value: string | number | bigint;
   label: string;
   icon?: StaticImageData;
 };
@@ -13,13 +15,15 @@ export type SelectInputItem = {
 type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   items: SelectInputItem[];
-  defaultValue?: string;
+  error?: FieldError;
+  defaultValue?: string | number;
 };
 
 export default function SelectInput({
   label,
   items,
   defaultValue,
+  error,
   ...props
 }: Props) {
   const onValueChange = (value: string) => {
@@ -33,15 +37,13 @@ export default function SelectInput({
 
   // Convert value to string for compatibility
   const stringValue = props.value ? String(props.value) : undefined;
-
   return (
-    <div className="flex flex-col gap-2 items-start w-full">
-      <label className="text-size-14 font-semibold">{label}</label>
+    <InputWrapper label={label} error={error}>
       <Select.Root
         value={stringValue}
         disabled={props.disabled}
         onValueChange={onValueChange}
-        defaultValue={defaultValue}
+        defaultValue={String(defaultValue)}
       >
         <Select.Trigger className="w-full">
           <div
@@ -75,6 +77,6 @@ export default function SelectInput({
           </Select.Content>
         </Select.Portal>
       </Select.Root>
-    </div>
+    </InputWrapper>
   );
 }

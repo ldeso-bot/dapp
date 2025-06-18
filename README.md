@@ -47,3 +47,5 @@ Use the Steps component:
 
 - Prepare the flow data in the main component
 - Pass the data to the Step components using the data field
+
+See the PurchaseBond flow for an example

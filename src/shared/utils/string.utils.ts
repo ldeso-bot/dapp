@@ -4,7 +4,7 @@ export function formatAddress(
 ): string {
   if (!address) return '';
 
-  const { startLength = 4, endLength = 4 } = options;
+  const { startLength = 3, endLength = 3 } = options;
 
   return `${address.slice(0, startLength + 2)}...${address.slice(-endLength)}`;
 }
@@ -31,4 +31,14 @@ export function formatUSD(value: number): string {
     minimumSignificantDigits: 3,
     maximumFractionDigits: size > 3 ? 0 : 2,
   }).format(Number(value));
+}
+
+export function formatTimestamp(timestamp?: number | null): string {
+  if (!timestamp) return '';
+
+  return new Date(Number(timestamp)).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
 }

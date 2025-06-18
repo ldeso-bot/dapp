@@ -1,22 +1,30 @@
 import clsx from 'clsx';
 import { StaticImageData } from 'next/image';
 import { InputHTMLAttributes } from 'react';
+import { FieldError } from 'react-hook-form';
+import InputWrapper from './InputWrapper';
 
 type Props = {
   label?: string;
   icon?: StaticImageData;
+  error?: FieldError;
 } & InputHTMLAttributes<HTMLInputElement>;
 
-export default function Input({ label = 'Token', icon, ...props }: Props) {
+export default function Input({
+  label = 'Token',
+  icon,
+  error,
+  ...props
+}: Props) {
   return (
-    <div className="flex flex-col gap-2">
-      <label className="text-size-14 font-semibold">{label}</label>
+    <InputWrapper label={label} error={error}>
       <input
         {...props}
         className={clsx(
-          'p-3 rounded-lg gap-2 ',
+          'px-3 py-2 rounded-lg gap-2 w-full',
           !!icon && 'pl-10',
-          !props.disabled && 'border-1'
+          !props.disabled && 'border-1',
+          props.disabled && 'bg-void-10'
         )}
         style={{
           backgroundImage: `url(${icon?.src})`,
@@ -25,6 +33,6 @@ export default function Input({ label = 'Token', icon, ...props }: Props) {
           backgroundPositionX: '1.2rem',
         }}
       />
-    </div>
+    </InputWrapper>
   );
 }

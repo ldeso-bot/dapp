@@ -4,6 +4,7 @@ import { handleWeb3Error } from '@/shared/dal/web3/web3.utils';
 import { useGetContract } from '@/shared/hooks/useGetContract';
 import { usePermit } from '@/shared/hooks/usePermit';
 import { useCallback } from 'react';
+import { z } from 'zod';
 
 export const useTransferWithPermit = () => {
   const permit = usePermit({
@@ -53,6 +54,11 @@ export const useTransferWithPermit = () => {
   }, [permit, contract]);
 
   return {
+    contract,
     send,
   };
 };
+
+export const zodMaturityDate = z.preprocess((i: unknown): number => {
+  return new Date().getTime() + Number(i) * 1000;
+}, z.coerce.number());

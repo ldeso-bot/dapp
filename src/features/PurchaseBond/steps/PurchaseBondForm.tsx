@@ -2,30 +2,32 @@
 
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
-import FormErrors from '@/shared/components/FormErrors/FormErrors';
-import Input from '@/shared/components/Input/Input';
-import SelectInput from '@/shared/components/SelectInput/SelectInput';
+import Input from '@/shared/components/Form/Input';
+import SelectInput from '@/shared/components/Form/SelectInput';
+import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import Yield from '@/shared/components/Yield/Yield';
 import { tokens } from '@/shared/constants/tokens.constants';
 import {
+  MATURITY_DATES,
   MATURITY_DATES_OPTIONS,
-  PurchaseBondFC,
   PurchaseBondFields,
 } from '../purchaseBond.constants';
 
-const PurchaseBondForm: PurchaseBondFC = ({ next, data }) => {
+const PurchaseBondForm: FormFlowStep<PurchaseBondFields> = ({ next, data }) => {
   const { form } = data;
   const { handleSubmit, formState } = form;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const onSubmit = (_data: PurchaseBondFields) => {
+
+  // Wrapping next into handleSubmit to ensure the form is valid before going to the validation step
+  const onSubmit = () => {
     next();
   };
-  console.info(form.register('maturityDate'));
+
   return (
     <Card title="Purchase a Bond" className="w-flowcard">
       <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-4 pt-3">
           <SelectInput
+            // If we can bond only Klima this can be a simple Input
             label="Token"
             disabled={true}
             value={tokens.klima.symbol}
@@ -42,12 +44,14 @@ const PurchaseBondForm: PurchaseBondFC = ({ next, data }) => {
             type="number"
             icon={tokens.klima.icon}
             {...form.register('amount')}
+            error={formState.errors.amount}
           />
           <SelectInput
             label="Maturity Date"
             items={MATURITY_DATES_OPTIONS}
             {...form.register('maturityDate')}
-            defaultValue={'1y'}
+            // Select Input being a custom (non HTML input) we cannot set the default value using react hook form
+            defaultValue={MATURITY_DATES[0]}
           />
         </div>
         <div className="flex flex-col gap-3 w-full">
@@ -58,7 +62,6 @@ const PurchaseBondForm: PurchaseBondFC = ({ next, data }) => {
             Cancel
           </Button>
         </div>
-        <FormErrors formState={formState} />
       </form>
     </Card>
   );

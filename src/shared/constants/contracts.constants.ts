@@ -18,6 +18,11 @@ const contracts: Record<string, contractInfo> = {
     testnet: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // No USDC on testnet
     abi: USDC,
   },
+  KlimaProtocol: {
+    mainnet: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // TODO: add mainnet address
+    testnet: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // TODO: add testnet address
+    abi: USDC,
+  },
 };
 
 export type ContractName = keyof typeof contracts;
