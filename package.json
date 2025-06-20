@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "knip": "knip --reporter=markdown --exclude=binaries --exclude=dependencies"
+    "knip": "knip --reporter=markdown --exclude=binaries --exclude=dependencies",
+    "tsc": "tsc"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -38,5 +39,9 @@
     "prettier-plugin-organize-imports": "^4.1.0",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "engines": {
+    "npm": ">=10.0.0",
+    "node": ">=21.0.0"
   }
 }

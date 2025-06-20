@@ -6,7 +6,7 @@ import { FieldError } from 'react-hook-form';
 import Icon from '../Icon/Icon';
 import InputWrapper from './InputWrapper';
 
-export type SelectInputItem = {
+type SelectInputItem = {
   value: string | number | bigint;
   label: string;
   icon?: StaticImageData;
