@@ -1,6 +1,6 @@
 import Button from '@/shared/components/Button/Button';
 import { tokens } from '@/shared/constants/tokens.constants';
-import { LiquidityPoolInfo } from '@/shared/dal/subgraph/getLiquidityPools';
+import { LiquidityPoolInfo } from '@/shared/models/ProtocolData';
 import { formatPercentage, formatUSD } from '@/shared/utils/string.utils';
 import Metric from './Metric';
 import Pair from './Pair';
@@ -8,7 +8,7 @@ import Pair from './Pair';
 type Props = {
   poolInfo: LiquidityPoolInfo;
 };
-export default async function PoolRowDesktop({ poolInfo }: Props) {
+export default function PoolRowDesktop({ poolInfo }: Props) {
   return (
     <>
       <td>

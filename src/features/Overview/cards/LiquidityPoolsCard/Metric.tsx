@@ -3,7 +3,7 @@ type Props = {
   value: string;
 };
 
-export default async function Metric({ label, value }: Props) {
+export default function Metric({ label, value }: Props) {
   return (
     <div className="flex flex-col items-center">
       <div className="text-size-14 font-bold">{value}</div>

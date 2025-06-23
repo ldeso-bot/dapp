@@ -2,7 +2,7 @@
 
 import Steps from '@/shared/components/Steps/Steps';
 import { tokens } from '@/shared/constants/tokens.constants';
-import { useParsedForm } from '@/shared/hooks/useParsedForm';
+import { useParsedForm } from '@/shared/hooks/web3/useParsedForm';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';

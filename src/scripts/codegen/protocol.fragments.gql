@@ -1,0 +1,13 @@
+fragment PurchaseFragment on Purchase {
+  amount
+  id
+  listing {
+    id
+    tokenStandard
+    seller {
+      id
+    }
+    tokenAddress
+  }
+  price
+}

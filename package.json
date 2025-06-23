@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "knip": "knip --reporter=markdown --exclude=binaries --exclude=dependencies",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "codegen": "graphql-codegen --config src/scripts/codegen/codegen.ts",
+    "postinstall": "npm run codegen"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -22,18 +24,24 @@
     "react-dom": "^18.0.0",
     "react-hook-form": "^7.58.1",
     "recharts": "^2.15.3",
+    "remeda": "^2.23.0",
     "viem": "^2.30.6",
     "wagmi": "^2.15.5",
     "zod": "^3.25.67"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@graphql-codegen/cli": "^5.0.7",
+    "@graphql-codegen/typescript": "^4.1.6",
+    "@graphql-codegen/typescript-graphql-request": "^6.3.0",
+    "@graphql-codegen/typescript-operations": "^4.6.1",
     "@tailwindcss/postcss": "^4.1.10",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
+    "graphql-request": "^7.2.0",
     "knip": "^5.61.0",
     "prettier": "^3.5.3",
     "prettier-plugin-organize-imports": "^4.1.0",

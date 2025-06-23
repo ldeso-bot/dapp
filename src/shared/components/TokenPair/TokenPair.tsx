@@ -7,7 +7,7 @@ type Props = {
   size?: number;
 };
 
-export default async function TokenPair({ token1, token2, size = 32 }: Props) {
+export default function TokenPair({ token1, token2, size = 32 }: Props) {
   return (
     <div className="flex flex-row" style={{ height: `${size}px` }}>
       <Icon

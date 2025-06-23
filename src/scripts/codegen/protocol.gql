@@ -1,0 +1,5 @@
+query getPurchaseById($id: ID!) {
+  purchase(id: $id) {
+    ...PurchaseFragment
+  }
+}

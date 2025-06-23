@@ -1,9 +1,9 @@
-import constants from '@/shared/constants/';
-import { PermitReturn } from '@/shared/dal/web3/web3.types';
-import { handleWeb3Error } from '@/shared/dal/web3/web3.utils';
-import { useGetContract } from '@/shared/hooks/useGetContract';
-import { usePermit } from '@/shared/hooks/usePermit';
+import { useContract } from '@/shared/hooks/web3/useContract';
+import { usePermit } from '@/shared/hooks/web3/usePermit';
+import { PermitReturn } from '@/shared/utils/web3.types';
+import { handleWeb3Error } from '@/shared/utils/web3.utils';
 import { useCallback } from 'react';
+import { useAccount } from 'wagmi';
 import { z } from 'zod';
 
 export const useTransferWithPermit = () => {
@@ -13,7 +13,8 @@ export const useTransferWithPermit = () => {
     value: 1n,
   });
 
-  const contract = useGetContract('USDCTransferWithPermit');
+  const { contract } = useContract('USDCTransferWithPermit');
+  const { chain } = useAccount();
 
   const send = useCallback(async () => {
     let signature: PermitReturn | null = null;
@@ -42,7 +43,7 @@ export const useTransferWithPermit = () => {
           r,
           s,
         ],
-        { chain: constants.CHAIN }
+        { chain }
       );
 
       return {
@@ -51,7 +52,7 @@ export const useTransferWithPermit = () => {
     } catch (error) {
       return handleWeb3Error(error);
     }
-  }, [permit, contract]);
+  }, [permit, contract, chain]);
 
   return {
     contract,

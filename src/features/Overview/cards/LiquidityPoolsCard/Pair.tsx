@@ -7,7 +7,7 @@ type Props = {
   description: string;
 };
 
-export default async function Pair({ token1, token2, description }: Props) {
+export default function Pair({ token1, token2, description }: Props) {
   return (
     <div className="flex flex-row gap-2">
       <TokenPair token1={token1} token2={token2} />

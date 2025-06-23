@@ -1,11 +1,10 @@
-import constants from '@/shared/constants/';
+import { ContractName } from '@/shared/constants/contracts.constants';
+import Permit from '@/shared/utils/abis/Permit.json';
+import { is0xString, isString } from '@/shared/utils/typeguards';
+import { PermitReturn } from '@/shared/utils/web3.types';
 import { useCallback } from 'react';
-import { useWalletClient } from 'wagmi';
-import { ContractName } from '../constants/contracts.constants';
-import Permit from '../dal/web3/abis/Permit.json';
-import { PermitReturn } from '../dal/web3/web3.types';
-import { is0xString, isString } from '../utils/typeguards';
-import { useGetContract } from './useGetContract';
+import { useAccount, useWalletClient } from 'wagmi';
+import { useContract } from './useContract';
 
 type UsePermitParams = {
   /** The name of the contract that will be spending the tokens */
@@ -18,9 +17,10 @@ type UsePermitParams = {
 export function usePermit(params: UsePermitParams) {
   const { spenderName, tokenName, value } = params;
   const { data: walletClient } = useWalletClient();
+  const { chain } = useAccount();
 
-  const tokenContract = useGetContract(tokenName);
-  const spenderContract = useGetContract(spenderName);
+  const { contract: tokenContract } = useContract(tokenName);
+  const { contract: spenderContract } = useContract(spenderName);
 
   const getPermitSignature =
     useCallback(async (): Promise<PermitReturn | null> => {
@@ -29,6 +29,8 @@ export function usePermit(params: UsePermitParams) {
       if (!tokenContract) throw new Error('Token contract is not ready');
 
       if (!spenderContract) throw new Error('Spender contract is not ready');
+
+      if (!chain) throw new Error('Account is not ready');
 
       // The owner address is the address of the wallet client
       const owner = walletClient.account.address;
@@ -43,6 +45,7 @@ export function usePermit(params: UsePermitParams) {
 
       // Compute the EIP712 domain information.
       // TODO: This could be cached at the server level
+      if (!tokenContract) throw new Error('Token contract is not ready');
       const name = await tokenContract.read.name();
       const version = await tokenContract.read.version();
 
@@ -54,9 +57,9 @@ export function usePermit(params: UsePermitParams) {
       }
 
       const domain = {
-        name: name,
-        version: version,
-        chainId: constants.CHAIN.id,
+        name,
+        version,
+        chainId: chain.id,
         verifyingContract: tokenContract.address,
       };
 
@@ -92,7 +95,7 @@ export function usePermit(params: UsePermitParams) {
       }
 
       return { deadline, owner, spender, value, r, s, v };
-    }, [walletClient, tokenContract, spenderContract, value]);
+    }, [walletClient, tokenContract, spenderContract, value, chain]);
 
   return {
     getPermitSignature,

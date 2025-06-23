@@ -1,0 +1,5 @@
+query getTokensByIds($ids: [Bytes!]) {
+  tokens(where: { id_in: $ids }) {
+    ...TokenFragment
+  }
+}

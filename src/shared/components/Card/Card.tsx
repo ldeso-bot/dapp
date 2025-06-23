@@ -32,7 +32,7 @@ export default function Card({
         <div className="text-void-50 text-size-16">{title}</div>
         {tooltip && <Tooltip content={tooltip} />}
       </div>
-      <div className="flex flex-col gap-2">{children}</div>
+      <div className="flex flex-col gap-2 h-full">{children}</div>
     </div>
   );
 }

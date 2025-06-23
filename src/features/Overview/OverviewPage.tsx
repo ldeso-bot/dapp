@@ -1,4 +1,5 @@
-import { getKlimaBondYieldRates } from '@/shared/dal/subgraph/klimaBondYieldRates';
+'use client';
+
 import CarbonBackingCard from './cards/CarbonBackingCard/CarbonBackingCard';
 import CarbonMarketCard from './cards/CarbonMarketCard/CarbonMarketCard';
 import CarbonYieldCard from './cards/CarbonYieldCard/CarbonYieldCard';
@@ -11,9 +12,7 @@ import LiquidityPoolsCard from './cards/LiquidityPoolsCard/LiquidityPoolsCard';
 import TotalKlimaBondedCard from './cards/TotalKlimaBondedCard/TotalKlimaBondedCard';
 import TotalKlimaXLockedCard from './cards/TotalKlimaXLockedCard/TotalKlimaXLockedCard';
 
-export default async function OverviewPage() {
-  const data = await getKlimaBondYieldRates();
-
+export default function OverviewPage() {
   return (
     <div className="flex flex-col gap-4">
       <div className="stacked-cards">
@@ -22,7 +21,7 @@ export default async function OverviewPage() {
         <TotalKlimaXLockedCard className="grow-1" />
         <KlimaXPriceCard className="grow-1" />
       </div>
-      <KlimaBondYieldRatesCard data={data} className="solo-card" />
+      <KlimaBondYieldRatesCard className="solo-card" />
       <LiquidityPoolsCard className="solo-card" />
       <LiquidityPoolRiskyYieldCard className="solo-card" />
       <LiquidityPoolRiskyYieldCard className="solo-card" />

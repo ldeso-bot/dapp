@@ -1,4 +1,4 @@
 {
   "$schema": "https://unpkg.com/knip@latest/schema.json",
-  "ignore": ["postcss.config.mjs"]
+  "ignore": ["postcss.config.mjs", "src/scripts/codegen/codegen.ts"]
 }

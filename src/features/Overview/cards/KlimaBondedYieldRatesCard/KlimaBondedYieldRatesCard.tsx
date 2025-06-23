@@ -1,7 +1,7 @@
 'use client';
 
 import Card, { CardProps } from '@/shared/components/Card/Card';
-import { BondYieldRate } from '@/shared/dal/subgraph/klimaBondYieldRates';
+import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import {
   CartesianGrid,
   Line,
@@ -12,11 +12,13 @@ import {
   YAxis,
 } from 'recharts';
 
-export default function KlimaBondYieldRatesCard(
-  props: CardProps & {
-    data: BondYieldRate[];
+export default function KlimaBondYieldRatesCard(props: CardProps) {
+  const { data } = useProtocolData();
+
+  if (!data) {
+    return null;
   }
-) {
+
   return (
     <Card
       {...props}
@@ -26,12 +28,12 @@ export default function KlimaBondYieldRatesCard(
       <div className="w-full h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
-            data={props.data}
+            data={data.klimaBondYieldRates}
             margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
-              dataKey="day"
+              dataKey="durationDays"
               label={{ value: 'Days', position: 'insideBottom', offset: -5 }}
             />
             <YAxis
@@ -44,7 +46,7 @@ export default function KlimaBondYieldRatesCard(
             />
             <Line
               type="monotone"
-              dataKey="yield"
+              dataKey="yieldPercentage"
               stroke="#8884d8"
               strokeWidth={2}
               dot={{ r: 4 }}

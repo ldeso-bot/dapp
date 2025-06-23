@@ -1,10 +1,15 @@
 import Card, { CardProps } from '@/shared/components/Card/Card';
-import { getLiquidityPools } from '@/shared/dal/subgraph/getLiquidityPools';
+import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import PoolRowDesktop from './PoolRowDesktop';
 import PoolRowMobile from './PoolRowMobile';
 
-export default async function LiquidityPoolsCard(props: CardProps) {
-  const data = await getLiquidityPools();
+export default function LiquidityPoolsCard(props: CardProps) {
+  const { data } = useProtocolData();
+
+  if (!data) {
+    return null;
+  }
+
   return (
     <Card
       {...props}
@@ -19,12 +24,12 @@ export default async function LiquidityPoolsCard(props: CardProps) {
 
       <table className="table-auto">
         <tbody>
-          {data.map((poolInfo) => (
+          {data.liquidityPools.map((poolInfo) => (
             <tr className="hidden lg:table-row" key={`${poolInfo.id}`}>
               <PoolRowDesktop poolInfo={poolInfo} />
             </tr>
           ))}
-          {data.map((poolInfo) => (
+          {data.liquidityPools.map((poolInfo) => (
             <tr className="lg:hidden" key={`${poolInfo.id}`}>
               <PoolRowMobile poolInfo={poolInfo} />
             </tr>

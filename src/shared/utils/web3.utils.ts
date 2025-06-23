@@ -1,10 +1,9 @@
-import constants from '@/shared/constants';
 import contracts, {
   ContractName,
 } from '@/shared/constants/contracts.constants';
+import { ChainId } from '@/shared/constants/networks.constants';
 import {
   type Abi,
-  type Address,
   type PublicClient,
   type WalletClient,
   getContract as viemGetContract,
@@ -12,13 +11,14 @@ import {
 import { ViemError } from './web3.types';
 
 export function getContract(
+  chainId: ChainId,
   name: ContractName,
   client: PublicClient | WalletClient
 ) {
   const contractInfo = contracts[name];
 
   return viemGetContract({
-    address: contractInfo[constants.NETWORK] as Address,
+    address: contractInfo[chainId],
     abi: contractInfo.abi as Abi,
     client,
   });
