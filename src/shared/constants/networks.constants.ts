@@ -11,9 +11,5 @@ export const wagmiConfig = createConfig({
 });
 
 export const CHAIN_IDS = [base.id, baseSepolia.id] as const;
-export const CHAIN_ID_MAP = {
-  [base.id]: { name: 'base', chain: base },
-  [baseSepolia.id]: { name: 'baseSepolia', chain: baseSepolia },
-} as const;
 export const DEFAULT_CHAIN_ID = base.id;
 export type ChainId = (typeof CHAIN_IDS)[number];

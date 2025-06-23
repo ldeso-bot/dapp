@@ -24,7 +24,6 @@ export default function OverviewPage() {
       <KlimaBondYieldRatesCard className="solo-card" />
       <LiquidityPoolsCard className="solo-card" />
       <LiquidityPoolRiskyYieldCard className="solo-card" />
-      <LiquidityPoolRiskyYieldCard className="solo-card" />
       <div className="stacked-cards">
         <CarbonBackingCard className="grow-1" />
         <LiquidityCard className="grow-1" />

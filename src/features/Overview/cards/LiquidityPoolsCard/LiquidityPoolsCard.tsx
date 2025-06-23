@@ -22,7 +22,7 @@ export default function LiquidityPoolsCard(props: CardProps) {
         more.
       </div>
 
-      <table className="table-auto">
+      <table className="table table-auto">
         <tbody>
           {data.liquidityPools.map((poolInfo) => (
             <tr className="hidden lg:table-row" key={`${poolInfo.id}`}>

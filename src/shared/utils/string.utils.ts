@@ -1,3 +1,5 @@
+import { isNullish } from 'remeda';
+
 export function formatAddress(
   address: string | undefined,
   options: { startLength?: number; endLength?: number } = {}
@@ -10,12 +12,12 @@ export function formatAddress(
 }
 
 export function formatPercentage(
-  value: number,
+  value: number | undefined,
   options: { decimals?: number } = {}
 ): string {
   const { decimals = 2 } = options;
 
-  if (isNaN(value)) value = 0;
+  if (isNullish(value) || isNaN(value)) value = 0;
 
   return `${(value * 100).toFixed(decimals)}%`;
 }
@@ -42,3 +44,18 @@ export function formatTimestamp(timestamp?: number | null): string {
     day: 'numeric',
   });
 }
+
+export const formatDuration = (days: number) => {
+  if (days >= 365) {
+    return `${days / 365}y`;
+  }
+  return `${days}d`;
+};
+
+export const formatDurationLong = (days: number) => {
+  const years = Math.floor(days / 365);
+  if (years > 0) {
+    return `${years} year${years > 1 ? 's' : ''}`;
+  }
+  return `${days} day${days > 1 ? 's' : ''}`;
+};

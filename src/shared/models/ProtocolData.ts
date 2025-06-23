@@ -1,9 +1,13 @@
-export type Metrics = {
-  klima: {
-    valueUSD: number;
-    valueChangePercentage24h: number;
-    amountTonnes: number;
-  };
+type Metrics = {
+  valueUSD: number;
+  valueChangePercentage24h: number;
+  amountTonnes: number;
+  amountChangePercentage24h: number;
+};
+
+export type AllMetrics = {
+  klimaBonded: Metrics;
+  klimaXLocked: Metrics;
 };
 
 import { Token } from '../constants/tokens.constants';
@@ -22,12 +26,14 @@ type KlimaBondYieldRate = {
   yieldPercentage: number;
 };
 
-export type KlimaBondYieldRates = KlimaBondYieldRate[];
+export type YieldRates = KlimaBondYieldRate[];
 
 export type LiquidityPools = LiquidityPoolInfo[];
 
 export type ProtocolData = {
-  metrics: Metrics;
+  metrics: AllMetrics;
   liquidityPools: LiquidityPools;
-  klimaBondYieldRates: KlimaBondYieldRates;
+  klimaBondYieldRates: YieldRates;
+  liquidityPoolRiskyYield: YieldRates;
+  carbonYieldRates: YieldRates;
 };

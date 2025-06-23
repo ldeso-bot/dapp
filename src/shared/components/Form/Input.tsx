@@ -23,7 +23,7 @@ export default function Input({
         className={clsx(
           'px-3 py-2 rounded-lg gap-2 w-full',
           !!icon && 'pl-10',
-          !props.disabled && 'border-1',
+          !props.disabled && 'border-1 hover:opacity-80',
           props.disabled && 'bg-void-10'
         )}
         style={{

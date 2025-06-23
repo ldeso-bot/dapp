@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import Tooltip from '../Tooltip/Tooltip';
+import Tooltip from '../Tooltip/HelpTooltip';
 
 export type CardProps = {
   className?: string;

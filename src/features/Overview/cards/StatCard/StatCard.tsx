@@ -23,6 +23,7 @@ export default function StatCard(props: Props) {
         {...props}
         title="KLIMA Price"
         tooltip="KLIMA is the governance token for the KlimaDAO. It is used to vote on proposals and make decisions for the protocol."
+        className="h-[118px] grow-1"
       >
         <Skeleton className="rounded grow-1" />
       </Card>
@@ -31,7 +32,7 @@ export default function StatCard(props: Props) {
 
   return (
     <Card {...props} tooltipPosition="far">
-      <div className="flex flex-col gap-3 w-full">
+      <div className="flex flex-col gap-3 w-full h-full">
         <div className="flex flex-row gap-2 w-full items-center">
           <Icon icon={icon} alt={title ?? ''} size={20} />
           <div className="grow-1">{value}</div>
