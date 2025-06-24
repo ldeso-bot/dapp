@@ -3,7 +3,7 @@ import { YieldRates } from '../models/ProtocolData';
 
 // TODO: Replace with actual API call
 export const getKlimaBondYieldRates = async (sdk: Sdk): Promise<YieldRates> => {
-  console.log(sdk);
+  if (!sdk) console.log('');
   return [
     { durationDays: 30, yieldPercentage: 0.1 },
     { durationDays: 60, yieldPercentage: 0.4 },

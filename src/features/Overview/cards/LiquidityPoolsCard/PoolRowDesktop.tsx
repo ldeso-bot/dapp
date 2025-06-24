@@ -1,7 +1,7 @@
 import Button from '@/shared/components/Button/Button';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { LiquidityPoolInfo } from '@/shared/models/ProtocolData';
-import { formatPercentage, formatUSD } from '@/shared/utils/string.utils';
+import { formatPercentage, formatPriceUSD } from '@/shared/utils/string.utils';
 import Metric from './Metric';
 import Pair from './Pair';
 
@@ -19,7 +19,7 @@ export default function PoolRowDesktop({ poolInfo }: Props) {
         />
       </td>
       <td>
-        <Metric label="TVL" value={formatUSD(poolInfo.tvl)} />
+        <Metric label="TVL" value={formatPriceUSD(poolInfo.tvl)} />
       </td>
       <td>
         <Metric label="APY" value={formatPercentage(poolInfo.apy)} />

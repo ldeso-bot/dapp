@@ -1,7 +1,7 @@
 import Button from '@/shared/components/Button/Button';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { LiquidityPoolInfo } from '@/shared/models/ProtocolData';
-import { formatPercentage, formatUSD } from '@/shared/utils/string.utils';
+import { formatPercentage, formatPriceUSD } from '@/shared/utils/string.utils';
 import Metric from './Metric';
 import Pair from './Pair';
 
@@ -18,7 +18,7 @@ export default function PoolRowMobile({ poolInfo }: Props) {
           description={poolInfo.description}
         />
         <div className="flex flex-row justify-between">
-          <Metric label="TVL" value={formatUSD(poolInfo.tvl)} />
+          <Metric label="TVL" value={formatPriceUSD(poolInfo.tvl)} />
           <Metric label="APY" value={formatPercentage(poolInfo.apy)} />
         </div>
         <div className="flex flex-col gap-1">

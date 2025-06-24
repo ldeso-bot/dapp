@@ -1,7 +1,7 @@
 import { CardProps } from '@/shared/components/Card/Card';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
-import StatCard from '../StatCard/StatCard';
+import StatCard from '../../shared/StatCard/StatCard';
 
 export default function KlimaXPriceCard(props: CardProps) {
   const { data } = useProtocolData();

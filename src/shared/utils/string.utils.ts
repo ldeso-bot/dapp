@@ -1,41 +1,53 @@
 import { isNullish } from 'remeda';
 
-export function formatAddress(
+/*
+  Formats a number to a string with a suffix.
+  Example: 1200 -> 1.2k
+*/
+const nFormatter = (num: number, digits: number) => {
+  const lookup = [
+    { value: 1, symbol: '' },
+    { value: 1e3, symbol: 'K' },
+    { value: 1e6, symbol: 'M' },
+    { value: 1e9, symbol: 'G' },
+    { value: 1e12, symbol: 'T' },
+    { value: 1e15, symbol: 'P' },
+    { value: 1e18, symbol: 'E' },
+  ];
+  const regexp = /\.0+$|(?<=\.[0-9]*[1-9])0+$/;
+  const item = lookup.findLast((item) => num >= item.value);
+  return item
+    ? (num / item.value).toFixed(digits).replace(regexp, '').concat(item.symbol)
+    : '0';
+};
+
+export const formatAddress = (
   address: string | undefined,
   options: { startLength?: number; endLength?: number } = {}
-): string {
+): string => {
   if (!address) return '';
 
   const { startLength = 3, endLength = 3 } = options;
 
   return `${address.slice(0, startLength + 2)}...${address.slice(-endLength)}`;
-}
+};
 
-export function formatPercentage(
+export const formatPercentage = (
   value: number | undefined,
   options: { decimals?: number } = {}
-): string {
+): string => {
   const { decimals = 2 } = options;
 
   if (isNullish(value) || isNaN(value)) value = 0;
 
   return `${(value * 100).toFixed(decimals)}%`;
-}
+};
 
-export function formatUSD(value: number): string {
-  if (isNaN(value)) return '0$';
-  const size = Math.floor(value).toString().length;
+export const formatPriceUSD = (value: number, digits: number = 2): string => {
+  return `$${nFormatter(value, digits)}`;
+};
 
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    useGrouping: true,
-    minimumSignificantDigits: 3,
-    maximumFractionDigits: size > 3 ? 0 : 2,
-  }).format(Number(value));
-}
-
-export function formatTimestamp(timestamp?: number | null): string {
+export const formatTimestamp = (timestamp?: number | null): string => {
   if (!timestamp) return '';
 
   return new Date(Number(timestamp)).toLocaleDateString('en-US', {
@@ -43,7 +55,7 @@ export function formatTimestamp(timestamp?: number | null): string {
     month: 'long',
     day: 'numeric',
   });
-}
+};
 
 export const formatDuration = (days: number) => {
   if (days >= 365) {
@@ -58,4 +70,12 @@ export const formatDurationLong = (days: number) => {
     return `${years} year${years > 1 ? 's' : ''}`;
   }
   return `${days} day${days > 1 ? 's' : ''}`;
+};
+
+export const formatAmount = (tonnes: number) => {
+  return tonnes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+
+export const formatTonnes = (value: number): string => {
+  return nFormatter(value, 0);
 };

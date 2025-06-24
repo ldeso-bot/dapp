@@ -6,8 +6,7 @@ export const getAllMetrics = async (sdk: Sdk): Promise<AllMetrics> => {
   const tokens = await sdk.carbon.getTokensByIds({
     ids: ['0x004090eef602e024b2a6cb7f0c1edda992382994'],
   });
-  console.log(tokens);
-
+  if (!tokens) console.log('');
   return {
     klimaBonded: {
       valueUSD: 1.32,

@@ -2,7 +2,7 @@ import { LiquidityPools } from '@/shared/models/ProtocolData';
 import { Sdk } from '@/shared/utils/subgraph.utils';
 
 export const getLiquidityPools = async (sdk: Sdk): Promise<LiquidityPools> => {
-  console.log(sdk);
+  if (!sdk) console.log('');
   return [
     {
       id: '1',

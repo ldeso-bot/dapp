@@ -1,3 +1,4 @@
+/* Token Metrics */
 type Metrics = {
   valueUSD: number;
   valueChangePercentage24h: number;
@@ -12,6 +13,7 @@ export type AllMetrics = {
 
 import { Token } from '../constants/tokens.constants';
 
+/* Liquidity Pool Info */
 export type LiquidityPoolInfo = {
   id: string;
   token1: Token; // e.g., 'klima'
@@ -21,6 +23,9 @@ export type LiquidityPoolInfo = {
   apy: number; // Annual Percentage Yield
 };
 
+export type LiquidityPools = LiquidityPoolInfo[];
+
+/* Klima Bond Yield Rates */
 type KlimaBondYieldRate = {
   durationDays: number;
   yieldPercentage: number;
@@ -28,12 +33,24 @@ type KlimaBondYieldRate = {
 
 export type YieldRates = KlimaBondYieldRate[];
 
-export type LiquidityPools = LiquidityPoolInfo[];
+type BreakdownItem = {
+  label: string;
+  value: number;
+};
 
+/* Carbon Backing */
+export type CarbonBacking = {
+  totalTonnes: number;
+  marketValueUSD: number;
+  breakdown: BreakdownItem[];
+};
+
+/* Protocol Data */
 export type ProtocolData = {
   metrics: AllMetrics;
   liquidityPools: LiquidityPools;
   klimaBondYieldRates: YieldRates;
   liquidityPoolRiskyYield: YieldRates;
   carbonYieldRates: YieldRates;
+  carbonBacking: CarbonBacking;
 };
