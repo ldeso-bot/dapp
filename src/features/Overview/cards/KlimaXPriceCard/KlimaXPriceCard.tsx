@@ -12,7 +12,7 @@ export default function KlimaXPriceCard(props: CardProps) {
       title="KLIMAX Price"
       tooltip="KLIMAX is the governance token for the KlimaDAO. It is used to vote on proposals and make decisions for the protocol."
       value={data?.metrics.klimaXLocked.valueUSD}
-      changePercent={data?.metrics.klimaXLocked.valueChangePercentage24h}
+      changePercent={data?.metrics.klimaXLocked.valueChangePercent24h}
       icon={tokens.usdc.icon}
     />
   );

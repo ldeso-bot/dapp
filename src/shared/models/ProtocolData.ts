@@ -1,9 +1,9 @@
 /* Token Metrics */
 type Metrics = {
   valueUSD: number;
-  valueChangePercentage24h: number;
+  valueChangePercent24h: number;
   amountTonnes: number;
-  amountChangePercentage24h: number;
+  amountChangePercent24h: number;
 };
 
 export type AllMetrics = {
@@ -20,7 +20,7 @@ export type LiquidityPoolInfo = {
   token2: Token; // e.g., 'usdc'
   tvl: number; // Total Value Locked in USD
   description: string; // e.g., 'Basic Volatile 1.0%'
-  apy: number; // Annual Percentage Yield
+  apyPercent: number; // Annual Percentage Yield
 };
 
 export type LiquidityPools = LiquidityPoolInfo[];
@@ -28,14 +28,14 @@ export type LiquidityPools = LiquidityPoolInfo[];
 /* Klima Bond Yield Rates */
 type KlimaBondYieldRate = {
   durationDays: number;
-  yieldPercentage: number;
+  yieldPercent: number;
 };
 
 export type YieldRates = KlimaBondYieldRate[];
 
 type CarbonBackingBreakdownItem = {
   category: string;
-  tonnes: number;
+  amountTonnes: number;
 };
 
 /* Carbon Backing */
@@ -59,8 +59,8 @@ export type CarbonLiquidity = {
 /* Carbon Market */
 type CarbonMarketBreakdownItem = {
   category: string;
-  capacity: number;
-  price: number;
+  capacityTonnes: number;
+  priceUSD: number;
 };
 
 export type CarbonMarket = CarbonMarketBreakdownItem[];

@@ -59,7 +59,7 @@ export default function YieldRatesCard(props: Props) {
                 {...AXIS_PROPS}
               />
               <Tooltip content={YieldChartTooltip} />
-              <Line dataKey="yieldPercentage" {...LINE_PROPS} />
+              <Line dataKey="yieldPercent" {...LINE_PROPS} />
             </LineChart>
           </ResponsiveContainer>
         </div>

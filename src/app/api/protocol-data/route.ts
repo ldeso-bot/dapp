@@ -1,12 +1,12 @@
 import { ProtocolData } from '@/shared/models/ProtocolData';
-import { getAllMetrics } from '@/shared/queries/getAllMetrics';
-import { getCarbonBacking } from '@/shared/queries/getCarbonBacking';
-import { getCarbonLiquidity } from '@/shared/queries/getCarbonLiquidity';
-import { getCarbonMarket } from '@/shared/queries/getCarbonMarket';
-import { getCarbonYieldRates } from '@/shared/queries/getCarbonYieldRates';
-import { getKlimaBondYieldRates } from '@/shared/queries/getKlimaBondYieldRates';
-import { getLiquidityPoolRiskyYieldRates } from '@/shared/queries/getLiquidityPoolRiskyYieldRates';
-import { getLiquidityPools } from '@/shared/queries/getLiquidityPools';
+import { getCarbonBacking } from '@/shared/queries/protocol/getCarbonBacking';
+import { getCarbonLiquidity } from '@/shared/queries/protocol/getCarbonLiquidity';
+import { getCarbonMarket } from '@/shared/queries/protocol/getCarbonMarket';
+import { getCarbonYieldRates } from '@/shared/queries/protocol/getCarbonYieldRates';
+import { getKlimaBondYieldRates } from '@/shared/queries/protocol/getKlimaBondYieldRates';
+import { getLiquidityPoolRiskyYieldRates } from '@/shared/queries/protocol/getLiquidityPoolRiskyYieldRates';
+import { getLiquidityPools } from '@/shared/queries/protocol/getLiquidityPools';
+import { getTokenMetrics } from '@/shared/queries/protocol/getTokenMetrics';
 import { getSdkOrError } from '@/shared/utils/subgraph.utils';
 import { NextRequest } from 'next/server';
 
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     carbonLiquidity,
     carbonMarket,
   ] = await Promise.all([
-    getAllMetrics(sdk),
+    getTokenMetrics(sdk),
     getLiquidityPools(sdk),
     getKlimaBondYieldRates(sdk),
     getLiquidityPoolRiskyYieldRates(sdk),

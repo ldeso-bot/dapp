@@ -1,5 +1,5 @@
-import OverviewPage from '@/features/Overview/OverviewPage';
+import MyHoldingsPage from '@/features/MyHoldings/MyHoldingsPage';
 
-export default function Home() {
-  return <OverviewPage />;
+export default function Page() {
+  return <MyHoldingsPage />;
 }

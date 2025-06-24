@@ -18,7 +18,7 @@ export default function CarbonBackingCard(props: CardProps) {
       tooltip="There should be a tooltip here"
     >
       {data && (
-        <>
+        <div>
           <div className="flex flex-row gap-10">
             <ChartFact
               label="Tonnes"
@@ -42,11 +42,11 @@ export default function CarbonBackingCard(props: CardProps) {
                   width={200}
                   {...AXIS_PROPS}
                 />
-                <Bar dataKey="tonnes" {...BAR_PROPS} />
+                <Bar dataKey="amountTonnes" {...BAR_PROPS} />
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </>
+        </div>
       )}
     </Card>
   );

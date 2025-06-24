@@ -6,8 +6,11 @@ export function useApi() {
   const { chain } = useAccount();
 
   const get = useCallback(
-    async <T>(path: string): Promise<T> => {
-      const query = new URLSearchParams();
+    async <T>(
+      path: string,
+      queryParams: Record<string, string> = {}
+    ): Promise<T> => {
+      const query = new URLSearchParams(queryParams ?? {});
       query.set('chainId', (chain?.id ?? base.id).toString());
       const url = `${path}?${query.toString()}`;
       const response = await fetch(url);

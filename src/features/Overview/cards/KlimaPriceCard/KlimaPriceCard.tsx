@@ -15,7 +15,7 @@ export default function KlimaPriceCard(props: CardProps) {
       tooltip="KLIMA is the governance token for the KlimaDAO. It is used to vote on proposals and make decisions for the protocol."
       buttonText="Buy KLIMA"
       value={data?.metrics.klimaBonded.valueUSD}
-      changePercent={data?.metrics.klimaBonded.valueChangePercentage24h}
+      changePercent={data?.metrics.klimaBonded.valueChangePercent24h}
       icon={tokens.usdc.icon}
     />
   );

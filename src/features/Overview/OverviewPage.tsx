@@ -16,17 +16,17 @@ export default function OverviewPage() {
   return (
     <div className="flex flex-col gap-4">
       <div className="stacked-cards">
-        <TotalKlimaBondedCard className="grow-1" />
-        <KlimaPriceCard className="grow-1" />
-        <TotalKlimaXLockedCard className="grow-1" />
-        <KlimaXPriceCard className="grow-1" />
+        <TotalKlimaBondedCard />
+        <KlimaPriceCard />
+        <TotalKlimaXLockedCard />
+        <KlimaXPriceCard />
       </div>
       <KlimaBondYieldRatesCard className="solo-card" />
       <LiquidityPoolsCard className="solo-card" />
       <LiquidityPoolRiskyYieldCard className="solo-card" />
       <div className="stacked-cards">
-        <CarbonBackingCard className="grow-1" />
-        <LiquidityCard className="grow-1" />
+        <CarbonBackingCard />
+        <LiquidityCard />
       </div>
       <CarbonYieldCard className="solo-card" />
       <CarbonMarketCard className="solo-card" />

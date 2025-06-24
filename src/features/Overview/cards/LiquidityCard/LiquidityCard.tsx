@@ -12,7 +12,7 @@ export default function LiquidityCard(props: CardProps) {
   return (
     <Card {...props} title="Liquidity" tooltip="There should be a tooltip here">
       {data && (
-        <>
+        <div>
           <div className="flex flex-row gap-10">
             <ChartFact
               label="Market Value"
@@ -36,7 +36,7 @@ export default function LiquidityCard(props: CardProps) {
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </>
+        </div>
       )}
     </Card>
   );

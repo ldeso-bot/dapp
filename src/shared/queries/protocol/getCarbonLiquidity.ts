@@ -1,5 +1,5 @@
 import { Sdk } from '@/shared/utils/subgraph.utils';
-import { CarbonLiquidity } from '../models/ProtocolData';
+import { CarbonLiquidity } from '../../models/ProtocolData';
 
 // TODO: Replace with actual API call
 export const getCarbonLiquidity = async (

@@ -9,6 +9,7 @@
 
 .stacked-cards > div {
   border-radius: 0;
+  flex: 1 1 0;
 }
 .stacked-cards > div:first-child {
   border-radius: 0.8rem 0.8rem 0 0;

@@ -8,7 +8,9 @@ export type TokenInfo = {
   icon: StaticImageData;
 };
 
-export const tokens: Record<string, TokenInfo> = {
+export type Token = 'usdc' | 'klimax' | 'klima';
+
+export const tokens: Record<Token, TokenInfo> = {
   usdc: {
     symbol: 'USDC',
     icon: USDCIcon,
@@ -21,6 +23,6 @@ export const tokens: Record<string, TokenInfo> = {
     symbol: 'KLIMA',
     icon: KlimaIcon,
   },
-};
+} as const;
 
-export type Token = keyof typeof tokens;
+export type TokenPair = 'klima/usdc' | 'klima/klimax';

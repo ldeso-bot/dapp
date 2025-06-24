@@ -14,7 +14,7 @@ export default function TotalKlimaXLockedCard(props: CardProps) {
       tooltip="KlimaX locks earn risky yield and may be unlocked after 24hrs."
       tooltipPosition="far"
       value={data?.metrics.klimaXLocked.amountTonnes}
-      changePercent={data?.metrics.klimaXLocked.amountChangePercentage24h}
+      changePercent={data?.metrics.klimaXLocked.amountChangePercent24h}
       icon={tokens.klimax.icon}
     />
   );

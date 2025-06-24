@@ -42,7 +42,7 @@ export default function CarbonMarketCard(props: CardProps) {
                     orientation="right"
                     {...AXIS_PROPS}
                   />
-                  <Bar dataKey="price" {...BAR_PROPS} />0
+                  <Bar dataKey="priceUSD" {...BAR_PROPS} />0
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -77,7 +77,7 @@ export default function CarbonMarketCard(props: CardProps) {
                     ticks={[1000, 10000, 100000, 1000000, 10000000, 100000000]}
                   />
                   <YAxis type="category" width={1} {...AXIS_PROPS} />
-                  <Bar dataKey="capacity" {...BAR_PROPS} />
+                  <Bar dataKey="capacityTonnes" {...BAR_PROPS} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -100,10 +100,10 @@ const tickFormatter = (props: {
       <text
         orientation="right"
         stroke="none"
-        font-size="12"
+        fontSize="12"
         x={props.x + 100}
         y={props.y}
-        text-anchor="middle"
+        textAnchor="middle"
         fill="#666"
       >
         <tspan x="204" dy="0.355em">

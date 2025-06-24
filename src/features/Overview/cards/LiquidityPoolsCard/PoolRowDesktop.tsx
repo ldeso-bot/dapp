@@ -22,7 +22,7 @@ export default function PoolRowDesktop({ poolInfo }: Props) {
         <Metric label="TVL" value={formatPriceUSD(poolInfo.tvl)} />
       </td>
       <td>
-        <Metric label="APY" value={formatPercentage(poolInfo.apy)} />
+        <Metric label="APY" value={formatPercentage(poolInfo.apyPercent)} />
       </td>
       <td>
         <div className="flex flex-row gap-3">

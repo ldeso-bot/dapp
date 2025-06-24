@@ -14,7 +14,7 @@ export default function TotalKlimaBondedCard(props: CardProps) {
       tooltip="Bonds are fixed income instruments that offer yield which is claimable at maturity."
       tooltipPosition="far"
       value={data?.metrics.klimaBonded.amountTonnes}
-      changePercent={data?.metrics.klimaBonded.amountChangePercentage24h}
+      changePercent={data?.metrics.klimaBonded.amountChangePercent24h}
       icon={tokens.klima.icon}
     />
   );

@@ -72,10 +72,17 @@ export const formatDurationLong = (days: number) => {
   return `${days} day${days > 1 ? 's' : ''}`;
 };
 
-export const formatAmountWithCommas = (tonnes: number) => {
-  return tonnes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+export const formatAmountWithCommas = (
+  value: number,
+  digits: number = 2
+): string => {
+  return value.toFixed(digits).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
 export const formatAmountWithUnits = (value: number): string => {
   return nFormatter(value, 0);
+};
+
+export const formatPriceUSDWithCommas = (value: number): string => {
+  return `$${formatAmountWithCommas(value, 2)}`;
 };

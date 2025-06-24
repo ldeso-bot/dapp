@@ -19,7 +19,7 @@ export default function PoolRowMobile({ poolInfo }: Props) {
         />
         <div className="flex flex-row justify-between">
           <Metric label="TVL" value={formatPriceUSD(poolInfo.tvl)} />
-          <Metric label="APY" value={formatPercentage(poolInfo.apy)} />
+          <Metric label="APY" value={formatPercentage(poolInfo.apyPercent)} />
         </div>
         <div className="flex flex-col gap-1">
           <Button>Deposit Liquidity</Button>
