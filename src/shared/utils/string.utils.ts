@@ -72,10 +72,10 @@ export const formatDurationLong = (days: number) => {
   return `${days} day${days > 1 ? 's' : ''}`;
 };
 
-export const formatAmount = (tonnes: number) => {
+export const formatAmountWithCommas = (tonnes: number) => {
   return tonnes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
-export const formatTonnes = (value: number): string => {
+export const formatAmountWithUnits = (value: number): string => {
   return nFormatter(value, 0);
 };

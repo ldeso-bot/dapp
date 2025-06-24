@@ -28,6 +28,7 @@ import ChartTooltip from '../../../../shared/components/Tooltip/ChartTooltip';
 type Props = CardProps & {
   data?: YieldRates;
 };
+
 export default function YieldRatesCard(props: Props) {
   const { data } = props;
 

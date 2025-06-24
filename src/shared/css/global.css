@@ -75,6 +75,10 @@ body {
   color: var(--white);
 }
 
+.text-void-60 {
+  color: var(--void-60);
+}
+
 .text-void-50 {
   color: var(--void-50);
 }

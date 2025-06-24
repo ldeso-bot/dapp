@@ -10,6 +10,7 @@ type Props = {
   className?: string;
   items: KeyValue[];
 };
+
 export default function ChartTooltip({ className, items }: Props) {
   return (
     <div className={clsx(styles.TooltipContent, className)}>

@@ -33,17 +33,37 @@ type KlimaBondYieldRate = {
 
 export type YieldRates = KlimaBondYieldRate[];
 
-type BreakdownItem = {
-  label: string;
-  value: number;
+type CarbonBackingBreakdownItem = {
+  category: string;
+  tonnes: number;
 };
 
 /* Carbon Backing */
 export type CarbonBacking = {
   totalTonnes: number;
   marketValueUSD: number;
-  breakdown: BreakdownItem[];
+  breakdown: CarbonBackingBreakdownItem[];
 };
+
+/* Carbon Liquidity */
+type CarbonLiquidityBreakdownItem = {
+  category: string;
+  valueUSD: number;
+};
+
+export type CarbonLiquidity = {
+  marketValueUSD: number;
+  breakdown: CarbonLiquidityBreakdownItem[];
+};
+
+/* Carbon Market */
+type CarbonMarketBreakdownItem = {
+  category: string;
+  capacity: number;
+  price: number;
+};
+
+export type CarbonMarket = CarbonMarketBreakdownItem[];
 
 /* Protocol Data */
 export type ProtocolData = {
@@ -53,4 +73,6 @@ export type ProtocolData = {
   liquidityPoolRiskyYield: YieldRates;
   carbonYieldRates: YieldRates;
   carbonBacking: CarbonBacking;
+  carbonLiquidity: CarbonLiquidity;
+  carbonMarket: CarbonMarket;
 };

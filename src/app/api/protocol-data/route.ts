@@ -1,6 +1,8 @@
 import { ProtocolData } from '@/shared/models/ProtocolData';
 import { getAllMetrics } from '@/shared/queries/getAllMetrics';
 import { getCarbonBacking } from '@/shared/queries/getCarbonBacking';
+import { getCarbonLiquidity } from '@/shared/queries/getCarbonLiquidity';
+import { getCarbonMarket } from '@/shared/queries/getCarbonMarket';
 import { getCarbonYieldRates } from '@/shared/queries/getCarbonYieldRates';
 import { getKlimaBondYieldRates } from '@/shared/queries/getKlimaBondYieldRates';
 import { getLiquidityPoolRiskyYieldRates } from '@/shared/queries/getLiquidityPoolRiskyYieldRates';
@@ -22,6 +24,8 @@ export async function GET(request: NextRequest) {
     liquidityPoolRiskyYield,
     carbonYieldRates,
     carbonBacking,
+    carbonLiquidity,
+    carbonMarket,
   ] = await Promise.all([
     getAllMetrics(sdk),
     getLiquidityPools(sdk),
@@ -29,6 +33,8 @@ export async function GET(request: NextRequest) {
     getLiquidityPoolRiskyYieldRates(sdk),
     getCarbonYieldRates(sdk),
     getCarbonBacking(sdk),
+    getCarbonLiquidity(sdk),
+    getCarbonMarket(sdk),
   ]);
 
   const data: ProtocolData = {
@@ -38,6 +44,8 @@ export async function GET(request: NextRequest) {
     liquidityPoolRiskyYield,
     carbonYieldRates,
     carbonBacking,
+    carbonLiquidity,
+    carbonMarket,
   };
 
   return Response.json(data);

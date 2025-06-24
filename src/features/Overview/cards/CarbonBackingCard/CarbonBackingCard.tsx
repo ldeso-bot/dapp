@@ -3,9 +3,9 @@ import ChartFact from '@/shared/components/ChartFact/ChartFact';
 import { AXIS_PROPS, BAR_PROPS } from '@/shared/constants/chart.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import {
-  formatAmount,
+  formatAmountWithCommas,
+  formatAmountWithUnits,
   formatPriceUSD,
-  formatTonnes,
 } from '@/shared/utils/string.utils';
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
@@ -22,7 +22,7 @@ export default function CarbonBackingCard(props: CardProps) {
           <div className="flex flex-row gap-10">
             <ChartFact
               label="Tonnes"
-              value={formatAmount(data.carbonBacking.totalTonnes)}
+              value={formatAmountWithCommas(data.carbonBacking.totalTonnes)}
             />
             <ChartFact
               label="Market Value"
@@ -34,15 +34,15 @@ export default function CarbonBackingCard(props: CardProps) {
               <BarChart layout="vertical" data={data.carbonBacking.breakdown}>
                 <XAxis
                   type="number"
-                  tickFormatter={(value) => formatTonnes(value)}
+                  tickFormatter={(value) => formatAmountWithUnits(value)}
                 />
                 <YAxis
-                  dataKey="label"
+                  dataKey="category"
                   type="category"
                   width={200}
                   {...AXIS_PROPS}
                 />
-                <Bar dataKey="value" {...BAR_PROPS} />
+                <Bar dataKey="tonnes" {...BAR_PROPS} />
               </BarChart>
             </ResponsiveContainer>
           </div>

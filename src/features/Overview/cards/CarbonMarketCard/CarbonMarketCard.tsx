@@ -1,13 +1,118 @@
 import Card, { CardProps } from '@/shared/components/Card/Card';
+import { AXIS_PROPS, BAR_PROPS } from '@/shared/constants/chart.constants';
+import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
+import { formatAmountWithUnits } from '@/shared/utils/string.utils';
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 export default function CarbonMarketCard(props: CardProps) {
+  const { data } = useProtocolData();
   return (
     <Card
       {...props}
       title="Carbon Market"
       tooltip="There should be a tooltip here"
     >
-      <div>Chart goes here</div>
+      {data && (
+        <div>
+          {/* Titles*/}
+          <div className="flex flex-row text-size-12 text-void-60 text-center">
+            <div className="w-full grow-1">Price</div>
+            <div className="w-[200px]"></div>
+            <div className="w-full grow-1">Capacity</div>
+          </div>
+          {/* Charts */}
+          <div className="flex flex-row">
+            {/* Price Chart*/}
+            <div className="w-full h-[212px]grow-1">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart layout="vertical" data={data.carbonMarket}>
+                  <XAxis
+                    type="number"
+                    tickFormatter={(value) =>
+                      `$${formatAmountWithUnits(value)}`
+                    }
+                    ticks={[1, 10, 100, 1000]}
+                    reversed
+                    scale="log"
+                    domain={[0.9, 1000]}
+                  />
+                  <YAxis
+                    type="category"
+                    width={1}
+                    orientation="right"
+                    {...AXIS_PROPS}
+                  />
+                  <Bar dataKey="price" {...BAR_PROPS} />0
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            {/* Labels */}
+            <div className="w-[200] h-[212px]">
+              <BarChart
+                layout="vertical"
+                data={data.carbonMarket}
+                height={212}
+                width={200}
+              >
+                <YAxis
+                  dataKey="category"
+                  type="category"
+                  width={200}
+                  {...AXIS_PROPS}
+                  axisLine={false}
+                  tick={tickFormatter}
+                />
+                <XAxis />
+              </BarChart>
+            </div>
+            {/* Capacity Chart*/}
+            <div className="w-full h-[212px] grow-1">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart layout="vertical" data={data.carbonMarket}>
+                  <XAxis
+                    type="number"
+                    tickFormatter={(value) => formatAmountWithUnits(value)}
+                    scale="log"
+                    domain={[900, 100000000]}
+                    ticks={[1000, 10000, 100000, 1000000, 10000000, 100000000]}
+                  />
+                  <YAxis type="category" width={1} {...AXIS_PROPS} />
+                  <Bar dataKey="capacity" {...BAR_PROPS} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </div>
+      )}
     </Card>
   );
 }
+
+const tickFormatter = (props: {
+  height: number;
+  width: number;
+  x: number;
+  y: number;
+  payload: { value: string };
+}) => {
+  return (
+    <g transform={`translate(${-props.width / 2}, 0)`}>
+      <text
+        orientation="right"
+        stroke="none"
+        font-size="12"
+        x={props.x + 100}
+        y={props.y}
+        text-anchor="middle"
+        fill="#666"
+      >
+        <tspan x="204" dy="0.355em">
+          {props.payload.value}
+        </tspan>
+      </text>
+    </g>
+  );
+};
+
+/*
+<g transform={`translate(${props.width / 2}, 0)`}>*/
