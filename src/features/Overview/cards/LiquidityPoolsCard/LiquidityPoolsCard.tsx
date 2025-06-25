@@ -1,4 +1,5 @@
 import Card, { CardProps } from '@/shared/components/Card/Card';
+import { Table, TableBody, TableRow } from '@/shared/components/Table/table';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import PoolRowDesktop from './PoolRowDesktop';
 import PoolRowMobile from './PoolRowMobile';
@@ -21,20 +22,23 @@ export default function LiquidityPoolsCard(props: CardProps) {
             Learn more.
           </div>
 
-          <table className="table table-auto">
-            <tbody>
+          <Table>
+            <TableBody>
               {data.liquidityPools.map((poolInfo) => (
-                <tr className="hidden lg:table-row" key={`${poolInfo.id}`}>
+                <TableRow
+                  className="hidden lg:table-row"
+                  key={`${poolInfo.id}`}
+                >
                   <PoolRowDesktop poolInfo={poolInfo} />
-                </tr>
+                </TableRow>
               ))}
               {data.liquidityPools.map((poolInfo) => (
-                <tr className="lg:hidden" key={`${poolInfo.id}`}>
+                <TableRow className="lg:hidden" key={`${poolInfo.id}`}>
                   <PoolRowMobile poolInfo={poolInfo} />
-                </tr>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </>
       )}
     </Card>

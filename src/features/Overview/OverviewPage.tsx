@@ -1,5 +1,6 @@
 'use client';
 
+import StackedCards from '@/shared/components/StackedCards/StackedCards';
 import CarbonBackingCard from './cards/CarbonBackingCard/CarbonBackingCard';
 import CarbonMarketCard from './cards/CarbonMarketCard/CarbonMarketCard';
 import CarbonYieldCard from './cards/CarbonYieldCard/CarbonYieldCard';
@@ -15,19 +16,19 @@ import TotalKlimaXLockedCard from './cards/TotalKlimaXLockedCard/TotalKlimaXLock
 export default function OverviewPage() {
   return (
     <div className="flex flex-col gap-4">
-      <div className="stacked-cards">
+      <StackedCards>
         <TotalKlimaBondedCard />
         <KlimaPriceCard />
         <TotalKlimaXLockedCard />
         <KlimaXPriceCard />
-      </div>
+      </StackedCards>
       <KlimaBondYieldRatesCard className="solo-card" />
       <LiquidityPoolsCard className="solo-card" />
       <LiquidityPoolRiskyYieldCard className="solo-card" />
-      <div className="stacked-cards">
+      <StackedCards>
         <CarbonBackingCard />
         <LiquidityCard />
-      </div>
+      </StackedCards>
       <CarbonYieldCard className="solo-card" />
       <CarbonMarketCard className="solo-card" />
     </div>

@@ -1,4 +1,5 @@
 import Button from '@/shared/components/Button/Button';
+import { TableCell } from '@/shared/components/Table/table';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { LiquidityPoolInfo } from '@/shared/models/ProtocolData';
 import { formatPercentage, formatPriceUSD } from '@/shared/utils/string.utils';
@@ -10,7 +11,7 @@ type Props = {
 };
 export default function PoolRowMobile({ poolInfo }: Props) {
   return (
-    <td>
+    <TableCell>
       <div className="flex flex-col">
         <Pair
           token1={tokens[poolInfo.token1]}
@@ -26,6 +27,6 @@ export default function PoolRowMobile({ poolInfo }: Props) {
           <Button>Lock Liquidity Tokens</Button>
         </div>
       </div>
-    </td>
+    </TableCell>
   );
 }

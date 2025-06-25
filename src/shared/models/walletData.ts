@@ -1,33 +1,38 @@
 import { Address } from 'viem';
 import { Token, TokenPair } from '../constants/tokens.constants';
 
-export type Bonds = {
+type Bond = {
   id: string;
   balance: number;
   valueUSD: number;
   apyPercent: number;
-}[];
+};
 
-export type LiquidityPositions = {
+export type Bonds = Bond[];
+
+type LiquidityPosition = {
   id: string;
   pair: TokenPair;
   balance: number;
   valueUSD: number;
   apyPercent: number;
-}[];
+};
+export type LiquidityPositions = LiquidityPosition[];
 
-export type KlimaXLocks = {
+type KlimaXLock = {
   id: string;
   balance: number;
   valueUSD: number;
   apyPercent: number;
   riskyYieldPercent: number;
   baseApyPercent: number;
-}[];
+};
+
+export type KlimaXLocks = KlimaXLock[];
 
 export type Balances = Record<TokenPair | Token, number>;
 
-export type Allocations = {
+type Allocation = {
   id: string;
   class: string;
   priceUSD: number;
@@ -37,7 +42,8 @@ export type Allocations = {
   token: {
     address: Address;
   };
-}[];
+};
+export type Allocations = Allocation[];
 
 /* Wallet Data */
 export type WalletData = {

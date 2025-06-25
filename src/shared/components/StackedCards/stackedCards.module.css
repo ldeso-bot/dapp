@@ -1,0 +1,31 @@
+.stackedCards {
+  display: flex;
+  flex-direction: column;
+}
+
+.stackedCards > div {
+  border-radius: 0;
+  flex: 1 1 0;
+}
+.stackedCards > div:first-child {
+  border-radius: 0.8rem 0.8rem 0 0;
+}
+.stackedCards > div:last-child {
+  border-radius: 0 0 0.8rem 0.8rem;
+}
+
+@media (width >= 64rem) {
+  .stackedCards {
+    display: flex;
+    flex-direction: row;
+  }
+  .stackedCards > div {
+    border-radius: 0;
+  }
+  .stackedCards > div:first-child {
+    border-radius: 0.8rem 0 0 0.8rem;
+  }
+  .stackedCards > div:last-child {
+    border-radius: 0 0.8rem 0.8rem 0;
+  }
+}

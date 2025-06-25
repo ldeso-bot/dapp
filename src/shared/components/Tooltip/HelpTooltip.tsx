@@ -6,7 +6,7 @@ import styles from './tooltip.module.css';
 type Props = {
   content: React.ReactNode;
 };
-export default function Card({ content }: Props) {
+export default function HelpTooltip({ content }: Props) {
   return (
     <Tooltip.Provider>
       <Tooltip.Root>
