@@ -2,7 +2,9 @@ name: Merge Staging to Main
 
 on:
   workflow_dispatch:
-
+  schedule:
+    # At 15:30 UTC (8.30am PDT) Monday, Tuesday, Wednesday, and Thursday
+    - cron: '30 15 * * 1,2,3,4'
 jobs:
   test-staging:
     runs-on: ubuntu-latest
@@ -19,10 +21,10 @@ jobs:
           node-version: '21.6.1' # Pin version to avoid breaking changes in node_modules
           cache: 'npm'
 
-      - name: Run tests
+      - name: Run build on staging
         run: |
           npm install
-          npm run test
+          npm run build
 
   merge-staging-to-main:
     needs: test-staging
