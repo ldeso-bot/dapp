@@ -2,9 +2,7 @@ name: Test
 
 on:
   pull_request:
-    branches: [main]
-  push:
-    branches: [main]
+    branches: '*'
 
 jobs:
   quality-checks:
@@ -42,9 +40,6 @@ jobs:
       - name: Install dependencies
         if: steps.cache-npm.outputs.cache-hit == 'true'
         run: npm run postinstall
-
-      - name: Test tsc
-        run: npx tsc --version
 
       - name: Run ${{ matrix.job }}
         run: npm run ${{ matrix.job }}
