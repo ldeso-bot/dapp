@@ -57,6 +57,19 @@ export const formatTimestamp = (timestamp?: number | null): string => {
   });
 };
 
+/** Format a timestamp (seconds)to a date string mm/dd/yyyy */
+export const formatDate = (date: number): string => {
+  const dateObj = new Date(date * 1000);
+
+  const dateOptions: Intl.DateTimeFormatOptions = {
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric',
+  };
+
+  return dateObj.toLocaleDateString('en-US', dateOptions);
+};
+
 export const formatDuration = (days: number) => {
   if (days >= 365) {
     return `${days / 365}y`;

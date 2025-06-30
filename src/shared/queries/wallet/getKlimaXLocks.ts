@@ -1,10 +1,10 @@
-import { KlimaXLocks } from '@/shared/models/walletData';
+import { K2Locks } from '@/shared/models/walletData';
 import { Sdk } from '@/shared/utils/subgraph.utils';
 
-export const getKlimaXLocks = async (
+export const getK2Locks = async (
   sdk: Sdk,
   walletAddress: string
-): Promise<KlimaXLocks> => {
+): Promise<K2Locks> => {
   if (!sdk || !walletAddress) console.log('');
   return [
     {
@@ -14,6 +14,7 @@ export const getKlimaXLocks = async (
       apyPercent: 0.1797,
       riskyYieldPercent: 0.06,
       baseApyPercent: 0.07,
+      endTimestamp: 1719859200,
     },
     {
       id: '2',
@@ -22,6 +23,7 @@ export const getKlimaXLocks = async (
       apyPercent: 0.1797,
       riskyYieldPercent: 0.06,
       baseApyPercent: 0.07,
+      endTimestamp: 1719859200,
     },
     {
       id: '3',
@@ -30,6 +32,7 @@ export const getKlimaXLocks = async (
       apyPercent: 0.1797,
       riskyYieldPercent: 0.06,
       baseApyPercent: 0.07,
+      endTimestamp: 1719859200,
     },
     {
       id: '4',
@@ -38,6 +41,7 @@ export const getKlimaXLocks = async (
       apyPercent: 0.1797,
       riskyYieldPercent: 0.06,
       baseApyPercent: 0.07,
+      endTimestamp: 1719859200,
     },
     {
       id: '5',
@@ -46,6 +50,7 @@ export const getKlimaXLocks = async (
       apyPercent: 24.03,
       riskyYieldPercent: 0.06,
       baseApyPercent: 0.07,
+      endTimestamp: 1719859200,
     },
   ];
 };

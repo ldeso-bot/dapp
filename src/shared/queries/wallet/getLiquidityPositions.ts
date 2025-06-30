@@ -9,17 +9,19 @@ export const getLiquidityPositions = async (
   return [
     {
       id: '1',
-      pair: 'klima/klimax',
-      balance: 1000,
-      valueUSD: 3000,
-      apyPercent: 0.12,
+      token1: 'klima',
+      token2: 'klimax',
+      balance: 1500,
+      valueUSD: 3500,
+      apyPercent: 0.15,
     },
     {
       id: '2',
-      pair: 'klima/usdc',
-      balance: 12.25,
-      valueUSD: 36.75,
-      apyPercent: 0.2403,
+      token1: 'klima',
+      token2: 'usdc',
+      balance: 15.25,
+      valueUSD: 46.75,
+      apyPercent: 0.1403,
     },
   ];
 };

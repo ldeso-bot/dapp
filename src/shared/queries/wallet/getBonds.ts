@@ -1,10 +1,10 @@
-import { Bonds } from '@/shared/models/walletData';
+import { KVcmLocks } from '@/shared/models/walletData';
 import { Sdk } from '@/shared/utils/subgraph.utils';
 
-export const getBonds = async (
+export const getKVcmLocks = async (
   sdk: Sdk,
   walletAddress: string
-): Promise<Bonds> => {
+): Promise<KVcmLocks> => {
   if (!sdk || !walletAddress) console.log('');
   return [
     {
@@ -12,12 +12,14 @@ export const getBonds = async (
       balance: 1000,
       valueUSD: 3000,
       apyPercent: 0.12,
+      endTimestamp: 1719859200,
     },
     {
       id: '2',
       balance: 12.25,
       valueUSD: 36.75,
       apyPercent: 0.2403,
+      endTimestamp: 1719859200,
     },
   ];
 };

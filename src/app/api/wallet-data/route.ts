@@ -1,8 +1,8 @@
 import { WalletData } from '@/shared/models/walletData';
 import { getAllocations } from '@/shared/queries/wallet/getAllocations';
 import { getBalances } from '@/shared/queries/wallet/getBalances';
-import { getBonds } from '@/shared/queries/wallet/getBonds';
-import { getKlimaXLocks } from '@/shared/queries/wallet/getKlimaXLocks';
+import { getKVcmLocks } from '@/shared/queries/wallet/getBonds';
+import { getK2Locks } from '@/shared/queries/wallet/getKlimaXLocks';
 import { getLiquidityPositions } from '@/shared/queries/wallet/getLiquidityPositions';
 import { getSdkOrError } from '@/shared/utils/subgraph.utils';
 import { NextRequest } from 'next/server';
@@ -22,19 +22,19 @@ export async function GET(request: NextRequest) {
   }
 
   /** We enforce the data type to make sure the endpoint respects the interface */
-  const [bonds, liquidityPositions, klimaXLocks, balances, allocations] =
+  const [kvcmLocks, liquidityPositions, k2Locks, balances, allocations] =
     await Promise.all([
-      getBonds(sdk, walletAddress),
+      getKVcmLocks(sdk, walletAddress),
       getLiquidityPositions(sdk, walletAddress),
-      getKlimaXLocks(sdk, walletAddress),
+      getK2Locks(sdk, walletAddress),
       getBalances(sdk, walletAddress),
       getAllocations(sdk, walletAddress),
     ]);
 
   const data: WalletData = {
-    bonds,
+    kvcmLocks,
     liquidityPositions,
-    klimaXLocks,
+    k2Locks,
     balances,
     allocations,
   };
