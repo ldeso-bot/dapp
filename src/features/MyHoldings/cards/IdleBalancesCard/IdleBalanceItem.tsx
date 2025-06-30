@@ -6,6 +6,7 @@ type Props = {
   token: Token;
   balance: number;
 };
+
 export default function IdleBalanceItem({ token, balance }: Props) {
   const buttonLabel = isLpToken(token) ? 'Stake' : 'Lock';
   const tokenInfo = tokens[token];

@@ -63,6 +63,10 @@ body {
   background: var(--void-50);
 }
 
+.bg-void-60 {
+  background: var(--void-60);
+}
+
 .bg-void-80 {
   background: var(--void-80);
 }
@@ -99,7 +103,7 @@ body {
   color: var(--void-80);
 }
 
-.text-green-40 {
+.text-green {
   color: var(--green-40);
 }
 
@@ -121,6 +125,10 @@ body {
 
 .text-size-12 {
   font-size: 1.2rem;
+}
+
+.text-size-8 {
+  font-size: 0.8rem;
 }
 
 h1 {

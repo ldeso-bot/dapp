@@ -13,7 +13,8 @@ export default function HoldingsCard<T extends Holding>(
   return (
     <Card
       {...props}
-      titleAddOn={
+      skeletonClassName="h-50"
+      titleAddOnFar={
         <Button colors="secondary">
           <Icon icon={Plus} size={16} /> Lock
         </Button>

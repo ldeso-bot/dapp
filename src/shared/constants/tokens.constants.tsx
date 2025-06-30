@@ -13,7 +13,8 @@ export type TokenInfo = {
 };
 
 export type LpToken = 'kvcm/usdc' | 'kvcm/k2';
-export type Token = 'usdc' | 'k2' | 'kvcm' | LpToken;
+export type AllocationToken = 'k2' | 'kvcm';
+export type Token = 'usdc' | AllocationToken | LpToken;
 
 export const tokens: Record<Token, TokenInfo> = {
   usdc: {

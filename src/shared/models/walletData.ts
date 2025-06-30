@@ -1,5 +1,5 @@
 import { Address } from 'viem';
-import { LpToken, Token } from '../constants/tokens.constants';
+import { AllocationToken, LpToken, Token } from '../constants/tokens.constants';
 
 export type Holding = {
   id: string;
@@ -29,7 +29,7 @@ export type K2Locks = K2Lock[];
 
 export type Balances = Record<LpToken | Token, number>;
 
-type Allocation = {
+export type Allocation = {
   id: string;
   class: string;
   priceUSD: number;
@@ -37,6 +37,7 @@ type Allocation = {
   holder: Address;
   sharePercent: number;
   token: {
+    name: AllocationToken;
     address: Address;
   };
 };
