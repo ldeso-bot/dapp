@@ -6,10 +6,11 @@ import myHoldingsIcon from './images/my-holdings.svg';
 import protocolOverviewIcon from './images/protocol-overview.svg';
 import sellCarbonIcon from './images/sell-carbon.svg';
 
-type NavItem = {
+export type NavItem = {
   icon: StaticImageData;
   label: string;
   href: string;
+  isAdvanced?: boolean;
 };
 
 export const navItems: NavItem[] = [
@@ -37,6 +38,7 @@ export const navItems: NavItem[] = [
     icon: allocateIcon,
     label: 'Allocate',
     href: '/allocate',
+    isAdvanced: true,
   },
   {
     icon: carbonUniversityIcon,

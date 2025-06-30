@@ -24,7 +24,7 @@ export default function PurchaseBondFlow() {
   const form = useForm<PurchaseBondFields>({
     resolver: zodResolver(schema),
     defaultValues: {
-      token: tokens.klima.symbol,
+      token: tokens.kvcm.symbol,
       amount: 0,
       maturityDate: MATURITY_DATES[0],
     },

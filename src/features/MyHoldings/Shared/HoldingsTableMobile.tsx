@@ -37,20 +37,3 @@ export default function HoldingsTableMobile<T extends Holding>(
     </div>
   );
 }
-
-/*
-<div className="flex gap-2 items-center border-r-1 border-void-20 pr-10 grow-1">
-<Icon icon={tokens.klima.icon} size={16} />
-{formatAmountWithCommas(holding.balance)}
-</div>
-<div className="pl-10 grow-1">
-{formatPriceUSDWithCommas(holding.valueUSD)}
-</div>
-<div className="flex gap-1 items-center justify-center justify-end grow-1">
-{formatPercentage(holding.apyPercent)}
-<Tooltip content={<></>} />
-</div>
-</div>
-<div>
-<Button className="w-full h-8">Claim</Button>
-</div>*/

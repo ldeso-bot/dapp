@@ -1,6 +1,5 @@
 import Button from '@/shared/components/Button/Button';
 import { TableCell } from '@/shared/components/Table/table';
-import { tokens } from '@/shared/constants/tokens.constants';
 import { LiquidityPoolInfo } from '@/shared/models/ProtocolData';
 import { formatPercentage, formatPriceUSD } from '@/shared/utils/string.utils';
 import Metric from './Metric';
@@ -14,8 +13,8 @@ export default function PoolRowDesktop({ poolInfo }: Props) {
     <>
       <TableCell>
         <Pair
-          token1={tokens[poolInfo.token1]}
-          token2={tokens[poolInfo.token2]}
+          token1={poolInfo.token1}
+          token2={poolInfo.token2}
           description={poolInfo.description}
         />
       </TableCell>

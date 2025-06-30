@@ -8,7 +8,8 @@ export type CardProps = {
   tooltip?: string;
   tooltipPosition?: 'close' | 'far';
   skeletonClassName?: string;
-  titleAddOn?: React.ReactNode;
+  titleAddOnFar?: React.ReactNode;
+  titleAddOnClose?: React.ReactNode;
 };
 type Props = CardProps & {
   children?: React.ReactNode;
@@ -20,7 +21,8 @@ export default function Card({
   tooltip,
   tooltipPosition = 'close',
   skeletonClassName,
-  titleAddOn,
+  titleAddOnFar,
+  titleAddOnClose,
 }: Props) {
   return (
     <div
@@ -29,19 +31,17 @@ export default function Card({
         className
       )}
     >
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row justify-between items-center pb-2">
         <div
-          className={clsx(
-            'flex flex-row w-full items-center gap-1 pb-2 grow-1',
-            {
-              'justify-between': tooltipPosition == 'far',
-            }
-          )}
+          className={clsx('flex flex-row w-full items-center gap-1 grow-1', {
+            'justify-between': tooltipPosition == 'far',
+          })}
         >
           <div className="text-void-50 text-size-16">{title}</div>
+          {titleAddOnClose}
           {tooltip && <Tooltip content={tooltip} />}
         </div>
-        {titleAddOn}
+        {titleAddOnFar}
       </div>
       <div className="flex flex-col gap-2 h-full">
         {children}

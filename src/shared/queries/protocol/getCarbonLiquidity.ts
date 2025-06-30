@@ -9,8 +9,8 @@ export const getCarbonLiquidity = async (
   return {
     marketValueUSD: 98835557,
     breakdown: [
-      { category: 'KLIMA / KlimaX', valueUSD: 400000 },
-      { category: 'KLIMA / USDC', valueUSD: 385000 },
+      { category: 'kVCM / K2', valueUSD: 400000 },
+      { category: 'kVCM / USDC', valueUSD: 385000 },
       { category: 'veAERO', valueUSD: 798245 },
     ],
   };

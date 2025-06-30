@@ -4,14 +4,14 @@ import YieldRatesCard from '@/features/Overview/shared/YieldRatesCard/YieldRates
 import { CardProps } from '@/shared/components/Card/Card';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 
-export default function KlimaBondYieldRatesCard(props: CardProps) {
+export default function LockedKVcmYieldRatesCard(props: CardProps) {
   const { data } = useProtocolData();
   return (
     <YieldRatesCard
       {...props}
-      title="KLIMA Bond Yield Rates"
-      tooltip="Historical KLIMA bond yield rates over time"
-      data={data?.klimaBondYieldRates}
+      title="Locked kVCM Yield Rates"
+      tooltip="Historical kVCM yield rates over time"
+      data={data?.lockedkVcmYieldRates}
     />
   );
 }

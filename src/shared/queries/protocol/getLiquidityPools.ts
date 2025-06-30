@@ -6,7 +6,7 @@ export const getLiquidityPools = async (sdk: Sdk): Promise<LiquidityPools> => {
   return [
     {
       id: '1',
-      token1: 'klima',
+      token1: 'kvcm',
       token2: 'usdc',
       description: 'Basic Volatile 1.0%',
       tvl: 1200000,
@@ -14,8 +14,8 @@ export const getLiquidityPools = async (sdk: Sdk): Promise<LiquidityPools> => {
     },
     {
       id: '2',
-      token1: 'klima',
-      token2: 'klimax',
+      token1: 'kvcm',
+      token2: 'k2',
       description: 'Lorem Ipsum Dolor',
       tvl: 1200000,
       apyPercent: 0.174,

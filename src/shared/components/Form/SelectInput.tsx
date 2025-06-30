@@ -1,15 +1,13 @@
 import clsx from 'clsx';
-import { StaticImageData } from 'next/image';
 import { Select } from 'radix-ui';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { FieldError } from 'react-hook-form';
-import Icon from '../Icon/Icon';
 import InputWrapper from './InputWrapper';
 
 type SelectInputItem = {
   value: string | number | bigint;
   label: string;
-  icon?: StaticImageData;
+  icon?: ReactNode;
 };
 
 type Props = React.InputHTMLAttributes<HTMLInputElement> & {
@@ -64,7 +62,7 @@ export default function SelectInput({
                   <Select.ItemText>
                     <div className="bg-void-10 rounded-lg p-2 pl-3 cursor-pointer">
                       <div className="flex flex-row gap-2 font-size-14">
-                        {item.icon && <Icon icon={item.icon} size={20} />}
+                        {item.icon}
                         {item.label}
                       </div>
                     </div>

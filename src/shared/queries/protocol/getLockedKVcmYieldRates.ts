@@ -2,7 +2,9 @@ import { Sdk } from '@/shared/utils/subgraph.utils';
 import { YieldRates } from '../../models/ProtocolData';
 
 // TODO: Replace with actual API call
-export const getKlimaBondYieldRates = async (sdk: Sdk): Promise<YieldRates> => {
+export const getLockedKVcmYieldRates = async (
+  sdk: Sdk
+): Promise<YieldRates> => {
   if (!sdk) console.log('');
   return [
     { durationDays: 30, yieldPercent: 0.1 },

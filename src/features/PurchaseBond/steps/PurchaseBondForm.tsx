@@ -30,11 +30,11 @@ const PurchaseBondForm: FormFlowStep<PurchaseBondFields> = ({ next, data }) => {
             // If we can bond only Klima this can be a simple Input
             label="Token"
             disabled={true}
-            value={tokens.klima.symbol}
+            value={tokens.kvcm.symbol}
             items={Object.values(tokens).map((token) => ({
               value: token.symbol,
               label: token.symbol,
-              icon: token.icon,
+              icon: token.icon(),
             }))}
             {...form.register('token')}
           />
@@ -42,7 +42,7 @@ const PurchaseBondForm: FormFlowStep<PurchaseBondFields> = ({ next, data }) => {
           <Input
             label="Amount"
             type="number"
-            icon={tokens.klima.icon}
+            iconSrc={tokens.kvcm.iconSrc}
             {...form.register('amount')}
             error={formState.errors.amount}
           />

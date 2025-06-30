@@ -15,6 +15,7 @@ export const getAllocations = async (
       holder: '0x1234567890123456789012345678901234567890',
       sharePercent: 0.1,
       token: {
+        name: 'kvcm',
         address: '0x1234567890123456789012345678901234567890',
       },
     },
@@ -26,28 +27,31 @@ export const getAllocations = async (
       holder: '0x1234567890123456789012345678901234567890',
       sharePercent: 0.5,
       token: {
+        name: 'kvcm',
         address: '0x1234567890123456789012345678901234567890',
       },
     },
     {
       id: '3',
-      class: 'Water Filtration',
+      class: 'RNWBL',
       priceUSD: 3.99,
       amountTonnes: 300,
       holder: '0x1234567890123456789012345678901234567890',
       sharePercent: 0.3,
       token: {
+        name: 'kvcm',
         address: '0x1234567890123456789012345678901234567890',
       },
     },
     {
       id: '4',
-      class: 'Water Filtration',
+      class: 'Mangrooves',
       priceUSD: 3.99,
       amountTonnes: 100,
       holder: '0x1234567890123456789012345678901234567890',
       sharePercent: 0.1,
       token: {
+        name: 'kvcm',
         address: '0x1234567890123456789012345678901234567890',
       },
     },
@@ -59,17 +63,19 @@ export const getAllocations = async (
       holder: '0x1234567890123456789012345678901234567890',
       sharePercent: 0.3,
       token: {
+        name: 'k2',
         address: '0x1234567890123456789012345678901234567890',
       },
     },
     {
       id: '6',
-      class: 'Water Filtration',
+      class: 'Mangrooves',
       priceUSD: 3.99,
       amountTonnes: 100,
       holder: '0x1234567890123456789012345678901234567890',
       sharePercent: 0.3,
       token: {
+        name: 'k2',
         address: '0x1234567890123456789012345678901234567890',
       },
     },

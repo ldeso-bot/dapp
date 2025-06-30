@@ -41,8 +41,8 @@ const PurchaseBondConfirm: FormFlowStep<PurchaseBondFields> = ({
           <Input
             label="You are sending"
             disabled={true}
-            icon={tokens.klima.icon}
-            value={`${parsedForm.current?.amount} ${tokens.klima.symbol}`}
+            iconSrc={tokens.kvcm.iconSrc}
+            value={`${parsedForm.current?.amount} ${tokens.kvcm.symbol}`}
           />
           <Input
             label="Maturity date"
