@@ -1,0 +1,40 @@
+name: Merge Staging to Main
+
+on:
+  workflow_dispatch:
+  schedule:
+    # At 15:30 UTC (8.30am PDT) Monday, Tuesday, Wednesday, and Thursday
+    - cron: '30 15 * * 1,2,3,4'
+jobs:
+  test-staging:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: staging
+
+      - name: Set up Node.js
+        id: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '21.6.1' # Pin version to avoid breaking changes in node_modules
+          cache: 'npm'
+
+      - name: Run build on staging
+        run: |
+          npm install
+          npm run build
+
+  merge-staging-to-main:
+    needs: test-staging
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Merge staging -> main
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: staging
+          target_branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
