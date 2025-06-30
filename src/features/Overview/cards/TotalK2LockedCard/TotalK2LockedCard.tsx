@@ -3,19 +3,19 @@ import { tokens } from '@/shared/constants/tokens.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import StatCard from '../../shared/StatCard/StatCard';
 
-export default function TotalKlimaXLockedCard(props: CardProps) {
+export default function TotalK2LockedCard(props: CardProps) {
   const { data } = useProtocolData();
 
   return (
     <StatCard
       {...props}
-      buttonText="Buy KlimaX"
-      title="Total KLIMAX Locked"
-      tooltip="KlimaX locks earn risky yield and may be unlocked after 24hrs."
+      buttonText="Lock K2"
+      title="Total K2 Locked"
+      tooltip="K2 locks earn risky yield and may be unlocked after 24hrs."
       tooltipPosition="far"
       value={data?.metrics.klimaXLocked.amountTonnes}
       changePercent={data?.metrics.klimaXLocked.amountChangePercent24h}
-      icon={tokens.klimax.icon}
+      token={tokens.k2}
     />
   );
 }

@@ -16,7 +16,7 @@ import { Token } from '../constants/tokens.constants';
 /* Liquidity Pool Info */
 export type LiquidityPoolInfo = {
   id: string;
-  token1: Token; // e.g., 'klima'
+  token1: Token; // e.g., 'kVCM'
   token2: Token; // e.g., 'usdc'
   tvl: number; // Total Value Locked in USD
   description: string; // e.g., 'Basic Volatile 1.0%'
@@ -26,12 +26,12 @@ export type LiquidityPoolInfo = {
 export type LiquidityPools = LiquidityPoolInfo[];
 
 /* Klima Bond Yield Rates */
-type KlimaBondYieldRate = {
+type LockedKVcmYieldRate = {
   durationDays: number;
   yieldPercent: number;
 };
 
-export type YieldRates = KlimaBondYieldRate[];
+export type YieldRates = LockedKVcmYieldRate[];
 
 type CarbonBackingBreakdownItem = {
   category: string;
@@ -69,7 +69,7 @@ export type CarbonMarket = CarbonMarketBreakdownItem[];
 export type ProtocolData = {
   metrics: AllMetrics;
   liquidityPools: LiquidityPools;
-  klimaBondYieldRates: YieldRates;
+  lockedkVcmYieldRates: YieldRates;
   liquidityPoolRiskyYield: YieldRates;
   carbonYieldRates: YieldRates;
   carbonBacking: CarbonBacking;

@@ -39,6 +39,10 @@ body {
   border-color: var(--void-20);
 }
 
+.border-green {
+  border-color: var(--green-40);
+}
+
 .border-foreground {
   border-color: var(--foreground);
 }
@@ -101,6 +105,10 @@ body {
 
 .text-red {
   color: var(--red);
+}
+
+.text-size-20 {
+  font-size: 2rem;
 }
 
 .text-size-16 {

@@ -1,28 +1,27 @@
 import Button from '@/shared/components/Button/Button';
 import Card, { CardProps } from '@/shared/components/Card/Card';
-import Icon from '@/shared/components/Icon/Icon';
+import { TokenInfo } from '@/shared/constants/tokens.constants';
 import { formatPercentage } from '@/shared/utils/string.utils';
 import clsx from 'clsx';
-import { StaticImageData } from 'next/image';
 import { isNullish } from 'remeda';
 
 type Props = CardProps & {
   buttonText: string;
   value?: number;
-  icon: StaticImageData;
+  token: TokenInfo;
   changePercent?: number;
   buttonHref?: string;
 };
 
 /** Component for the cards at the top of the Overview page */
 export default function StatCard(props: Props) {
-  const { icon, value, title, buttonText, buttonHref, changePercent } = props;
+  const { token, value, buttonText, buttonHref, changePercent } = props;
   return (
     <Card {...props} tooltipPosition="far" skeletonClassName="h-[70px]">
       {!isNullish(value) && !isNullish(changePercent) && (
         <div className="flex flex-col gap-3 w-full h-full">
           <div className="flex flex-row gap-2 w-full items-center">
-            <Icon icon={icon} alt={title ?? ''} size={20} />
+            {token.icon(20)}
             <div className="grow-1">{value}</div>
             <div>
               <ChangePercent value={changePercent} />

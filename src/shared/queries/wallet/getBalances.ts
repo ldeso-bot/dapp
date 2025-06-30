@@ -8,9 +8,9 @@ export const getBalances = async (
   if (!sdk || !walletAddress) console.log('');
   return {
     usdc: 1000,
-    klima: 1000,
-    klimax: 1000,
-    'klima/usdc': 1000,
-    'klima/klimax': 1000,
+    kvcm: 1000,
+    k2: 1000,
+    'kvcm/usdc': 1000,
+    'kvcm/k2': 1000,
   };
 };

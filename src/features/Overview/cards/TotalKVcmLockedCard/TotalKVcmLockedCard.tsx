@@ -3,19 +3,19 @@ import { tokens } from '@/shared/constants/tokens.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import StatCard from '../../shared/StatCard/StatCard';
 
-export default function TotalKlimaBondedCard(props: CardProps) {
+export default function TotalKVcmLockedCard(props: CardProps) {
   const { data } = useProtocolData();
   return (
     <StatCard
       {...props}
-      buttonText="Bond KLIMA"
+      buttonText="Lock kVCM"
       buttonHref="/purchase-bond"
-      title="Total KLIMA Bonded"
-      tooltip="Bonds are fixed income instruments that offer yield which is claimable at maturity."
+      title="Total kVCM Locked"
+      tooltip="kVCM locks offer yield which is claimable at maturity."
       tooltipPosition="far"
       value={data?.metrics.klimaBonded.amountTonnes}
       changePercent={data?.metrics.klimaBonded.amountChangePercent24h}
-      icon={tokens.klima.icon}
+      token={tokens.kvcm}
     />
   );
 }
