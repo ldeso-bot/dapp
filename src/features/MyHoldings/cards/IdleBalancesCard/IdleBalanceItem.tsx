@@ -15,7 +15,7 @@ export default function IdleBalanceItem({ token, balance }: Props) {
       <div className="text-void-60 text-size-14">{tokenInfo.symbol}</div>
       <div className="flex flex-row justify-between items-center">
         <div className="flex flex-row text-size-20 gap-2">
-          {tokenInfo.icon(20)}
+          {tokenInfo.icon(2)}
           {balance}
         </div>
         <Button colors="secondary">{buttonLabel}</Button>

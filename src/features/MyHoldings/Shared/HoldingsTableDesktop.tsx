@@ -31,7 +31,7 @@ export default function HoldingsTableDesktop<T extends Holding>(
       </TableHeader>
       <TableBody>
         {data.map((holding) => (
-          <TableRow key={holding.id} className="hidden lg:table-row">
+          <TableRow key={holding.id}>
             <TableCell>
               <HoldingAmount holding={holding} {...props} className="" />
             </TableCell>

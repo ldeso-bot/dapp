@@ -33,9 +33,9 @@ export default function YieldRatesCard(props: Props) {
   const { data } = props;
 
   return (
-    <Card {...props} skeletonClassName="h-[272px]">
+    <Card {...props} skeletonClassName="h-[27.2rem]">
       {!!data && (
-        <div className="w-full h-[272px]">
+        <div className="w-full h-[27.2rem]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={data} {...CHART_PROPS}>
               <XAxis

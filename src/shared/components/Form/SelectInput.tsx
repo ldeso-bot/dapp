@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Select } from 'radix-ui';
+import { Select as SelectPrimitive } from 'radix-ui';
 import React, { ReactNode } from 'react';
 import { FieldError } from 'react-hook-form';
 import InputWrapper from './InputWrapper';
@@ -17,7 +17,7 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   defaultValue?: string | number;
 };
 
-export default function SelectInput({
+export default function Select({
   label,
   items,
   defaultValue,
@@ -37,44 +37,47 @@ export default function SelectInput({
   const stringValue = props.value ? String(props.value) : undefined;
   return (
     <InputWrapper label={label} error={error}>
-      <Select.Root
+      <SelectPrimitive.Root
         value={stringValue}
         disabled={props.disabled}
         onValueChange={onValueChange}
         defaultValue={String(defaultValue)}
       >
-        <Select.Trigger className="w-full">
+        <SelectPrimitive.Trigger className="w-full">
           <div
             className={clsx(
               'bg-void-10 rounded-lg',
               !props.disabled && 'border-1 cursor-pointer hover:opacity-80'
             )}
           >
-            <Select.Value placeholder="Select one" />
+            <SelectPrimitive.Value placeholder="Select one" />
           </div>
-        </Select.Trigger>
-        <Select.Portal>
-          <Select.Content>
-            <Select.ScrollUpButton />
-            <Select.Viewport className="bg-background rounded-lg p-2 pl-3 w-full">
+        </SelectPrimitive.Trigger>
+        <SelectPrimitive.Portal>
+          <SelectPrimitive.Content>
+            <SelectPrimitive.ScrollUpButton />
+            <SelectPrimitive.Viewport className="bg-background rounded-lg p-2 pl-3 w-full">
               {items.map((item) => (
-                <Select.Item key={item.value} value={String(item.value)}>
-                  <Select.ItemText>
+                <SelectPrimitive.Item
+                  key={item.value}
+                  value={String(item.value)}
+                >
+                  <SelectPrimitive.ItemText>
                     <div className="bg-void-10 rounded-lg p-2 pl-3 cursor-pointer">
                       <div className="flex flex-row gap-2 font-size-14">
                         {item.icon}
                         {item.label}
                       </div>
                     </div>
-                  </Select.ItemText>
-                </Select.Item>
+                  </SelectPrimitive.ItemText>
+                </SelectPrimitive.Item>
               ))}
-            </Select.Viewport>
-            <Select.ScrollDownButton />
-            <Select.Arrow />
-          </Select.Content>
-        </Select.Portal>
-      </Select.Root>
+            </SelectPrimitive.Viewport>
+            <SelectPrimitive.ScrollDownButton />
+            <SelectPrimitive.Arrow />
+          </SelectPrimitive.Content>
+        </SelectPrimitive.Portal>
+      </SelectPrimitive.Root>
     </InputWrapper>
   );
 }

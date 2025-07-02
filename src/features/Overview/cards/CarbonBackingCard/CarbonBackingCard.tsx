@@ -29,7 +29,7 @@ export default function CarbonBackingCard(props: CardProps) {
               value={formatPriceUSD(data.carbonBacking.marketValueUSD, 0)}
             />
           </div>
-          <div className="w-full h-[212px]">
+          <div className="w-full h-[21.2rem]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart layout="vertical" data={data.carbonBacking.breakdown}>
                 <XAxis

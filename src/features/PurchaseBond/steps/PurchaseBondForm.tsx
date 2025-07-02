@@ -3,7 +3,7 @@
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
 import Input from '@/shared/components/Form/Input';
-import SelectInput from '@/shared/components/Form/SelectInput';
+import Select from '@/shared/components/Form/SelectInput';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import Yield from '@/shared/components/Yield/Yield';
 import { tokens } from '@/shared/constants/tokens.constants';
@@ -26,7 +26,7 @@ const PurchaseBondForm: FormFlowStep<PurchaseBondFields> = ({ next, data }) => {
     <Card title="Purchase a Bond" className="w-flowcard">
       <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-4 pt-3">
-          <SelectInput
+          <Select
             // If we can bond only Klima this can be a simple Input
             label="Token"
             disabled={true}
@@ -46,7 +46,7 @@ const PurchaseBondForm: FormFlowStep<PurchaseBondFields> = ({ next, data }) => {
             {...form.register('amount')}
             error={formState.errors.amount}
           />
-          <SelectInput
+          <Select
             label="Maturity Date"
             items={MATURITY_DATES_OPTIONS}
             {...form.register('maturityDate')}

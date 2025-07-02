@@ -17,7 +17,7 @@ type Props = CardProps & {
 export default function StatCard(props: Props) {
   const { token, value, buttonText, buttonHref, changePercent } = props;
   return (
-    <Card {...props} tooltipPosition="far" skeletonClassName="h-[70px]">
+    <Card {...props} tooltipPosition="far" skeletonClassName="h-[7rem]">
       {!isNullish(value) && !isNullish(changePercent) && (
         <div className="flex flex-col gap-3 w-full h-full">
           <div className="flex flex-row gap-2 w-full items-center">
@@ -38,7 +38,7 @@ export default function StatCard(props: Props) {
 
 function ChangePercent({ value }: { value: number }) {
   const arrow = value > 0 ? '↑' : '↓';
-  const className = value > 0 ? 'bg-green' : 'bg-red';
+  const className = value > 0 ? 'bg-green-40' : 'bg-red';
   return (
     <div
       className={clsx('flex flex-row gap-1 px-2 py-1 rounded-3xl', className)}

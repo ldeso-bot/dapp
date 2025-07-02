@@ -22,7 +22,7 @@ export default function Button({
 }: Props) {
   className = clsx(
     'whitespace-nowrap flex items-center justify-center gap-2 border-1 border-foreground cursor-pointer hover:opacity-80',
-    colors === 'primary' && 'background-white text-void-80',
+    colors === 'primary' && 'bg-white text-void-80',
     colors === 'secondary' && 'bg-void-80 text-white',
     context === 'main' && 'rounded-lg px-3 py-1',
     context === 'flow' && 'w-full px-6 py-3',

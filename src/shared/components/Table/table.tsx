@@ -34,7 +34,7 @@ function TableHead({ className, ...props }: React.ComponentProps<'th'>) {
     <th
       data-slot="table-head"
       className={clsx(
-        'first:pl-0 last:pr-0 px-2 font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+        'first:pl-0 last:pr-0 px-2 font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[0.2rem]',
         className
       )}
       {...props}
@@ -48,7 +48,7 @@ function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
       data-slot="table-cell"
       className={twMerge(
         clsx(
-          'py-3 first:pl-0 last:pr-0 px-2 border-b-1 border-void-20 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+          'py-3 first:pl-0 last:pr-0 px-2 border-b-1 border-void-20 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[0.2rem]',
           className
         )
       )}

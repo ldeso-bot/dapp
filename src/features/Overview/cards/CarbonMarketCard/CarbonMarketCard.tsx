@@ -17,13 +17,13 @@ export default function CarbonMarketCard(props: CardProps) {
           {/* Titles*/}
           <div className="flex flex-row text-size-12 text-void-60 text-center">
             <div className="w-full grow-1">Price</div>
-            <div className="w-[200px]"></div>
+            <div className="w-[20rem]"></div>
             <div className="w-full grow-1">Capacity</div>
           </div>
           {/* Charts */}
           <div className="flex flex-row">
             {/* Price Chart*/}
-            <div className="w-full h-[212px]grow-1">
+            <div className="w-full h-[21.2rem] grow-1">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart layout="vertical" data={data.carbonMarket}>
                   <XAxis
@@ -47,7 +47,7 @@ export default function CarbonMarketCard(props: CardProps) {
               </ResponsiveContainer>
             </div>
             {/* Labels */}
-            <div className="w-[200] h-[212px]">
+            <div className="w-[200] h-[21.2rem]">
               <BarChart
                 layout="vertical"
                 data={data.carbonMarket}
@@ -66,7 +66,7 @@ export default function CarbonMarketCard(props: CardProps) {
               </BarChart>
             </div>
             {/* Capacity Chart*/}
-            <div className="w-full h-[212px] grow-1">
+            <div className="w-full h-[21.2rem] grow-1">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart layout="vertical" data={data.carbonMarket}>
                   <XAxis

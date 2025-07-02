@@ -17,7 +17,6 @@ export default function NavBarItem({
 }: NavBarItemProps) {
   const pathname = usePathname();
   const isActive = pathname === href;
-  console.log(isAdvanced);
   return (
     <Link
       href={href}

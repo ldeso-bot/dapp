@@ -7,9 +7,9 @@ type Props = {
   size?: number;
 };
 
-export default function TokenPair({ token1, token2, size = 32 }: Props) {
+export default function TokenPair({ token1, token2, size = 3.2 }: Props) {
   return (
-    <div className="flex flex-row" style={{ height: `${size}px` }}>
+    <div className="flex flex-row" style={{ height: `${size}rem` }}>
       <Icon icon={token1} size={size} className="-mr-2" />
       <Icon icon={token2} size={size} />
     </div>
