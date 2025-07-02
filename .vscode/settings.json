@@ -1,18 +1,18 @@
 {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.quickSuggestions": { "strings": true },
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit"
-    },
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "prettier.useEditorConfig": false,
-    "prettier.requireConfig": true,
-    "prettier.resolveGlobalModules": true,
-    "prettier.documentSelectors": ["*.{js,jsx,ts,tsx,json,css,scss,md}"],
-    "prettier.configPath": ".prettierrc",
-    "eslint.workingDirectories": [
-      ".",
-    ],
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.quickSuggestions": { "strings": true },
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "prettier.useEditorConfig": false,
+  "prettier.requireConfig": true,
+  "prettier.resolveGlobalModules": true,
+  "prettier.documentSelectors": ["*.{js,jsx,ts,tsx,json,css,scss,md}"],
+  "prettier.configPath": ".prettierrc",
+  "eslint.workingDirectories": ["."],
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
   }
-  
+}

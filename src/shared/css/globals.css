@@ -9,7 +9,17 @@
   --white: #ffffff;
   --green-10: #e6faeb;
   --green-40: #00cc33;
-  --red-10: rgba(220, 38, 38, 0.2);
+  --green-80: #007a1f;
+  --light-red: rgba(220, 38, 38, 0.2);
+  --red: rgba(220, 38, 38);
+  --red-100: #ffe2e2;
+  --red-600: #dc2626;
+  --void-80: #1e1e1e;
+  --void-70: #2c2c2c;
+  --void-60: #464646;
+  --void-50: #666666;
+  --void-40: #777777;
+  --void-20: #c3c3c3;
   --void-10: #fafafa;
   --void-20: #c3c3c3;
   --void-40: #777777;
@@ -48,10 +58,102 @@ body {
   line-height: 2rem;
 }
 
+/* Tailwind styles extensions */
+.border-void-20 {
+  border-color: var(--void-20);
+}
+
+.border-green-40 {
+  border-color: var(--green-40);
+}
+
+.border-foreground {
+  border-color: var(--foreground);
+}
+
+.bg-background {
+  background: var(--background);
+}
+
+.bg-void-10 {
+  background: var(--void-10);
+}
+
+.bg-void-20 {
+  background: var(--void-20);
+}
+
+.bg-void-50 {
+  background: var(--void-50);
+}
+
+.bg-void-60 {
+  background: var(--void-60);
+}
+
+.bg-void-80 {
+  background: var(--void-80);
+}
+
+/* todo - remove when theme changes are merged... */
+
+.bg-green-10 {
+  background: var(--green-10);
+}
+
+.bg-green-40 {
+  background: var(--green-40);
+}
+
+.bg-red {
+  background: var(--light-red);
+}
+
+.text-white {
+  color: var(--white);
+}
+
+.text-void-60 {
+  color: var(--void-60);
+}
+
+.text-void-50 {
+  color: var(--void-50);
+}
+
+.text-void-40 {
+  color: var(--void-40);
+}
+
+.text-void-20 {
+  color: var(--void-20);
+}
+
+.text-void-80 {
+  color: var(--void-80);
+}
+
+.text-green-40 {
+  color: var(--green-40);
+}
+
+.text-green-80 {
+  color: var(--green-80);
+}
+
+.text-red {
+  color: var(--red);
+}
+
 .text-size-20 {
   font-size: 2rem;
   line-height: 2.8rem;
 }
+
+.text-size-18 {
+  font-size: 1.8rem;
+}
+
 .text-size-16 {
   font-size: 1.6rem;
   line-height: 2.4rem;

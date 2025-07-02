@@ -7,6 +7,7 @@ export type CardProps = {
   title?: string;
   tooltip?: string;
   tooltipPosition?: 'close' | 'far';
+  titleClassName?: string;
   skeletonClassName?: string;
   titleAddOnFar?: React.ReactNode;
   titleAddOnClose?: React.ReactNode;
@@ -19,6 +20,7 @@ export default function Card({
   title,
   tooltip,
   tooltipPosition = 'close',
+  titleClassName,
   skeletonClassName,
   titleAddOnFar,
   titleAddOnClose,
@@ -36,7 +38,7 @@ export default function Card({
             'justify-between': tooltipPosition == 'far',
           })}
         >
-          <div className="text-void-50 text-size-16">{title}</div>
+          <div className={cn("text-void-50 text-size-16", titleClassName)}>{title}</div>
           {titleAddOnClose}
           {tooltip && <Tooltip content={tooltip} />}
         </div>
