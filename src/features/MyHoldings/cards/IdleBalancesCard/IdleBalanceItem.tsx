@@ -12,9 +12,9 @@ export default function IdleBalanceItem({ token, balance }: Props) {
   const tokenInfo = tokens[token];
   return (
     <div className="flex flex-col gap-2 py-5">
-      <div className="text-void-60 text-size-14">{tokenInfo.symbol}</div>
+      <div className="text-void-60 text-[1.4rem]">{tokenInfo.symbol}</div>
       <div className="flex flex-row justify-between items-center">
-        <div className="flex flex-row text-size-20 gap-2">
+        <div className="flex flex-row text-[2rem] gap-2">
           {tokenInfo.icon(2)}
           {balance}
         </div>

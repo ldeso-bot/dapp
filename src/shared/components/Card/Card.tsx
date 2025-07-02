@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/shared/utils/component.utils';
 import Skeleton from '../Skeleton/Skeleton';
 import Tooltip from '../Tooltip/Tooltip';
 
@@ -10,10 +10,9 @@ export type CardProps = {
   skeletonClassName?: string;
   titleAddOnFar?: React.ReactNode;
   titleAddOnClose?: React.ReactNode;
-};
-type Props = CardProps & {
   children?: React.ReactNode;
 };
+
 export default function Card({
   children,
   className,
@@ -23,17 +22,17 @@ export default function Card({
   skeletonClassName,
   titleAddOnFar,
   titleAddOnClose,
-}: Props) {
+}: CardProps) {
   return (
     <div
-      className={clsx(
+      className={cn(
         'flex flex-col box-shadow border-void-20 border-1 bg-background p-5',
         className
       )}
     >
       <div className="flex flex-row justify-between items-center pb-2">
         <div
-          className={clsx('flex flex-row w-full items-center gap-1 grow-1', {
+          className={cn('flex flex-row w-full items-center gap-1 grow-1', {
             'justify-between': tooltipPosition == 'far',
           })}
         >
@@ -46,7 +45,7 @@ export default function Card({
       <div className="flex flex-col gap-2 h-full">
         {children}
         {!children && (
-          <Skeleton className={clsx('rounded grow-1', skeletonClassName)} />
+          <Skeleton className={cn('rounded grow-1', skeletonClassName)} />
         )}
       </div>
     </div>

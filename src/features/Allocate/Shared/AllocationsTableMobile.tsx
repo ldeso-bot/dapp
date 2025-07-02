@@ -3,7 +3,7 @@ import Icon from '@/shared/components/Icon/Icon';
 import Progress from '@/shared/components/Progress/Progress';
 import { Separator } from '@/shared/components/Separator/Separator';
 import Edit from '@/shared/images/edit.svg';
-import clsx from 'clsx';
+import { cn } from '@/shared/utils/component.utils';
 import { ReactNode } from 'react';
 import AllocationAmount from './AllocationAmount';
 import AllocationClass from './AllocationClass';
@@ -24,7 +24,7 @@ export default function AllocationsTableMobile(props: AllocationsCardProps) {
   );
 
   return (
-    <div className={clsx('flex flex-col gap-4', className)}>
+    <div className={cn('flex flex-col gap-4', className)}>
       {data.map((allocation) => (
         <div key={allocation.id} className="flex flex-col gap-4">
           <div className="flex flex-col gap-3">

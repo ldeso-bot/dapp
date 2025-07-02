@@ -1,6 +1,6 @@
 'use client';
 
-import { clsx } from 'clsx';
+import { cn } from '@/shared/utils/component.utils';
 
 interface SkeletonProps {
   className?: string;
@@ -8,6 +8,6 @@ interface SkeletonProps {
 
 export default function Skeleton({ className }: SkeletonProps) {
   return (
-    <div className={clsx('animate-pulse rounded-lg bg-void-20', className)} />
+    <div className={cn('animate-pulse rounded-lg bg-void-20', className)} />
   );
 }

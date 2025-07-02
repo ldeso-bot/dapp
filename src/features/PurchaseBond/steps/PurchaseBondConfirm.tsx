@@ -24,7 +24,7 @@ const PurchaseBondConfirm: FormFlowStep<PurchaseBondFields> = ({
   };
 
   return (
-    <Card title="Confirm your transaction" className="w-flowcard">
+    <Card title="Confirm your transaction">
       <form
         className="flex flex-col gap-8"
         onSubmit={form.handleSubmit(onSubmit)}

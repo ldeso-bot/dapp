@@ -1,6 +1,6 @@
 import Card, { CardProps } from '@/shared/components/Card/Card';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
-import clsx from 'clsx';
+import { cn } from '@/shared/utils/component.utils';
 import Image from 'next/image';
 
 import { Separator } from '@/shared/components/Separator/Separator';
@@ -14,7 +14,7 @@ export default function IdleBalancesCard(props: CardProps) {
   return (
     <Card
       {...props}
-      className={clsx('border-green-40', props.className)}
+      className={cn('border-green-40 border-1', props.className)}
       skeletonClassName="h-[63.8rem]"
     >
       {data && (

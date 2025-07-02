@@ -1,7 +1,7 @@
 'use client';
 
 import logoutIcon from '@/shared/images/logout.svg';
-import clsx from 'clsx';
+import { cn } from '@/shared/utils/component.utils';
 import { ConnectKitButton, useIsMounted } from 'connectkit';
 import { useAccount, useDisconnect } from 'wagmi';
 import Button from '../Button/Button';
@@ -40,7 +40,7 @@ export default function ConnectButton({ className }: Props) {
               }}
             </ConnectKitButton.Custom>
           )}
-          {!isMounted && <Skeleton className={clsx('h-10', className)} />}
+          {!isMounted && <Skeleton className={cn('h-10', className)} />}
         </>
       )}
     </ClientOnly>

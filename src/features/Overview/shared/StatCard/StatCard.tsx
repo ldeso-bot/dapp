@@ -1,8 +1,8 @@
 import Button from '@/shared/components/Button/Button';
 import Card, { CardProps } from '@/shared/components/Card/Card';
 import { TokenInfo } from '@/shared/constants/tokens.constants';
+import { cn } from '@/shared/utils/component.utils';
 import { formatPercentage } from '@/shared/utils/string.utils';
-import clsx from 'clsx';
 import { isNullish } from 'remeda';
 
 type Props = CardProps & {
@@ -38,11 +38,9 @@ export default function StatCard(props: Props) {
 
 function ChangePercent({ value }: { value: number }) {
   const arrow = value > 0 ? '↑' : '↓';
-  const className = value > 0 ? 'bg-green-40' : 'bg-red';
+  const className = value > 0 ? 'bg-green-10' : 'bg-red-10';
   return (
-    <div
-      className={clsx('flex flex-row gap-1 px-2 py-1 rounded-3xl', className)}
-    >
+    <div className={cn('flex flex-row gap-1 px-2 py-1 rounded-3xl', className)}>
       {arrow} {formatPercentage(value, { decimals: 0 })}
     </div>
   );

@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/shared/utils/component.utils';
 import Link from 'next/link';
 
 type Props = {
@@ -20,7 +20,7 @@ export default function Button({
   context = 'main',
   ...props
 }: Props) {
-  className = clsx(
+  className = cn(
     'whitespace-nowrap flex items-center justify-center gap-2 border-1 border-foreground cursor-pointer hover:opacity-80',
     colors === 'primary' && 'bg-white text-void-80',
     colors === 'secondary' && 'bg-void-80 text-white',

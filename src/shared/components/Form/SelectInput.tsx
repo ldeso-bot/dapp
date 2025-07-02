@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/shared/utils/component.utils';
 import { Select as SelectPrimitive } from 'radix-ui';
 import React, { ReactNode } from 'react';
 import { FieldError } from 'react-hook-form';
@@ -45,7 +45,7 @@ export default function Select({
       >
         <SelectPrimitive.Trigger className="w-full">
           <div
-            className={clsx(
+            className={cn(
               'bg-void-10 rounded-lg',
               !props.disabled && 'border-1 cursor-pointer hover:opacity-80'
             )}

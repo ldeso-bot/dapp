@@ -1,6 +1,6 @@
 import { Holding } from '@/shared/models/walletData';
+import { cn } from '@/shared/utils/component.utils';
 import { formatAmountWithCommas } from '@/shared/utils/string.utils';
-import clsx from 'clsx';
 import { HoldingsCardItemProps } from './HoldingsTable.types';
 
 export default function HoldingAmount<T extends Holding>({
@@ -9,7 +9,7 @@ export default function HoldingAmount<T extends Holding>({
 }: HoldingsCardItemProps<T>) {
   return (
     <div
-      className={clsx(
+      className={cn(
         'flex flex-row w-full gap-2 items-center border-r-1 border-void-20 pr-10 grow-1'
       )}
     >

@@ -22,15 +22,31 @@ export default function OverviewPage() {
         <TotalK2LockedCard />
         <K2PriceCard />
       </StackedCards>
-      <LockedKVcmYieldRatesCard className="solo-card" />
-      <LiquidityPoolsCard className="solo-card" />
-      <KVcmUsdcRiskyYieldCard className="solo-card" />
+
+      <StackedCards>
+        <LockedKVcmYieldRatesCard />
+      </StackedCards>
+
+      <StackedCards>
+        <LiquidityPoolsCard />
+      </StackedCards>
+
+      <StackedCards>
+        <KVcmUsdcRiskyYieldCard />
+      </StackedCards>
+
       <StackedCards>
         <CarbonBackingCard />
         <LiquidityCard />
       </StackedCards>
-      <CarbonYieldCard className="solo-card" />
-      <CarbonMarketCard className="solo-card" />
+
+      <StackedCards>
+        <CarbonYieldCard />
+      </StackedCards>
+
+      <StackedCards>
+        <CarbonMarketCard />
+      </StackedCards>
     </div>
   );
 }

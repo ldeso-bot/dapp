@@ -8,10 +8,12 @@
   flex: 1 1 0;
 }
 .stackedCards > div:first-child {
-  border-radius: 0.8rem 0.8rem 0 0;
+  border-top-left-radius: 0.8rem;
+  border-top-right-radius: 0.8rem;
 }
 .stackedCards > div:last-child {
-  border-radius: 0 0 0.8rem 0.8rem;
+  border-bottom-left-radius: 0.8rem;
+  border-bottom-right-radius: 0.8rem;
 }
 
 @media (width >= 64rem) {
@@ -23,9 +25,11 @@
     border-radius: 0;
   }
   .stackedCards > div:first-child {
-    border-radius: 0.8rem 0 0 0.8rem;
+    border-top-left-radius: 0.8rem;
+    border-bottom-left-radius: 0.8rem;
   }
   .stackedCards > div:last-child {
-    border-radius: 0 0.8rem 0.8rem 0;
+    border-top-right-radius: 0.8rem;
+    border-bottom-right-radius: 0.8rem;
   }
 }

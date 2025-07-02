@@ -1,0 +1,87 @@
+@import 'tailwindcss';
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --spacing: 0.4rem; /* p-3 = 0.12rem padding = 12px padding */
+  --font-inter: Inter, Inter Fallback;
+  --primary-text-color: #1e1e1e;
+  --white: #ffffff;
+  --green-10: #e6faeb;
+  --green-40: #00cc33;
+  --red-10: rgba(220, 38, 38, 0.2);
+  --void-10: #fafafa;
+  --void-20: #c3c3c3;
+  --void-40: #777777;
+  --void-50: #666666;
+  --void-60: #464646;
+  --void-70: #2c2c2c;
+  --void-80: #1e1e1e;
+}
+
+@theme {
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --color-green-10: var(--green-10);
+  --color-green-40: var(--green-40);
+  --color-red-10: var(--red-10);
+  --color-void-10: var(--void-10);
+  --color-void-20: var(--void-20);
+  --color-void-40: var(--void-40);
+  --color-void-50: var(--void-50);
+  --color-void-60: var(--void-60);
+  --color-void-80: var(--void-80);
+  --color-white: var(--white);
+}
+
+html {
+  font-size: 62.5%; /* 1rem = 62.5 * 16 / 100 = 10px */
+}
+
+body {
+  background: var(--background);
+  color: var(--primary-text-color);
+  font-family: var(--font-inter);
+  font-style: normal;
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 2rem;
+}
+
+.text-size-20 {
+  font-size: 2rem;
+  line-height: 2.8rem;
+}
+.text-size-16 {
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+}
+
+.text-size-14 {
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+
+.text-size-12 {
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+}
+
+.text-size-8 {
+  font-size: 0.8rem;
+  line-height: 1.2rem;
+}
+
+h1 {
+  font-family: Inter;
+  font-weight: 700;
+  font-size: 3.6rem;
+  line-height: 4rem;
+  letter-spacing: 0%;
+}
+
+.box-shadow {
+  box-shadow:
+    0 0.1rem 0.3rem 0 rgba(0, 0, 0, 0.1),
+    0 0.1rem 0.2rem -0.1rem rgba(0, 0, 0, 0.1);
+}

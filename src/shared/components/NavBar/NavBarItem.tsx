@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/shared/utils/component.utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Icon from '../Icon/Icon';
@@ -20,7 +20,7 @@ export default function NavBarItem({
   return (
     <Link
       href={href}
-      className={clsx(
+      className={cn(
         'flex items-center justify-between gap-2 py-2 px-1',
         isActive && 'font-bold bg-void-10 rounded-xl',
         !isActive && 'hover:opacity-80'

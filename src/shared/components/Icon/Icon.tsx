@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/shared/utils/component.utils';
 import Image, { StaticImageData } from 'next/image';
 
 type Props = {
@@ -16,7 +16,7 @@ export default function Icon({ icon, alt, size = 3.2, className }: Props) {
       alt={alt}
       width={size * 10}
       height={size * 10}
-      className={clsx('h-auto w-auto', className)}
+      className={cn('h-auto w-auto', className)}
     />
   );
 }

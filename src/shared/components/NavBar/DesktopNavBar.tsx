@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/shared/utils/component.utils';
 import { Separator } from '../Separator/Separator';
 import ConnectButton from './ConnectButton';
 import KlimaProtocolLogo from './KlimaProtocolLogo';
@@ -10,7 +10,7 @@ export default function DesktopNavBar() {
   return (
     <div className="hidden lg:flex ">
       <div
-        className={clsx(
+        className={cn(
           `relative flex-col h-screen border-r-1 border-void-20 px-3 py-6`,
           styles.wNavbar
         )}
@@ -23,7 +23,7 @@ export default function DesktopNavBar() {
         </div>
       </div>
       <div
-        className={clsx(
+        className={cn(
           `fixed bottom-6 justify-center flex flex-col px-3`,
           styles.wNavbar
         )}

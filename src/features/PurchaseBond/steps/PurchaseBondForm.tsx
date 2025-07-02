@@ -23,7 +23,7 @@ const PurchaseBondForm: FormFlowStep<PurchaseBondFields> = ({ next, data }) => {
   };
 
   return (
-    <Card title="Purchase a Bond" className="w-flowcard">
+    <Card title="Purchase a Bond">
       <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-4 pt-3">
           <Select

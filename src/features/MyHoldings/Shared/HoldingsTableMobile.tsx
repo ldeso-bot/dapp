@@ -1,6 +1,6 @@
 import { Separator } from '@/shared/components/Separator/Separator';
 import { Holding } from '@/shared/models/walletData';
-import clsx from 'clsx';
+import { cn } from '@/shared/utils/component.utils';
 import HoldingAmount from './HoldingAmount';
 import HoldingApy from './HoldingApy';
 import HoldingButton from './HoldingButton';
@@ -15,7 +15,7 @@ export default function HoldingsTableMobile<T extends Holding>(
   if (!data) return null;
 
   return (
-    <div className={clsx('flex flex-col gap-4', className)}>
+    <div className={cn('flex flex-col gap-4', className)}>
       <div className="flex flex-row w-full justify-between">
         <div>Balance</div>
         <div>APY</div>
