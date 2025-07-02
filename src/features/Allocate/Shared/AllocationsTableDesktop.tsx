@@ -1,5 +1,6 @@
 import Button from '@/shared/components/Button/Button';
 import Icon from '@/shared/components/Icon/Icon';
+import Progress from '@/shared/components/Progress/Progress';
 import {
   Table,
   TableBody,
@@ -32,44 +33,51 @@ export default function AllocationsTableDesktop(props: AllocationsCardProps) {
       </TableHeader>
       <TableBody>
         {data.map((allocation) => (
-          <TableRow key={allocation.id} className="hidden lg:table-row">
-            <TableCell className="text-left">
-              <AllocationClass
-                allocation={allocation}
-                {...props}
-                className=""
-              />
-            </TableCell>
-            <TableCell className="text-left">
-              <AllocationPrice
-                allocation={allocation}
-                {...props}
-                className=""
-              />
-            </TableCell>
-            <TableCell className="text-left">
-              <AllocationAmount
-                allocation={allocation}
-                {...props}
-                className=""
-              />
-            </TableCell>
-            <TableCell className="text-left">
-              <AllocationShare
-                allocation={allocation}
-                {...props}
-                className=""
-              />
-            </TableCell>{' '}
-            <TableCell>
-              <div className="flex justify-end">
-                <Button className="w-full">
-                  <Icon icon={Edit} size={16} />
-                  Edit
-                </Button>
-              </div>
-            </TableCell>
-          </TableRow>
+          <>
+            <TableRow key={allocation.id}>
+              <TableCell className="text-left border-0">
+                <AllocationClass
+                  allocation={allocation}
+                  {...props}
+                  className=""
+                />
+              </TableCell>
+              <TableCell className="text-left border-0">
+                <AllocationPrice
+                  allocation={allocation}
+                  {...props}
+                  className=""
+                />
+              </TableCell>
+              <TableCell className="text-left border-0">
+                <AllocationAmount
+                  allocation={allocation}
+                  {...props}
+                  className=""
+                />
+              </TableCell>
+              <TableCell className="text-left border-0">
+                <AllocationShare
+                  allocation={allocation}
+                  {...props}
+                  className=""
+                />
+              </TableCell>
+              <TableCell className="border-0">
+                <div className="flex justify-end">
+                  <Button className="w-full">
+                    <Icon icon={Edit} size={16} />
+                    Edit
+                  </Button>
+                </div>
+              </TableCell>
+            </TableRow>
+            <TableRow key={`${allocation.id}-0`}>
+              <TableCell colSpan={5}>
+                <Progress progressPercent={allocation.sharePercent} />
+              </TableCell>
+            </TableRow>
+          </>
         ))}
       </TableBody>
     </Table>

@@ -12,7 +12,7 @@ export default function KVcmPriceCard(props: CardProps) {
     <StatCard
       {...props}
       title="kVCM Price"
-      tooltip="kVCM is the governance token for the KlimaDAO. It is used to vote on proposals and make decisions for the protocol."
+      tooltip="You can lock kVCM and K2 tokens to earn rewards. Locked tokens can be allocated to a carbon class to influence its price."
       buttonText="Buy kVCM"
       value={data?.metrics.klimaBonded.valueUSD}
       changePercent={data?.metrics.klimaBonded.valueChangePercent24h}

@@ -36,7 +36,7 @@ export default function LiquidityPositionsCard(props: CardProps) {
       tooltip="There should be a tooltip here"
       data={data?.liquidityPositions}
       getIcon={(liquidityPosition) => {
-        return tokens[liquidityPosition.token].icon(16);
+        return tokens[liquidityPosition.token].icon(1.6);
       }}
       getButtonLabel={() => 'Claim'}
       getButtonTooltip={getButtonTooltip}

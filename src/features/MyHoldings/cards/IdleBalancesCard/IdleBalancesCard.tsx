@@ -1,6 +1,6 @@
 import Card, { CardProps } from '@/shared/components/Card/Card';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
-import clsx from 'clsx';
+import { cn } from '@/shared/utils/component.utils';
 import Image from 'next/image';
 
 import { Separator } from '@/shared/components/Separator/Separator';
@@ -12,7 +12,11 @@ export default function IdleBalancesCard(props: CardProps) {
   const balanceKeys = ['kvcm', 'kvcm/k2', 'kvcm/usdc', 'k2'] as const;
 
   return (
-    <Card {...props} className={clsx('border-green', props.className)}>
+    <Card
+      {...props}
+      className={cn('border-green-40 border-1', props.className)}
+      skeletonClassName="h-[63.8rem]"
+    >
       {data && (
         <div className="flex flex-col">
           <div className="pb-5">

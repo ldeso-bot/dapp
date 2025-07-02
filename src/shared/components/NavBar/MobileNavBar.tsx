@@ -1,6 +1,6 @@
 'use client';
 
-import clsx from 'clsx';
+import { cn } from '@/shared/utils/component.utils';
 import Image from 'next/image';
 import { useState } from 'react';
 import { Separator } from '../Separator/Separator';
@@ -15,7 +15,7 @@ export default function MobileNavBar() {
   return (
     <>
       <div
-        className={clsx(
+        className={cn(
           `flex lg:hidden relative flex-col  border-void-20 px-3 py-6 box-shadow`
         )}
       >
@@ -31,7 +31,7 @@ export default function MobileNavBar() {
               onClick={() => setOpen((prev) => !prev)}
             />
           </div>
-          <div className={clsx('flex flex-col gap-3', !open && 'hidden')}>
+          <div className={cn('flex flex-col gap-3', !open && 'hidden')}>
             <WalletInfo />
             <NavbarItems />
             <Separator />

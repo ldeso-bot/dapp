@@ -26,8 +26,8 @@ export const navItems: NavItem[] = [
   },
   {
     icon: burnCarbonIcon,
-    label: 'Burn Carbon',
-    href: '/burn-carbon',
+    label: 'Retire',
+    href: '/retire',
   },
   {
     icon: sellCarbonIcon,

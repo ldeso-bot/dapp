@@ -11,7 +11,7 @@ export default function AllocationsIntroCard() {
         Allocating is the act of staking KLIMA or KlimaX against the price of
         Carbon. You can allocate any of your bonded KLIMA, and any of your
         locked KlimaX. Allocating can affect the price of each carbon class.{' '}
-        <a className="text-green">Learn more.</a>
+        <a className="text-green-40">Learn more.</a>
       </span>
     </Card>
   );

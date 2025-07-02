@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/shared/utils/component.utils';
 import { StaticImageData } from 'next/image';
 import { InputHTMLAttributes } from 'react';
 import { FieldError } from 'react-hook-form';
@@ -20,14 +20,14 @@ export default function Input({
     <InputWrapper label={label} error={error}>
       <input
         {...props}
-        className={clsx(
+        className={cn(
           'px-3 py-2 rounded-lg gap-2 w-full',
           !!iconSrc && 'pl-10',
           !props.disabled && 'border-1 hover:opacity-80',
           props.disabled && 'bg-void-10'
         )}
         style={{
-          backgroundImage: `url(${iconSrc})`,
+          backgroundImage: `url(${iconSrc?.src})`,
           backgroundRepeat: 'no-repeat',
           backgroundPositionY: 'center',
           backgroundPositionX: '1.2rem',

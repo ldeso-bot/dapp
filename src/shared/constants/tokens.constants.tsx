@@ -19,29 +19,29 @@ export type Token = 'usdc' | AllocationToken | LpToken;
 export const tokens: Record<Token, TokenInfo> = {
   usdc: {
     symbol: 'USDC',
-    icon: (size = 16) => <Icon icon={USDCIcon} alt="USDC" size={size} />,
+    icon: (size = 1.6) => <Icon icon={USDCIcon} alt="USDC" size={size} />,
     iconSrc: USDCIcon,
   },
   k2: {
     symbol: 'K2',
-    icon: (size = 16) => <Icon icon={KlimaXIcon} alt="KlimaX" size={size} />,
+    icon: (size = 1.6) => <Icon icon={KlimaXIcon} alt="KlimaX" size={size} />,
     iconSrc: KlimaXIcon,
   },
   kvcm: {
     symbol: 'kVCM',
-    icon: (size = 16) => <Icon icon={KlimaIcon} alt="KlimaX" size={size} />,
+    icon: (size = 1.6) => <Icon icon={KlimaIcon} alt="KlimaX" size={size} />,
     iconSrc: KlimaIcon,
   },
   'kvcm/usdc': {
     symbol: 'kVCM/USDC',
-    icon: (size = 16) => (
+    icon: (size = 1.6) => (
       <TokenPair token1={KlimaIcon} token2={USDCIcon} size={size} />
     ),
     iconSrc: KlimaIcon,
   },
   'kvcm/k2': {
     symbol: 'kVCM/K2',
-    icon: (size = 16) => (
+    icon: (size = 1.6) => (
       <TokenPair token1={KlimaIcon} token2={KlimaXIcon} size={size} />
     ),
     iconSrc: KlimaIcon,

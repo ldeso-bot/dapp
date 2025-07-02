@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/shared/utils/component.utils';
 import styles from './tooltip.module.css';
 
 type KeyValue = {
@@ -13,7 +13,7 @@ type Props = {
 
 export default function ChartTooltip({ className, items }: Props) {
   return (
-    <div className={clsx(styles.TooltipContent, className)}>
+    <div className={cn(styles.TooltipContent, className)}>
       <div className="flex flex-col gap-2">
         {items.map((item) => (
           <div key={item.label} className="flex flex-row gap-2 justify-between">

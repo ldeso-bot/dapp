@@ -4,7 +4,7 @@ import { CardProps } from '@/shared/components/Card/Card';
 import YieldRatesCard from '@/features/Overview/shared/YieldRatesCard/YieldRatesCard';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 
-export default function LiquidityPoolRiskyYieldCard(props: CardProps) {
+export default function KVcmUsdcRiskyYieldCard(props: CardProps) {
   const { data } = useProtocolData();
 
   return (
