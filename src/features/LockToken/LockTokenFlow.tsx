@@ -6,12 +6,12 @@ import { useParsedForm } from '@/shared/hooks/web3/useParsedForm';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { MATURITY_DATES, PurchaseBondFields } from './purchaseBond.constants';
-import { zodMaturityDate } from './PurchaseBond.utils';
-import PurchaseBondConfirm from './steps/PurchaseBondConfirm';
-import PurchaseBondForm from './steps/PurchaseBondForm';
+import { MATURITY_DATES, PurchaseBondFields } from './lockToken.constants';
+import { zodMaturityDate } from './lockToken.utils';
+import PurchaseBondConfirm from './steps/LockTokenConfirm';
+import PurchaseBondForm from './steps/LockTokenForm';
 
-export default function PurchaseBondFlow() {
+export default function LockTokenFlow() {
   // Form and schema are deffined at the flow level
   const schema = z.object({
     token: z.string(),

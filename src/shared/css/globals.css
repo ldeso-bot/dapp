@@ -10,16 +10,8 @@
   --green-10: #e6faeb;
   --green-40: #00cc33;
   --green-80: #007a1f;
-  --light-red: rgba(220, 38, 38, 0.2);
-  --red: rgba(220, 38, 38);
   --red-100: #ffe2e2;
   --red-600: #dc2626;
-  --void-80: #1e1e1e;
-  --void-70: #2c2c2c;
-  --void-60: #464646;
-  --void-50: #666666;
-  --void-40: #777777;
-  --void-20: #c3c3c3;
   --void-10: #fafafa;
   --void-20: #c3c3c3;
   --void-40: #777777;
@@ -27,6 +19,7 @@
   --void-60: #464646;
   --void-70: #2c2c2c;
   --void-80: #1e1e1e;
+  --overlay: rgba(0 0 0 / 0.5);
 }
 
 @theme {
@@ -34,7 +27,9 @@
   --color-background: var(--background);
   --color-green-10: var(--green-10);
   --color-green-40: var(--green-40);
-  --color-red-10: var(--red-10);
+  --color-green-80: var(--green-80);
+  --color-red-100: var(--red-100);
+  --color-red-600: var(--red-600);
   --color-void-10: var(--void-10);
   --color-void-20: var(--void-20);
   --color-void-40: var(--void-40);
@@ -42,6 +37,7 @@
   --color-void-60: var(--void-60);
   --color-void-80: var(--void-80);
   --color-white: var(--white);
+  --color-overlay: var(--overlay);
 }
 
 html {
