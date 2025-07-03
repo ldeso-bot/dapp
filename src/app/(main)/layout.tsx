@@ -1,3 +1,4 @@
+import Alert from '@/features/Alert/Alert';
 import Footer from '@/shared/components/Footer/Footer';
 import DesktopNavBar from '@/shared/components/NavBar/DesktopNavBar';
 import MobileNavBar from '@/shared/components/NavBar/MobileNavBar';
@@ -22,6 +23,7 @@ export default function RootLayout({
             <DesktopNavBar />
             <MobileNavBar />
             <div className="flex flex-col flex-1">
+              <Alert />
               <div className="flex-1 bg-void-10 p-6">{children}</div>
               <Footer />
             </div>

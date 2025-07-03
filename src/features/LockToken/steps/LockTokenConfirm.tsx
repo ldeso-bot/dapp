@@ -1,26 +1,53 @@
 'use client';
+import { alertAtom } from '@/features/Alert/alert.atom';
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
-import FormError from '@/shared/components/Form/FormError';
 import Input from '@/shared/components/Form/Input';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
+import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { formatAddress, formatTimestamp } from '@/shared/utils/string.utils';
-import { useState } from 'react';
-import { PurchaseBondFields } from '../purchaseBond.constants';
-import { useTransferWithPermit } from '../PurchaseBond.utils';
+import { useSetAtom } from 'jotai';
+import { PurchaseBondFields } from '../lockToken.constants';
+import {
+  lockTokenDialogOpenAtom,
+  useTransferWithPermit,
+} from '../lockToken.utils';
 
 const PurchaseBondConfirm: FormFlowStep<PurchaseBondFields> = ({
   previous,
   data,
 }) => {
   const { send, contract } = useTransferWithPermit();
-  const [error, setError] = useState<string | null>(null);
   const { parsedForm, form } = data;
+  const setAlert = useSetAtom(alertAtom);
+  const setLockTokenDialogOpen = useSetAtom(lockTokenDialogOpenAtom);
 
   const onSubmit = async () => {
     const { error } = await send();
-    setError(error);
+    if (error) {
+      setAlert({
+        title: 'Error',
+        description:
+          'Something went wrong on our end and your unlock was not successful. Please try again in a few minutes.',
+        type: 'error',
+        links: [],
+      });
+    } else {
+      setAlert({
+        title: 'Unlock Successful',
+        description:
+          'You’ve successfully unlocked your 12.00 {{LP Token }} claimed 12.00 KlimaX in rewards! You can manage your positions in the “my holdings” dashboard.',
+        type: 'success',
+        links: [
+          {
+            label: 'My Holdings',
+            href: ROUTES.MY_HOLDINGS,
+          },
+        ],
+      });
+    }
+    setLockTokenDialogOpen(false);
   };
 
   return (
@@ -57,7 +84,6 @@ const PurchaseBondConfirm: FormFlowStep<PurchaseBondFields> = ({
           <Button colors="primary" context="flow" onClick={previous}>
             Cancel
           </Button>
-          <FormError error={error} />
         </div>
       </form>
     </Card>

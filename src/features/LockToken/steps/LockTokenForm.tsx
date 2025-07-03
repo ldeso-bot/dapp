@@ -7,15 +7,18 @@ import Select from '@/shared/components/Form/SelectInput';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import Yield from '@/shared/components/Yield/Yield';
 import { tokens } from '@/shared/constants/tokens.constants';
+import { useSetAtom } from 'jotai';
 import {
   MATURITY_DATES,
   MATURITY_DATES_OPTIONS,
   PurchaseBondFields,
-} from '../purchaseBond.constants';
+} from '../lockToken.constants';
+import { lockTokenDialogOpenAtom } from '../lockToken.utils';
 
 const PurchaseBondForm: FormFlowStep<PurchaseBondFields> = ({ next, data }) => {
   const { form } = data;
   const { handleSubmit, formState } = form;
+  const setLockTokenDialogOpen = useSetAtom(lockTokenDialogOpenAtom);
 
   // Wrapping next into handleSubmit to ensure the form is valid before going to the validation step
   const onSubmit = () => {
@@ -58,7 +61,11 @@ const PurchaseBondForm: FormFlowStep<PurchaseBondFields> = ({ next, data }) => {
           <Button colors="secondary" context="flow" type="submit">
             Bond Klima
           </Button>
-          <Button colors="primary" context="flow" href="/">
+          <Button
+            colors="primary"
+            context="flow"
+            onClick={() => setLockTokenDialogOpen(false)}
+          >
             Cancel
           </Button>
         </div>

@@ -2,9 +2,12 @@ import { useContract } from '@/shared/hooks/web3/useContract';
 import { usePermit } from '@/shared/hooks/web3/usePermit';
 import { PermitReturn } from '@/shared/utils/web3.types';
 import { handleWeb3Error } from '@/shared/utils/web3.utils';
+import { atom } from 'jotai';
 import { useCallback } from 'react';
 import { useAccount } from 'wagmi';
 import { z } from 'zod';
+
+export const lockTokenDialogOpenAtom = atom(false);
 
 export const useTransferWithPermit = () => {
   const permit = usePermit({
