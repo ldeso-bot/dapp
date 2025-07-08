@@ -1,4 +1,5 @@
 import { CardProps } from '@/shared/components/Card/Card';
+import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import StatCard from '../../shared/StatCard/StatCard';
@@ -9,6 +10,7 @@ export default function TotalK2LockedCard(props: CardProps) {
   return (
     <StatCard
       {...props}
+      buttonHref={`${ROUTES.MY_HOLDINGS}?action=lock_k2`}
       buttonText="Lock K2"
       title="Total K2 Locked"
       tooltip="K2 locks earn risky yield and may be unlocked after 24hrs."

@@ -12,11 +12,7 @@ export default function PoolRowDesktop({ poolInfo }: Props) {
   return (
     <>
       <TableCell>
-        <Pair
-          token1={poolInfo.token1}
-          token2={poolInfo.token2}
-          description={poolInfo.description}
-        />
+        <Pair token={poolInfo.token} description={poolInfo.description} />
       </TableCell>
       <TableCell>
         <Metric label="TVL" value={formatPriceUSD(poolInfo.tvl)} />

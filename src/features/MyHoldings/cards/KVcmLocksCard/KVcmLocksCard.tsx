@@ -1,4 +1,4 @@
-import { lockTokenDialogOpenAtom } from '@/features/LockToken/lockToken.utils';
+import { lockTokenDialogAtom } from '@/features/LockToken/lockToken.utils';
 import Button from '@/shared/components/Button/Button';
 import { CardProps } from '@/shared/components/Card/Card';
 import Icon from '@/shared/components/Icon/Icon';
@@ -12,7 +12,7 @@ import HoldingsCard from '../../Shared/HoldingsCard';
 
 export default function KvcmLocksCard(props: CardProps) {
   const { data } = useWalletData();
-  const setLockTokenDialogOpen = useSetAtom(lockTokenDialogOpenAtom);
+  const setLockTokenDialogState = useSetAtom(lockTokenDialogAtom);
 
   const getButtonTooltip = (bond: KVcmLock) => {
     return <div>This bond matures on {formatDate(bond.endTimestamp)}</div>;
@@ -24,17 +24,17 @@ export default function KvcmLocksCard(props: CardProps) {
       title="kVCM Locks"
       tooltip="There should be a tooltip here"
       data={data?.kvcmLocks}
-      getIcon={() => tokens.kvcm.icon(16)}
+      getIcon={() => tokens.kvcm.icon(1.6)}
       getButtonLabel={() => 'Claim'}
       getButtonTooltip={getButtonTooltip}
       titleAddOnFar={
         <Button
           colors="secondary"
           onClick={() => {
-            setLockTokenDialogOpen(true);
+            setLockTokenDialogState({ open: true, token: 'kvcm' });
           }}
         >
-          <Icon icon={Plus} size={16} /> Lock
+          <Icon icon={Plus} size={1.6} /> Lock
         </Button>
       }
     />

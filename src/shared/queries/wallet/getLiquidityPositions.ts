@@ -9,14 +9,14 @@ export const getLiquidityPositions = async (
   return [
     {
       id: '1',
-      token: 'kvcm/k2',
+      token: 'kvcm-k2',
       balance: 1500,
       valueUSD: 3500,
       apyPercent: 0.15,
     },
     {
       id: '2',
-      token: 'kvcm/usdc',
+      token: 'kvcm-usdc',
       balance: 15.25,
       valueUSD: 46.75,
       apyPercent: 0.1403,

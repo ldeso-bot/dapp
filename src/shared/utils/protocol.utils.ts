@@ -12,9 +12,3 @@ export const MATURITY_DATES_OPTIONS = [
     label: '1 year',
   },
 ];
-
-export type PurchaseBondFields = {
-  token: string;
-  amount: number;
-  maturityDate: number;
-};

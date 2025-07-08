@@ -11,13 +11,12 @@ export type AllMetrics = {
   klimaXLocked: Metrics;
 };
 
-import { Token } from '../constants/tokens.constants';
+import { LpToken } from '../constants/tokens.constants';
 
 /* Liquidity Pool Info */
 export type LiquidityPoolInfo = {
   id: string;
-  token1: Token; // e.g., 'kVCM'
-  token2: Token; // e.g., 'usdc'
+  token: LpToken; // e.g., 'kVCM'
   tvl: number; // Total Value Locked in USD
   description: string; // e.g., 'Basic Volatile 1.0%'
   apyPercent: number; // Annual Percentage Yield

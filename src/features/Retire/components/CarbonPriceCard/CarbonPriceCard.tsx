@@ -20,14 +20,15 @@ export default function CarbonPriceCard() {
     } else {
       return neutralArrowIcon;
     }
-  }
+  };
 
   return (
     <div>
       <Card
         title="Carbon Class Prices"
         className="w-[36rem] border-0 rounded-xl"
-        titleClassName="font-bold text-void-80 text-size-18">
+        titleClassName="font-bold text-void-80 text-size-18"
+      >
         <div className="pt-2">
           {carbonPrices.map((item, index) => (
             <div key={index} className="group">
@@ -42,15 +43,17 @@ export default function CarbonPriceCard() {
                   <div className="text-size-14 text-void-80">
                     {formatPrice(item.priceUSD)}
                   </div>
-                  <div className={clsx('flex items-center gap-1.5 px-2 py-1 rounded-full text-size-12', {
-                    'text-void-80 bg-void-10': item.changeUSD === 0,
-                    'text-green-80 bg-green-10': item.changeUSD > 0,
-                    'text-red-600 bg-red-100': item.changeUSD < 0
-                  })}>
-                    <Icon
-                      size={12}
-                      icon={getArrowIcon(item.changeUSD)}
-                    />
+                  <div
+                    className={clsx(
+                      'flex items-center gap-1.5 px-2 py-1 rounded-full text-size-12',
+                      {
+                        'text-void-80 bg-void-10': item.changeUSD === 0,
+                        'text-green-80 bg-green-10': item.changeUSD > 0,
+                        'text-red-600 bg-red-100': item.changeUSD < 0,
+                      }
+                    )}
+                  >
+                    <Icon size={1.2} icon={getArrowIcon(item.changeUSD)} />
                     {Math.abs(item.changeUSD).toFixed(1)}%
                   </div>
                 </div>

@@ -18,7 +18,6 @@ export default function PayWithOptions(props: Props) {
     props.onChange?.(value);
   };
 
-
   return (
     <div className="flex flex-col gap-1">
       <label className="mb-1 font-medium">Pay With</label>
@@ -26,10 +25,13 @@ export default function PayWithOptions(props: Props) {
         {paymentOptions.map((token) => (
           <label
             key={token.value}
-            className={cn("flex items-center flex-1 justify-center border gap-2 px-3 py-2 cursor-pointer rounded transition-colors duration-150", {
-              'bg-white border-void-50': selected !== token.value,
-              'bg-green-10 border-green-40': selected === token.value,
-            })}
+            className={cn(
+              'flex items-center flex-1 justify-center border gap-2 px-3 py-2 cursor-pointer rounded transition-colors duration-150',
+              {
+                'bg-white border-void-50': selected !== token.value,
+                'bg-green-10 border-green-40': selected === token.value,
+              }
+            )}
           >
             <input
               type="radio"
@@ -39,7 +41,7 @@ export default function PayWithOptions(props: Props) {
               onChange={() => handleSelect(token.value)}
               className="sr-only"
             />
-            <Icon icon={token.icon} size={20} />
+            <Icon icon={token.icon} size={2} />
             <span>{token.label}</span>
           </label>
         ))}

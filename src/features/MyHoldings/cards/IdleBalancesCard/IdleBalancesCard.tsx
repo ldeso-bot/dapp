@@ -9,7 +9,7 @@ import idleBalances from './images/idleBalances.svg';
 
 export default function IdleBalancesCard(props: CardProps) {
   const { data } = useWalletData();
-  const balanceKeys = ['kvcm', 'kvcm/k2', 'kvcm/usdc', 'k2'] as const;
+  const balanceKeys = ['kvcm', 'kvcm-k2', 'kvcm-usdc', 'k2'] as const;
 
   return (
     <Card

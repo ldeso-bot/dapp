@@ -21,7 +21,7 @@ export default function StatCard(props: Props) {
       {!isNullish(value) && !isNullish(changePercent) && (
         <div className="flex flex-col gap-3 w-full h-full">
           <div className="flex flex-row gap-2 w-full items-center">
-            {token.icon(20)}
+            {token.icon(2)}
             <div className="grow-1">{value}</div>
             <div>
               <ChangePercent value={changePercent} />

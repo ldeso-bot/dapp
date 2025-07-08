@@ -54,12 +54,12 @@ export default function Select({
           >
             <SelectPrimitive.Value placeholder={props.placeholder} />
             <SelectPrimitive.Icon className="px-2">
-              <Icon icon={ArrowDown} size={14} />
+              <Icon icon={ArrowDown} size={1.4} />
             </SelectPrimitive.Icon>
           </div>
         </SelectPrimitive.Trigger>
         <SelectPrimitive.Portal>
-          <SelectPrimitive.Content>
+          <SelectPrimitive.Content className="z-2000">
             <SelectPrimitive.ScrollUpButton />
             <SelectPrimitive.Viewport className="bg-background rounded-lg p-2 pl-3 w-full">
               {items.map((item) => (
@@ -69,7 +69,7 @@ export default function Select({
                 >
                   <SelectPrimitive.ItemText>
                     <div className="bg-void-10 rounded-lg p-2 pl-3 cursor-pointer">
-                      <div className="flex flex-row gap-2 font-size-14">
+                      <div className="flex flex-row gap-2 font-size-14 items-center">
                         {item.icon}
                         {item.label}
                       </div>
