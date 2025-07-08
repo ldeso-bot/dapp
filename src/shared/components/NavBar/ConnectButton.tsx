@@ -23,7 +23,7 @@ export default function ConnectButton({ className }: Props) {
       {address ? (
         <>
           <Button onClick={() => disconnect()} className={className}>
-            <Icon icon={logoutIcon} alt={'Logout'} size={16} />
+            <Icon icon={logoutIcon} alt={'Logout'} size={1.6} />
             Logout
           </Button>
         </>

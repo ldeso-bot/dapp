@@ -66,7 +66,7 @@ export default function AllocationsTableDesktop(props: AllocationsCardProps) {
               <TableCell className="border-0">
                 <div className="flex justify-end">
                   <Button className="w-full">
-                    <Icon icon={Edit} size={16} />
+                    <Icon icon={Edit} size={1.6} />
                     Edit
                   </Button>
                 </div>

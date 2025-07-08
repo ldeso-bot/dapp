@@ -11,7 +11,7 @@ type Props = {
 export default function InputWrapper({ label, error, children }: Props) {
   return (
     <div className="flex flex-col gap-2 items-start w-full">
-      <label className="text-size-14 font-semibold">{label}</label>
+      <label className="text-size-14 font-medium">{label}</label>
       {children}
       <InputError error={error} />
     </div>

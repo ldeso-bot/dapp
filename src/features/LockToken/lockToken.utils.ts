@@ -1,3 +1,4 @@
+import { AllocationToken } from '@/shared/constants/tokens.constants';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { usePermit } from '@/shared/hooks/web3/usePermit';
 import { PermitReturn } from '@/shared/utils/web3.types';
@@ -5,9 +6,17 @@ import { handleWeb3Error } from '@/shared/utils/web3.utils';
 import { atom } from 'jotai';
 import { useCallback } from 'react';
 import { useAccount } from 'wagmi';
-import { z } from 'zod';
 
-export const lockTokenDialogOpenAtom = atom(false);
+export type LockTokenFields = {
+  token: string;
+  amount: number;
+  maturityDate: number;
+};
+
+export const lockTokenDialogAtom = atom({
+  open: false,
+  token: null as AllocationToken | null,
+});
 
 export const useTransferWithPermit = () => {
   const permit = usePermit({
@@ -62,7 +71,3 @@ export const useTransferWithPermit = () => {
     send,
   };
 };
-
-export const zodMaturityDate = z.preprocess((i: unknown): number => {
-  return new Date().getTime() + Number(i) * 1000;
-}, z.coerce.number());

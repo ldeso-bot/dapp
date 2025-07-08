@@ -12,11 +12,7 @@ export default function PoolRowMobile({ poolInfo }: Props) {
   return (
     <TableCell>
       <div className="flex flex-col">
-        <Pair
-          token1={poolInfo.token1}
-          token2={poolInfo.token2}
-          description={poolInfo.description}
-        />
+        <Pair token={poolInfo.token} description={poolInfo.description} />
         <div className="flex flex-row justify-between">
           <Metric label="TVL" value={formatPriceUSD(poolInfo.tvl)} />
           <Metric label="APY" value={formatPercentage(poolInfo.apyPercent)} />

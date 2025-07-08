@@ -18,7 +18,7 @@ export default function K2LocksCard(props: CardProps) {
       title="K2 Locks"
       tooltip="There should be a tooltip here"
       data={data?.k2Locks}
-      getIcon={() => tokens.k2.icon(16)}
+      getIcon={() => tokens.k2.icon(1.6)}
       getButtonLabel={() => 'Claim'}
       getButtonTooltip={getButtonTooltip}
     />

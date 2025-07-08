@@ -1,4 +1,3 @@
-import { cn } from '@/shared/utils/component.utils';
 import Image, { StaticImageData } from 'next/image';
 
 type Props = {
@@ -11,12 +10,6 @@ type Props = {
 export default function Icon({ icon, alt, size = 3.2, className }: Props) {
   alt = alt || '';
   return (
-    <Image
-      src={icon}
-      alt={alt}
-      width={size * 10}
-      height={size * 10}
-      className={cn('h-auto w-auto', className)}
-    />
+    <Image src={icon} alt={alt} height={size * 10} className={className} />
   );
 }

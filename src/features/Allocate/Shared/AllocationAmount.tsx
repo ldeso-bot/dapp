@@ -7,7 +7,7 @@ export default function AllocationAmount({
 }: AllocationsTableItemProps) {
   return (
     <div className="font-bold flex flex-row gap-2 items-center">
-      {tokenInfo.icon(16)}
+      {tokenInfo.icon(1.6)}
       {formatAmountWithCommas(allocation.amountTonnes)}
     </div>
   );

@@ -10,7 +10,7 @@ export const getBalances = async (
     usdc: 1000,
     kvcm: 1000,
     k2: 1000,
-    'kvcm/usdc': 1000,
-    'kvcm/k2': 1000,
+    'kvcm-usdc': 1000,
+    'kvcm-k2': 1000,
   };
 };

@@ -1,19 +1,22 @@
 'use client';
 
 import Steps from '@/shared/components/Steps/Steps';
-import { DEFAULT_ALLOCATION_TOKEN } from '@/shared/constants/tokens.constants';
+import { DEFAULT_LP_TOKEN } from '@/shared/constants/tokens.constants';
 import { useParsedForm } from '@/shared/hooks/web3/useParsedForm';
 import { MATURITY_DATES } from '@/shared/utils/protocol.utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAtomValue } from 'jotai';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { lockTokenDialogAtom, LockTokenFields } from './lockToken.utils';
-import LockTokenConfirm from './steps/LockTokenConfirm';
-import LockTokenForm from './steps/LockTokenForm';
+import {
+  stakeLpTokenDialogAtom,
+  StakeLpTokenFields,
+} from './stakeLpToken.utils';
+import StakeLpTokenConfirm from './steps/StakeLpTokenConfirm';
+import StakeLpTokenForm from './steps/StakeLpTokenForm';
 
-export default function LockTokenFlow() {
-  const lockTokenDialog = useAtomValue(lockTokenDialogAtom);
+export default function StakeLpTokenFlow() {
+  const stakeLpTokenDialog = useAtomValue(stakeLpTokenDialogAtom);
   // Form and schema are deffined at the flow level
   const schema = z.object({
     token: z.string(),
@@ -23,10 +26,10 @@ export default function LockTokenFlow() {
       .int('Amount must be a positive integer'),
     maturityDate: z.coerce.number(),
   });
-  const form = useForm<LockTokenFields>({
+  const form = useForm<StakeLpTokenFields>({
     resolver: zodResolver(schema),
     defaultValues: {
-      token: lockTokenDialog.token ?? DEFAULT_ALLOCATION_TOKEN,
+      token: stakeLpTokenDialog.token ?? DEFAULT_LP_TOKEN,
       amount: 0,
       maturityDate: MATURITY_DATES[0],
     },
@@ -36,7 +39,7 @@ export default function LockTokenFlow() {
   // Form is passed to each step (we could pass schema too)
   return (
     <Steps
-      components={[LockTokenForm, LockTokenConfirm]}
+      components={[StakeLpTokenForm, StakeLpTokenConfirm]}
       data={{ form, schema, parsedForm }}
     />
   );

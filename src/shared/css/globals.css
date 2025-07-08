@@ -54,6 +54,10 @@ body {
   line-height: 2rem;
 }
 
+[data-placeholder] {
+  color: red;
+}
+
 /* Tailwind styles extensions */
 .border-void-20 {
   border-color: var(--void-20);

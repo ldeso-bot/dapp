@@ -23,7 +23,7 @@ export default function KvcmAllocationsCard(props: CardProps) {
       titleAddOnFar={
         <Button colors="secondary">
           {' '}
-          <Icon icon={Plus} size={16} /> New Allocation
+          <Icon icon={Plus} size={1.6} /> New Allocation
         </Button>
       }
     />

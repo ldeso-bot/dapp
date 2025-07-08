@@ -1,23 +1,20 @@
 'use client';
 
 import ConnectedFeature from '@/shared/components/ConnectedFeature/ConnectedFeature';
-import Dialog from '@/shared/components/Dialog/Dialog';
 import StackedCards from '@/shared/components/StackedCards/StackedCards';
-import { useAtomValue } from 'jotai';
-import { lockTokenDialogOpenAtom } from '../LockToken/lockToken.utils';
-import LockTokenFlow from '../LockToken/LockTokenFlow';
+import { Suspense } from 'react';
 import IdleBalancesCard from './cards/IdleBalancesCard/IdleBalancesCard';
 import K2LocksCard from './cards/K2LocksCard/K2LocksCard';
 import KvcmLocksCard from './cards/KVcmLocksCard/KVcmLocksCard';
 import LiquidityPositionsCard from './cards/LiquidityPositionsCard/LiquidityPositionsCard';
+import MyHoldingsModals from './MyHoldingsModals';
 
 export default function MyHoldingsPage() {
-  const lockTokenDialogOpen = useAtomValue(lockTokenDialogOpenAtom);
   return (
     <ConnectedFeature>
-      <Dialog open={lockTokenDialogOpen}>
-        <LockTokenFlow />
-      </Dialog>
+      <Suspense>
+        <MyHoldingsModals />
+      </Suspense>
       <div className="flex flex-col gap-4 lg:flex-row-reverse">
         <div>
           <StackedCards>

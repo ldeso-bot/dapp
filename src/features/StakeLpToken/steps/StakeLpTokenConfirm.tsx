@@ -1,5 +1,6 @@
 'use client';
 import { alertAtom } from '@/features/Alert/alert.atom';
+import { useTransferWithPermit } from '@/features/LockToken/lockToken.utils';
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
 import Input from '@/shared/components/Form/Input';
@@ -9,44 +10,34 @@ import { tokens } from '@/shared/constants/tokens.constants';
 import { formatAddress, formatTimestamp } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
 import {
-  lockTokenDialogAtom,
-  LockTokenFields,
-  useTransferWithPermit,
-} from '../lockToken.utils';
+  stakeLpTokenDialogAtom,
+  StakeLpTokenFields,
+} from '../stakeLpToken.utils';
 
-const PurchaseBondConfirm: FormFlowStep<LockTokenFields> = ({
+const StakeLpTokenConfirm: FormFlowStep<StakeLpTokenFields> = ({
   previous,
   data,
 }) => {
-  const { send, contract } = useTransferWithPermit();
   const { parsedForm, form } = data;
   const setAlert = useSetAtom(alertAtom);
-  const setLockTokenDialogState = useSetAtom(lockTokenDialogAtom);
+  const setLockTokenDialogState = useSetAtom(stakeLpTokenDialogAtom);
+  // TODO: placeholder
+  const { contract } = useTransferWithPermit();
 
   const onSubmit = async () => {
-    const { error } = await send();
-    if (error) {
-      setAlert({
-        title: 'Error',
-        description:
-          'Something went wrong on our end and your unlock was not successful. Please try again in a few minutes.',
-        type: 'error',
-        links: [],
-      });
-    } else {
-      setAlert({
-        title: 'Unlock Successful',
-        description:
-          'You’ve successfully unlocked your 12.00 {{LP Token }} claimed 12.00 KlimaX in rewards! You can manage your positions in the “my holdings” dashboard.',
-        type: 'success',
-        links: [
-          {
-            label: 'My Holdings',
-            href: ROUTES.MY_HOLDINGS,
-          },
-        ],
-      });
-    }
+    console.info(form.getValues());
+    setAlert({
+      title: 'Unlock Successful',
+      description:
+        'You’ve successfully unlocked your 12.00 {{LP Token }} claimed 12.00 KlimaX in rewards! You can manage your positions in the “my holdings” dashboard.',
+      type: 'success',
+      links: [
+        {
+          label: 'My Holdings',
+          href: ROUTES.MY_HOLDINGS,
+        },
+      ],
+    });
     setLockTokenDialogState({ open: false, token: null });
   };
 
@@ -58,8 +49,6 @@ const PurchaseBondConfirm: FormFlowStep<LockTokenFields> = ({
       >
         <div className="flex flex-col gap-4 pt-3">
           To complete this transaction, please allow our smart contract to
-          transfer tokens on your behalf. Test: Clicking Submit will make a USDC
-          transfer with permit
           <Input
             label="Contract Address"
             value={formatAddress(contract?.address)}
@@ -90,4 +79,4 @@ const PurchaseBondConfirm: FormFlowStep<LockTokenFields> = ({
   );
 };
 
-export default PurchaseBondConfirm;
+export default StakeLpTokenConfirm;

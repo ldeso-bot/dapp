@@ -12,7 +12,7 @@ export default function Tooltip({ trigger, content }: Props) {
     return trigger;
   }
   if (!trigger) {
-    trigger = <Icon icon={helpIcon} alt={'Help'} size={16} />;
+    trigger = <Icon icon={helpIcon} alt={'Help'} size={1.6} />;
   }
 
   return (

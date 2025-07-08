@@ -1,7 +1,9 @@
+import ArrowDown from '@/shared/images/arrow_down.svg';
 import { cn } from '@/shared/utils/component.utils';
 import { Select as SelectPrimitive } from 'radix-ui';
 import React, { ReactNode } from 'react';
 import { FieldError } from 'react-hook-form';
+import Icon from '../Icon/Icon';
 import InputWrapper from './InputWrapper';
 
 type SelectInputItem = {
@@ -46,15 +48,18 @@ export default function Select({
         <SelectPrimitive.Trigger className="w-full">
           <div
             className={cn(
-              'bg-void-10 rounded-lg',
+              'bg-void-10 rounded-lg min-h-[3.8rem] flex justify-between items-center',
               !props.disabled && 'border-1 cursor-pointer hover:opacity-80'
             )}
           >
-            <SelectPrimitive.Value placeholder="Select one" />
+            <SelectPrimitive.Value placeholder={props.placeholder} />
+            <SelectPrimitive.Icon className="px-2">
+              <Icon icon={ArrowDown} size={1.4} />
+            </SelectPrimitive.Icon>
           </div>
         </SelectPrimitive.Trigger>
         <SelectPrimitive.Portal>
-          <SelectPrimitive.Content>
+          <SelectPrimitive.Content className="z-2000">
             <SelectPrimitive.ScrollUpButton />
             <SelectPrimitive.Viewport className="bg-background rounded-lg p-2 pl-3 w-full">
               {items.map((item) => (
@@ -64,7 +69,7 @@ export default function Select({
                 >
                   <SelectPrimitive.ItemText>
                     <div className="bg-void-10 rounded-lg p-2 pl-3 cursor-pointer">
-                      <div className="flex flex-row gap-2 font-size-14">
+                      <div className="flex flex-row gap-2 font-size-14 items-center">
                         {item.icon}
                         {item.label}
                       </div>

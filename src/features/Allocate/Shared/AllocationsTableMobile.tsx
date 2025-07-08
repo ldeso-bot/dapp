@@ -50,7 +50,7 @@ export default function AllocationsTableMobile(props: AllocationsCardProps) {
               <Progress progressPercent={allocation.sharePercent} />
             </div>
             <Button className="w-full">
-              <Icon icon={Edit} size={16} />
+              <Icon icon={Edit} size={1.6} />
               Edit Allocation
             </Button>
           </div>

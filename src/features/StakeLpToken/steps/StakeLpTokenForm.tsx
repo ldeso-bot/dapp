@@ -8,40 +8,45 @@ import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import Yield from '@/shared/components/Yield/Yield';
 import { ROUTES } from '@/shared/constants/route.constants';
 import {
-  allocationTokens,
-  DEFAULT_ALLOCATION_TOKEN,
+  DEFAULT_LP_TOKEN,
+  lpTokens,
   tokens,
 } from '@/shared/constants/tokens.constants';
 import {
   MATURITY_DATES,
   MATURITY_DATES_OPTIONS,
 } from '@/shared/utils/protocol.utils';
-import { isToken } from '@/shared/utils/typeguards';
+import { isLpToken } from '@/shared/utils/typeguards';
 import { useAtomValue } from 'jotai';
-import { lockTokenDialogAtom, LockTokenFields } from '../lockToken.utils';
+import {
+  stakeLpTokenDialogAtom,
+  StakeLpTokenFields,
+} from '../stakeLpToken.utils';
 
-const PurchaseBondForm: FormFlowStep<LockTokenFields> = ({ next, data }) => {
+const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({ next, data }) => {
   const { form } = data;
   const { handleSubmit, formState, watch } = form;
-  const lockTokenDialogState = useAtomValue(lockTokenDialogAtom);
+  const stakeLpTokenDialogState = useAtomValue(stakeLpTokenDialogAtom);
 
   // Wrapping next into handleSubmit to ensure the form is valid before going to the validation step
   const onSubmit = () => {
+    console.info(form.getValues());
+
     next();
   };
 
   const token = watch('token');
 
-  const typedToken = isToken(token) ? token : DEFAULT_ALLOCATION_TOKEN;
+  const typedToken = isLpToken(token) ? token : DEFAULT_LP_TOKEN;
 
   return (
-    <Card title="Purchase a Bond">
+    <Card title="Lock LP Tokens">
       <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-4 pt-3">
           <SelectInput
             label="Token"
-            defaultValue={lockTokenDialogState.token ?? 'kvcm'}
-            items={Object.entries(allocationTokens).map(([key, token]) => ({
+            defaultValue={stakeLpTokenDialogState.token ?? DEFAULT_LP_TOKEN}
+            items={Object.entries(lpTokens).map(([key, token]) => ({
               value: key,
               label: token.symbol,
               icon: token.icon(),
@@ -66,7 +71,7 @@ const PurchaseBondForm: FormFlowStep<LockTokenFields> = ({ next, data }) => {
         </div>
         <div className="flex flex-col gap-3 w-full">
           <Button colors="secondary" context="flow" type="submit">
-            Bond Klima
+            Lock LP Tokens
           </Button>
           <Button
             colors="primary"
@@ -81,4 +86,4 @@ const PurchaseBondForm: FormFlowStep<LockTokenFields> = ({ next, data }) => {
   );
 };
 
-export default PurchaseBondForm;
+export default StakeLpTokenForm;

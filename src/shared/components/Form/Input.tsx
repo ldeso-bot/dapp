@@ -22,12 +22,13 @@ export default function Input({
         {...props}
         className={cn(
           'px-3 py-2 rounded-lg gap-2 w-full',
-          !!iconSrc && 'pl-10',
-          !props.disabled && 'border-1 hover:opacity-80',
-          props.disabled && 'bg-void-10'
+          !!iconSrc && 'pl-12',
+          !props.disabled && !props.readOnly && 'border-1 hover:opacity-80',
+          (props.disabled || props.readOnly) && 'bg-void-10'
         )}
         style={{
           backgroundImage: `url(${iconSrc?.src})`,
+          backgroundSize: 'auto 2rem',
           backgroundRepeat: 'no-repeat',
           backgroundPositionY: 'center',
           backgroundPositionX: '1.2rem',
