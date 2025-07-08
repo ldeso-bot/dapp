@@ -26,8 +26,8 @@ export default function CarbonPriceCard() {
     <div>
       <Card
         title="Carbon Class Prices"
-        className="w-[36rem]"
-        titleClassName="text-size-18 font-bold text-void-80">
+        className="w-[36rem] border-0 rounded-xl"
+        titleClassName="font-bold text-void-80 text-size-18">
         <div className="pt-2">
           {carbonPrices.map((item, index) => (
             <div key={index} className="group">

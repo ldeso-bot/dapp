@@ -1,3 +1,4 @@
+import { tokens } from '@/shared/constants/tokens.constants';
 import { z } from 'zod';
 
 interface CarbonPrice {
@@ -7,6 +8,19 @@ interface CarbonPrice {
   priceUSD: number;
   changeUSD: number;
 }
+
+export const paymentOptions = [{
+  icon: tokens.kvcm.iconSrc,
+  label: 'KVCM',
+  value: 'kvcm',
+},
+{
+  icon: tokens.usdc.iconSrc,
+  label: 'USDC',
+  value: 'usdc',
+}];
+
+export type PaymentOption = typeof paymentOptions;
 
 export const retireCarbonSchema = z.object({
   carbonClass: z.string(),

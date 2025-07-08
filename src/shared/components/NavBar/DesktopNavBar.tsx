@@ -8,10 +8,10 @@ import WalletInfo from './WalletInfo';
 
 export default function DesktopNavBar() {
   return (
-    <div className="hidden lg:flex ">
+    <div className="hidden lg:flex border-r-1 border-void-20">
       <div
         className={cn(
-          `relative flex-col h-screen border-r-1 border-void-20 px-3 py-6`,
+          `relative flex-col h-screen px-3 py-6`,
           styles.wNavbar
         )}
       >
@@ -28,8 +28,7 @@ export default function DesktopNavBar() {
           styles.wNavbar
         )}
       >
-        <Separator />
-        <ConnectButton />
+        <ConnectButton className="h-[4rem]" />
       </div>
     </div>
   );
