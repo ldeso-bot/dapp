@@ -18,7 +18,7 @@ export default function ClaimableRewardsTooltip({ items }: Props) {
           className="flex flex-row justify-between gap-4 items-center"
         >
           <div className="flex flex-row gap-2 items-center">
-            {item.token.icon(16)}
+            {item.token.icon(1.6)}
             <div className="text-right">
               {item.amount} {item.token.symbol}
             </div>

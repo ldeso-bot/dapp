@@ -7,8 +7,16 @@ export default function HoldingAmount<T extends Holding>({
   holding,
   getButtonLabel,
   getButtonTooltip,
+  getButtonHref,
 }: HoldingsCardItemProps<T>) {
-  const button = <Button className="w-full">{getButtonLabel(holding)}</Button>;
+  const button = (
+    <Button
+      className="w-full"
+      href={getButtonHref ? getButtonHref(holding) : ''}
+    >
+      {getButtonLabel(holding)}
+    </Button>
+  );
   if (getButtonTooltip) {
     return <Tooltip content={getButtonTooltip(holding)} trigger={button} />;
   }

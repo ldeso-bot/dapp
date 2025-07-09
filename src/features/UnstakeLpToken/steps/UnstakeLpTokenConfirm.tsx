@@ -1,28 +1,32 @@
 'use client';
 import { alertAtom } from '@/features/Alert/alert.atom';
-import { useTransferWithPermit } from '@/features/LockToken/lockToken.utils';
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
 import Input from '@/shared/components/Form/Input';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
-import { formatAddress, formatTimestamp } from '@/shared/utils/string.utils';
-import { useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { useRouter } from 'next/navigation';
 import {
-  stakeLpTokenDialogAtom,
-  StakeLpTokenFields,
-} from '../stakeLpToken.utils';
+  tooltip,
+  unstakeLpTokenDialogAtom,
+  UnstakeLpTokenFields,
+} from '../unstakeLpToken.utils';
 
-const StakeLpTokenConfirm: FormFlowStep<StakeLpTokenFields> = ({
+const UnstakeLpTokenConfirm: FormFlowStep<UnstakeLpTokenFields> = ({
   previous,
   data,
 }) => {
   const { parsedForm, form } = data;
+  const { formState } = form;
+
   const setAlert = useSetAtom(alertAtom);
-  const setLockTokenDialogState = useSetAtom(stakeLpTokenDialogAtom);
-  // TODO: placeholder
-  const { contract } = useTransferWithPermit();
+  const router = useRouter();
+  const unstakeLpTokenDialogState = useAtomValue(unstakeLpTokenDialogAtom);
+  const liquidityPosition = unstakeLpTokenDialogState.liquidityPosition;
+
+  if (!liquidityPosition) return null;
 
   const onSubmit = async () => {
     setAlert({
@@ -37,7 +41,7 @@ const StakeLpTokenConfirm: FormFlowStep<StakeLpTokenFields> = ({
         },
       ],
     });
-    setLockTokenDialogState({ open: false, token: null });
+    router.push(ROUTES.MY_HOLDINGS);
   };
 
   return (
@@ -47,24 +51,35 @@ const StakeLpTokenConfirm: FormFlowStep<StakeLpTokenFields> = ({
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <div className="flex flex-col gap-4 pt-3">
-          To complete this transaction, please allow our smart contract to
+          Give the transaction one final review before submitting to the
+          blockchain.
           <Input
-            label="Contract Address"
-            value={formatAddress(contract?.address)}
+            label="Pool"
+            value={tokens[liquidityPosition.token].symbol}
+            iconSrc={tokens[liquidityPosition.token].iconSrc}
             readOnly={true}
           />
           <Input
-            label="You are sending"
+            label="You are receiving"
+            value={`${parsedForm.current?.amount} ${tokens[liquidityPosition.token].symbol}`}
+            iconSrc={tokens[liquidityPosition.token].iconSrc}
+            error={formState.errors.amount}
+          />
+          <Input
+            label="You are receiving"
+            iconSrc={tokens.k2.iconSrc}
             readOnly={true}
+            value={`${liquidityPosition.rewards.k2} ${tokens.k2.symbol}`}
+            tooltip={tooltip}
+          />
+          <Input
+            label="You are receiving"
             iconSrc={tokens.kvcm.iconSrc}
-            value={`${parsedForm.current?.amount} ${tokens.kvcm.symbol}`}
-          />
-          <Input
-            label="Maturity date"
             readOnly={true}
-            value={formatTimestamp(parsedForm.current?.maturityDate)}
+            value={`${liquidityPosition.rewards.kvcm} ${tokens.kvcm.symbol}`}
+            tooltip={tooltip}
           />
-        </div>
+        </div>{' '}
         <div className="flex flex-col gap-3 w-full">
           <Button colors="secondary" context="flow" type="submit">
             Submit
@@ -78,4 +93,4 @@ const StakeLpTokenConfirm: FormFlowStep<StakeLpTokenFields> = ({
   );
 };
 
-export default StakeLpTokenConfirm;
+export default UnstakeLpTokenConfirm;

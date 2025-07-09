@@ -13,6 +13,10 @@ export const getLiquidityPositions = async (
       balance: 1500,
       valueUSD: 3500,
       apyPercent: 0.15,
+      rewards: {
+        k2: 100,
+        kvcm: 200,
+      },
     },
     {
       id: '2',
@@ -20,6 +24,10 @@ export const getLiquidityPositions = async (
       balance: 15.25,
       valueUSD: 46.75,
       apyPercent: 0.1403,
+      rewards: {
+        k2: 150,
+        kvcm: 300,
+      },
     },
   ];
 };
