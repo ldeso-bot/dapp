@@ -7,6 +7,7 @@ export type HoldingsCardProps<T extends Holding> = CardProps & {
   getIcon: (holding: T) => React.ReactNode;
   getButtonLabel: (holding: T) => string;
   getButtonTooltip?: (holding: T) => React.ReactNode;
+  getButtonHref?: (holding: T) => string;
 };
 
 export type HoldingsCardItemProps<T extends Holding> = Omit<

@@ -16,6 +16,10 @@ export type KVcmLocks = KVcmLock[];
 
 export type LiquidityPosition = Holding & {
   token: LpToken;
+  rewards: {
+    k2: number;
+    kvcm: number;
+  };
 };
 export type LiquidityPositions = LiquidityPosition[];
 

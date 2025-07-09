@@ -30,8 +30,6 @@ const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({ next, data }) => {
 
   // Wrapping next into handleSubmit to ensure the form is valid before going to the validation step
   const onSubmit = () => {
-    console.info(form.getValues());
-
     next();
   };
 

@@ -1,23 +1,16 @@
 import { cn } from '@/shared/utils/component.utils';
 import { StaticImageData } from 'next/image';
 import { InputHTMLAttributes } from 'react';
-import { FieldError } from 'react-hook-form';
-import InputWrapper from './InputWrapper';
+import InputWrapper, { InputWrapperProps } from './InputWrapper';
 
 type Props = {
-  label?: string;
   iconSrc?: StaticImageData;
-  error?: FieldError;
-} & InputHTMLAttributes<HTMLInputElement>;
+} & Omit<InputWrapperProps, 'children'> &
+  InputHTMLAttributes<HTMLInputElement>;
 
-export default function Input({
-  label = 'Token',
-  iconSrc,
-  error,
-  ...props
-}: Props) {
+export default function Input({ iconSrc, ...props }: Props) {
   return (
-    <InputWrapper label={label} error={error}>
+    <InputWrapper {...props}>
       <input
         {...props}
         className={cn(
