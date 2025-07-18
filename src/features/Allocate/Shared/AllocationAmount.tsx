@@ -8,7 +8,7 @@ export default function AllocationAmount({
   return (
     <div className="font-bold flex flex-row gap-2 items-center">
       {tokenInfo.icon(1.6)}
-      {formatAmountWithCommas(allocation.amountTonnes)}
+      {formatAmountWithCommas(allocation.amount)}
     </div>
   );
 }

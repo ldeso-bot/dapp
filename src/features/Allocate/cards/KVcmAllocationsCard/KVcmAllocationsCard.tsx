@@ -19,10 +19,14 @@ export default function KvcmAllocationsCard(props: CardProps) {
       title="kVCM Allocations"
       tooltip="There should be a tooltip here"
       data={allocations}
+      noAllocationComponent={
+        <div className="bg-void-10 py-3 px-6 w-full">
+          You haven’t allocated any of your bonded kVCM yet. Get started.
+        </div>
+      }
       tokenInfo={tokens.kvcm}
       titleAddOnFar={
         <Button colors="secondary">
-          {' '}
           <Icon icon={Plus} size={1.6} /> New Allocation
         </Button>
       }

@@ -15,6 +15,11 @@ export default function K2AllocationsCard(props: CardProps) {
       {...props}
       title="K2 Allocations"
       tooltip="There should be a tooltip here"
+      noAllocationComponent={
+        <div className="bg-void-10 py-3 px-6 w-full">
+          You haven’t locked any of your K2 yet. Create a Lock to get started.
+        </div>
+      }
       data={allocations}
       tokenInfo={tokens.k2}
     />

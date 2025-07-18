@@ -1,7 +1,7 @@
 'use client';
 
 import Button from '@/shared/components/Button/Button';
-import Card from '@/shared/components/Card/Card';
+import SoloCard from '@/shared/components/Card/SoloCard';
 import Input from '@/shared/components/Form/Input';
 import SelectInput from '@/shared/components/Form/SelectInput';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
@@ -35,7 +35,7 @@ const PurchaseBondForm: FormFlowStep<LockTokenFields> = ({ next, data }) => {
   const typedToken = isToken(token) ? token : DEFAULT_ALLOCATION_TOKEN;
 
   return (
-    <Card title="Purchase a Bond">
+    <SoloCard title="Purchase a Bond">
       <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-4 pt-3">
           <SelectInput
@@ -77,7 +77,7 @@ const PurchaseBondForm: FormFlowStep<LockTokenFields> = ({ next, data }) => {
           </Button>
         </div>
       </form>
-    </Card>
+    </SoloCard>
   );
 };
 

@@ -1,12 +1,10 @@
-import Button from '@/shared/components/Button/Button';
-import Icon from '@/shared/components/Icon/Icon';
 import Progress from '@/shared/components/Progress/Progress';
 import { Separator } from '@/shared/components/Separator/Separator';
-import Edit from '@/shared/images/edit.svg';
 import { cn } from '@/shared/utils/component.utils';
 import { ReactNode } from 'react';
 import AllocationAmount from './AllocationAmount';
 import AllocationClass from './AllocationClass';
+import AllocationEditButton from './AllocationEditButton';
 import AllocationPrice from './AllocationPrice';
 import AllocationShare from './AllocationShare';
 import { AllocationsCardProps } from './AllocationsTable.types';
@@ -49,10 +47,7 @@ export default function AllocationsTableMobile(props: AllocationsCardProps) {
             <div>
               <Progress progressPercent={allocation.sharePercent} />
             </div>
-            <Button className="w-full">
-              <Icon icon={Edit} size={1.6} />
-              Edit Allocation
-            </Button>
+            <AllocationEditButton allocation={allocation} {...props} />
           </div>
           <Separator />
         </div>

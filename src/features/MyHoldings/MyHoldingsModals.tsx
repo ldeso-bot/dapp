@@ -25,7 +25,7 @@ export default function MyHoldingsModals() {
   const [unlockTokenDialog, setUnlockTokenDialog] = useAtom(
     unlockTokenDialogAtom
   );
-  const data = useWalletData();
+  const { data } = useWalletData();
 
   const searchParams = useSearchParams();
 
@@ -36,7 +36,7 @@ export default function MyHoldingsModals() {
     setLockTokenDialog({ open: false, token: null });
     setUnstakeLpTokenDialog({ open: false, liquidityPosition: null });
     setUnlockTokenDialog({ open: false, lock: null });
-    if (!action) return;
+    if (!action || !data?.liquidityPositions) return;
 
     /* Open dialogs if navigation to /my_holdings with action parameter */
     if (action === 'lock_kvcm') {
@@ -54,12 +54,12 @@ export default function MyHoldingsModals() {
     if (action.startsWith('unlock_lp_')) {
       const id = action.split('_')[2];
       const liquidityPosition =
-        data.data?.liquidityPositions.find((lp) => lp.id === id) ?? null;
+        data.liquidityPositions.find((lp) => lp.id === id) ?? null;
       setUnstakeLpTokenDialog({ open: true, liquidityPosition });
     }
     if (action.startsWith('unlock_token_')) {
       const id = action.split('_')[2];
-      const lock = data.data?.locks.find((lock) => lock.id === id) ?? null;
+      const lock = data?.locks.find((lock) => lock.id === id) ?? null;
       setUnlockTokenDialog({ open: true, lock });
     }
   }, [
@@ -68,8 +68,8 @@ export default function MyHoldingsModals() {
     setStakeLpTokenDialog,
     setUnstakeLpTokenDialog,
     setUnlockTokenDialog,
-    data.data?.liquidityPositions,
-    data.data?.locks,
+    data?.liquidityPositions,
+    data?.locks,
   ]);
 
   return (

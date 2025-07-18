@@ -18,8 +18,24 @@ function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
   );
 }
 
-function TableBody({ className, ...props }: React.ComponentProps<'tbody'>) {
-  return <tbody data-slot="table-body" className={className} {...props} />;
+function TableBody({
+  className,
+  borders,
+  ...props
+}: React.ComponentProps<'tbody'> & {
+  borders?: 'between';
+}) {
+  return (
+    <tbody
+      data-slot="table-body"
+      className={cn(
+        '*:border-void-20 *:border-b-1',
+        borders === 'between' && '*:last:border-b-0',
+        className
+      )}
+      {...props}
+    />
+  );
 }
 
 function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
@@ -46,7 +62,7 @@ function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
     <td
       data-slot="table-cell"
       className={cn(
-        'py-3 first:pl-0 last:pr-0 px-2 border-b-1 border-void-20 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[0.2rem]',
+        'py-3 first:pl-0 last:pr-0 px-2  align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[0.2rem]',
         className
       )}
       {...props}

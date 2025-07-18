@@ -1,7 +1,7 @@
 'use client';
 import { alertAtom } from '@/features/Alert/alert.atom';
 import Button from '@/shared/components/Button/Button';
-import Card from '@/shared/components/Card/Card';
+import SoloCard from '@/shared/components/Card/SoloCard';
 import Input from '@/shared/components/Form/Input';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
@@ -45,7 +45,7 @@ const UnstakeLpTokenConfirm: FormFlowStep<UnstakeLpTokenFields> = ({
   };
 
   return (
-    <Card title="Confirm your transaction">
+    <SoloCard title="Confirm your transaction">
       <form
         className="flex flex-col gap-8"
         onSubmit={form.handleSubmit(onSubmit)}
@@ -89,7 +89,7 @@ const UnstakeLpTokenConfirm: FormFlowStep<UnstakeLpTokenFields> = ({
           </Button>
         </div>
       </form>
-    </Card>
+    </SoloCard>
   );
 };
 

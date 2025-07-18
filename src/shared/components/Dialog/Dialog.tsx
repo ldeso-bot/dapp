@@ -1,11 +1,13 @@
+import { cn } from '@/shared/utils/component.utils';
 import { Dialog as DialogPrimitive, VisuallyHidden } from 'radix-ui';
 import * as React from 'react';
 
 type Props = {
   open: boolean;
   children: React.ReactNode;
+  className?: string;
 };
-export default function Dialog({ open, children }: Props) {
+export default function Dialog({ open, children, className }: Props) {
   return (
     <DialogPrimitive.Root open={open}>
       <DialogPrimitive.Portal>
@@ -14,7 +16,7 @@ export default function Dialog({ open, children }: Props) {
           <DialogPrimitive.Title>
             <VisuallyHidden.Root>Dialog</VisuallyHidden.Root>
           </DialogPrimitive.Title>
-          <div className="w-[38.2rem]">{children}</div>
+          <div className={cn('w-[38.2rem]', className)}>{children}</div>
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>

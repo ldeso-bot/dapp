@@ -1,7 +1,7 @@
 'use client';
 
 import Button from '@/shared/components/Button/Button';
-import Card from '@/shared/components/Card/Card';
+import SoloCard from '@/shared/components/Card/SoloCard';
 import Input from '@/shared/components/Form/Input';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
@@ -29,7 +29,7 @@ const UnstakeLpTokenForm: FormFlowStep<UnstakeLpTokenFields> = ({
 
   if (!liquidityPosition) return null;
   return (
-    <Card title="Unlock LP Tokens">
+    <SoloCard title="Unlock LP Tokens">
       <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-4 pt-3">
           <Input
@@ -73,7 +73,7 @@ const UnstakeLpTokenForm: FormFlowStep<UnstakeLpTokenFields> = ({
           </Button>
         </div>
       </form>
-    </Card>
+    </SoloCard>
   );
 };
 

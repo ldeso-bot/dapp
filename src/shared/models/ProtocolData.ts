@@ -62,6 +62,12 @@ type CarbonMarketBreakdownItem = {
   priceUSD: number;
 };
 
+export type CarbonClass = {
+  name: string;
+  category: string;
+  priceUSD: number;
+};
+
 export type CarbonMarket = CarbonMarketBreakdownItem[];
 
 /* Protocol Data */
@@ -74,4 +80,5 @@ export type ProtocolData = {
   carbonBacking: CarbonBacking;
   carbonLiquidity: CarbonLiquidity;
   carbonMarket: CarbonMarket;
+  carbonClasses: CarbonClass[];
 };

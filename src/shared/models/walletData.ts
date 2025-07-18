@@ -30,9 +30,9 @@ export type Balances = Record<LpToken | Token, number>;
 
 export type Allocation = {
   id: string;
-  class: string;
+  carbonClass: string;
   priceUSD: number;
-  amountTonnes: number;
+  amount: number;
   holder: Address;
   sharePercent: number;
   token: {
