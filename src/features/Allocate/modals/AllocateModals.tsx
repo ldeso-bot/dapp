@@ -5,8 +5,8 @@ import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useAtom } from 'jotai';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
-import EditAllocationFlow from '../EditAllocation/EditAllocationFlow';
-import { editAllocationDialogAtom } from '../EditAllocation/editAllocation.utils';
+import EditAllocationFlow from './EditAllocation/EditAllocationFlow';
+import { editAllocationDialogAtom } from './EditAllocation/editAllocation.utils';
 
 export default function AllocateModals() {
   const { data } = useWalletData();

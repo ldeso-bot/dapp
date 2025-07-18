@@ -1,4 +1,4 @@
-import { lockTokenDialogAtom } from '@/features/LockToken/lockToken.utils';
+import { lockTokenDialogAtom } from '@/features/MyHoldings/modals/LockToken/lockToken.utils';
 import Button from '@/shared/components/Button/Button';
 import { CardProps } from '@/shared/components/Card/Card';
 import Icon from '@/shared/components/Icon/Icon';

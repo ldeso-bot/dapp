@@ -7,7 +7,7 @@ import IdleBalancesCard from './cards/IdleBalancesCard/IdleBalancesCard';
 import K2LocksCard from './cards/K2LocksCard/K2LocksCard';
 import KvcmLocksCard from './cards/KVcmLocksCard/KVcmLocksCard';
 import LiquidityPositionsCard from './cards/LiquidityPositionsCard/LiquidityPositionsCard';
-import MyHoldingsModals from './MyHoldingsModals';
+import MyHoldingsModals from './modals/MyHoldingsModals';
 
 export default function MyHoldingsPage() {
   return (

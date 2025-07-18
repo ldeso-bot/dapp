@@ -1,6 +1,6 @@
 'use client';
 import { alertAtom } from '@/features/Alert/alert.atom';
-import { useTransferWithPermit } from '@/features/LockToken/lockToken.utils';
+import { useTransferWithPermit } from '@/features/MyHoldings/modals/LockToken/lockToken.utils';
 import Button from '@/shared/components/Button/Button';
 import SoloCard from '@/shared/components/Card/SoloCard';
 import Input from '@/shared/components/Form/Input';

@@ -3,10 +3,10 @@
 import ConnectedFeature from '@/shared/components/ConnectedFeature/ConnectedFeature';
 import StackedCards from '@/shared/components/StackedCards/StackedCards';
 import { Suspense } from 'react';
-import AllocateModals from './AllocateModals';
 import AllocationsIntroCard from './cards/AllocationsIntroCard/AllocationsIntroCard';
 import K2AllocationsCard from './cards/K2AllocationsCard/K2Allocations';
 import KvcmAllocationsCard from './cards/KVcmAllocationsCard/KVcmAllocationsCard';
+import AllocateModals from './modals/AllocateModals';
 
 export default function AllocatePage() {
   return (

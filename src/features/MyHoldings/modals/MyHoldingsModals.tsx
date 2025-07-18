@@ -5,14 +5,14 @@ import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useAtom } from 'jotai';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
-import { lockTokenDialogAtom } from '../LockToken/lockToken.utils';
-import LockTokenFlow from '../LockToken/LockTokenFlow';
-import { stakeLpTokenDialogAtom } from '../StakeLpToken/stakeLpToken.utils';
-import StakeLpTokenFlow from '../StakeLpToken/StakeLpTokenFlow';
-import { unlockTokenDialogAtom } from '../UnlockToken/unlockToken.utils';
-import UnlockTokenFlow from '../UnlockToken/UnlockTokenFlow';
-import { unstakeLpTokenDialogAtom } from '../UnstakeLpToken/unstakeLpToken.utils';
-import UnstakeLpTokenFlow from '../UnstakeLpToken/UnstakeLpTokenFlow';
+import { lockTokenDialogAtom } from './LockToken/lockToken.utils';
+import LockTokenFlow from './LockToken/LockTokenFlow';
+import { stakeLpTokenDialogAtom } from './StakeLpToken/stakeLpToken.utils';
+import StakeLpTokenFlow from './StakeLpToken/StakeLpTokenFlow';
+import { unlockTokenDialogAtom } from './UnlockToken/unlockToken.utils';
+import UnlockTokenFlow from './UnlockToken/UnlockTokenFlow';
+import { unstakeLpTokenDialogAtom } from './UnstakeLpToken/unstakeLpToken.utils';
+import UnstakeLpTokenFlow from './UnstakeLpToken/UnstakeLpTokenFlow';
 
 export default function MyHoldingsModals() {
   const [lockTokenDialog, setLockTokenDialog] = useAtom(lockTokenDialogAtom);
