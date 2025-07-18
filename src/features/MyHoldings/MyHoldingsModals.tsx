@@ -9,6 +9,8 @@ import { lockTokenDialogAtom } from '../LockToken/lockToken.utils';
 import LockTokenFlow from '../LockToken/LockTokenFlow';
 import { stakeLpTokenDialogAtom } from '../StakeLpToken/stakeLpToken.utils';
 import StakeLpTokenFlow from '../StakeLpToken/StakeLpTokenFlow';
+import { unlockTokenDialogAtom } from '../UnlockToken/unlockToken.utils';
+import UnlockTokenFlow from '../UnlockToken/UnlockTokenFlow';
 import { unstakeLpTokenDialogAtom } from '../UnstakeLpToken/unstakeLpToken.utils';
 import UnstakeLpTokenFlow from '../UnstakeLpToken/UnstakeLpTokenFlow';
 
@@ -20,6 +22,9 @@ export default function MyHoldingsModals() {
   const [unstakeLpTokenDialog, setUnstakeLpTokenDialog] = useAtom(
     unstakeLpTokenDialogAtom
   );
+  const [unlockTokenDialog, setUnlockTokenDialog] = useAtom(
+    unlockTokenDialogAtom
+  );
   const data = useWalletData();
 
   const searchParams = useSearchParams();
@@ -30,6 +35,7 @@ export default function MyHoldingsModals() {
     setStakeLpTokenDialog({ open: false, token: null });
     setLockTokenDialog({ open: false, token: null });
     setUnstakeLpTokenDialog({ open: false, liquidityPosition: null });
+    setUnlockTokenDialog({ open: false, lock: null });
     if (!action) return;
 
     /* Open dialogs if navigation to /my_holdings with action parameter */
@@ -51,12 +57,19 @@ export default function MyHoldingsModals() {
         data.data?.liquidityPositions.find((lp) => lp.id === id) ?? null;
       setUnstakeLpTokenDialog({ open: true, liquidityPosition });
     }
+    if (action.startsWith('unlock_token_')) {
+      const id = action.split('_')[2];
+      const lock = data.data?.locks.find((lock) => lock.id === id) ?? null;
+      setUnlockTokenDialog({ open: true, lock });
+    }
   }, [
     searchParams,
     setLockTokenDialog,
     setStakeLpTokenDialog,
     setUnstakeLpTokenDialog,
+    setUnlockTokenDialog,
     data.data?.liquidityPositions,
+    data.data?.locks,
   ]);
 
   return (
@@ -69,6 +82,9 @@ export default function MyHoldingsModals() {
       </Dialog>
       <Dialog open={unstakeLpTokenDialog.open}>
         <UnstakeLpTokenFlow />
+      </Dialog>
+      <Dialog open={unlockTokenDialog.open}>
+        <UnlockTokenFlow />
       </Dialog>
     </>
   );

@@ -16,12 +16,14 @@ import {
 export default function StakeLpTokenFlow() {
   const unstakeLpTokenDialog = useAtomValue(unstakeLpTokenDialogAtom);
 
+  const max = unstakeLpTokenDialog.liquidityPosition?.balance ?? 0;
   // Form and schema are deffined at the flow level
   const schema = z.object({
     liquidityPositionId: z.string(),
     amount: z.coerce
       .number()
       .gt(0, 'Amount must be a positive integer')
+      .max(max, `Amount cannot exceed ${max}`)
       .int('Amount must be a positive integer'),
   });
   const form = useForm<UnstakeLpTokenFields>({

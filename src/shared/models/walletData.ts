@@ -8,11 +8,14 @@ export type Holding = {
   apyPercent: number;
 };
 
-export type KVcmLock = Holding & {
+export type Lock = Holding & {
   endTimestamp: number;
+  token: AllocationToken;
+  riskyYieldPercent: number;
+  baseApyPercent: number;
 };
 
-export type KVcmLocks = KVcmLock[];
+export type Locks = Lock[];
 
 export type LiquidityPosition = Holding & {
   token: LpToken;
@@ -22,14 +25,6 @@ export type LiquidityPosition = Holding & {
   };
 };
 export type LiquidityPositions = LiquidityPosition[];
-
-export type K2Lock = Holding & {
-  riskyYieldPercent: number;
-  baseApyPercent: number;
-  endTimestamp: number;
-};
-
-export type K2Locks = K2Lock[];
 
 export type Balances = Record<LpToken | Token, number>;
 
@@ -49,9 +44,8 @@ export type Allocations = Allocation[];
 
 /* Wallet Data */
 export type WalletData = {
-  kvcmLocks: KVcmLocks;
+  locks: Locks;
   liquidityPositions: LiquidityPositions;
-  k2Locks: K2Locks;
   balances: Balances;
   allocations: Allocations;
 };
