@@ -58,6 +58,10 @@ body {
   color: red;
 }
 
+.bg-overlay-10 {
+  background-color: var(--void-10);
+}
+
 /* Tailwind styles extensions */
 .text-size-20 {
   font-size: 2rem;

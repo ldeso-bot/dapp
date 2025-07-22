@@ -60,6 +60,7 @@ type CarbonMarketBreakdownItem = {
   category: string;
   capacityTonnes: number;
   priceUSD: number;
+  changeUSD: number;
 };
 
 export type CarbonClass = {

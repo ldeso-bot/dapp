@@ -2,19 +2,18 @@
 
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
+import Input from '@/shared/components/Form/Input';
 import SelectInput from '@/shared/components/Form/SelectInput';
 import TokenAmountInput from '@/shared/components/Form/TokenAmountInput';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
-import { useState } from 'react';
-import PayWithOptions from '../components/PayWithOptions/PayWithOptions';
-import PriceDetails from '../components/PriceDetails/PriceDetails';
-import { RetireCarbonFields, carbonPrices } from '../retire.constants';
+import SlippageSlider from '../components/SlippageSlider/SlippageSlider';
+import { SellCarbonFields, carbonPrices } from '../sellCarbon.constants';
 
-const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
+const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
   const { form } = data;
-  const [paymentMethod, setPaymentMethod] = useState('kvcm');
+  const { handleSubmit } = form;
 
   const onSubmit = () => {
     next();
@@ -26,28 +25,33 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
 
   return (
     <Card
-      title="Retire Carbon"
+      title="Sell Carbon"
       className="w-[36rem] border-0 rounded-xl"
       titleClassName="font-bold text-void-80 text-size-18">
-      <form className="flex flex-col gap-8" onSubmit={form.handleSubmit(onSubmit)}>
+      <div className="flex-1">
+        <div className="font-base text-void-50 text-size-12">
+          Quotes are not guaranteed due to ever-changing network conditions. Slippage may occur. Learn more
+        </div>
+      </div>
+      <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-4 pt-3">
           <SelectInput
-            label="Carbon Class"
+            label="Token"
             defaultValue={`${carbonPrices[0].category}-${carbonPrices[0].type}`}
             items={Object.values(carbonPrices).map((carbonPrice) => ({
               label: `${carbonPrice.category} - ${carbonPrice.type}`,
               value: `${carbonPrice.category}-${carbonPrice.type}`,
             }))}
-            {...form.register('carbonClass')}
+            {...form.register('token')}
           />
           <SelectInput
-            label="Carbon Credit"
+            label="Carbon Class"
             defaultValue={`${carbonPrices[1].category}-${carbonPrices[1].type}`}
             items={Object.values(carbonPrices).map((carbonPrice) => ({
               label: `${carbonPrice.category} - ${carbonPrice.type}`,
               value: `${carbonPrice.category}-${carbonPrice.type}`,
             }))}
-            {...form.register('carbonCredit')}
+            {...form.register('carbonClass')}
           />
           <TokenAmountInput
             tokenIconSrc={tokens.kvcm.iconSrc}
@@ -59,14 +63,14 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
               ...form.register('amount'),
             }}
           />
-          <PayWithOptions value={paymentMethod} onChange={setPaymentMethod} />
-          <PriceDetails paymentMethod={paymentMethod} />
+          <Input className="h-[4rem]" label="Receive" placeholder="Select a token first" readOnly />
+          <SlippageSlider form={form} />
         </div>
         <div className="flex flex-col gap-3 w-full">
-          <Button className="rounded-md" colors="secondary" context="flow" type="submit">
-            Retire Carbon
+          <Button colors="secondary" context="flow" type="submit">
+            Sell Carbon
           </Button>
-          <Button className="rounded-md" colors="primary" context="flow" href={`${ROUTES.RETIRE}`}>
+          <Button colors="primary" context="flow" href={`${ROUTES.SELL_CARBON}`}>
             Cancel
           </Button>
         </div>
@@ -75,4 +79,4 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
   );
 };
 
-export default RetireCarbonForm;
+export default SellCarbonForm;

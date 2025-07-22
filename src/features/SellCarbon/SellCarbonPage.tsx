@@ -5,20 +5,22 @@ import Steps from '@/shared/components/Steps/Steps';
 import { useParsedForm } from '@/shared/hooks/web3/useParsedForm';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import RetireInfoCard from './components/RetireInfoCard/RetireInfoCard';
-import { RetireCarbonFields, retireCarbonSchema } from './retire.constants';
-import RetireCarbonConfirm from './steps/RetireCarbonConfirm';
-import RetireCarbonForm from "./steps/RetireCarbonForm";
+import SellCarbonInfoCard from './components/SellCarbonInfoCard/SellCarbonInfoCard';
+import { SellCarbonFields, sellCarbonSchema } from './sellCarbon.constants';
+import SellCarbonApprove from './steps/SellCarbonApprove';
+import SellCarbonForm from './steps/SellCarbonForm';
 
-export default function RetirePage() {
-  const schema = retireCarbonSchema;
-  const form = useForm<RetireCarbonFields>({
+export default function SellCarbonPage() {
+  const schema = sellCarbonSchema;
+
+  const form = useForm<SellCarbonFields>({
     resolver: zodResolver(schema),
     defaultValues: {
       paymentMethod: '',
       amount: 0,
-      carbonClass: '',
-      carbonCredit: '',
+      slippage: 50,
+      token: '',
+      carbonClass: ''
     },
   });
 
@@ -26,10 +28,10 @@ export default function RetirePage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <RetireInfoCard />
+      <SellCarbonInfoCard />
       <div className="flex gap-4 space-between mx-auto max-w-7xl">
         <Steps
-          components={[RetireCarbonForm, RetireCarbonConfirm]}
+          components={[SellCarbonForm, SellCarbonApprove]}
           data={{ form, schema, parsedForm }}
         />
         <CarbonClassCard />

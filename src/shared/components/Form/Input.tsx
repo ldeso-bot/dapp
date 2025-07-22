@@ -5,19 +5,24 @@ import InputWrapper, { InputWrapperProps } from './InputWrapper';
 
 type Props = {
   iconSrc?: StaticImageData;
+  iconSize?: 'sm' | 'md',
 } & Omit<InputWrapperProps, 'children'> &
   InputHTMLAttributes<HTMLInputElement>;
 
-export default function Input({ iconSrc, ...props }: Props) {
+export default function Input({ iconSrc, iconSize = 'md', ...props }: Props) {
   return (
     <InputWrapper {...props}>
       <input
         {...props}
         className={cn(
           'px-3 py-2 rounded-lg gap-2 w-full',
-          !!iconSrc && 'pl-12',
           !props.disabled && !props.readOnly && 'border-1 hover:opacity-80',
-          (props.disabled || props.readOnly) && 'bg-void-10'
+          (props.disabled || props.readOnly) && 'border-1 bg-void-10',
+          {
+            'pl-10': !!iconSrc && iconSize === 'sm',
+            'pl-12': !!iconSrc && iconSize === 'md',
+          },
+          props.className
         )}
         style={{
           backgroundImage: `url(${iconSrc?.src})`,
