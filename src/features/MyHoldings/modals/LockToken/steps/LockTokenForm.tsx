@@ -6,9 +6,9 @@ import Input from '@/shared/components/Form/Input';
 import SelectInput from '@/shared/components/Form/SelectInput';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import Yield from '@/shared/components/Yield/Yield';
+import { ALLOCATION_TOKENS_FORM_INPUT_ITEMS } from '@/shared/constants/form.constants';
 import { ROUTES } from '@/shared/constants/route.constants';
 import {
-  allocationTokens,
   DEFAULT_ALLOCATION_TOKEN,
   tokens,
 } from '@/shared/constants/tokens.constants';
@@ -41,11 +41,7 @@ const PurchaseBondForm: FormFlowStep<LockTokenFields> = ({ next, data }) => {
           <SelectInput
             label="Token"
             defaultValue={lockTokenDialogState.token ?? 'kvcm'}
-            items={Object.entries(allocationTokens).map(([key, token]) => ({
-              value: key,
-              label: token.symbol,
-              icon: token.icon(),
-            }))}
+            items={ALLOCATION_TOKENS_FORM_INPUT_ITEMS}
             {...form.register('token')}
           />
           <Yield baseApy={0.06} riskyYield={0.14}></Yield>

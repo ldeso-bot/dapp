@@ -45,7 +45,7 @@ export const getAllocations = async (
     },
     {
       id: '4',
-      carbonClass: 'Mangrooves',
+      carbonClass: 'Mangroves (MNGRV)',
       priceUSD: 3.99,
       amount: 100,
       holder: '0x1234567890123456789012345678901234567890',
@@ -69,7 +69,7 @@ export const getAllocations = async (
     },
     {
       id: '6',
-      carbonClass: 'Mangrooves',
+      carbonClass: 'Mangroves (MNGRV)',
       priceUSD: 3.99,
       amount: 100,
       holder: '0x1234567890123456789012345678901234567890',

@@ -5,33 +5,36 @@ import SoloCard from '@/shared/components/Card/SoloCard';
 import Input from '@/shared/components/Form/Input';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
-import { tokens } from '@/shared/constants/tokens.constants';
-import { useAtomValue, useSetAtom } from 'jotai';
-import { useRouter } from 'next/navigation';
 import {
-  EditAllocationFields,
-  editAllocationDialogAtom,
-} from '../editAllocation.utils';
+  DEFAULT_ALLOCATION_TOKEN,
+  tokens,
+} from '@/shared/constants/tokens.constants';
+import { isToken } from '@/shared/utils/typeguards';
+import { useSetAtom } from 'jotai';
+import { useRouter } from 'next/navigation';
+import { NewAllocationFields } from '../newAllocation.utils';
 
-const EditAllocationConfirm: FormFlowStep<EditAllocationFields> = ({
+const NewAllocationConfirm: FormFlowStep<NewAllocationFields> = ({
   previous,
   data,
 }) => {
   const { parsedForm, form } = data;
+  const { watch } = form;
 
   const setAlert = useSetAtom(alertAtom);
   const router = useRouter();
-  const editAllocationDialogState = useAtomValue(editAllocationDialogAtom);
-  const allocation = editAllocationDialogState.allocation;
-
-  if (!allocation) return null;
+  const token = watch('token');
+  const typedToken = isToken(token) ? token : DEFAULT_ALLOCATION_TOKEN;
+  const carbonClassName = parsedForm.current?.carbonClass;
 
   const onSubmit = async () => {
-    setAlert({
-      title: 'Unlock Successful',
-      description: `You’ve successfully allocated ${parsedForm.current?.amount} ${tokens[allocation.token.name].symbol} to ${allocation.carbonClass}! You can edit this allocation at any time.`,
-      type: 'success',
-    });
+    if (isToken(parsedForm.current?.token)) {
+      setAlert({
+        title: 'Unlock Successful',
+        description: `You’ve successfully allocated ${parsedForm.current?.amount} ${tokens[typedToken].symbol} to ${carbonClassName}! You can edit this allocation at any time.`,
+        type: 'success',
+      });
+    }
     router.push(ROUTES.ALLOCATE);
   };
 
@@ -47,15 +50,11 @@ const EditAllocationConfirm: FormFlowStep<EditAllocationFields> = ({
             blockchain.
             <Input
               label="You are allocating"
-              defaultValue={`${parsedForm.current?.amount} ${tokens[allocation.token.name].symbol}`}
-              iconSrc={tokens[allocation.token.name].iconSrc}
-              readOnly
+              value={`${parsedForm.current?.amount} ${tokens[typedToken].symbol}`}
+              iconSrc={tokens[typedToken].iconSrc}
+              readOnly={true}
             />
-            <Input
-              label="Carbon Class"
-              defaultValue={allocation.carbonClass}
-              readOnly
-            />
+            <Input label="Carbon Class" value={carbonClassName} />
           </div>{' '}
           <div className="flex flex-col gap-3 w-full">
             <Button colors="secondary" context="flow" type="submit">
@@ -71,4 +70,4 @@ const EditAllocationConfirm: FormFlowStep<EditAllocationFields> = ({
   );
 };
 
-export default EditAllocationConfirm;
+export default NewAllocationConfirm;

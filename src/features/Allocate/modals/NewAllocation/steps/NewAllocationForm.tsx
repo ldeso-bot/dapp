@@ -5,59 +5,65 @@ import SoloCard from '@/shared/components/Card/SoloCard';
 import Input from '@/shared/components/Form/Input';
 import SelectInput from '@/shared/components/Form/SelectInput';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
+import { ALLOCATION_TOKENS_FORM_INPUT_ITEMS } from '@/shared/constants/form.constants';
 import { ROUTES } from '@/shared/constants/route.constants';
-import { tokens } from '@/shared/constants/tokens.constants';
+import {
+  DEFAULT_ALLOCATION_TOKEN,
+  tokens,
+} from '@/shared/constants/tokens.constants';
 import { useCarbonClasses } from '@/shared/hooks/web3/useCarbonClasses';
+import { isToken } from '@/shared/utils/typeguards';
 import { useAtomValue } from 'jotai';
 import CarbonClassesCard from '../../../shared/CarbonClassesCard';
 import {
-  EditAllocationFields,
-  editAllocationDialogAtom,
-} from '../editAllocation.utils';
+  newAllocationDialogAtom,
+  NewAllocationFields,
+} from '../newAllocation.utils';
 
-const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({
+const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({
   next,
   data,
 }) => {
   const { form } = data;
-  const { handleSubmit, formState } = form;
-  const editAllocationDialogState = useAtomValue(editAllocationDialogAtom);
-  const allocation = editAllocationDialogState.allocation;
+  const { handleSubmit, formState, watch } = form;
+
   const { selectInputItems: carbonClassesSelectInputItems } =
     useCarbonClasses();
+
+  const newAllocationDialog = useAtomValue(newAllocationDialogAtom);
+
+  const token = watch('token');
+
+  const typedToken = isToken(token) ? token : DEFAULT_ALLOCATION_TOKEN;
 
   // Wrapping next into handleSubmit to ensure the form is valid before going to the validation step
   const onSubmit = () => {
     next();
   };
 
-  if (!allocation) return null;
   return (
     <div className="flex lg:flex-row flex-col gap-10 w-full justify-center">
-      <SoloCard
-        title="Edit allocation"
-        className="grow-1 max-w-[38.2rem] h-fit"
-      >
+      <SoloCard title="New allocation" className="grow-1 max-w-[38.2rem] h-fit">
         <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-4 pt-3">
-            <Input
+            <SelectInput
               label="Token"
-              defaultValue={tokens[allocation.token.name].symbol}
-              iconSrc={tokens[allocation.token.name].iconSrc}
-              readOnly
+              defaultValue={newAllocationDialog.token ?? 'kvcm'}
+              items={ALLOCATION_TOKENS_FORM_INPUT_ITEMS}
+              {...form.register('token')}
             />
             <Input
               label="Amount"
               type="number"
-              iconSrc={tokens[allocation.token.name].iconSrc}
+              iconSrc={tokens[typedToken].iconSrc}
               {...form.register('amount')}
               error={formState.errors.amount}
             />
             <SelectInput
               label="Carbon Class"
-              defaultValue={allocation.carbonClass}
               items={carbonClassesSelectInputItems}
-              readOnly
+              {...form.register('carbonClass')}
+              error={formState.errors.carbonClass}
             />
           </div>
           <div className="flex flex-col gap-3 w-full">
@@ -75,4 +81,4 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({
   );
 };
 
-export default EditAllocationForm;
+export default NewAllocationForm;

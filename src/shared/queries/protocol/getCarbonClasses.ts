@@ -46,8 +46,8 @@ export const getCarbonClasses = async (sdk: Sdk): Promise<CarbonClass[]> => {
       priceUSD: 12.04,
     },
     {
-      name: 'Mangroves (MNGRV)',
-      category: 'Water Filtration',
+      name: 'Water Filtration',
+      category: 'Blue Carbon',
       priceUSD: 3.99,
     },
     {

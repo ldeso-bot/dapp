@@ -41,7 +41,7 @@ export default function Select({
     <InputWrapper label={label} error={error}>
       <SelectPrimitive.Root
         value={stringValue}
-        disabled={props.disabled}
+        disabled={props.disabled ?? props.readOnly}
         onValueChange={onValueChange}
         defaultValue={String(defaultValue)}
       >

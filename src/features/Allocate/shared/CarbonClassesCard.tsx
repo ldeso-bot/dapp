@@ -7,7 +7,7 @@ import {
   TableCell,
   TableRow,
 } from '@/shared/components/Table/table';
-import { useCarbonCategories } from '@/shared/hooks/web3/useCarbonCategories';
+import { useCarbonClasses } from '@/shared/hooks/web3/useCarbonClasses';
 import { formatPriceUSD } from '@/shared/utils/string.utils';
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
 };
 
 const CarbonClassesCard: React.FC<Props> = ({ className }) => {
-  const { categories } = useCarbonCategories();
+  const { categories } = useCarbonClasses();
 
   return (
     <SoloCard title="Carbon Classes" className={className}>

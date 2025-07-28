@@ -1,7 +1,7 @@
 import { CardProps } from '@/shared/components/Card/Card';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
-import AllocationsTable from '../../Shared/AllocationsTable';
+import AllocationsTable from '../../shared/AllocationsTable';
 
 export default function K2AllocationsCard(props: CardProps) {
   const { data } = useWalletData();

@@ -8,10 +8,10 @@ type CategoryInfo = {
 };
 
 /**
- * Extracts the categories from the carbon classes
+ * Extracts the categories and select input items from the carbon classes
  * @returns
  */
-export const useCarbonCategories = () => {
+export const useCarbonClasses = () => {
   const { data, ...rest } = useProtocolData();
   const categories: CategoryInfo[] = unique(
     data?.carbonClasses.map((c) => c.category) ?? []
@@ -20,5 +20,11 @@ export const useCarbonCategories = () => {
     carbonClasses: data?.carbonClasses.filter((cc) => cc.category === c) ?? [],
   }));
 
-  return { categories, ...rest };
+  const selectInputItems =
+    data?.carbonClasses.map((c) => ({
+      value: c.name,
+      label: c.name,
+    })) || [];
+
+  return { categories, selectInputItems, ...rest };
 };
