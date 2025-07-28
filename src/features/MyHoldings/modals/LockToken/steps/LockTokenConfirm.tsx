@@ -3,6 +3,9 @@ import { alertAtom } from '@/features/Alert/alert.atom';
 import Button from '@/shared/components/Button/Button';
 import SoloCard from '@/shared/components/Card/SoloCard';
 import Input from '@/shared/components/Form/Input';
+import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
+import Form from '@/shared/components/Form/layout/Form';
+import InputGroup from '@/shared/components/Form/layout/InputGroup';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
@@ -52,14 +55,13 @@ const PurchaseBondConfirm: FormFlowStep<LockTokenFields> = ({
 
   return (
     <SoloCard title="Confirm your transaction">
-      <form
-        className="flex flex-col gap-8"
+      <Form
         onSubmit={form.handleSubmit(onSubmit)}
-      >
-        <div className="flex flex-col gap-4 pt-3">
-          To complete this transaction, please allow our smart contract to
+        description="To complete this transaction, please allow our smart contract to
           transfer tokens on your behalf. Test: Clicking Submit will make a USDC
-          transfer with permit
+          transfer with permit"
+      >
+        <InputGroup>
           <Input
             label="Contract Address"
             value={formatAddress(contract?.address)}
@@ -76,16 +78,16 @@ const PurchaseBondConfirm: FormFlowStep<LockTokenFields> = ({
             readOnly={true}
             value={formatTimestamp(parsedForm.current?.maturityDate)}
           />
-        </div>
-        <div className="flex flex-col gap-3 w-full">
+        </InputGroup>
+        <ButtonGroup>
           <Button colors="secondary" context="flow" type="submit">
             Submit
           </Button>
           <Button colors="primary" context="flow" onClick={previous}>
             Cancel
           </Button>
-        </div>
-      </form>
+        </ButtonGroup>
+      </Form>
     </SoloCard>
   );
 };

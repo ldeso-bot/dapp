@@ -3,6 +3,9 @@
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
 import Input from '@/shared/components/Form/Input';
+import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
+import Form from '@/shared/components/Form/layout/Form';
+import InputGroup from '@/shared/components/Form/layout/InputGroup';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
@@ -29,8 +32,8 @@ const UnlockTokenForm: FormFlowStep<UnlockTokenFields> = ({ next, data }) => {
 
   return (
     <Card title="Claim your matured bond">
-      <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-4 pt-3">
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <InputGroup>
           <Input
             label="Token"
             value={tokens[lock.token].symbol}
@@ -58,8 +61,8 @@ const UnlockTokenForm: FormFlowStep<UnlockTokenFields> = ({ next, data }) => {
             readOnly={true}
             tooltip={tooltip}
           />
-        </div>
-        <div className="flex flex-col gap-3 w-full">
+        </InputGroup>
+        <ButtonGroup>
           <Button colors="secondary" context="flow" type="submit">
             Claim
           </Button>
@@ -70,8 +73,8 @@ const UnlockTokenForm: FormFlowStep<UnlockTokenFields> = ({ next, data }) => {
           >
             Cancel
           </Button>
-        </div>
-      </form>
+        </ButtonGroup>
+      </Form>
     </Card>
   );
 };

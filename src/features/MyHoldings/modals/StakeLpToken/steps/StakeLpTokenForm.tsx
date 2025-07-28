@@ -3,6 +3,9 @@
 import Button from '@/shared/components/Button/Button';
 import SoloCard from '@/shared/components/Card/SoloCard';
 import Input from '@/shared/components/Form/Input';
+import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
+import Form from '@/shared/components/Form/layout/Form';
+import InputGroup from '@/shared/components/Form/layout/InputGroup';
 import SelectInput from '@/shared/components/Form/SelectInput';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import Yield from '@/shared/components/Yield/Yield';
@@ -39,8 +42,8 @@ const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({ next, data }) => {
 
   return (
     <SoloCard title="Lock LP Tokens">
-      <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-4 pt-3">
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <InputGroup>
           <SelectInput
             label="Token"
             defaultValue={stakeLpTokenDialogState.token ?? DEFAULT_LP_TOKEN}
@@ -63,11 +66,10 @@ const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({ next, data }) => {
             label="Maturity Date"
             items={MATURITY_DATES_OPTIONS}
             {...form.register('maturityDate')}
-            // Select Input being a custom (non HTML input) we cannot set the default value using react hook form
             defaultValue={MATURITY_DATES[0]}
           />
-        </div>
-        <div className="flex flex-col gap-3 w-full">
+        </InputGroup>
+        <ButtonGroup>
           <Button colors="secondary" context="flow" type="submit">
             Lock LP Tokens
           </Button>
@@ -78,8 +80,8 @@ const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({ next, data }) => {
           >
             Cancel
           </Button>
-        </div>
-      </form>
+        </ButtonGroup>
+      </Form>
     </SoloCard>
   );
 };

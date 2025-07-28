@@ -4,7 +4,7 @@ import { Select as SelectPrimitive } from 'radix-ui';
 import React, { ReactNode } from 'react';
 import { FieldError } from 'react-hook-form';
 import Icon from '../Icon/Icon';
-import InputWrapper from './InputWrapper';
+import InputWrapper from './layout/InputWrapper';
 
 type SelectInputItem = {
   value: string | number | bigint;

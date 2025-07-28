@@ -1,7 +1,7 @@
 import { cn } from '@/shared/utils/component.utils';
 import { StaticImageData } from 'next/image';
 import { InputHTMLAttributes } from 'react';
-import InputWrapper, { InputWrapperProps } from './InputWrapper';
+import InputWrapper, { InputWrapperProps } from './layout/InputWrapper';
 
 type Props = {
   iconSrc?: StaticImageData;

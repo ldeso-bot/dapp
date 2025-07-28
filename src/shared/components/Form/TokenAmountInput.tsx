@@ -5,16 +5,16 @@ import Input from '@/shared/components/Form/Input';
 import type { StaticImageData } from 'next/image';
 import { InputHTMLAttributes, useState } from 'react';
 import { FieldError } from 'react-hook-form';
-import InputWrapper from './InputWrapper';
+import InputWrapper from './layout/InputWrapper';
 
 type Props = {
   tokenIconSrc: StaticImageData;
   errorMessage?: FieldError;
   inputProps: InputHTMLAttributes<HTMLInputElement>;
-}
+};
 
 export default function TokenAmountInput(props: Props) {
-  const [availableBalance] = useState(0.00);
+  const [availableBalance] = useState(0.0);
   const { inputProps, errorMessage, tokenIconSrc } = props;
   return (
     <InputWrapper
@@ -33,7 +33,8 @@ export default function TokenAmountInput(props: Props) {
         <div className="flex items-center gap-2 mt-2 -ml-1">
           <Button
             colors="secondary"
-            className='uppercase py-3 text-md h-[4rem]'>
+            className="uppercase py-3 text-md h-[4rem]"
+          >
             Max
           </Button>
         </div>

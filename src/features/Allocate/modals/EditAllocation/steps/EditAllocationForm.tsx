@@ -3,11 +3,12 @@
 import Button from '@/shared/components/Button/Button';
 import SoloCard from '@/shared/components/Card/SoloCard';
 import Input from '@/shared/components/Form/Input';
-import SelectInput from '@/shared/components/Form/SelectInput';
+import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
+import Form from '@/shared/components/Form/layout/Form';
+import InputGroup from '@/shared/components/Form/layout/InputGroup';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
-import { useCarbonClasses } from '@/shared/hooks/web3/useCarbonClasses';
 import { useAtomValue } from 'jotai';
 import CarbonClassesCard from '../../../shared/CarbonClassesCard';
 import {
@@ -23,8 +24,6 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({
   const { handleSubmit, formState } = form;
   const editAllocationDialogState = useAtomValue(editAllocationDialogAtom);
   const allocation = editAllocationDialogState.allocation;
-  const { selectInputItems: carbonClassesSelectInputItems } =
-    useCarbonClasses();
 
   // Wrapping next into handleSubmit to ensure the form is valid before going to the validation step
   const onSubmit = () => {
@@ -38,8 +37,9 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({
         title="Edit allocation"
         className="grow-1 max-w-[38.2rem] h-fit"
       >
-        <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-col gap-4 pt-3">
+        {formState.errors.allocationId?.message}
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <InputGroup>
             <Input
               label="Token"
               defaultValue={tokens[allocation.token.name].symbol}
@@ -53,22 +53,16 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({
               {...form.register('amount')}
               error={formState.errors.amount}
             />
-            <SelectInput
-              label="Carbon Class"
-              defaultValue={allocation.carbonClass}
-              items={carbonClassesSelectInputItems}
-              readOnly
-            />
-          </div>
-          <div className="flex flex-col gap-3 w-full">
+          </InputGroup>
+          <ButtonGroup>
             <Button colors="secondary" context="flow" type="submit">
               Confirm Allocation
             </Button>
             <Button colors="primary" context="flow" href={`${ROUTES.ALLOCATE}`}>
               Cancel
             </Button>
-          </div>
-        </form>
+          </ButtonGroup>
+        </Form>
       </SoloCard>
       <CarbonClassesCard className="grow-1 max-w-[38.2rem]" />
     </div>

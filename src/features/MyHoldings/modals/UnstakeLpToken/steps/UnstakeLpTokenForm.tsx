@@ -3,6 +3,9 @@
 import Button from '@/shared/components/Button/Button';
 import SoloCard from '@/shared/components/Card/SoloCard';
 import Input from '@/shared/components/Form/Input';
+import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
+import Form from '@/shared/components/Form/layout/Form';
+import InputGroup from '@/shared/components/Form/layout/InputGroup';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
@@ -30,8 +33,8 @@ const UnstakeLpTokenForm: FormFlowStep<UnstakeLpTokenFields> = ({
   if (!liquidityPosition) return null;
   return (
     <SoloCard title="Unlock LP Tokens">
-      <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-4 pt-3">
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <InputGroup>
           <Input
             label="Token"
             value={tokens[liquidityPosition.token].symbol}
@@ -59,8 +62,8 @@ const UnstakeLpTokenForm: FormFlowStep<UnstakeLpTokenFields> = ({
             value={`${liquidityPosition.rewards.kvcm} ${tokens.kvcm.symbol}`}
             tooltip={tooltip}
           />
-        </div>
-        <div className="flex flex-col gap-3 w-full">
+        </InputGroup>
+        <ButtonGroup>
           <Button colors="secondary" context="flow" type="submit">
             Unlock
           </Button>
@@ -71,8 +74,8 @@ const UnstakeLpTokenForm: FormFlowStep<UnstakeLpTokenFields> = ({
           >
             Cancel
           </Button>
-        </div>
-      </form>
+        </ButtonGroup>
+      </Form>
     </SoloCard>
   );
 };

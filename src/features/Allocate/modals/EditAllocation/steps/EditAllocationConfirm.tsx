@@ -3,6 +3,9 @@ import { alertAtom } from '@/features/Alert/alert.atom';
 import Button from '@/shared/components/Button/Button';
 import SoloCard from '@/shared/components/Card/SoloCard';
 import Input from '@/shared/components/Form/Input';
+import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
+import Form from '@/shared/components/Form/layout/Form';
+import InputGroup from '@/shared/components/Form/layout/InputGroup';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
@@ -38,13 +41,12 @@ const EditAllocationConfirm: FormFlowStep<EditAllocationFields> = ({
   return (
     <div className="flex flex-row justify-center">
       <SoloCard title="Confirm your transaction" className="max-w-[38.2rem]">
-        <form
-          className="flex flex-col gap-8"
+        <Form
           onSubmit={form.handleSubmit(onSubmit)}
+          description="Give the transaction one final review before submitting to the
+            blockchain."
         >
-          <div className="flex flex-col gap-4 pt-3">
-            Give the transaction one final review before submitting to the
-            blockchain.
+          <InputGroup>
             <Input
               label="You are allocating"
               defaultValue={`${parsedForm.current?.amount} ${tokens[allocation.token.name].symbol}`}
@@ -56,16 +58,17 @@ const EditAllocationConfirm: FormFlowStep<EditAllocationFields> = ({
               defaultValue={allocation.carbonClass}
               readOnly
             />
-          </div>{' '}
-          <div className="flex flex-col gap-3 w-full">
+            <Input label="Carbon Class" value={allocation.carbonClass} />
+          </InputGroup>
+          <ButtonGroup>
             <Button colors="secondary" context="flow" type="submit">
               Submit
             </Button>
             <Button colors="primary" context="flow" onClick={previous}>
               Cancel
             </Button>
-          </div>
-        </form>
+          </ButtonGroup>
+        </Form>
       </SoloCard>
     </div>
   );

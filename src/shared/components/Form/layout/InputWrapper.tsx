@@ -1,7 +1,7 @@
 import { cn } from '@/shared/utils/component.utils';
 import React from 'react';
 import { FieldError } from 'react-hook-form';
-import Tooltip from '../Tooltip/Tooltip';
+import Tooltip from '../../Tooltip/Tooltip';
 import InputError from './InputError';
 
 export type InputWrapperProps = {
