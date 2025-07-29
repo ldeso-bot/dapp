@@ -70,21 +70,6 @@ export const formatDate = (date: number): string => {
   return dateObj.toLocaleDateString('en-US', dateOptions);
 };
 
-export const formatDuration = (days: number) => {
-  if (days >= 365) {
-    return `${days / 365}y`;
-  }
-  return `${days}d`;
-};
-
-export const formatDurationLong = (days: number) => {
-  const years = Math.floor(days / 365);
-  if (years > 0) {
-    return `${years} year${years > 1 ? 's' : ''}`;
-  }
-  return `${days} day${days > 1 ? 's' : ''}`;
-};
-
 export const formatAmountWithCommas = (
   value: number,
   digits: number = 2
@@ -96,6 +81,9 @@ export const formatAmountWithUnits = (value: number): string => {
   return nFormatter(value, 0);
 };
 
-export const formatPriceUSDWithCommas = (value: number): string => {
-  return `$${formatAmountWithCommas(value, 2)}`;
+export const formatPriceUSDWithCommas = (
+  value: number,
+  digits: number = 2
+): string => {
+  return `$${formatAmountWithCommas(value, digits)}`;
 };

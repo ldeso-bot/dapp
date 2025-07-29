@@ -1,27 +1,15 @@
 import { cn } from '@/shared/utils/component.utils';
 import styles from './tooltip.module.css';
 
-type KeyValue = {
-  label: string;
-  value: React.ReactNode;
-};
-
 type Props = {
   className?: string;
-  items: KeyValue[];
+  children: React.ReactNode;
 };
 
-export default function ChartTooltip({ className, items }: Props) {
+export default function ChartTooltip({ className, children }: Props) {
   return (
     <div className={cn(styles.TooltipContent, className)}>
-      <div className="flex flex-col gap-2">
-        {items.map((item) => (
-          <div key={item.label} className="flex flex-row gap-2 justify-between">
-            <div className="font-bold">{item.label}:</div>
-            <div className="font-normal">{item.value}</div>
-          </div>
-        ))}
-      </div>
+      <div className="flex flex-col gap-2">{children}</div>
     </div>
   );
 }

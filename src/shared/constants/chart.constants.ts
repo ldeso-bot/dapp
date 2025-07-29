@@ -1,14 +1,15 @@
 import { CurveType } from 'recharts/types/shape/Curve';
 
 const void30 = '#999';
-
 const void60 = '#464646';
+const green60 = '#00c52d';
+const black = '#000';
 
 export const LINE_PROPS = {
   stroke: void60,
   strokeWidth: 2,
-  dot: { r: 4 },
-  activeDot: { r: 6 },
+  dot: { r: 6, fill: green60, stroke: '' },
+  activeDot: { r: 6, fill: green60, stroke: black },
   type: 'monotone' as CurveType,
 };
 
@@ -32,6 +33,8 @@ export const AXIS_PROPS = {
     fontSize: 12,
   },
   tickLine: false,
+  angle: -45,
+  textAnchor: 'end',
 };
 
 export const Y_AXIS_LABEL_PROPS = {

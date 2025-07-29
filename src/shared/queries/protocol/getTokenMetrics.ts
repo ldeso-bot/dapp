@@ -8,16 +8,16 @@ export const getTokenMetrics = async (sdk: Sdk): Promise<AllMetrics> => {
   });
   if (!tokens) console.log('');
   return {
-    klimaBonded: {
+    kVcmLocked: {
       valueUSD: 1.32,
       valueChangePercent24h: 0.12,
-      amountTonnes: 100,
+      amountTonnes: 789000,
       amountChangePercent24h: 0.05,
     },
-    klimaXLocked: {
-      valueUSD: 5.88,
-      valueChangePercent24h: -0.01,
-      amountTonnes: 80,
+    k2Locked: {
+      valueUSD: 1.4,
+      valueChangePercent24h: -0.12,
+      amountTonnes: 789000,
       amountChangePercent24h: 0.08,
     },
   };

@@ -8,9 +8,9 @@ export default function CarbonYieldCard(props: CardProps) {
   return (
     <YieldRatesCard
       {...props}
-      title="Carbon Yield"
+      title="Liquid Carbon Yield"
       tooltip="There should be a tooltip here"
-      data={data?.liquidityPoolRiskyYield}
+      data={data?.carbonYieldRates}
     />
   );
 }

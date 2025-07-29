@@ -7,11 +7,11 @@ type Metrics = {
 };
 
 export type AllMetrics = {
-  klimaBonded: Metrics;
-  klimaXLocked: Metrics;
+  kVcmLocked: Metrics;
+  k2Locked: Metrics;
 };
 
-import { LpToken } from '../constants/tokens.constants';
+import { LpToken, Token } from '../constants/tokens.constants';
 
 /* Liquidity Pool Info */
 export type LiquidityPoolInfo = {
@@ -25,12 +25,15 @@ export type LiquidityPoolInfo = {
 export type LiquidityPools = LiquidityPoolInfo[];
 
 /* Klima Bond Yield Rates */
-type LockedKVcmYieldRate = {
-  durationDays: number;
+type YieldRate = {
+  maturityId: string; // protocol maturity Id
+  index: number; // relotive maturity Index. 0 for the next maturity
+  maturationTimestamp: number;
   yieldPercent: number;
+  token: Token;
 };
 
-export type YieldRates = LockedKVcmYieldRate[];
+export type YieldRates = YieldRate[];
 
 type CarbonBackingBreakdownItem = {
   category: string;

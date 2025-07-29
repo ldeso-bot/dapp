@@ -18,12 +18,12 @@ export default function LiquidityPositionsCard(props: CardProps) {
           {
             token: tokens.k2,
             amount: liquidityPosition.balance,
-            valueUSD: protocolData?.metrics.klimaBonded.valueUSD ?? 0,
+            valueUSD: protocolData?.metrics.kVcmLocked.valueUSD ?? 0,
           },
           {
             token: tokens.kvcm,
             amount: liquidityPosition.balance,
-            valueUSD: protocolData?.metrics.klimaBonded.valueUSD ?? 0,
+            valueUSD: protocolData?.metrics.kVcmLocked.valueUSD ?? 0,
           },
         ]}
       />
