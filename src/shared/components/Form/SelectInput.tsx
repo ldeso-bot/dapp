@@ -4,7 +4,7 @@ import { Select as SelectPrimitive } from 'radix-ui';
 import React, { ReactNode } from 'react';
 import { FieldError } from 'react-hook-form';
 import Icon from '../Icon/Icon';
-import InputWrapper from './InputWrapper';
+import InputWrapper from './layout/InputWrapper';
 
 type SelectInputItem = {
   value: string | number | bigint;
@@ -41,7 +41,7 @@ export default function Select({
     <InputWrapper label={label} error={error}>
       <SelectPrimitive.Root
         value={stringValue}
-        disabled={props.disabled}
+        disabled={props.disabled ?? props.readOnly}
         onValueChange={onValueChange}
         defaultValue={String(defaultValue)}
       >

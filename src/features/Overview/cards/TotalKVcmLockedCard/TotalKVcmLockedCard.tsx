@@ -2,10 +2,16 @@ import { CardProps } from '@/shared/components/Card/Card';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
+import {
+  formatAmountWithCommas,
+  formatPriceUSDWithCommas,
+} from '@/shared/utils/string.utils';
 import StatCard from '../../shared/StatCard/StatCard';
 
 export default function TotalKVcmLockedCard(props: CardProps) {
   const { data } = useProtocolData();
+  const amount = data?.metrics.kVcmLocked.amountTonnes ?? 0;
+  const price = data?.metrics.kVcmLocked.valueUSD ?? 0;
   return (
     <StatCard
       {...props}
@@ -14,8 +20,9 @@ export default function TotalKVcmLockedCard(props: CardProps) {
       title="Total kVCM Locked"
       tooltip="kVCM locks offer yield which is claimable at maturity."
       tooltipPosition="far"
-      value={data?.metrics.klimaBonded.amountTonnes}
-      changePercent={data?.metrics.klimaBonded.amountChangePercent24h}
+      primaryValue={formatAmountWithCommas(amount, 0)}
+      secondaryValue={formatPriceUSDWithCommas(price * amount, 0)}
+      changePercent={data?.metrics.kVcmLocked.amountChangePercent24h}
       token={tokens.kvcm}
     />
   );

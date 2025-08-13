@@ -9,9 +9,9 @@ export const getAllocations = async (
   return [
     {
       id: '1',
-      class: 'Water Filtration',
+      carbonClass: 'Water Filtration',
       priceUSD: 3.99,
-      amountTonnes: 100,
+      amount: 100,
       holder: '0x1234567890123456789012345678901234567890',
       sharePercent: 0.1,
       token: {
@@ -21,9 +21,9 @@ export const getAllocations = async (
     },
     {
       id: '2',
-      class: 'Biochar (CHAR)',
+      carbonClass: 'Biochar (CHAR)',
       priceUSD: 36.97,
-      amountTonnes: 500,
+      amount: 500,
       holder: '0x1234567890123456789012345678901234567890',
       sharePercent: 0.5,
       token: {
@@ -33,9 +33,9 @@ export const getAllocations = async (
     },
     {
       id: '3',
-      class: 'RNWBL',
+      carbonClass: 'RNWBL',
       priceUSD: 3.99,
-      amountTonnes: 300,
+      amount: 300,
       holder: '0x1234567890123456789012345678901234567890',
       sharePercent: 0.3,
       token: {
@@ -45,9 +45,9 @@ export const getAllocations = async (
     },
     {
       id: '4',
-      class: 'Mangrooves',
+      carbonClass: 'Mangroves (MNGRV)',
       priceUSD: 3.99,
-      amountTonnes: 100,
+      amount: 100,
       holder: '0x1234567890123456789012345678901234567890',
       sharePercent: 0.1,
       token: {
@@ -57,9 +57,9 @@ export const getAllocations = async (
     },
     {
       id: '5',
-      class: 'Water Filtration',
+      carbonClass: 'Water Filtration',
       priceUSD: 3.99,
-      amountTonnes: 100,
+      amount: 100,
       holder: '0x1234567890123456789012345678901234567890',
       sharePercent: 0.3,
       token: {
@@ -69,9 +69,9 @@ export const getAllocations = async (
     },
     {
       id: '6',
-      class: 'Mangrooves',
+      carbonClass: 'Mangroves (MNGRV)',
       priceUSD: 3.99,
-      amountTonnes: 100,
+      amount: 100,
       holder: '0x1234567890123456789012345678901234567890',
       sharePercent: 0.3,
       token: {

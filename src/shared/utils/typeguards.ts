@@ -1,5 +1,7 @@
 import { CHAIN_IDS, ChainId } from '../constants/networks.constants';
 import {
+  AllocationToken,
+  allocationTokens,
   LpToken,
   lpTokens,
   Token,
@@ -23,4 +25,8 @@ export const isLpToken = (token: unknown): token is LpToken => {
 
 export const isToken = (token: unknown): token is Token => {
   return typeof token === 'string' && Object.keys(tokens).includes(token);
+};
+
+export const isAllocationToken = (token: unknown): token is AllocationToken => {
+  return isToken(token) && Object.keys(allocationTokens).includes(token);
 };

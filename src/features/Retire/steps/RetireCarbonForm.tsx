@@ -2,10 +2,14 @@
 
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
+import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
+import Form from '@/shared/components/Form/layout/Form';
+import InputGroup from '@/shared/components/Form/layout/InputGroup';
 import SelectInput from '@/shared/components/Form/SelectInput';
+import TokenAmountInput from '@/shared/components/Form/TokenAmountInput';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
+import { tokens } from '@/shared/constants/tokens.constants';
 import { useState } from 'react';
-import AmountInput from '../components/AmountInput/AmountInput';
 import PayWithOptions from '../components/PayWithOptions/PayWithOptions';
 import PriceDetails from '../components/PriceDetails/PriceDetails';
 import { RetireCarbonFields, carbonPrices } from '../retire.constants';
@@ -26,9 +30,10 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
     <Card
       title="Retire Carbon"
       className="w-[36rem] border-0 rounded-xl"
-      titleClassName="font-bold text-void-80 text-size-18">
-      <form className="flex flex-col gap-8" onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-4 pt-3">
+      titleClassName="font-bold text-void-80 text-size-18"
+    >
+      <Form onSubmit={form.handleSubmit(onSubmit)}>
+        <InputGroup>
           <SelectInput
             label="Carbon Class"
             defaultValue={`${carbonPrices[0].category}-${carbonPrices[0].type}`}
@@ -47,19 +52,39 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
             }))}
             {...form.register('carbonCredit')}
           />
-          <AmountInput form={form} />
+          <TokenAmountInput
+            tokenIconSrc={tokens.kvcm.iconSrc}
+            errorMessage={form.formState.errors.amount}
+            inputProps={{
+              type: 'number',
+              'aria-label': 'Token Input',
+              placeholder: 'Select a token first',
+              ...form.register('amount'),
+            }}
+          />
           <PayWithOptions value={paymentMethod} onChange={setPaymentMethod} />
           <PriceDetails paymentMethod={paymentMethod} />
-        </div>
-        <div className="flex flex-col gap-3 w-full">
-          <Button disabled className="rounded-md" colors="secondary" context="flow" type="submit">
+        </InputGroup>
+        <ButtonGroup>
+          <Button
+            disabled
+            className="rounded-md"
+            colors="secondary"
+            context="flow"
+            type="submit"
+          >
             Retire Carbon
           </Button>
-          <Button className="rounded-md" colors="primary" context="flow" href="/">
+          <Button
+            className="rounded-md"
+            colors="primary"
+            context="flow"
+            href="/"
+          >
             Cancel
           </Button>
-        </div>
-      </form>
+        </ButtonGroup>
+      </Form>
     </Card>
   );
 };

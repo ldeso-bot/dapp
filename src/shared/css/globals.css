@@ -58,93 +58,11 @@ body {
   color: red;
 }
 
+.bg-overlay-10 {
+  background-color: var(--void-10);
+}
+
 /* Tailwind styles extensions */
-.border-void-20 {
-  border-color: var(--void-20);
-}
-
-.border-green-40 {
-  border-color: var(--green-40);
-}
-
-.border-foreground {
-  border-color: var(--foreground);
-}
-
-.bg-background {
-  background: var(--background);
-}
-
-.bg-void-10 {
-  background: var(--void-10);
-}
-
-.bg-void-20 {
-  background: var(--void-20);
-}
-
-.bg-void-50 {
-  background: var(--void-50);
-}
-
-.bg-void-60 {
-  background: var(--void-60);
-}
-
-.bg-void-80 {
-  background: var(--void-80);
-}
-
-/* todo - remove when theme changes are merged... */
-
-.bg-green-10 {
-  background: var(--green-10);
-}
-
-.bg-green-40 {
-  background: var(--green-40);
-}
-
-.bg-red {
-  background: var(--light-red);
-}
-
-.text-white {
-  color: var(--white);
-}
-
-.text-void-60 {
-  color: var(--void-60);
-}
-
-.text-void-50 {
-  color: var(--void-50);
-}
-
-.text-void-40 {
-  color: var(--void-40);
-}
-
-.text-void-20 {
-  color: var(--void-20);
-}
-
-.text-void-80 {
-  color: var(--void-80);
-}
-
-.text-green-40 {
-  color: var(--green-40);
-}
-
-.text-green-80 {
-  color: var(--green-80);
-}
-
-.text-red {
-  color: var(--red);
-}
-
 .text-size-20 {
   font-size: 2rem;
   line-height: 2.8rem;
@@ -152,6 +70,7 @@ body {
 
 .text-size-18 {
   font-size: 1.8rem;
+  line-height: 2.6rem;
 }
 
 .text-size-16 {
@@ -172,14 +91,6 @@ body {
 .text-size-8 {
   font-size: 0.8rem;
   line-height: 1.2rem;
-}
-
-h1 {
-  font-family: Inter;
-  font-weight: 700;
-  font-size: 3.6rem;
-  line-height: 4rem;
-  letter-spacing: 0%;
 }
 
 .box-shadow {

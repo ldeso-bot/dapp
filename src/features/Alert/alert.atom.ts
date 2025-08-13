@@ -4,7 +4,7 @@ type Alert = {
   title: string;
   description: string;
   type: 'error' | 'success';
-  links: {
+  links?: {
     label: string;
     href: string;
   }[];

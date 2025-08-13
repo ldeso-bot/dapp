@@ -1,9 +1,9 @@
-import Button from '@/shared/components/Button/Button';
 import { TableCell } from '@/shared/components/Table/table';
 import { LiquidityPoolInfo } from '@/shared/models/ProtocolData';
 import { formatPercentage, formatPriceUSD } from '@/shared/utils/string.utils';
 import Metric from './Metric';
 import Pair from './Pair';
+import PoolButtons from './PoolButtons';
 
 type Props = {
   poolInfo: LiquidityPoolInfo;
@@ -18,8 +18,7 @@ export default function PoolRowMobile({ poolInfo }: Props) {
           <Metric label="APY" value={formatPercentage(poolInfo.apyPercent)} />
         </div>
         <div className="flex flex-col gap-1">
-          <Button>Deposit Liquidity</Button>
-          <Button>Lock Liquidity Tokens</Button>
+          <PoolButtons poolInfo={poolInfo} />
         </div>
       </div>
     </TableCell>

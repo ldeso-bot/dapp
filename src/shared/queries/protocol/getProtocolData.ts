@@ -8,6 +8,7 @@ import { getLiquidityPools } from '@/shared/queries/protocol/getLiquidityPools';
 import { getLockedKVcmYieldRates } from '@/shared/queries/protocol/getLockedKVcmYieldRates';
 import { getTokenMetrics } from '@/shared/queries/protocol/getTokenMetrics';
 import { Sdk } from '@/shared/utils/subgraph.utils';
+import { getCarbonClasses } from './getCarbonClasses';
 
 export async function getProtocolData(sdk: Sdk) {
   /** We enforce the data type to make sure the endpoint respects the interface */
@@ -20,6 +21,7 @@ export async function getProtocolData(sdk: Sdk) {
     carbonBacking,
     carbonLiquidity,
     carbonMarket,
+    carbonClasses,
   ] = await Promise.all([
     getTokenMetrics(sdk),
     getLiquidityPools(sdk),
@@ -29,6 +31,7 @@ export async function getProtocolData(sdk: Sdk) {
     getCarbonBacking(sdk),
     getCarbonLiquidity(sdk),
     getCarbonMarket(sdk),
+    getCarbonClasses(sdk),
   ]);
 
   const data: ProtocolData = {
@@ -40,6 +43,7 @@ export async function getProtocolData(sdk: Sdk) {
     carbonBacking,
     carbonLiquidity,
     carbonMarket,
+    carbonClasses,
   };
 
   return data;

@@ -31,7 +31,7 @@ export default function Alert() {
           </div>
           <div className={cn('text-size-14')}>{alert.description}</div>
           <div className="flex flex-row gap-10">
-            {alert.links.map((link, index) => (
+            {alert.links?.map((link, index) => (
               <a
                 key={index}
                 className={cn(

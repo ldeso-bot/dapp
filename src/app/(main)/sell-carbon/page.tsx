@@ -1,5 +1,5 @@
-import OverviewPage from '@/features/Overview/OverviewPage';
+import SellCarbonPage from '@/features/SellCarbon/SellCarbonPage';
 
 export default function Page() {
-  return <OverviewPage />;
+  return <SellCarbonPage />;
 }

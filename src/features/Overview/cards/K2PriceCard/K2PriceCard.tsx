@@ -5,14 +5,15 @@ import StatCard from '../../shared/StatCard/StatCard';
 
 export default function K2PriceCard(props: CardProps) {
   const { data } = useProtocolData();
+  const price = data?.metrics.kVcmLocked.valueUSD ?? 0;
   return (
     <StatCard
       {...props}
       buttonText="Buy K2"
       title="K2 Price"
       tooltip="K2 is the governance token for the KlimaDAO. It is used to vote on proposals and make decisions for the protocol."
-      value={data?.metrics.klimaXLocked.valueUSD}
-      changePercent={data?.metrics.klimaXLocked.valueChangePercent24h}
+      primaryValue={price}
+      changePercent={data?.metrics.k2Locked.valueChangePercent24h}
       token={tokens.k2}
     />
   );

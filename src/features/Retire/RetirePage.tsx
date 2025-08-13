@@ -1,12 +1,13 @@
 'use client';
 
+import CarbonClassCard from '@/shared/components/CarbonClassCard/CarbonClassCard';
 import Steps from '@/shared/components/Steps/Steps';
 import { useParsedForm } from '@/shared/hooks/web3/useParsedForm';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import CarbonPriceCard from "./components/CarbonPriceCard/CarbonPriceCard";
 import RetireInfoCard from './components/RetireInfoCard/RetireInfoCard';
 import { RetireCarbonFields, retireCarbonSchema } from './retire.constants';
+import RetireCarbonConfirm from './steps/RetireCarbonConfirm';
 import RetireCarbonForm from "./steps/RetireCarbonForm";
 
 export default function RetirePage() {
@@ -16,6 +17,8 @@ export default function RetirePage() {
     defaultValues: {
       paymentMethod: '',
       amount: 0,
+      carbonClass: '',
+      carbonCredit: '',
     },
   });
 
@@ -26,10 +29,10 @@ export default function RetirePage() {
       <RetireInfoCard />
       <div className="flex gap-4 space-between mx-auto max-w-7xl">
         <Steps
-          components={[RetireCarbonForm]}
+          components={[RetireCarbonForm, RetireCarbonConfirm]}
           data={{ form, schema, parsedForm }}
         />
-        <CarbonPriceCard />
+        <CarbonClassCard />
       </div>
     </div>
   );
