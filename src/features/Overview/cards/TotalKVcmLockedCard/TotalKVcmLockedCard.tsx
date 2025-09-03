@@ -10,8 +10,9 @@ import StatCard from '../../shared/StatCard/StatCard';
 
 export default function TotalKVcmLockedCard(props: CardProps) {
   const { data } = useProtocolData();
-  const amount = data?.metrics.kVcmLocked.amountTonnes ?? 0;
-  const price = data?.metrics.kVcmLocked.valueUSD ?? 0;
+  const amount = data?.metrics?.kVcmLocked?.amountTonnes ?? 0;
+  const price = data?.metrics?.kVcmLocked?.valueUSD ?? 0;
+
   return (
     <StatCard
       {...props}
