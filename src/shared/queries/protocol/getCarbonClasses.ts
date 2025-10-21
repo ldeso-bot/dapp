@@ -1,9 +1,27 @@
+import { USE_MOCKS } from '@/shared/constants/config.constants';
 import { Sdk } from '@/shared/utils/subgraph.utils';
+import { formatUnits } from 'viem';
 import { CarbonClass } from '../../models/ProtocolData';
 
 // TODO: Replace with actual API call
 export const getCarbonClasses = async (sdk: Sdk): Promise<CarbonClass[]> => {
-  if (!sdk) console.log('');
+  if (USE_MOCKS) {
+    return getMockCarbonClasses();
+  }
+  const response = await sdk.protocol.getCarbonClasses();
+
+  //
+  return response?.carbonClasses?.map((c) => ({
+    // DEV: how should we get the name and category
+    name: c.id,
+    category: '',
+    priceUSD: Number(
+      formatUnits(BigInt(c.priceUsdcPerTon?.priceUsdc ?? '0'), 6)
+    ),
+  }));
+};
+
+const getMockCarbonClasses = (): CarbonClass[] => {
   return [
     {
       name: 'Ocean Alkalinity Enhancement (OAE)',

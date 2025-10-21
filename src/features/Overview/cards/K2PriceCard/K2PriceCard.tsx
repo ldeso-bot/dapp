@@ -5,7 +5,7 @@ import StatCard from '../../shared/StatCard/StatCard';
 
 export default function K2PriceCard(props: CardProps) {
   const { data } = useProtocolData();
-  const price = data?.metrics.kVcmLocked.valueUSD ?? 0;
+  const price = data?.metrics.k2Locked.valueUSD ?? 0;
   return (
     <StatCard
       {...props}

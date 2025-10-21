@@ -1,5 +1,5 @@
 /* Token Metrics */
-type Metrics = {
+export type Metrics = {
   valueUSD: number;
   valueChangePercent24h: number;
   amountTonnes: number;

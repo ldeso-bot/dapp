@@ -1,4 +1,21 @@
-fragment TokenFragment on Token {
-  symbol
+fragment CreditTokenFragment on CreditToken {
   id
+  creditTokenId
+  creditId
+  chainId
+  decimals
+  totalSupply
+  totalSupplyTonnes
+  factoryAddress
+  registry {
+    id
+  }
+  registryProjectId
+  vintage
+  tokenId
+  tokenAddress
+  project {
+    projectId
+  }
+  provenanceKey
 }
