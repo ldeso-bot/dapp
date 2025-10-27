@@ -14,10 +14,10 @@ export default function Dialog({ open, children, className }: Props) {
   return (
     <DialogPrimitive.Root open={open}>
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay />
+        <DialogPrimitive.Overlay className="fixed inset-0 bg-overlay" />
         <DialogPrimitive.Content
           className={cn(
-            'fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-1000 bg-overlay',
+            'fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-1000',
             className
           )}
           aria-describedby="Dialog"

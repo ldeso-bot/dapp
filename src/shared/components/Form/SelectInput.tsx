@@ -48,7 +48,7 @@ export default function Select({
         <SelectPrimitive.Trigger className="w-full">
           <div
             className={cn(
-              'bg-void-10 rounded-lg min-h-[3.8rem] flex justify-between items-center',
+              'bg-void-10 rounded-lg min-h-[4rem] flex justify-between items-center',
               !props.disabled && 'border-1 cursor-pointer hover:opacity-80'
             )}
           >

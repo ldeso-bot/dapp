@@ -1,5 +1,5 @@
 /* Token Metrics */
-type Metrics = {
+export type Metrics = {
   valueUSD: number;
   valueChangePercent24h: number;
   amountTonnes: number;
@@ -25,12 +25,15 @@ export type LiquidityPoolInfo = {
 export type LiquidityPools = LiquidityPoolInfo[];
 
 /* Klima Bond Yield Rates */
-type YieldRate = {
+export type YieldRate = {
+  days?: number;
   maturityId: string; // protocol maturity Id
   index: number; // relotive maturity Index. 0 for the next maturity
   maturationTimestamp: number;
   yieldPercent: number;
   token: Token;
+  lockDuration?: number;
+  incentivesYield?: number;
 };
 
 export type YieldRates = YieldRate[];

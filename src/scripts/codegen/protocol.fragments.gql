@@ -1,13 +1,18 @@
-fragment PurchaseFragment on Purchase {
-  amount
+fragment CarbonClassFragment on CarbonClass {
   id
-  listing {
-    id
-    tokenStandard
-    seller {
-      id
-    }
-    tokenAddress
+  isRegistered
+  priceUsdcPerTon {
+    priceUsdc
   }
-  price
+}
+
+fragment TokenFragment on Token {
+  id
+  address
+  priceUsdc {
+    priceUsdc
+  }
+  symbol
+  totalSupply
+  totalAmountLocked
 }

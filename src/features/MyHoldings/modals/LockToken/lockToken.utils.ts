@@ -1,6 +1,7 @@
 import { AllocationToken } from '@/shared/constants/tokens.constants';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { usePermit } from '@/shared/hooks/web3/usePermit';
+import { YieldRate } from '@/shared/models/ProtocolData';
 import { PermitReturn } from '@/shared/utils/web3.types';
 import { handleWeb3Error } from '@/shared/utils/web3.utils';
 import { atom } from 'jotai';
@@ -10,7 +11,8 @@ import { useAccount } from 'wagmi';
 export type LockTokenFields = {
   token: string;
   amount: number;
-  maturityDate: number;
+  duration: number;
+  maturityDate?: number;
 };
 
 export const lockTokenDialogAtom = atom({
@@ -71,3 +73,9 @@ export const useTransferWithPermit = () => {
     send,
   };
 };
+
+export const findClosestMaturityByDays = (targetDays: number, yieldData: YieldRate[]) => {
+  return yieldData.reduce((closest: YieldRate, current: YieldRate) => {
+    return Math.abs(current.days ?? 0 - targetDays) < Math.abs(closest.days ?? 0 - targetDays) ? current : closest
+  })
+}

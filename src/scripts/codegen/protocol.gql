@@ -1,5 +1,22 @@
-query getPurchaseById($id: ID!) {
-  purchase(id: $id) {
-    ...PurchaseFragment
+query getCarbonClasses {
+  carbonClasses {
+    ...CarbonClassFragment
+  }
+}
+
+query getTokens {
+  tokens {
+    ...TokenFragment
+  }
+}
+
+query getTokenSnapshots($daysSinceEpoch: BigInt) {
+  tokenSnapshots(where: { daysSinceEpoch: $daysSinceEpoch }) {
+    daysSinceEpoch
+    tokenAddress
+    priceUsdc
+    symbol
+    supply
+    totalAmountLocked
   }
 }
