@@ -24,14 +24,12 @@ export type LiquidityPools = LiquidityPoolInfo[];
 
 /* Klima Bond Yield Rates */
 export type YieldRate = {
-  days?: number;
+  index: number; // Index relative to the first active maturity
   maturityId: string; // protocol maturity Id
-  index: number; // relotive maturity Index. 0 for the next maturity
   maturationTimestamp: number;
   yieldPercent: number;
-  token: Token;
-  lockDuration?: number;
   incentivesYield?: number;
+  tokens: Token[]; // Tokens that are eligible for incentives
 };
 
 export type YieldRates = YieldRate[];

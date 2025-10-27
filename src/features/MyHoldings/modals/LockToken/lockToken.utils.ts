@@ -74,8 +74,15 @@ export const useTransferWithPermit = () => {
   };
 };
 
-export const findClosestMaturityByDays = (targetDays: number, yieldData: YieldRate[]) => {
+export const findClosestMaturityByDays = (
+  targetDays: number,
+  yieldData: YieldRate[]
+) => {
+  const targetTimestamp = Date.now() + targetDays * 24 * 60 * 60;
   return yieldData.reduce((closest: YieldRate, current: YieldRate) => {
-    return Math.abs(current.days ?? 0 - targetDays) < Math.abs(closest.days ?? 0 - targetDays) ? current : closest
-  })
-}
+    return Math.abs(current.maturationTimestamp ?? 0 - targetTimestamp) <
+      Math.abs(closest.maturationTimestamp ?? 0 - targetTimestamp)
+      ? current
+      : closest;
+  });
+};

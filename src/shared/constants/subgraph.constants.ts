@@ -3,16 +3,12 @@ import { USE_LOCAL_GRAPH_NODE } from './config.constants';
 
 let subgraphs = {
   [base.id]: {
-    carbon:
-      'https://api.studio.thegraph.com/query/88565/biwano-carbon/version/latest',
-    protocol:
-      'https://api.studio.thegraph.com/query/88565/biwano-protocol/version/latest',
+    carbon: `https://subgraph.satsuma-prod.com/${process.env.SATSUMA_API_KEY}/carbonmark--273197/cm-base-sepolia-carbon-staging/api`,
+    protocol: `https://subgraph.satsuma-prod.com/${process.env.SATSUMA_API_KEY}/carbonmark--273197/cm-base-sepolia-protocol-staging/api`,
   },
   [baseSepolia.id]: {
-    carbon:
-      'https://api.studio.thegraph.com/query/88565/biwano-carbon/version/latest',
-    protocol:
-      'https://api.studio.thegraph.com/query/88565/biwano-protocol/version/latest',
+    carbon: `https://subgraph.satsuma-prod.com/${process.env.SATSUMA_API_KEY}/carbonmark--273197/cm-base-sepolia-carbon-staging/api`,
+    protocol: `https://subgraph.satsuma-prod.com/${process.env.SATSUMA_API_KEY}/carbonmark--273197/cm-base-sepolia-protocol-staging/api`,
   },
 };
 

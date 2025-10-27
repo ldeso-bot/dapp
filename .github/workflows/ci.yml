@@ -7,6 +7,8 @@ on:
 jobs:
   quality-checks:
     runs-on: ubuntu-latest
+    env:
+      SATSUMA_API_KEY: ${{ secrets.SATSUMA_API_KEY }}
     strategy:
       fail-fast: false
       matrix:

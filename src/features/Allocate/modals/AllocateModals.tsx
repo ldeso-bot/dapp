@@ -34,7 +34,6 @@ export default function AllocateModals() {
     /* Open dialogs if navigating to /allocate with action parameter */
     if (action.startsWith('new_allocation_')) {
       const token = action.split('_')[2];
-      console.log(token, isAllocationToken(token));
       if (isAllocationToken(token))
         setNewAllocationDialog({ open: true, token });
     }

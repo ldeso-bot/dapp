@@ -8,6 +8,8 @@ on:
 jobs:
   test-staging:
     runs-on: ubuntu-latest
+    env:
+      SATSUMA_API_KEY: ${{ secrets.SATSUMA_API_KEY }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

@@ -121,8 +121,7 @@ export default function YieldRatesCard(props: Props) {
 function YieldChartTooltip({ active, payload }: TooltipProps<number, string>) {
   if (active && payload && payload.length) {
     const item = payload[0].payload;
-    console.log(payload);
-    const token = item.token;
+    const token = item.tokens[0];
     if (!isToken(token)) return null;
 
     const tokenInfo = tokens[token];

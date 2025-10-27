@@ -20,3 +20,25 @@ query getTokenSnapshots($daysSinceEpoch: BigInt) {
     totalAmountLocked
   }
 }
+
+query getMaturityManager {
+  maturityManagers {
+    id
+    firstActiveMaturityId
+    lastActiveMaturityId
+  }
+}
+
+query getYieldBuckets($where: YieldBucket_filter) {
+  yieldBuckets(where: $where, orderBy: maturityId) {
+    bucketId
+    maturityId
+    multiplier
+    zeroCouponYieldCurve
+    discountFactor
+    unscaledBondIssue
+    maturity {
+      timestamp
+    }
+  }
+}

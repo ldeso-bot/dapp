@@ -1,19 +1,16 @@
+import { USE_MOCKS } from '@/shared/constants/config.constants';
 import { Sdk } from '@/shared/utils/subgraph.utils';
 import { YieldRates } from '../../models/ProtocolData';
-import { getMockMaturationTimestamp, getMockYieldPercent } from './mocks';
+import {
+  BUCKET_IDS,
+  getActiveYieldBuckets,
+  getMockLockedVcmYieldRates,
+} from './protocol.utils';
 
-// TODO: Replace with actual API call
 export const getCarbonYieldRates = async (sdk: Sdk): Promise<YieldRates> => {
-  if (!sdk) console.log('');
-  const yieldRates: YieldRates = [];
-  for (let i = 0; i < 40; i++) {
-    yieldRates.push({
-      index: i,
-      maturityId: `maturity-${i}`,
-      maturationTimestamp: getMockMaturationTimestamp(i),
-      yieldPercent: getMockYieldPercent(i),
-      token: 'kvcm',
-    });
+  if (USE_MOCKS) {
+    return getMockLockedVcmYieldRates(BUCKET_IDS.CARBON);
   }
-  return yieldRates;
+  const yieldBuckets = await getActiveYieldBuckets(sdk, BUCKET_IDS.CARBON);
+  return yieldBuckets;
 };
