@@ -7,47 +7,69 @@ import { StaticImageData } from 'next/image';
 import { ReactNode } from 'react';
 import Icon from '../components/Icon/Icon';
 
-export type TokenInfo = {
-  symbol: string;
-  icon: (size?: number) => ReactNode;
-  iconSrc: StaticImageData;
-};
-
 export type LpToken = 'kvcm-usdc' | 'kvcm-k2';
 export type AllocationToken = 'k2' | 'kvcm';
 export type Token = 'usdc' | AllocationToken | LpToken;
+type SubgraphTokenSymbol =
+  | 'K2'
+  | 'KVCM'
+  | 'KVCM_USDC_LP'
+  | 'KVCM_K2_LP'
+  | 'USDC';
+
+export type TokenInfo = {
+  id: Token;
+  symbol: string;
+  subgraphSymbol: SubgraphTokenSymbol;
+  icon: (size?: number) => ReactNode;
+  iconSrc: StaticImageData;
+  description: string;
+};
 
 export const tokens: Record<Token, TokenInfo> = {
   usdc: {
+    id: 'usdc',
     symbol: 'USDC',
     icon: (size = 1.6) => <Icon icon={USDCIcon} alt="USDC" size={size} />,
     iconSrc: USDCIcon,
+    subgraphSymbol: 'USDC',
+    description: 'USDC',
   },
   k2: {
+    id: 'k2',
     symbol: 'K2',
     icon: (size = 1.6) => <Icon icon={KlimaXIcon} alt="K2" size={size} />,
     iconSrc: KlimaXIcon,
+    subgraphSymbol: 'K2',
+    description: 'K2 Token',
   },
   kvcm: {
+    id: 'kvcm',
     symbol: 'kVCM',
     icon: (size = 1.6) => <Icon icon={KlimaIcon} alt="kVCM" size={size} />,
     iconSrc: KlimaIcon,
+    subgraphSymbol: 'KVCM',
+    description: 'KVCM Token',
   },
   'kvcm-usdc': {
+    id: 'kvcm-usdc',
     symbol: 'kVCM/USDC',
     icon: (size = 1.6) => (
       <Icon icon={KVcmUsdcLPIcon} alt="kVCM/USDC LP" size={size} />
     ),
-
     iconSrc: KVcmUsdcLPIcon,
+    subgraphSymbol: 'KVCM_USDC_LP',
+    description: 'KVCM/USDC Liquidity Pool',
   },
   'kvcm-k2': {
+    id: 'kvcm-k2',
     symbol: 'kVCM/K2',
     icon: (size = 1.6) => (
       <Icon icon={KVcmK2LPIcon} alt="kVCM/K2 LP" size={size} />
     ),
-
+    subgraphSymbol: 'KVCM_K2_LP',
     iconSrc: KVcmK2LPIcon,
+    description: 'KVCM/K2 Liquidity Pool',
   },
 } as const;
 

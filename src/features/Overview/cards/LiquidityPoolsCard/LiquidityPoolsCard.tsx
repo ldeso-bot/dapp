@@ -32,13 +32,13 @@ export default function LiquidityPoolsCard(props: CardProps) {
               {data.liquidityPools.map((poolInfo) => (
                 <TableRow
                   className="hidden lg:table-row"
-                  key={`${poolInfo.id}`}
+                  key={`${poolInfo.token}`}
                 >
                   <PoolRowDesktop poolInfo={poolInfo} />
                 </TableRow>
               ))}
               {data.liquidityPools.map((poolInfo) => (
-                <TableRow className="lg:hidden" key={`${poolInfo.id}`}>
+                <TableRow className="lg:hidden" key={`${poolInfo.token}`}>
                   <PoolRowMobile poolInfo={poolInfo} />
                 </TableRow>
               ))}

@@ -27,17 +27,21 @@ const SellCarbonApprove: FormFlowStep<SellCarbonFields> = ({
       <Card
         className="w-[36rem] border-0 rounded-xl"
         titleClassName="font-bold text-void-80 text-size-18"
-        title="Confirm your transaction">
+        title="Confirm your transaction"
+      >
         <form
           className="flex flex-col gap-8"
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <div className="flex flex-col gap-4 pt-3">
-            To complete this transaction, please allow our smart contract to transfer tokens on your behalf.
+            To complete this transaction, please allow our smart contract to
+            transfer tokens on your behalf.
             <Input
               label="Contract Address"
               // @todo replace address
-              value={formatAddress('0x061138CBfEA4531D9ae118e36B86e7CD27649523')}
+              value={formatAddress(
+                '0x061138CBfEA4531D9ae118e36B86e7CD27649523'
+              )}
               readOnly
             />
             <Input

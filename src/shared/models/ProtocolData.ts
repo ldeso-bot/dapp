@@ -1,3 +1,5 @@
+import { LpToken, Token } from '../constants/tokens.constants';
+
 /* Token Metrics */
 export type Metrics = {
   valueUSD: number;
@@ -11,14 +13,10 @@ export type AllMetrics = {
   k2Locked: Metrics;
 };
 
-import { LpToken, Token } from '../constants/tokens.constants';
-
 /* Liquidity Pool Info */
 export type LiquidityPoolInfo = {
-  id: string;
-  token: LpToken; // e.g., 'kVCM'
+  token: LpToken;
   tvl: number; // Total Value Locked in USD
-  description: string; // e.g., 'Basic Volatile 1.0%'
   apyPercent: number; // Annual Percentage Yield
 };
 
