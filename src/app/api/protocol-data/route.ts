@@ -1,3 +1,4 @@
+import { IS_DEVELOPMENT } from '@/shared/constants/config.constants';
 import { getProtocolData } from '@/shared/queries/protocol/getProtocolData';
 import { getSdkOrError } from '@/shared/utils/subgraph.utils';
 import { unstable_cache } from 'next/cache';
@@ -15,7 +16,7 @@ export async function GET(request: NextRequest) {
     },
     [`protocol-data-${chainId}`],
     {
-      revalidate: 60,
+      revalidate: IS_DEVELOPMENT ? 1 : 60,
     }
   )();
 

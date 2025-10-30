@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     },
     [`wallet-data-${chainId}-${walletAddress}`],
     {
-      revalidate: 5,
+      revalidate: 1,
     }
   )();
 

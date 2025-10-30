@@ -3,8 +3,8 @@ import { USE_LOCAL_GRAPH_NODE } from './config.constants';
 
 let subgraphs = {
   [base.id]: {
-    carbon: `https://subgraph.satsuma-prod.com/${process.env.SATSUMA_API_KEY}/carbonmark--273197/cm-base-sepolia-carbon-staging/api`,
-    protocol: `https://subgraph.satsuma-prod.com/${process.env.SATSUMA_API_KEY}/carbonmark--273197/cm-base-sepolia-protocol-staging/api`,
+    carbon: `https://subgraph.satsuma-prod.com/${process.env.SATSUMA_API_KEY}/carbonmark--273197/cm-base-carbon-production/api`,
+    protocol: `https://subgraph.satsuma-prod.com/${process.env.SATSUMA_API_KEY}/carbonmark--273197/cm-base-protocol-production/api`,
   },
   [baseSepolia.id]: {
     carbon: `https://subgraph.satsuma-prod.com/${process.env.SATSUMA_API_KEY}/carbonmark--273197/cm-base-sepolia-carbon-staging/api`,

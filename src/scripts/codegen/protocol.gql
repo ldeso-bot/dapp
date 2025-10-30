@@ -42,3 +42,11 @@ query getYieldBuckets($where: YieldBucket_filter) {
     }
   }
 }
+
+query getPrices {
+  prices {
+    symbol
+    priceUsdc
+    address
+  }
+}
