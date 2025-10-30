@@ -10,7 +10,7 @@ import Icon from '../components/Icon/Icon';
 export type LpToken = 'kvcm-usdc' | 'kvcm-k2';
 export type AllocationToken = 'k2' | 'kvcm';
 export type Token = 'usdc' | AllocationToken | LpToken;
-type SubgraphTokenSymbol =
+export type SubgraphTokenSymbol =
   | 'K2'
   | 'KVCM'
   | 'KVCM_USDC_LP'

@@ -3,14 +3,19 @@ import { LpToken, Token } from '../constants/tokens.constants';
 /* Token Metrics */
 export type Metrics = {
   valueUSD: number;
-  valueChangePercent24h: number;
-  amountTonnes: number;
-  amountChangePercent24h: number;
+  valueUSDChangePercent24h: number;
+  supply: number;
+  supplyChangePercent24h: number;
+  supplyLocked: number;
+  supplyLockedChangePercent24h: number;
+  address: string;
 };
 
 export type AllMetrics = {
-  kVcmLocked: Metrics;
-  k2Locked: Metrics;
+  kvcm: Metrics;
+  k2: Metrics;
+  "kvcm-k2": Metrics; 
+  "kvcm-usdc": Metrics; 
 };
 
 /* Liquidity Pool Info */
