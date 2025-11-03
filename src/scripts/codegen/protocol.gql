@@ -10,14 +10,19 @@ query getTokens {
   }
 }
 
-query getTokenSnapshots($daysSinceEpoch: BigInt) {
-  tokenSnapshots(where: { daysSinceEpoch: $daysSinceEpoch }) {
-    daysSinceEpoch
+query getTokenSnapshots($hoursSinceEpoch: BigInt, $symbol: String) {
+  tokenSnapshots(
+    where: { hoursSinceEpoch_lte: $hoursSinceEpoch, symbol: $symbol }
+    orderBy: hoursSinceEpoch
+    orderDirection: desc
+  ) {
+    hoursSinceEpoch
     tokenAddress
     priceUsdc
     symbol
     supply
     totalAmountLocked
+    totalAmountAllocated
   }
 }
 

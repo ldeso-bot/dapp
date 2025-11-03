@@ -4,31 +4,33 @@ import { Sdk } from '@/shared/utils/subgraph.utils';
 import { formatUnits } from 'viem';
 
 export const getTokenMetrics = async (sdk: Sdk): Promise<AllMetrics> => {
-  const daysSinceEpoch = Math.floor(Date.now() / 1000 / 86400);
-  const [tokensResponse, tokenSnapshotsResponse] = await Promise.all([
+  const hoursSinceEpoch = Math.floor(Date.now() / 1000 / 3600);
+
+  const [tokensResponse, ...tokenSnapshotsResponses] = await Promise.all([
     sdk.protocol.getTokens(),
-    sdk.protocol.getTokenSnapshots({
-      daysSinceEpoch: (daysSinceEpoch -1).toString(),
-    }),
+    ...['KVCM', 'K2', 'KVCM_K2_LP', 'KVCM_USDC_LP'].map((symbol) =>
+      sdk.protocol
+        .getTokenSnapshots({
+          hoursSinceEpoch: (hoursSinceEpoch - 24).toString(),
+          symbol,
+        })
+        .then((response) => response.tokenSnapshots[0])
+    ),
   ]);
 
   const getOneTokenMetrics = (symbol: SubgraphTokenSymbol): Metrics => {
     const token = tokensResponse.tokens.find((t) => t.symbol === symbol);
-    const snapshot = tokenSnapshotsResponse.tokenSnapshots.find(
-      (p) => p.symbol === symbol
-    );
+    const snapshot = tokenSnapshotsResponses.find((p) => p?.symbol === symbol);
     // Supply
-    const supply = Number(
-      formatUnits(BigInt(token?.totalSupply ?? '0'), 18)
-    );
+    const supply = Number(formatUnits(BigInt(token?.totalSupply ?? '0'), 18));
 
     const snapshotSupply = snapshot?.supply
       ? Number(formatUnits(BigInt(snapshot.totalAmountLocked), 18))
       : supply;
 
-    const supplyChangePercent24h =
-      supply ? (supply - snapshotSupply) / supply : 0;
-
+    const supplyChangePercent24h = supply
+      ? (supply - snapshotSupply) / supply
+      : 0;
 
     // TVL
     const supplyLocked = Number(
@@ -39,8 +41,9 @@ export const getTokenMetrics = async (sdk: Sdk): Promise<AllMetrics> => {
       ? Number(formatUnits(BigInt(snapshot.totalAmountLocked), 18))
       : supplyLocked;
 
-    const supplyLockedChangePercent24h =
-      supplyLocked ? (supplyLocked - snapshotTVL) / supplyLocked : 0;
+    const supplyLockedChangePercent24h = supplyLocked
+      ? (supplyLocked - snapshotTVL) / supplyLocked
+      : 0;
 
     // Price
     const valueUSD = Number(
@@ -51,13 +54,12 @@ export const getTokenMetrics = async (sdk: Sdk): Promise<AllMetrics> => {
       ? Number(formatUnits(BigInt(snapshot.priceUsdc), 6))
       : valueUSD;
 
-     const valueChangePercent24h = valueUSD
+    const valueChangePercent24h = valueUSD
       ? (valueUSD - snapshotPriceUsdc) / valueUSD
       : 0;
 
     // Address
     const address = token?.address || '';
-
 
     return {
       valueUSD,
@@ -73,7 +75,7 @@ export const getTokenMetrics = async (sdk: Sdk): Promise<AllMetrics> => {
   return {
     kvcm: getOneTokenMetrics('KVCM'),
     k2: getOneTokenMetrics('K2'),
-    "kvcm-k2": getOneTokenMetrics('KVCM_K2_LP'),
-    "kvcm-usdc": getOneTokenMetrics('KVCM_USDC_LP'),
+    'kvcm-k2': getOneTokenMetrics('KVCM_K2_LP'),
+    'kvcm-usdc': getOneTokenMetrics('KVCM_USDC_LP'),
   };
 };
