@@ -1,6 +1,7 @@
 import { SubgraphTokenSymbol } from '@/shared/constants/tokens.constants';
 import { AllMetrics, Metrics } from '@/shared/models/ProtocolData';
 import { Sdk } from '@/shared/utils/subgraph.utils';
+import { TokenSnapshot_Filter } from '@generated/gql/types/protocol.types';
 import { formatUnits } from 'viem';
 
 export const getTokenMetrics = async (sdk: Sdk): Promise<AllMetrics> => {
@@ -11,8 +12,10 @@ export const getTokenMetrics = async (sdk: Sdk): Promise<AllMetrics> => {
     ...['KVCM', 'K2', 'KVCM_K2_LP', 'KVCM_USDC_LP'].map((symbol) =>
       sdk.protocol
         .getTokenSnapshots({
-          hoursSinceEpoch: (hoursSinceEpoch - 24).toString(),
-          symbol,
+          where: {
+            hoursSinceEpoch_lte: (hoursSinceEpoch - 24).toString(),
+            symbol,
+          } as TokenSnapshot_Filter,
         })
         .then((response) => response.tokenSnapshots[0])
     ),

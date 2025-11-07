@@ -14,8 +14,8 @@ export type Metrics = {
 export type AllMetrics = {
   kvcm: Metrics;
   k2: Metrics;
-  "kvcm-k2": Metrics; 
-  "kvcm-usdc": Metrics; 
+  'kvcm-k2': Metrics;
+  'kvcm-usdc': Metrics;
 };
 
 /* Liquidity Pool Info */
@@ -74,6 +74,7 @@ export type CarbonClass = {
   name: string;
   category: string;
   priceUSD: number;
+  supplyTonnes: number;
 };
 
 export type CarbonMarket = CarbonMarketBreakdownItem[];

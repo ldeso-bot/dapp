@@ -34,7 +34,6 @@ export const getLiquidityPools = async (sdk: Sdk): Promise<LiquidityPools> => {
     };
   };
 
-  console.log(tokensResponse);
   return [getOneLiquidityPool('kvcm-usdc'), getOneLiquidityPool('kvcm-k2')];
 };
 
