@@ -1,13 +1,17 @@
 import { USE_MOCKS } from '@/shared/constants/config.constants';
+import { ChainId } from '@/shared/constants/networks.constants';
 import { LpToken, tokens } from '@/shared/constants/tokens.constants';
 import {
   LiquidityPoolInfo,
   LiquidityPools,
 } from '@/shared/models/ProtocolData';
-import { Sdk } from '@/shared/utils/subgraph.utils';
+import { getSdk } from '@/shared/utils/subgraph.utils';
 import { formatUnits } from 'viem';
 
-export const getLiquidityPools = async (sdk: Sdk): Promise<LiquidityPools> => {
+export const getLiquidityPools = async (
+  chainId: ChainId
+): Promise<LiquidityPools> => {
+  const sdk = getSdk(chainId);
   if (USE_MOCKS) {
     return getMockLiquidityPools();
   }

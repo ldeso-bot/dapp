@@ -1,4 +1,4 @@
-import { AllocationToken } from '@/shared/constants/tokens.constants';
+import { AllocatableToken } from '@/shared/constants/tokens.constants';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { usePermit } from '@/shared/hooks/web3/usePermit';
 import { YieldRate } from '@/shared/models/ProtocolData';
@@ -17,7 +17,7 @@ export type LockTokenFields = {
 
 export const lockTokenDialogAtom = atom({
   open: false,
-  token: null as AllocationToken | null,
+  token: null as AllocatableToken | null,
 });
 
 export const useTransferWithPermit = () => {

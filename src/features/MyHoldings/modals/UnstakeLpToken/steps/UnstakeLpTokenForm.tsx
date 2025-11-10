@@ -23,7 +23,7 @@ const UnstakeLpTokenForm: FormFlowStep<UnstakeLpTokenFields> = ({
   const { form } = data;
   const { handleSubmit, formState } = form;
   const unstakeLpTokenDialogState = useAtomValue(unstakeLpTokenDialogAtom);
-  const liquidityPosition = unstakeLpTokenDialogState.liquidityPosition;
+  const liquidityPosition = unstakeLpTokenDialogState.lock;
 
   // Wrapping next into handleSubmit to ensure the form is valid before going to the validation step
   const onSubmit = () => {

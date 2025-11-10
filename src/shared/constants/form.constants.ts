@@ -1,7 +1,7 @@
-import { allocationTokens } from './tokens.constants';
+import { allocatableTokens } from './tokens.constants';
 
 export const ALLOCATION_TOKENS_FORM_INPUT_ITEMS = Object.entries(
-  allocationTokens
+  allocatableTokens
 ).map(([key, token]) => ({
   value: key,
   label: token.symbol,

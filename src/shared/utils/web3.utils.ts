@@ -2,13 +2,35 @@ import contracts, {
   ContractName,
 } from '@/shared/constants/contracts.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
+import { isChainId } from '@/shared/utils/typeguards';
 import {
   type Abi,
   type PublicClient,
   type WalletClient,
+  createPublicClient,
+  http,
   getContract as viemGetContract,
 } from 'viem';
+import { base, baseSepolia } from 'viem/chains';
 import { ViemError } from './web3.types';
+
+/**
+ * Gets the public client for the given chain ID
+ * @param chainId - The chain ID
+ * @returns The public client for the given chain
+ * @throws Error if chainId is invalid
+ */
+export const getPublicClient = (chainId: ChainId): PublicClient => {
+  if (!isChainId(chainId)) {
+    throw new Error(`Invalid chain ID: ${chainId}`);
+  }
+  const chain = chainId === base.id ? base : baseSepolia;
+  const rpcUrl = chain.rpcUrls.default.http[0];
+  return createPublicClient({
+    chain,
+    transport: http(rpcUrl),
+  }) as PublicClient;
+};
 
 export function getContract(
   chainId: ChainId,

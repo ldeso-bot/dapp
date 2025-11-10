@@ -39,29 +39,6 @@ export type YieldRate = {
 
 export type YieldRates = YieldRate[];
 
-type CarbonBackingBreakdownItem = {
-  category: string;
-  amountTonnes: number;
-};
-
-/* Carbon Backing */
-export type CarbonBacking = {
-  totalTonnes: number;
-  marketValueUSD: number;
-  breakdown: CarbonBackingBreakdownItem[];
-};
-
-/* Carbon Liquidity */
-type CarbonLiquidityBreakdownItem = {
-  category: string;
-  valueUSD: number;
-};
-
-export type CarbonLiquidity = {
-  marketValueUSD: number;
-  breakdown: CarbonLiquidityBreakdownItem[];
-};
-
 /* Carbon Market */
 type CarbonMarketBreakdownItem = {
   category: string;
@@ -86,8 +63,6 @@ export type ProtocolData = {
   lockedkVcmYieldRates: YieldRates;
   liquidityPoolRiskyYield: YieldRates;
   carbonYieldRates: YieldRates;
-  carbonBacking: CarbonBacking;
-  carbonLiquidity: CarbonLiquidity;
   carbonMarket: CarbonMarket;
   carbonClasses: CarbonClass[];
 };

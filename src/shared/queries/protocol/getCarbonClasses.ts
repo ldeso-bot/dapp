@@ -1,12 +1,17 @@
 import { USE_MOCKS } from '@/shared/constants/config.constants';
-import { Sdk } from '@/shared/utils/subgraph.utils';
+import { ChainId } from '@/shared/constants/networks.constants';
+import { getSdk } from '@/shared/utils/subgraph.utils';
 import { CreditToken_Filter } from '@generated/gql/types/carbon.types';
 import { CarbonClass_Filter } from '@generated/gql/types/protocol.types';
 import { mapToObj } from 'remeda';
 import { formatUnits } from 'viem';
 import { CarbonClass } from '../../models/ProtocolData';
 
-export const getCarbonClasses = async (sdk: Sdk): Promise<CarbonClass[]> => {
+export const getCarbonClasses = async (
+  chainId: ChainId
+): Promise<CarbonClass[]> => {
+  const sdk = getSdk(chainId);
+
   if (USE_MOCKS) {
     return getMockCarbonClasses();
   }

@@ -1,4 +1,4 @@
-import { LiquidityPosition } from '@/shared/models/walletData';
+import { Lock } from '@/shared/models/walletData';
 import { atom } from 'jotai';
 
 export type UnstakeLpTokenFields = {
@@ -8,7 +8,7 @@ export type UnstakeLpTokenFields = {
 
 export const unstakeLpTokenDialogAtom = atom({
   open: false,
-  liquidityPosition: null as LiquidityPosition | null,
+  lock: null as Lock | null,
 });
 
 export const tooltip =

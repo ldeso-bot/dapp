@@ -1,5 +1,6 @@
 import { USE_MOCKS } from '@/shared/constants/config.constants';
-import { Sdk } from '@/shared/utils/subgraph.utils';
+import { ChainId } from '@/shared/constants/networks.constants';
+import { getSdk } from '@/shared/utils/subgraph.utils';
 import { YieldRates } from '../../models/ProtocolData';
 import {
   BUCKET_IDS,
@@ -7,7 +8,10 @@ import {
   getMockLockedVcmYieldRates,
 } from './protocol.utils';
 
-export const getCarbonYieldRates = async (sdk: Sdk): Promise<YieldRates> => {
+export const getCarbonYieldRates = async (
+  chainId: ChainId
+): Promise<YieldRates> => {
+  const sdk = getSdk(chainId);
   if (USE_MOCKS) {
     return getMockLockedVcmYieldRates(BUCKET_IDS.CARBON);
   }

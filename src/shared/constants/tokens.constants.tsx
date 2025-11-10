@@ -8,8 +8,9 @@ import { ReactNode } from 'react';
 import Icon from '../components/Icon/Icon';
 
 export type LpToken = 'kvcm-usdc' | 'kvcm-k2';
-export type AllocationToken = 'k2' | 'kvcm';
-export type Token = 'usdc' | AllocationToken | LpToken;
+export type AllocatableToken = 'k2' | 'kvcm' | 'kvcm-usdc';
+export type LockableToken = AllocatableToken;
+export type Token = 'usdc' | 'k2' | 'kvcm' | 'kvcm-usdc' | 'kvcm-k2';
 export type SubgraphTokenSymbol =
   | 'K2'
   | 'KVCM'
@@ -81,7 +82,20 @@ export const lpTokens = {
   'kvcm-k2': tokens['kvcm-k2'],
 } as const;
 
-export const allocationTokens = {
+export const allocatableTokens = {
   kvcm: tokens.kvcm,
   k2: tokens.k2,
+  'kvcm-usdc': tokens['kvcm-usdc'],
 } as const;
+
+/** @alias */
+export const lockableTokens = allocatableTokens;
+
+export const tokenInfoFromSubgraphSymbol = (
+  symbol: string
+): TokenInfo | null => {
+  const res = Object.values(tokens).find(
+    (token) => token.subgraphSymbol === symbol
+  );
+  return res ?? null;
+};

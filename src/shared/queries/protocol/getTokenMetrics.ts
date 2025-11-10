@@ -1,10 +1,14 @@
+import { ChainId } from '@/shared/constants/networks.constants';
 import { SubgraphTokenSymbol } from '@/shared/constants/tokens.constants';
 import { AllMetrics, Metrics } from '@/shared/models/ProtocolData';
-import { Sdk } from '@/shared/utils/subgraph.utils';
+import { getSdk } from '@/shared/utils/subgraph.utils';
 import { TokenSnapshot_Filter } from '@generated/gql/types/protocol.types';
 import { formatUnits } from 'viem';
 
-export const getTokenMetrics = async (sdk: Sdk): Promise<AllMetrics> => {
+export const getTokenMetrics = async (
+  chainId: ChainId
+): Promise<AllMetrics> => {
+  const sdk = getSdk(chainId);
   const hoursSinceEpoch = Math.floor(Date.now() / 1000 / 3600);
 
   const [tokensResponse, ...tokenSnapshotsResponses] = await Promise.all([

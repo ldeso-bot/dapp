@@ -27,7 +27,7 @@ const UnstakeLpTokenConfirm: FormFlowStep<UnstakeLpTokenFields> = ({
   const setAlert = useSetAtom(alertAtom);
   const router = useRouter();
   const unstakeLpTokenDialogState = useAtomValue(unstakeLpTokenDialogAtom);
-  const liquidityPosition = unstakeLpTokenDialogState.liquidityPosition;
+  const liquidityPosition = unstakeLpTokenDialogState.lock;
 
   if (!liquidityPosition) return null;
 
