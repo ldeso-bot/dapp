@@ -12,6 +12,7 @@ import Yield from '@/shared/components/Yield/Yield';
 import { ROUTES } from '@/shared/constants/route.constants';
 import {
   DEFAULT_LP_TOKEN,
+  isLpToken,
   lpTokens,
   tokens,
 } from '@/shared/constants/tokens.constants';
@@ -19,7 +20,6 @@ import {
   MATURITY_DATES,
   MATURITY_DATES_OPTIONS,
 } from '@/shared/utils/protocol.utils';
-import { isLpToken } from '@/shared/utils/typeguards';
 import { useAtomValue } from 'jotai';
 import {
   stakeLpTokenDialogAtom,

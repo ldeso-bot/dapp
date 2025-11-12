@@ -7,9 +7,9 @@ import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import {
   DEFAULT_ALLOCATION_TOKEN,
+  isToken,
   tokens,
 } from '@/shared/constants/tokens.constants';
-import { isToken } from '@/shared/utils/typeguards';
 import { useSetAtom } from 'jotai';
 import { useRouter } from 'next/navigation';
 import { NewAllocationFields } from '../newAllocation.utils';

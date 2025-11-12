@@ -1,9 +1,11 @@
 import { USE_MOCKS } from '@/shared/constants/config.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
-import { tokenInfoFromSubgraphSymbol } from '@/shared/constants/tokens.constants';
+import {
+  isAllocatableToken,
+  tokenInfoFromSubgraphSymbol,
+} from '@/shared/constants/tokens.constants';
 import { Allocation, Allocations } from '@/shared/models/walletData';
 import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
-import { isAllocatableToken } from '@/shared/utils/typeguards';
 import { Allocation_Filter } from '@generated/gql/types/protocol.types';
 import { filter, isNonNullish } from 'remeda';
 import { formatUnits } from 'viem';

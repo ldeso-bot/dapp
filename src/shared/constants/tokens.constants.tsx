@@ -5,7 +5,9 @@ import KlimaIcon from '@/shared/images/kvcm.svg';
 import USDCIcon from '@/shared/images/usdc.svg';
 import { StaticImageData } from 'next/image';
 import { ReactNode } from 'react';
+import { base, baseSepolia } from 'viem/chains';
 import Icon from '../components/Icon/Icon';
+import contracts from './contracts.constants';
 
 export type LpToken = 'kvcm-usdc' | 'kvcm-k2';
 export type AllocatableToken = 'k2' | 'kvcm' | 'kvcm-usdc';
@@ -98,4 +100,32 @@ export const tokenInfoFromSubgraphSymbol = (
     (token) => token.subgraphSymbol === symbol
   );
   return res ?? null;
+};
+
+export const isLpToken = (token: unknown): token is LpToken => {
+  return typeof token === 'string' && Object.keys(lpTokens).includes(token);
+};
+
+export const isToken = (token: unknown): token is Token => {
+  return typeof token === 'string' && Object.keys(tokens).includes(token);
+};
+
+export const isAllocatableToken = (
+  token: unknown
+): token is AllocatableToken => {
+  return isToken(token) && Object.keys(allocatableTokens).includes(token);
+};
+
+export const isLockableToken = (token: unknown): token is LockableToken => {
+  return isToken(token) && Object.keys(lockableTokens).includes(token);
+};
+
+export const getTokenDecimals = (address: string): number => {
+  if (
+    address.toLowerCase() === contracts.USDC[base.id].toLowerCase() ||
+    address.toLowerCase() === contracts.USDC[baseSepolia.id].toLowerCase()
+  ) {
+    return 6;
+  }
+  return 18;
 };

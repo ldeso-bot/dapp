@@ -2,7 +2,7 @@
 
 import Dialog from '@/shared/components/Dialog/Dialog';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
-import { isAllocatableToken } from '@/shared/utils/typeguards';
+import { isAllocatableToken } from '@/shared/constants/tokens.constants';
 import { useAtom } from 'jotai';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';

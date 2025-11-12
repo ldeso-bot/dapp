@@ -54,7 +54,7 @@ export const getSdk = (chainId: ChainId): Sdk => {
 };
 
 export const formatStringToNumber = (
-  value: string | undefined,
+  value: string | bigint | undefined,
   decimals: number
 ) => {
   return Number(formatUnits(BigInt(value ?? '0'), decimals));

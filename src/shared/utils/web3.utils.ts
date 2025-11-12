@@ -12,6 +12,7 @@ import {
   getContract as viemGetContract,
 } from 'viem';
 import { base, baseSepolia } from 'viem/chains';
+import { rpcUrls } from '../constants/rpc.constants';
 import { ViemError } from './web3.types';
 
 /**
@@ -25,10 +26,10 @@ export const getPublicClient = (chainId: ChainId): PublicClient => {
     throw new Error(`Invalid chain ID: ${chainId}`);
   }
   const chain = chainId === base.id ? base : baseSepolia;
-  const rpcUrl = chain.rpcUrls.default.http[0];
+
   return createPublicClient({
     chain,
-    transport: http(rpcUrl),
+    transport: http(rpcUrls[chainId]),
   }) as PublicClient;
 };
 

@@ -1,35 +1,52 @@
-import { USE_MOCKS } from '@/shared/constants/config.constants';
+import {
+  AERODROME_K2_USDC_POOL_INDEX,
+  AERODROME_KVCM_USDC_POOL_INDEX,
+} from '@/shared/constants/contracts.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
-import { LpToken, tokens } from '@/shared/constants/tokens.constants';
+import { LpToken } from '@/shared/constants/tokens.constants';
 import {
   LiquidityPoolInfo,
   LiquidityPools,
 } from '@/shared/models/ProtocolData';
-import { getSdk } from '@/shared/utils/subgraph.utils';
-import { formatUnits } from 'viem';
+import { getAerodromePoolInfoByIndex } from '@/shared/utils/aerodrome.utils';
+import { getTokenPricesViaAlchemy } from '@/shared/utils/alchemy.utils';
+import { getTokenMetrics } from './getTokenMetrics';
 
 export const getLiquidityPools = async (
   chainId: ChainId
 ): Promise<LiquidityPools> => {
-  const sdk = getSdk(chainId);
-  if (USE_MOCKS) {
-    return getMockLiquidityPools();
-  }
-  const tokensResponse = await sdk.protocol.getTokens();
+  const [kvcmUsdcPool, k2UsdcPool, tokenMetrics, [aeroPrice]] =
+    await Promise.all([
+      // Velodrome pool data
+      getAerodromePoolInfoByIndex(AERODROME_KVCM_USDC_POOL_INDEX),
+      getAerodromePoolInfoByIndex(AERODROME_K2_USDC_POOL_INDEX),
+      // Subgraph token data
+      getTokenMetrics(chainId),
+      getTokenPricesViaAlchemy(['AERO']),
+    ]);
+
+  const lpData = {
+    'kvcm-usdc': {
+      ...kvcmUsdcPool,
+      token0ValueUSD: tokenMetrics.kvcm.valueUSD,
+      token1ValueUSD: 1,
+    },
+    'kvcm-k2': {
+      ...k2UsdcPool,
+      token0ValueUSD: tokenMetrics.kvcm.valueUSD,
+      token1ValueUSD: tokenMetrics.k2.valueUSD,
+    },
+  };
 
   const getOneLiquidityPool = (token: LpToken): LiquidityPoolInfo => {
-    const tokenInfo = tokens[token];
-    const symbol = tokenInfo.subgraphSymbol;
-    const tokenSubgraphInfo = tokensResponse.tokens.find(
-      (t) => t.symbol === symbol
-    );
+    const tvl =
+      lpData[token].token0ValueUSD * lpData[token].reserve0 +
+      lpData[token].token1ValueUSD * lpData[token].reserve1;
 
-    const tvl = Number(
-      formatUnits(BigInt(tokenSubgraphInfo?.totalAmountLocked ?? '0'), 18)
-    );
+    const annualEmissions = lpData[token].emissions * 60 * 60 * 24 * 365;
+    const annualEmissionsUSD = annualEmissions * (aeroPrice ?? 0);
 
-    // TODO: pending clarification (aerodrome or risky yield)
-    const apyPercent = 0.174;
+    const apyPercent = (annualEmissionsUSD / tvl) * 100;
 
     return {
       token,
@@ -39,19 +56,4 @@ export const getLiquidityPools = async (
   };
 
   return [getOneLiquidityPool('kvcm-usdc'), getOneLiquidityPool('kvcm-k2')];
-};
-
-const getMockLiquidityPools = (): LiquidityPools => {
-  return [
-    {
-      token: 'kvcm-usdc',
-      tvl: 2200000,
-      apyPercent: 0.123,
-    },
-    {
-      token: 'kvcm-k2',
-      tvl: 1200000,
-      apyPercent: 0.174,
-    },
-  ];
 };

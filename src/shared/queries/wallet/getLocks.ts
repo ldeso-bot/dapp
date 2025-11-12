@@ -1,9 +1,11 @@
 import { USE_MOCKS } from '@/shared/constants/config.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
-import { tokenInfoFromSubgraphSymbol } from '@/shared/constants/tokens.constants';
+import {
+  isLockableToken,
+  tokenInfoFromSubgraphSymbol,
+} from '@/shared/constants/tokens.constants';
 import { Lock, Locks } from '@/shared/models/walletData';
 import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
-import { isLockableToken } from '@/shared/utils/typeguards';
 import { Bond_Filter } from '@generated/gql/types/protocol.types';
 import { filter, isNonNullish } from 'remeda';
 import { formatUnits } from 'viem';

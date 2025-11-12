@@ -16,10 +16,9 @@ import {
   ONE_YEAR,
 } from '@/shared/constants/protocol.constants';
 import { ROUTES } from '@/shared/constants/route.constants';
-import { tokens } from '@/shared/constants/tokens.constants';
+import { isToken, tokens } from '@/shared/constants/tokens.constants';
 import { YieldRates } from '@/shared/models/ProtocolData';
 import { formatDate, formatPercentage } from '@/shared/utils/string.utils';
-import { isToken } from '@/shared/utils/typeguards';
 import { useEffect, useState } from 'react';
 import {
   Line,

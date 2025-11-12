@@ -1,11 +1,27 @@
+import { IS_DEVELOPMENT } from '@/shared/constants/config.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
 import { SubgraphTokenSymbol } from '@/shared/constants/tokens.constants';
 import { AllMetrics, Metrics } from '@/shared/models/ProtocolData';
 import { getSdk } from '@/shared/utils/subgraph.utils';
 import { TokenSnapshot_Filter } from '@generated/gql/types/protocol.types';
+import { unstable_cache } from 'next/cache';
 import { formatUnits } from 'viem';
 
 export const getTokenMetrics = async (
+  chainId: ChainId
+): Promise<AllMetrics> => {
+  return unstable_cache(
+    async () => {
+      return getTokenMetricsUncached(chainId);
+    },
+    [`token-metrics-${chainId}`],
+    {
+      revalidate: IS_DEVELOPMENT ? 1 : 60,
+    }
+  )();
+};
+
+const getTokenMetricsUncached = async (
   chainId: ChainId
 ): Promise<AllMetrics> => {
   const sdk = getSdk(chainId);
