@@ -46,12 +46,12 @@ export const getLiquidityPools = async (
     const annualEmissions = lpData[token].emissions * 60 * 60 * 24 * 365;
     const annualEmissionsUSD = annualEmissions * (aeroPrice ?? 0);
 
-    const apyPercent = (annualEmissionsUSD / tvl) * 100;
+    const apyYearly = annualEmissionsUSD / tvl;
 
     return {
       token,
-      tvl,
-      apyPercent,
+      tvlUSD: tvl,
+      apyYearly,
     };
   };
 

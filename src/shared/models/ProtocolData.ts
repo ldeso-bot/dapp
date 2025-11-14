@@ -21,8 +21,8 @@ export type AllMetrics = {
 /* Liquidity Pool Info */
 export type LiquidityPoolInfo = {
   token: LpToken;
-  tvl: number; // Total Value Locked in USD
-  apyPercent: number; // Annual Percentage Yield
+  tvlUSD: number; // Total Value Locked in USD
+  apyYearly: number; // Yearly APY
 };
 
 export type LiquidityPools = LiquidityPoolInfo[];

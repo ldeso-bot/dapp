@@ -9,7 +9,7 @@ import PoolRowMobile from './PoolRowMobile';
 export default function LiquidityPoolsCard(props: CardProps) {
   const { data } = useProtocolData();
   const marketValue =
-    data?.liquidityPools.reduce((acc, pool) => acc + pool.tvl, 0) ?? 0;
+    data?.liquidityPools.reduce((acc, pool) => acc + pool.tvlUSD, 0) ?? 0;
 
   return (
     <Card
