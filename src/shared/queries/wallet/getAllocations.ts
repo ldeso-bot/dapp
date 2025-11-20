@@ -1,11 +1,70 @@
-import { Allocations } from '@/shared/models/walletData';
-import { Sdk } from '@/shared/utils/subgraph.utils';
+import { USE_MOCKS } from '@/shared/constants/config.constants';
+import { ChainId } from '@/shared/constants/networks.constants';
+import {
+  isAllocatableToken,
+  tokenInfoFromSubgraphSymbol,
+} from '@/shared/constants/tokens.constants';
+import { Allocation, Allocations } from '@/shared/models/walletData';
+import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
+import { Allocation_Filter } from '@generated/gql/types/protocol.types';
+import { filter, isNonNullish } from 'remeda';
+import { formatUnits } from 'viem';
 
 export const getAllocations = async (
-  sdk: Sdk,
+  chainId: ChainId,
   walletAddress: string
 ): Promise<Allocations> => {
-  if (!sdk || !walletAddress) console.log('');
+  const sdk = getSdk(chainId);
+  if (USE_MOCKS) {
+    return getMockAllocations();
+  }
+
+  // Fetch allocations
+  const allocations = await sdk.protocol.getAllocations({
+    where: {
+      account_: {
+        id: walletAddress,
+      },
+    } as Allocation_Filter,
+  });
+
+  // Map allocations
+  const mappedAllocations = allocations.allocations.map(
+    (allocation): Allocation | null => {
+      const tokenInfo = tokenInfoFromSubgraphSymbol(allocation.token.symbol);
+      if (!tokenInfo || !isAllocatableToken(tokenInfo.id)) {
+        console.warn('❓ Unknown allocation token:', allocation.token.symbol);
+        return null;
+      }
+
+      return {
+        id: allocation.id,
+        carbonClass: allocation.carbonClass.id,
+        priceUSD: formatStringToNumber(
+          allocation.carbonClass.priceUsdcPerTon?.priceUsdc,
+          6
+        ),
+        amount: Number(formatUnits(BigInt(allocation.amount), 18)),
+        holder: allocation.account.id,
+        sharePercent: Number(
+          allocation.token.totalAmountAllocated
+            ? BigInt(allocation.amount) /
+                BigInt(allocation.token.totalAmountAllocated)
+            : 0
+        ),
+        token: {
+          name: tokenInfo.id,
+          address: allocation.token.address,
+        },
+      };
+    }
+  );
+
+  // Cull and return allocations
+  return filter(mappedAllocations, isNonNullish);
+};
+
+const getMockAllocations = (): Allocations => {
   return [
     {
       id: '1',

@@ -16,7 +16,7 @@ import {
 export default function StakeLpTokenFlow() {
   const unstakeLpTokenDialog = useAtomValue(unstakeLpTokenDialogAtom);
 
-  const max = unstakeLpTokenDialog.liquidityPosition?.balance ?? 0;
+  const max = unstakeLpTokenDialog.lock?.balance ?? 0;
   // Form and schema are deffined at the flow level
   const schema = z.object({
     liquidityPositionId: z.string(),
@@ -29,7 +29,7 @@ export default function StakeLpTokenFlow() {
   const form = useForm<UnstakeLpTokenFields>({
     resolver: zodResolver(schema),
     defaultValues: {
-      liquidityPositionId: unstakeLpTokenDialog.liquidityPosition?.id,
+      liquidityPositionId: unstakeLpTokenDialog.lock?.id,
       amount: 0,
     },
   });

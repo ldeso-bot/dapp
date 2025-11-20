@@ -2,7 +2,7 @@
 
 import Dialog from '@/shared/components/Dialog/Dialog';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
-import { isAllocationToken } from '@/shared/utils/typeguards';
+import { isAllocatableToken } from '@/shared/constants/tokens.constants';
 import { useAtom } from 'jotai';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
@@ -34,8 +34,7 @@ export default function AllocateModals() {
     /* Open dialogs if navigating to /allocate with action parameter */
     if (action.startsWith('new_allocation_')) {
       const token = action.split('_')[2];
-      console.log(token, isAllocationToken(token));
-      if (isAllocationToken(token))
+      if (isAllocatableToken(token))
         setNewAllocationDialog({ open: true, token });
     }
 

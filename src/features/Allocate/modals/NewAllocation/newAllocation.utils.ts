@@ -1,4 +1,4 @@
-import { AllocationToken } from '@/shared/constants/tokens.constants';
+import { AllocatableToken } from '@/shared/constants/tokens.constants';
 import { atom } from 'jotai';
 
 export type NewAllocationFields = {
@@ -9,5 +9,5 @@ export type NewAllocationFields = {
 
 export const newAllocationDialogAtom = atom({
   open: false,
-  token: null as AllocationToken | null,
+  token: null as AllocatableToken | null,
 });

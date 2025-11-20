@@ -1,22 +1,136 @@
-query getCarbonClasses {
-  carbonClasses {
-    ...CarbonClassFragment
+query getCarbonClasses($where: CarbonClass_filter) {
+  carbonClasses(where: $where, first: 1000) {
+    priceUsdcPerTon {
+      priceUsdc
+    }
+    id
+    carbonClassId
+    isRegistered
+    registeredCredits(first: 1000) {
+      creditTokenId
+    }
   }
 }
 
 query getTokens {
-  tokens {
+  tokens(first: 1000) {
     ...TokenFragment
   }
 }
 
-query getTokenSnapshots($daysSinceEpoch: BigInt) {
-  tokenSnapshots(where: { daysSinceEpoch: $daysSinceEpoch }) {
-    daysSinceEpoch
+query getTokenSnapshots($where: TokenSnapshot_filter) {
+  tokenSnapshots(
+    where: $where
+    orderBy: hoursSinceEpoch
+    orderDirection: desc
+    first: 1
+  ) {
+    hoursSinceEpoch
     tokenAddress
     priceUsdc
     symbol
     supply
     totalAmountLocked
+    totalAmountAllocated
+  }
+}
+
+query getMaturityManager {
+  maturityManagers(first: 1) {
+    firstActiveMaturityId
+    lastActiveMaturityId
+  }
+}
+
+query getYieldBuckets($where: YieldBucket_filter) {
+  yieldBuckets(where: $where, orderBy: maturityId, first: 1000) {
+    bucketId
+    maturityId
+    multiplier
+    zeroCouponYieldCurve
+    discountFactor
+    unscaledBondIssue
+    maturity {
+      timestamp
+    }
+  }
+}
+
+query getPrices {
+  prices(first: 1000) {
+    symbol
+    priceUsdc
+    tokenAddress
+  }
+}
+
+query getAllocations($where: Allocation_filter) {
+  allocations(where: $where) {
+    id
+    account {
+      id
+    }
+    carbonClass {
+      id
+      priceUsdcPerTon {
+        priceUsdc
+      }
+    }
+    token {
+      symbol
+      address
+      totalAmountAllocated
+    }
+    amount
+  }
+}
+
+query getLocks($where: Bond_filter) {
+  bonds(where: $where) {
+    id
+    externalId
+    type
+    status
+    amount
+    account {
+      id
+    }
+    token {
+      symbol
+      address
+      totalAmountLocked
+      priceUsdc {
+        priceUsdc
+      }
+    }
+    yieldClaims {
+      id
+      entryMultiplier
+      exitMultiplier
+      yieldBucket {
+        bucketId
+        multiplier
+        discountFactor
+        zeroCouponYieldCurve
+        unscaledBondIssue
+        maturity {
+          maturityId
+          timestamp
+        }
+      }
+    }
+  }
+}
+
+query getAccountBalances($where: AccountBalance_filter) {
+  accountBalances(where: $where) {
+    account {
+      id
+    }
+    token {
+      symbol
+      address
+    }
+    amount
   }
 }

@@ -1,65 +1,43 @@
+import { LpToken, Token } from '../constants/tokens.constants';
+
 /* Token Metrics */
 export type Metrics = {
   valueUSD: number;
-  valueChangePercent24h: number;
-  amountTonnes: number;
-  amountChangePercent24h: number;
+  valueUSDChangePercent24h: number;
+  supply: number;
+  supplyChangePercent24h: number;
+  supplyLocked: number;
+  supplyLockedChangePercent24h: number;
+  address: string;
 };
 
 export type AllMetrics = {
-  kVcmLocked: Metrics;
-  k2Locked: Metrics;
+  kvcm: Metrics;
+  k2: Metrics;
+  'kvcm-k2': Metrics;
+  'kvcm-usdc': Metrics;
 };
-
-import { LpToken, Token } from '../constants/tokens.constants';
 
 /* Liquidity Pool Info */
 export type LiquidityPoolInfo = {
-  id: string;
-  token: LpToken; // e.g., 'kVCM'
-  tvl: number; // Total Value Locked in USD
-  description: string; // e.g., 'Basic Volatile 1.0%'
-  apyPercent: number; // Annual Percentage Yield
+  token: LpToken;
+  tvlUSD: number; // Total Value Locked in USD
+  apyYearly: number; // Yearly APY
 };
 
 export type LiquidityPools = LiquidityPoolInfo[];
 
 /* Klima Bond Yield Rates */
 export type YieldRate = {
-  days?: number;
+  index: number; // Index relative to the first active maturity
   maturityId: string; // protocol maturity Id
-  index: number; // relotive maturity Index. 0 for the next maturity
   maturationTimestamp: number;
   yieldPercent: number;
-  token: Token;
-  lockDuration?: number;
   incentivesYield?: number;
+  tokens: Token[]; // Tokens that are eligible for incentives
 };
 
 export type YieldRates = YieldRate[];
-
-type CarbonBackingBreakdownItem = {
-  category: string;
-  amountTonnes: number;
-};
-
-/* Carbon Backing */
-export type CarbonBacking = {
-  totalTonnes: number;
-  marketValueUSD: number;
-  breakdown: CarbonBackingBreakdownItem[];
-};
-
-/* Carbon Liquidity */
-type CarbonLiquidityBreakdownItem = {
-  category: string;
-  valueUSD: number;
-};
-
-export type CarbonLiquidity = {
-  marketValueUSD: number;
-  breakdown: CarbonLiquidityBreakdownItem[];
-};
 
 /* Carbon Market */
 type CarbonMarketBreakdownItem = {
@@ -73,6 +51,7 @@ export type CarbonClass = {
   name: string;
   category: string;
   priceUSD: number;
+  supplyTonnes: number;
 };
 
 export type CarbonMarket = CarbonMarketBreakdownItem[];
@@ -84,8 +63,6 @@ export type ProtocolData = {
   lockedkVcmYieldRates: YieldRates;
   liquidityPoolRiskyYield: YieldRates;
   carbonYieldRates: YieldRates;
-  carbonBacking: CarbonBacking;
-  carbonLiquidity: CarbonLiquidity;
   carbonMarket: CarbonMarket;
   carbonClasses: CarbonClass[];
 };

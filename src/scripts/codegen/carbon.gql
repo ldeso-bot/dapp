@@ -1,5 +1,5 @@
-query getCreditTokens {
-  creditTokens {
+query getCreditTokens($where: CreditToken_filter) {
+  creditTokens(where: $where, first: 1000) {
     ...CreditTokenFragment
   }
 }

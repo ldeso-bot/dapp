@@ -1,24 +1,21 @@
-import { Sdk } from '@/shared/utils/subgraph.utils';
+import { USE_MOCKS } from '@/shared/constants/config.constants';
+import { ChainId } from '@/shared/constants/networks.constants';
+import { getSdk } from '@/shared/utils/subgraph.utils';
 import { YieldRates } from '../../models/ProtocolData';
-import { getMockMaturationTimestamp, getMockYieldPercent } from './mocks';
+import {
+  BUCKET_IDS,
+  getActiveYieldBuckets,
+  getMockLockedVcmYieldRates,
+} from './protocol.utils';
 
-// TODO: Replace with actual API call
 export const getLockedKVcmYieldRates = async (
-  sdk: Sdk
+  chainId: ChainId
 ): Promise<YieldRates> => {
-  if (!sdk) console.log('');
-  const yieldRates: YieldRates = [];
-  for (let i = 0; i < 40; i++) {
-    const lockDuration = Math.max(0, Math.ceil((getMockMaturationTimestamp(i) * 1000 - new Date().getTime()) / (1000 * 60 * 60 * 1000)))
-    yieldRates.push({
-      days: (i + 1) * 90 || 0,
-      index: i,
-      maturityId: `maturity-${i}`,
-      maturationTimestamp: getMockMaturationTimestamp(i),
-      yieldPercent: getMockYieldPercent(i),
-      lockDuration,
-      token: 'kvcm',
-    });
+  const sdk = getSdk(chainId);
+  if (USE_MOCKS) {
+    return getMockLockedVcmYieldRates(BUCKET_IDS.BOND);
   }
-  return yieldRates;
+  const yieldBuckets = await getActiveYieldBuckets(sdk, BUCKET_IDS.BOND);
+
+  return yieldBuckets;
 };

@@ -1,4 +1,4 @@
-import { AllocationToken } from '@/shared/constants/tokens.constants';
+import { AllocatableToken } from '@/shared/constants/tokens.constants';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { usePermit } from '@/shared/hooks/web3/usePermit';
 import { YieldRate } from '@/shared/models/ProtocolData';
@@ -17,7 +17,7 @@ export type LockTokenFields = {
 
 export const lockTokenDialogAtom = atom({
   open: false,
-  token: null as AllocationToken | null,
+  token: null as AllocatableToken | null,
 });
 
 export const useTransferWithPermit = () => {
@@ -74,8 +74,15 @@ export const useTransferWithPermit = () => {
   };
 };
 
-export const findClosestMaturityByDays = (targetDays: number, yieldData: YieldRate[]) => {
+export const findClosestMaturityByDays = (
+  targetDays: number,
+  yieldData: YieldRate[]
+) => {
+  const targetTimestamp = Date.now() + targetDays * 24 * 60 * 60;
   return yieldData.reduce((closest: YieldRate, current: YieldRate) => {
-    return Math.abs(current.days ?? 0 - targetDays) < Math.abs(closest.days ?? 0 - targetDays) ? current : closest
-  })
-}
+    return Math.abs(current.maturationTimestamp ?? 0 - targetTimestamp) <
+      Math.abs(closest.maturationTimestamp ?? 0 - targetTimestamp)
+      ? current
+      : closest;
+  });
+};

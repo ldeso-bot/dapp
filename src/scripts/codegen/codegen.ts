@@ -11,8 +11,6 @@ const tsOperationsConfig: TypeScriptDocumentsPluginConfig = {};
 
 const endpoints = subgraphs[base.id];
 
-console.log(endpoints);
-
 const GENERATED_TYPES_DIR = `.generated/gql/types`;
 const DOCUMENTS_DIR = `src/scripts/codegen`;
 

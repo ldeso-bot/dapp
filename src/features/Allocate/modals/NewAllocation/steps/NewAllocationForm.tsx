@@ -9,10 +9,10 @@ import { ALLOCATION_TOKENS_FORM_INPUT_ITEMS } from '@/shared/constants/form.cons
 import { ROUTES } from '@/shared/constants/route.constants';
 import {
   DEFAULT_ALLOCATION_TOKEN,
+  isToken,
   tokens,
 } from '@/shared/constants/tokens.constants';
 import { useCarbonClasses } from '@/shared/hooks/web3/useCarbonClasses';
-import { isToken } from '@/shared/utils/typeguards';
 import { useAtomValue } from 'jotai';
 import CarbonClassesCard from '../../../shared/CarbonClassesCard';
 import {

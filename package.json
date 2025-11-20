@@ -10,7 +10,8 @@
     "knip": "knip --reporter=markdown --exclude=binaries --exclude=dependencies",
     "tsc": "tsc",
     "codegen": "graphql-codegen --config src/scripts/codegen/codegen.ts",
-    "postinstall": "npm run codegen"
+    "postinstall": "npm run codegen",
+    "pools:show": "tsx src/scripts/showKlimaPools.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -51,6 +52,7 @@
     "prettier": "^3.5.3",
     "prettier-plugin-organize-imports": "^4.1.0",
     "tailwindcss": "^4",
+    "tsx": "^4.20.6",
     "tw-animate-css": "^1.3.4",
     "typescript": "^5"
   },

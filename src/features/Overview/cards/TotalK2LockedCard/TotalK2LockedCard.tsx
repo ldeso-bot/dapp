@@ -3,15 +3,15 @@ import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import {
-  formatAmountWithCommas,
-  formatPriceUSDWithCommas,
+    formatAmountWithCommas,
+    formatPriceUSDWithCommas,
 } from '@/shared/utils/string.utils';
 import StatCard from '../../shared/StatCard/StatCard';
 
 export default function TotalK2LockedCard(props: CardProps) {
   const { data } = useProtocolData();
-  const amount = data?.metrics.k2Locked.amountTonnes ?? 0;
-  const price = data?.metrics.k2Locked.valueUSD ?? 0;
+  const amount = data?.metrics.k2.supplyLocked ?? 0;
+  const price = data?.metrics.k2.valueUSD ?? 0;
 
   return (
     <StatCard
@@ -23,7 +23,7 @@ export default function TotalK2LockedCard(props: CardProps) {
       tooltipPosition="far"
       primaryValue={formatAmountWithCommas(amount, 0)}
       secondaryValue={formatPriceUSDWithCommas(price * amount, 0)}
-      changePercent={data?.metrics.k2Locked.amountChangePercent24h}
+      changePercent={data?.metrics.k2.supplyLockedChangePercent24h}
       token={tokens.k2}
     />
   );

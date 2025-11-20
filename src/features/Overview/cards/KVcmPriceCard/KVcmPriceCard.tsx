@@ -3,10 +3,14 @@
 import { CardProps } from '@/shared/components/Card/Card';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
+import { formatPriceUSDWithCommas } from '@/shared/utils/string.utils';
 import StatCard from '../../shared/StatCard/StatCard';
 
 export default function KVcmPriceCard(props: CardProps) {
   const { data } = useProtocolData();
+  const price = formatPriceUSDWithCommas(
+    data?.metrics.kvcm.valueUSD ?? 0
+  );
 
   return (
     <StatCard
@@ -14,8 +18,8 @@ export default function KVcmPriceCard(props: CardProps) {
       title="kVCM Price"
       tooltip="You can lock kVCM and K2 tokens to earn rewards. Locked tokens can be allocated to a carbon class to influence its price."
       buttonText="Buy kVCM"
-      primaryValue={data?.metrics.kVcmLocked.valueUSD}
-      changePercent={data?.metrics.kVcmLocked.valueChangePercent24h}
+      primaryValue={price}
+      changePercent={data?.metrics.kvcm.valueUSDChangePercent24h}
       token={tokens.usdc}
     />
   );

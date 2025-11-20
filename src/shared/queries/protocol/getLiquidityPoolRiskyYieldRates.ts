@@ -1,21 +1,20 @@
-import { Sdk } from '@/shared/utils/subgraph.utils';
+import { USE_MOCKS } from '@/shared/constants/config.constants';
+import { ChainId } from '@/shared/constants/networks.constants';
+import { getSdk } from '@/shared/utils/subgraph.utils';
 import { YieldRates } from '../../models/ProtocolData';
-import { getMockMaturationTimestamp, getMockYieldPercent } from './mocks';
+import {
+  BUCKET_IDS,
+  getActiveYieldBuckets,
+  getMockLockedVcmYieldRates,
+} from './protocol.utils';
 
-// TODO: Replace with actual API call
 export const getLiquidityPoolRiskyYieldRates = async (
-  sdk: Sdk
+  chainId: ChainId
 ): Promise<YieldRates> => {
-  if (!sdk) console.log('');
-  const yieldRates: YieldRates = [];
-  for (let i = 0; i < 40; i++) {
-    yieldRates.push({
-      index: i,
-      maturityId: `maturity-${i}`,
-      maturationTimestamp: getMockMaturationTimestamp(i),
-      yieldPercent: getMockYieldPercent(i),
-      token: 'kvcm-usdc',
-    });
+  const sdk = getSdk(chainId);
+  if (USE_MOCKS) {
+    return getMockLockedVcmYieldRates(BUCKET_IDS.RISKY);
   }
-  return yieldRates;
+  const yieldBuckets = await getActiveYieldBuckets(sdk, BUCKET_IDS.RISKY);
+  return yieldBuckets;
 };

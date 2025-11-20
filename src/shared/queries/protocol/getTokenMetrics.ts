@@ -1,80 +1,104 @@
-import { USE_MOCKS } from '@/shared/constants/config.constants';
+import { IS_DEVELOPMENT } from '@/shared/constants/config.constants';
+import { ChainId } from '@/shared/constants/networks.constants';
+import { SubgraphTokenSymbol } from '@/shared/constants/tokens.constants';
 import { AllMetrics, Metrics } from '@/shared/models/ProtocolData';
-import { Sdk } from '@/shared/utils/subgraph.utils';
+import { getSdk } from '@/shared/utils/subgraph.utils';
+import { TokenSnapshot_Filter } from '@generated/gql/types/protocol.types';
+import { unstable_cache } from 'next/cache';
 import { formatUnits } from 'viem';
 
-export const getTokenMetrics = async (sdk: Sdk): Promise<AllMetrics> => {
-  if (USE_MOCKS) {
-    return getMockTokenMetrics();
-  }
+export const getTokenMetrics = async (
+  chainId: ChainId
+): Promise<AllMetrics> => {
+  return unstable_cache(
+    async () => {
+      return getTokenMetricsUncached(chainId);
+    },
+    [`token-metrics-${chainId}`],
+    {
+      revalidate: IS_DEVELOPMENT ? 1 : 60,
+    }
+  )();
+};
 
-  // TODO: Use daysSinceEpoch - 1 (yesterday's prices)
-  const daysSinceEpoch = Math.floor(Date.now() / 1000 / 86400);
-  const [tokensResponse, tokenSnapshotsResponse] = await Promise.all([
+const getTokenMetricsUncached = async (
+  chainId: ChainId
+): Promise<AllMetrics> => {
+  const sdk = getSdk(chainId);
+  const hoursSinceEpoch = Math.floor(Date.now() / 1000 / 3600);
+
+  const [tokensResponse, ...tokenSnapshotsResponses] = await Promise.all([
     sdk.protocol.getTokens(),
-    sdk.protocol.getTokenSnapshots({
-      daysSinceEpoch: daysSinceEpoch.toString(),
-    }),
+    ...['KVCM', 'K2', 'KVCM_K2_LP', 'KVCM_USDC_LP'].map((symbol) =>
+      sdk.protocol
+        .getTokenSnapshots({
+          where: {
+            hoursSinceEpoch_lte: (hoursSinceEpoch - 24).toString(),
+            symbol,
+          } as TokenSnapshot_Filter,
+        })
+        .then((response) => response.tokenSnapshots[0])
+    ),
   ]);
 
-  const getOneTokenMetrics = (symbol: string): Metrics => {
+  const getOneTokenMetrics = (symbol: SubgraphTokenSymbol): Metrics => {
     const token = tokensResponse.tokens.find((t) => t.symbol === symbol);
-    const snapshot = tokenSnapshotsResponse.tokenSnapshots.find(
-      (p) => p.symbol === symbol
+    const snapshot = tokenSnapshotsResponses.find((p) => p?.symbol === symbol);
+    // Supply
+    const supply = Number(formatUnits(BigInt(token?.totalSupply ?? '0'), 18));
+
+    const snapshotSupply = snapshot?.supply
+      ? Number(formatUnits(BigInt(snapshot.totalAmountLocked), 18))
+      : supply;
+
+    const supplyChangePercent24h = supply
+      ? (supply - snapshotSupply) / supply
+      : 0;
+
+    // TVL
+    const supplyLocked = Number(
+      formatUnits(BigInt(token?.totalAmountLocked ?? '0'), 18)
     );
+
+    const snapshotTVL = snapshot?.totalAmountLocked
+      ? Number(formatUnits(BigInt(snapshot.totalAmountLocked), 18))
+      : supplyLocked;
+
+    const supplyLockedChangePercent24h = supplyLocked
+      ? (supplyLocked - snapshotTVL) / supplyLocked
+      : 0;
+
+    // Price
     const valueUSD = Number(
       formatUnits(BigInt(token?.priceUsdc?.priceUsdc ?? '0'), 6)
     );
-    const amountLocked = Number(
-      formatUnits(BigInt(token?.totalAmountLocked ?? '0'), 18)
-    );
-    const tokenPriceUsdc = token?.priceUsdc?.priceUsdc
-      ? Number(formatUnits(BigInt(token.priceUsdc.priceUsdc), 6))
-      : 0;
+
     const snapshotPriceUsdc = snapshot?.priceUsdc
       ? Number(formatUnits(BigInt(snapshot.priceUsdc), 6))
-      : 0;
-    const tokenTVL = token?.totalAmountLocked
-      ? Number(formatUnits(BigInt(token.totalAmountLocked), 18))
-      : 0;
-    const snapshotTVL = snapshot?.totalAmountLocked
-      ? Number(formatUnits(BigInt(snapshot.totalAmountLocked), 18))
+      : valueUSD;
+
+    const valueChangePercent24h = valueUSD
+      ? (valueUSD - snapshotPriceUsdc) / valueUSD
       : 0;
 
-    const valueChangePercent24h = tokenPriceUsdc
-      ? (tokenPriceUsdc - snapshotPriceUsdc) / tokenPriceUsdc
-      : 0;
-
-    const amountChangePercent24h =
-      tokenTVL - snapshotTVL ? (tokenTVL - snapshotTVL) / tokenTVL : 0;
+    // Address
+    const address = token?.address || '';
 
     return {
       valueUSD,
-      valueChangePercent24h,
-      amountTonnes: amountLocked,
-      amountChangePercent24h,
+      valueUSDChangePercent24h: valueChangePercent24h,
+      supply,
+      supplyChangePercent24h,
+      supplyLocked,
+      supplyLockedChangePercent24h,
+      address,
     };
   };
 
   return {
-    kVcmLocked: getOneTokenMetrics('KVCM'),
-    k2Locked: getOneTokenMetrics('K2'),
-  };
-};
-
-const getMockTokenMetrics = () => {
-  return {
-    kVcmLocked: {
-      valueUSD: 1.32,
-      valueChangePercent24h: 0.12,
-      amountTonnes: 789000,
-      amountChangePercent24h: 0.05,
-    },
-    k2Locked: {
-      valueUSD: 1.4,
-      valueChangePercent24h: -0.12,
-      amountTonnes: 789000,
-      amountChangePercent24h: 0.08,
-    },
+    kvcm: getOneTokenMetrics('KVCM'),
+    k2: getOneTokenMetrics('K2'),
+    'kvcm-k2': getOneTokenMetrics('KVCM_K2_LP'),
+    'kvcm-usdc': getOneTokenMetrics('KVCM_USDC_LP'),
   };
 };

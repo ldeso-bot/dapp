@@ -1,11 +1,3 @@
-fragment CarbonClassFragment on CarbonClass {
-  id
-  isRegistered
-  priceUsdcPerTon {
-    priceUsdc
-  }
-}
-
 fragment TokenFragment on Token {
   id
   address

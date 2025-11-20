@@ -4,8 +4,9 @@ import { getSdk as getProtocolSdk } from '@generated/gql/types/protocol.types';
 import { GraphQLClient } from 'graphql-request';
 import { base, baseSepolia } from 'viem/chains';
 
+import { ChainId } from '@/shared/constants/networks.constants';
 import { isChainId } from '@/shared/utils/typeguards';
-import { NextRequest } from 'next/server';
+import { formatUnits } from 'viem';
 
 /**
  * Gets the sdk for the given chain
@@ -40,17 +41,21 @@ const sdks = {
 export type Sdk = (typeof sdks)[keyof typeof sdks];
 
 /**
- * Gets the sdk for the given request
- * If the chain name is invalid, returns a 400 response.
- * @param request - The request object.
- * @returns The sdk or null if the chain name is invalid.
+ * Gets the SDK for the given chain ID
+ * @param chainId - The chain ID
+ * @returns The SDK for the given chain
+ * @throws Error if chainId is invalid
  */
-export const getSdkOrError = (request: NextRequest) => {
-  const chainId = Number(request.nextUrl.searchParams.get('chainId'));
-  let sdk: Sdk | null = null;
-  const response = Response.json({ error: 'Invalid chain' }, { status: 400 });
-  if (isChainId(chainId)) {
-    sdk = sdks[chainId];
+export const getSdk = (chainId: ChainId): Sdk => {
+  if (!isChainId(chainId)) {
+    throw new Error(`Invalid chain ID: ${chainId}`);
   }
-  return { sdk, response, chainId };
+  return sdks[chainId];
+};
+
+export const formatStringToNumber = (
+  value: string | bigint | undefined,
+  decimals: number
+) => {
+  return Number(formatUnits(BigInt(value ?? '0'), decimals));
 };

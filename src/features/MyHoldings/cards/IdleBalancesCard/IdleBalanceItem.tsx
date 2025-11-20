@@ -1,7 +1,6 @@
 import Button from '@/shared/components/Button/Button';
 import { ROUTES } from '@/shared/constants/route.constants';
-import { Token, tokens } from '@/shared/constants/tokens.constants';
-import { isLpToken } from '@/shared/utils/typeguards';
+import { isLpToken, Token, tokens } from '@/shared/constants/tokens.constants';
 
 type Props = {
   token: Token;

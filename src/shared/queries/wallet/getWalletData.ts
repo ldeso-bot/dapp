@@ -1,25 +1,22 @@
+import { ChainId } from '@/shared/constants/networks.constants';
 import { WalletData } from '@/shared/models/walletData';
 import { getAllocations } from '@/shared/queries/wallet/getAllocations';
 import { getBalances } from '@/shared/queries/wallet/getBalances';
-import { getLiquidityPositions } from '@/shared/queries/wallet/getLiquidityPositions';
 import { getLocks } from '@/shared/queries/wallet/getLocks';
-import { Sdk } from '@/shared/utils/subgraph.utils';
 
-export async function getWalletData(sdk: Sdk, walletAddress: string) {
-  /** We enforce the data type to make sure the endpoint respects the interface */
-  const [locks, liquidityPositions, balances, allocations] = await Promise.all([
-    getLocks(sdk, walletAddress),
-    getLiquidityPositions(sdk, walletAddress),
-    getBalances(sdk, walletAddress),
-    getAllocations(sdk, walletAddress),
+export async function getWalletData(
+  chainId: ChainId,
+  walletAddress: string
+): Promise<WalletData> {
+  const [locks, balances, allocations] = await Promise.all([
+    getLocks(chainId, walletAddress),
+    getBalances(chainId, walletAddress),
+    getAllocations(chainId, walletAddress),
   ]);
 
-  const data: WalletData = {
+  return {
     locks,
-    liquidityPositions,
     balances,
     allocations,
   };
-
-  return data;
 }

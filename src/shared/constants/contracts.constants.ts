@@ -1,5 +1,6 @@
 import USDC from '@/shared/utils/abis/USDC.json';
 import USDCTransferWithPermit from '@/shared/utils/abis/USDCTransferWithPermit.json';
+import VelodromeSugar from '@/shared/utils/abis/VelodromeSugar.json';
 import { Address } from 'viem';
 import { base, baseSepolia } from 'viem/chains';
 
@@ -25,8 +26,35 @@ const contracts: Record<string, contractInfo> = {
     [baseSepolia.id]: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // TODO: add testnet address
     abi: USDC,
   },
+  VelodromeSugar: {
+    [base.id]: '0x9DE6Eab7a910A288dE83a04b6A43B52Fd1246f1E',
+    [baseSepolia.id]: '0x00000000000000000000000000000000000000000', // No testnet address
+    abi: VelodromeSugar,
+  },
+  KVCM: {
+    [base.id]: '0x00fBAC94Fec8D4089d3fe979F39454F48c71A65d',
+    [baseSepolia.id]: '0x00000000000000000000000000000000000000000', // No testnet address yet
+    abi: USDC,
+  },
+  K2: {
+    [base.id]: '0x59081d974a0C635Fae3e8195F34f879B591B6519',
+    [baseSepolia.id]: '0x00000000000000000000000000000000000000000', // No testnet address yet
+    abi: USDC,
+  },
+  AERO: {
+    [base.id]: '0x940181a94A35A4569E4529A3CDfB74e38FD98631',
+    [baseSepolia.id]: '0x00000000000000000000000000000000000000000', // No testnet address yet
+    abi: USDC,
+  },
 };
 
 export type ContractName = keyof typeof contracts;
+
+/**
+ * The indexes of the Aerodrome pools
+ * @description These are the indexes of the Aerodrome pools in the Aerodrome Sugar contract
+ */
+export const AERODROME_KVCM_USDC_POOL_INDEX = 13785;
+export const AERODROME_K2_USDC_POOL_INDEX = 9137;
 
 export default contracts;

@@ -1,5 +1,10 @@
 import { Address } from 'viem';
-import { AllocationToken, LpToken, Token } from '../constants/tokens.constants';
+import {
+  AllocatableToken,
+  LockableToken,
+  LpToken,
+  Token,
+} from '../constants/tokens.constants';
 
 export type Holding = {
   id: string;
@@ -10,21 +15,17 @@ export type Holding = {
 
 export type Lock = Holding & {
   endTimestamp: number;
-  token: AllocationToken;
+  token: LockableToken;
   riskyYieldPercent: number;
   baseApyPercent: number;
+  rewards: {
+    kvcm: number;
+    k2: number;
+    carbonTonnes: number;
+  };
 };
 
 export type Locks = Lock[];
-
-export type LiquidityPosition = Holding & {
-  token: LpToken;
-  rewards: {
-    k2: number;
-    kvcm: number;
-  };
-};
-export type LiquidityPositions = LiquidityPosition[];
 
 export type Balances = Record<LpToken | Token, number>;
 
@@ -36,7 +37,7 @@ export type Allocation = {
   holder: Address;
   sharePercent: number;
   token: {
-    name: AllocationToken;
+    name: AllocatableToken;
     address: Address;
   };
 };
@@ -45,7 +46,6 @@ export type Allocations = Allocation[];
 /* Wallet Data */
 export type WalletData = {
   locks: Locks;
-  liquidityPositions: LiquidityPositions;
   balances: Balances;
   allocations: Allocations;
 };

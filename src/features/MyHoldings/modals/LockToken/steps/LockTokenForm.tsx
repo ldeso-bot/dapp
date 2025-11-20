@@ -15,10 +15,10 @@ import { ALLOCATION_TOKENS_FORM_INPUT_ITEMS } from '@/shared/constants/form.cons
 import { ROUTES } from '@/shared/constants/route.constants';
 import {
   DEFAULT_ALLOCATION_TOKEN,
+  isToken,
   tokens,
 } from '@/shared/constants/tokens.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
-import { isToken } from '@/shared/utils/typeguards';
 import { useAtomValue } from 'jotai';
 import DurationSlider from '../components/DurationSlider';
 import { findClosestMaturityByDays, lockTokenDialogAtom, LockTokenFields } from '../lockToken.utils';

@@ -34,9 +34,10 @@ export default function MyHoldingsModals() {
     /* Close dialogs if navigation to /my_holdings with empty action parameter */
     setStakeLpTokenDialog({ open: false, token: null });
     setLockTokenDialog({ open: false, token: null });
-    setUnstakeLpTokenDialog({ open: false, liquidityPosition: null });
+    setUnstakeLpTokenDialog({ open: false, lock: null });
     setUnlockTokenDialog({ open: false, lock: null });
-    if (!action || !data?.liquidityPositions) return;
+
+    if (action === null) return;
 
     /* Open dialogs if navigation to /my_holdings with action parameter */
     if (action === 'lock_kvcm') {
@@ -51,16 +52,15 @@ export default function MyHoldingsModals() {
     if (action === 'lock_kvcm-usdc') {
       setStakeLpTokenDialog({ open: true, token: 'kvcm-usdc' });
     }
-    if (action.startsWith('unlock_lp_')) {
-      const id = action.split('_')[2];
-      const liquidityPosition =
-        data.liquidityPositions.find((lp) => lp.id === id) ?? null;
-      setUnstakeLpTokenDialog({ open: true, liquidityPosition });
-    }
+
     if (action.startsWith('unlock_token_')) {
       const id = action.split('_')[2];
       const lock = data?.locks.find((lock) => lock.id === id) ?? null;
-      setUnlockTokenDialog({ open: true, lock });
+      if (lock && (lock.token === 'kvcm' || lock.token === 'k2')) {
+        setUnlockTokenDialog({ open: true, lock });
+      } else if (lock && lock.token === 'kvcm-usdc') {
+        setUnstakeLpTokenDialog({ open: true, lock });
+      }
     }
   }, [
     searchParams,
@@ -68,7 +68,6 @@ export default function MyHoldingsModals() {
     setStakeLpTokenDialog,
     setUnstakeLpTokenDialog,
     setUnlockTokenDialog,
-    data?.liquidityPositions,
     data?.locks,
   ]);
 
