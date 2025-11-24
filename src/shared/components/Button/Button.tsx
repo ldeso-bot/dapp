@@ -8,6 +8,7 @@ type Props = {
   href?: string;
   colors?: 'primary' | 'secondary';
   context?: 'main' | 'flow';
+  target?: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement> &
   React.LinkHTMLAttributes<HTMLAnchorElement>;
 
@@ -18,6 +19,7 @@ export default function Button({
   href,
   colors = 'primary',
   context = 'main',
+  target = '_self',
   ...props
 }: Props) {
   className = cn(
@@ -35,7 +37,7 @@ export default function Button({
           {children}
         </button>
       ) : (
-        <Link href={href} className={className} {...props}>
+        <Link href={href} className={className} target={target} {...props}>
           {children}
         </Link>
       )}

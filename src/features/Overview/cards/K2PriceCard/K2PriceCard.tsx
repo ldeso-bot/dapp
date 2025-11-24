@@ -1,5 +1,6 @@
 import { CardProps } from '@/shared/components/Card/Card';
 import { tokens } from '@/shared/constants/tokens.constants';
+import { BUY_K2_URL } from '@/shared/constants/urls.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { formatPriceUSDWithCommas } from '@/shared/utils/string.utils';
 import StatCard from '../../shared/StatCard/StatCard';
@@ -11,6 +12,8 @@ export default function K2PriceCard(props: CardProps) {
     <StatCard
       {...props}
       buttonText="Buy K2"
+      buttonHref={BUY_K2_URL}
+      buttonTarget="_blank"
       title="K2 Price"
       tooltip="K2 is the governance token for the KlimaDAO. It is used to vote on proposals and make decisions for the protocol."
       primaryValue={price}

@@ -12,6 +12,7 @@ type Props = CardProps & {
   token: TokenInfo;
   changePercent?: number;
   buttonHref?: string;
+  buttonTarget?: string;
 };
 
 /** Component for the cards at the top of the Overview page */
@@ -23,6 +24,7 @@ export default function StatCard(props: Props) {
     buttonText,
     buttonHref,
     changePercent,
+    buttonTarget,
   } = props;
   return (
     <Card {...props} tooltipPosition="far" skeletonClassName="h-[7rem]">
@@ -41,7 +43,7 @@ export default function StatCard(props: Props) {
               <div>{secondaryValue}</div>
             </div>
           </div>
-          <Button className="w-full" href={buttonHref}>
+          <Button className="w-full" href={buttonHref} target={buttonTarget}>
             {buttonText}
           </Button>
         </div>
