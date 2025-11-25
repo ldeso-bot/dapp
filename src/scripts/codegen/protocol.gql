@@ -42,17 +42,18 @@ query getMaturityManager {
   }
 }
 
-query getYieldBuckets($where: YieldBucket_filter) {
-  yieldBuckets(where: $where, orderBy: maturityId, first: 1000) {
-    bucketId
+query getMaturities($where: Maturity_filter) {
+  maturities(where: $where, orderBy: maturityId, first: 1000) {
+    timestamp
     maturityId
-    multiplier
-    zeroCouponYieldCurve
-    discountFactor
-    unscaledBondIssue
-    maturity {
-      timestamp
-    }
+
+    SyntheticYieldDiscountFactor
+    SyntheticYieldZeroCouponYieldCurve
+    SyntheticYieldUnscaledBondIssue
+
+    RiskyYieldDiscountFactor
+    RiskyYieldZeroCouponYieldCurve
+    RiskyYieldUnscaledBondIssue
   }
 }
 
@@ -85,12 +86,10 @@ query getAllocations($where: Allocation_filter) {
   }
 }
 
-query getLocks($where: Bond_filter) {
-  bonds(where: $where) {
+query getLocks($where: Lock_filter) {
+  locks(where: $where) {
     id
-    externalId
     type
-    status
     amount
     account {
       id
@@ -101,22 +100,6 @@ query getLocks($where: Bond_filter) {
       totalAmountLocked
       priceUsdc {
         priceUsdc
-      }
-    }
-    yieldClaims {
-      id
-      entryMultiplier
-      exitMultiplier
-      yieldBucket {
-        bucketId
-        multiplier
-        discountFactor
-        zeroCouponYieldCurve
-        unscaledBondIssue
-        maturity {
-          maturityId
-          timestamp
-        }
       }
     }
   }

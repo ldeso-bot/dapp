@@ -1,3 +1,4 @@
+import { WALLET_DATA_CACHE_TIME_SECONDS } from '@/shared/constants/config.constants';
 import { getWalletData } from '@/shared/queries/wallet/getWalletData';
 import { validateRequestChainId } from '@/shared/utils/request.utils';
 import { isChainId } from '@/shared/utils/typeguards';
@@ -19,13 +20,9 @@ export async function GET(request: NextRequest) {
   }
 
   const data = await unstable_cache(
-    async () => {
-      return getWalletData(chainId, walletAddress);
-    },
+    async () => getWalletData(chainId, walletAddress),
     [`wallet-data-${chainId}-${walletAddress}`],
-    {
-      revalidate: 1,
-    }
+    { revalidate: WALLET_DATA_CACHE_TIME_SECONDS }
   )();
 
   return Response.json(data);

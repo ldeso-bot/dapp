@@ -6,10 +6,9 @@ import {
 } from '@/shared/constants/tokens.constants';
 import { Lock, Locks } from '@/shared/models/walletData';
 import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
-import { Bond_Filter } from '@generated/gql/types/protocol.types';
+import { Lock_Filter } from '@generated/gql/types/protocol.types';
 import { filter, isNonNullish } from 'remeda';
 import { formatUnits } from 'viem';
-import { BUCKET_IDS } from '../protocol/protocol.utils';
 
 export const getLocks = async (
   chainId: ChainId,
@@ -26,27 +25,19 @@ export const getLocks = async (
       account_: {
         id: walletAddress,
       },
-    } as Bond_Filter,
+    } as Lock_Filter,
   });
 
   // Map locks
-  const mappedLocks = locks.bonds.map((lock): Lock | null => {
+  const mappedLocks = locks.locks.map((lock): Lock | null => {
     const tokenInfo = tokenInfoFromSubgraphSymbol(lock.token.symbol);
     if (!tokenInfo || !isLockableToken(tokenInfo.id)) {
       console.warn('❓ Unknown lockable token:', lock.token.symbol);
       return null;
     }
-    let apyPercent = 0;
-    let riskyYieldPercent = 0;
-    lock.yieldClaims.forEach((yieldClaim) => {
-      if (yieldClaim.yieldBucket.bucketId === BUCKET_IDS.BOND.toString()) {
-        apyPercent = Number(yieldClaim.yieldBucket.zeroCouponYieldCurve);
-      } else if (
-        yieldClaim.yieldBucket.bucketId === BUCKET_IDS.RISKY.toString()
-      ) {
-        riskyYieldPercent = Number(yieldClaim.yieldBucket.zeroCouponYieldCurve);
-      }
-    });
+    const apyPercent = 0;
+    const riskyYieldPercent = 0;
+    const endTimestamp = 0;
 
     return {
       id: lock.id,
@@ -55,9 +46,7 @@ export const getLocks = async (
       apyPercent,
       riskyYieldPercent,
       baseApyPercent: 0, // TODO: What is this?
-      endTimestamp: Number(
-        lock.yieldClaims[0]?.yieldBucket?.maturity?.timestamp ?? 0
-      ),
+      endTimestamp,
       token: tokenInfo.id,
       rewards: {
         // TODO: Implement rewards

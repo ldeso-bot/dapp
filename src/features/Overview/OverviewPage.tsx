@@ -2,7 +2,6 @@
 
 import StackedCards from '@/shared/components/StackedCards/StackedCards';
 import CarbonMarketCard from './cards/CarbonMarketCard/CarbonMarketCard';
-import CarbonYieldCard from './cards/CarbonYieldCard/CarbonYieldCard';
 import K2PriceCard from './cards/K2PriceCard/K2PriceCard';
 import KVcmPriceCard from './cards/KVcmPriceCard/KVcmPriceCard';
 import KVcmUsdcRiskyYieldCard from './cards/KVcmUsdcRiskyYieldCard/KVcmUsdcRiskyYieldCard';
@@ -35,10 +34,6 @@ export default function OverviewPage() {
 
       <StackedCards>
         <CarbonMarketCard />
-      </StackedCards>
-
-      <StackedCards>
-        <CarbonYieldCard />
       </StackedCards>
     </div>
   );

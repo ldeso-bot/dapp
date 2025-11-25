@@ -1,5 +1,11 @@
 import { LpToken, Token } from '../constants/tokens.constants';
 
+export enum YieldType {
+  K2 = 'K2',
+  RISKY = 'RISKY',
+  SYNTHETIC = 'SYNTHETIC',
+}
+
 /* Token Metrics */
 export type Metrics = {
   valueUSD: number;
@@ -62,7 +68,6 @@ export type ProtocolData = {
   liquidityPools: LiquidityPools;
   lockedkVcmYieldRates: YieldRates;
   liquidityPoolRiskyYield: YieldRates;
-  carbonYieldRates: YieldRates;
   carbonMarket: CarbonMarket;
   carbonClasses: CarbonClass[];
 };

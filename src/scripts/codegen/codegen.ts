@@ -1,7 +1,10 @@
 import { TypeScriptPluginConfig } from '@graphql-codegen/typescript';
 import { TypeScriptDocumentsPluginConfig } from '@graphql-codegen/typescript-operations';
 import { base } from 'viem/chains';
-import { subgraphs } from '../../shared/constants/subgraph.constants';
+import {
+  subgraphHeaders,
+  subgraphs,
+} from '../../shared/constants/subgraph.constants';
 
 const tsConfig: TypeScriptPluginConfig = {
   namingConvention: { enumValues: 'keep' },
@@ -16,10 +19,16 @@ const DOCUMENTS_DIR = `src/scripts/codegen`;
 
 // Generate configuration for each schema entry
 const generates = Object.entries(endpoints).reduce(
-  (acc, [key, schema]) => ({
+  (acc, [key, url]) => ({
     ...acc,
     [`${GENERATED_TYPES_DIR}/${key}.types.ts`]: {
-      schema,
+      schema: [
+        {
+          [url]: {
+            headers: subgraphHeaders,
+          },
+        },
+      ],
       documents: [
         `${DOCUMENTS_DIR}/${key}.gql`,
         `${DOCUMENTS_DIR}/${key}.fragments.gql`,

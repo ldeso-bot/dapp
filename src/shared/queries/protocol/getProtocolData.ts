@@ -1,7 +1,6 @@
 import { ChainId } from '@/shared/constants/networks.constants';
 import { ProtocolData } from '@/shared/models/ProtocolData';
 import { getCarbonMarket } from '@/shared/queries/protocol/getCarbonMarket';
-import { getCarbonYieldRates } from '@/shared/queries/protocol/getCarbonYieldRates';
 import { getLiquidityPoolRiskyYieldRates } from '@/shared/queries/protocol/getLiquidityPoolRiskyYieldRates';
 import { getLiquidityPools } from '@/shared/queries/protocol/getLiquidityPools';
 import { getLockedKVcmYieldRates } from '@/shared/queries/protocol/getLockedKVcmYieldRates';
@@ -14,7 +13,6 @@ export async function getProtocolData(chainId: ChainId): Promise<ProtocolData> {
     liquidityPools,
     lockedkVcmYieldRates,
     liquidityPoolRiskyYield,
-    carbonYieldRates,
     carbonMarket,
     carbonClasses,
   ] = await Promise.all([
@@ -22,7 +20,6 @@ export async function getProtocolData(chainId: ChainId): Promise<ProtocolData> {
     getLiquidityPools(chainId),
     getLockedKVcmYieldRates(chainId),
     getLiquidityPoolRiskyYieldRates(chainId),
-    getCarbonYieldRates(chainId),
     getCarbonMarket(chainId),
     getCarbonClasses(chainId),
   ]);
@@ -32,7 +29,6 @@ export async function getProtocolData(chainId: ChainId): Promise<ProtocolData> {
     liquidityPools,
     lockedkVcmYieldRates,
     liquidityPoolRiskyYield,
-    carbonYieldRates,
     carbonMarket,
     carbonClasses,
   };

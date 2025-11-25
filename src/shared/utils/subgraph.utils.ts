@@ -7,6 +7,7 @@ import { base, baseSepolia } from 'viem/chains';
 import { ChainId } from '@/shared/constants/networks.constants';
 import { isChainId } from '@/shared/utils/typeguards';
 import { formatUnits } from 'viem';
+import { subgraphHeaders } from '../constants/subgraph.constants';
 
 /**
  * Gets the sdk for the given chain
@@ -17,6 +18,7 @@ const sdkForChain = (chain: keyof typeof subgraphs) => {
   const { carbon, protocol } = subgraphs[chain];
   /** Very short SDK queries cache. Caching is done at route level */
   const options = {
+    headers: subgraphHeaders,
     next: {
       revalidate: 1,
     },

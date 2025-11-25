@@ -1,15 +1,22 @@
 import { base, baseSepolia } from 'viem/chains';
 import { USE_LOCAL_GRAPH_NODE } from './config.constants';
 
+const GOLDSKY_BASE_URL = `https://api.goldsky.com/api/private/project_cmgzise2h00195np2gbp35g3d/subgraphs`;
+const GOLDSKY_API_KEY = process.env.GOLDSKY_API_KEY;
+
 let subgraphs = {
   [base.id]: {
-    carbon: `https://subgraph.satsuma-prod.com/${process.env.SATSUMA_API_KEY}/carbonmark--273197/cm-base-carbon-production/api`,
-    protocol: `https://subgraph.satsuma-prod.com/${process.env.SATSUMA_API_KEY}/carbonmark--273197/cm-base-protocol-production/api`,
+    carbon: `${GOLDSKY_BASE_URL}/cm-base-carbon-production/latest/gn`,
+    protocol: `${GOLDSKY_BASE_URL}/cm-base-protocol-production/latest/gn`,
   },
   [baseSepolia.id]: {
-    carbon: `https://subgraph.satsuma-prod.com/${process.env.SATSUMA_API_KEY}/carbonmark--273197/cm-base-sepolia-carbon-staging/api`,
-    protocol: `https://subgraph.satsuma-prod.com/${process.env.SATSUMA_API_KEY}/carbonmark--273197/cm-base-sepolia-protocol-staging/api`,
+    carbon: `${GOLDSKY_BASE_URL}/cm-base-sepolia-carbon-staging/latest/gn`,
+    protocol: `${GOLDSKY_BASE_URL}/cm-base-sepolia-protocol-staging/latest/gn`,
   },
+};
+
+let subgraphHeaders: Record<string, string> = {
+  Authorization: `Bearer ${GOLDSKY_API_KEY}`,
 };
 
 if (USE_LOCAL_GRAPH_NODE) {
@@ -24,6 +31,7 @@ if (USE_LOCAL_GRAPH_NODE) {
       protocol: 'http://localhost:8000/subgraphs/name/protocol',
     },
   };
+  subgraphHeaders = {};
 }
 
-export { subgraphs };
+export { subgraphHeaders, subgraphs };
