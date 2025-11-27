@@ -1,3 +1,7 @@
+import {
+  CARBON_CLASSES_INFO_MAP,
+  isCarbonClassId,
+} from '@/shared/constants/carbonClasses.constants';
 import { USE_MOCKS } from '@/shared/constants/config.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
 import { getSdk } from '@/shared/utils/subgraph.utils';
@@ -48,10 +52,15 @@ export const getCarbonClasses = async (
       0
     );
 
+    const carbonClassId = c.carbonClassId.toLowerCase();
+
+    const carbonClassInfo = isCarbonClassId(carbonClassId)
+      ? CARBON_CLASSES_INFO_MAP[carbonClassId]
+      : null;
+
     return {
-      // TODO: how should we get the name and category ?
-      name: c.id,
-      category: '',
+      name: carbonClassInfo?.name ?? c.id,
+      category: carbonClassInfo?.category ?? 'Other',
       priceUSD: Number(
         formatUnits(BigInt(c.priceUsdcPerTon?.priceUsdc ?? '0'), 6)
       ),

@@ -1,4 +1,5 @@
 import { PROTOCOL_DATA_CACHE_TIME_SECONDS } from '@/shared/constants/config.constants';
+import { ChainId } from '@/shared/constants/networks.constants';
 import { getProtocolData } from '@/shared/queries/protocol/getProtocolData';
 import { validateRequestChainId } from '@/shared/utils/request.utils';
 import { isChainId } from '@/shared/utils/typeguards';
@@ -12,10 +13,10 @@ export async function GET(request: NextRequest) {
   }
 
   const data = await unstable_cache(
-    async () => getProtocolData(chainId),
-    [`protocol-data-${chainId}`],
+    async (chainId: ChainId) => getProtocolData(chainId),
+    [`protocol-data`],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
-  )();
+  )(chainId);
 
   return Response.json(data);
 }

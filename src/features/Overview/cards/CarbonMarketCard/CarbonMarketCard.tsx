@@ -1,5 +1,5 @@
 import Card, { CardProps } from '@/shared/components/Card/Card';
-import { AXIS_PROPS, BAR_PROPS } from '@/shared/constants/chart.constants';
+import { BAR_PROPS, Y_AXIS_PROPS } from '@/shared/constants/chart.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { formatAmountWithUnits } from '@/shared/utils/string.utils';
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
@@ -40,7 +40,7 @@ export default function CarbonMarketCard(props: CardProps) {
                     type="category"
                     width={1}
                     orientation="right"
-                    {...AXIS_PROPS}
+                    {...Y_AXIS_PROPS}
                   />
                   <Bar dataKey="priceUSD" {...BAR_PROPS} />0
                 </BarChart>
@@ -58,7 +58,7 @@ export default function CarbonMarketCard(props: CardProps) {
                   dataKey="category"
                   type="category"
                   width={200}
-                  {...AXIS_PROPS}
+                  {...Y_AXIS_PROPS}
                   axisLine={false}
                   tick={tickFormatter}
                 />
@@ -76,7 +76,7 @@ export default function CarbonMarketCard(props: CardProps) {
                     domain={[900, 100000000]}
                     ticks={[1000, 10000, 100000, 1000000, 10000000, 100000000]}
                   />
-                  <YAxis type="category" width={1} {...AXIS_PROPS} />
+                  <YAxis type="category" width={1} {...Y_AXIS_PROPS} />
                   <Bar dataKey="capacityTonnes" {...BAR_PROPS} />
                 </BarChart>
               </ResponsiveContainer>

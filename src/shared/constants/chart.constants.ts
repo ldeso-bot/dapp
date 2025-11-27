@@ -1,4 +1,6 @@
+import { XAxisProps, YAxisProps } from 'recharts';
 import { CurveType } from 'recharts/types/shape/Curve';
+import { BaseAxisProps } from 'recharts/types/util/types';
 
 const void30 = '#999';
 const void60 = '#464646';
@@ -28,13 +30,22 @@ export const X_AXIS_LABEL_PROPS = {
   offset: -5,
 };
 
-export const AXIS_PROPS = {
+type TextAnchor = 'end' | 'start';
+const AXIS_PROPS: BaseAxisProps = {
   tick: {
     fontSize: 12,
   },
   tickLine: false,
+};
+
+export const X_AXIS_PROPS: XAxisProps = {
+  ...AXIS_PROPS,
   angle: -45,
-  textAnchor: 'end',
+  textAnchor: 'end' as TextAnchor,
+};
+
+export const Y_AXIS_PROPS: YAxisProps = {
+  ...AXIS_PROPS,
 };
 
 export const Y_AXIS_LABEL_PROPS = {

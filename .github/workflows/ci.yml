@@ -17,31 +17,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create node_modules directory # Or else action/cache fails silently
-        run: mkdir -p node_modules
-
-      - name: Cache node_modules
-        id: cache-npm
-        uses: actions/cache@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
-          path: |
-            node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          version: 10
 
       - name: Set up Node.js
         id: setup-node
         uses: actions/setup-node@v4
         with:
-          node-version: '21.6.1' # Pin version to avoid breaking changes in node_modules
-          cache: 'npm'
+          node-version: '22.21.1' # Pin version to avoid breaking changes in node_modules
+          cache: 'pnpm'
 
       - name: Install dependencies
-        if: steps.cache-npm.outputs.cache-hit != 'true'
-        run: npm install
+        run: pnpm install
 
-      - name: Install dependencies
-        if: steps.cache-npm.outputs.cache-hit == 'true'
-        run: npm run postinstall
+      - name: Run code generation
+        run: pnpm run codegen
 
       - name: Run ${{ matrix.job }}
-        run: npm run ${{ matrix.job }}
+        run: pnpm run ${{ matrix.job }}

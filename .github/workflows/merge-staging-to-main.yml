@@ -16,17 +16,23 @@ jobs:
         with:
           ref: staging
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Set up Node.js
         id: setup-node
         uses: actions/setup-node@v4
         with:
-          node-version: '21.6.1' # Pin version to avoid breaking changes in node_modules
-          cache: 'npm'
+          node-version: '22.21.1' # Pin version to avoid breaking changes in node_modules
+          cache: 'pnpm'
 
       - name: Run build on staging
         run: |
-          npm install
-          npm run build
+          pnpm install
+          pnpm run codegen
+          pnpm run build
 
   merge-staging-to-main:
     needs: test-staging

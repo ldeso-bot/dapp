@@ -3,8 +3,9 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 ## Getting Started
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm run codegen
+pnpm run dev
 ```
 
 ## Development patterns

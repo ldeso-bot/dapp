@@ -4,11 +4,12 @@ import Button from '@/shared/components/Button/Button';
 import Card, { CardProps } from '@/shared/components/Card/Card';
 import ChartTooltipItems from '@/shared/components/Tooltip/ChartTooltipItems';
 import {
-  AXIS_PROPS,
   CHART_PROPS,
   LINE_PROPS,
   X_AXIS_LABEL_PROPS,
+  X_AXIS_PROPS,
   Y_AXIS_LABEL_PROPS,
+  Y_AXIS_PROPS,
 } from '@/shared/constants/chart.constants';
 import {
   LAUNCH_DATE,
@@ -60,7 +61,7 @@ export default function YieldRatesCard(props: Props) {
   const [nextMaturityTimestamp, setNextMaturityTimestamp] = useState(0);
 
   useEffect(() => {
-    if (!data) return;
+    if (!data || data.length === 0) return;
     setNextMaturityTimestamp(data[0].maturationTimestamp);
   }, [data]);
 
@@ -89,7 +90,7 @@ export default function YieldRatesCard(props: Props) {
                   }}
                   tickFormatter={getDurationFromIndex}
                   ticks={[1, 3, 7, 11, 15, 19, 23, 27, 31, 35, 39]}
-                  {...AXIS_PROPS}
+                  {...X_AXIS_PROPS}
                 />
                 <YAxis
                   label={{
@@ -100,7 +101,7 @@ export default function YieldRatesCard(props: Props) {
                     formatPercentage(value, { decimals: 0 })
                   }
                   domain={[0, 'dataMax + 0.02']}
-                  {...AXIS_PROPS}
+                  {...Y_AXIS_PROPS}
                 />
                 <Tooltip content={YieldChartTooltip} />
                 <Line
