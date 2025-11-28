@@ -38,7 +38,7 @@ const CarbonClassesCard: React.FC<Props> = ({ className }) => {
                     >
                       <div>{carbonClass.name}</div>
                       <div className="font-bold">
-                        {formatPriceUSD(carbonClass.priceUSD)}
+                        {formatPriceUSD(carbonClass.valueUSD)}
                       </div>
                     </div>
                   ))}

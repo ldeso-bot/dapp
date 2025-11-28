@@ -46,21 +46,13 @@ export type YieldRate = {
 export type YieldRates = YieldRate[];
 
 /* Carbon Market */
-type CarbonMarketBreakdownItem = {
-  category: string;
-  capacityTonnes: number;
-  priceUSD: number;
-  changeUSD: number;
-};
-
 export type CarbonClass = {
   name: string;
   category: string;
-  priceUSD: number;
+  valueUSD: number;
   supplyTonnes: number;
+  valueUSDChangePercent24h: number;
 };
-
-export type CarbonMarket = CarbonMarketBreakdownItem[];
 
 /* Protocol Data */
 export type ProtocolData = {
@@ -68,6 +60,5 @@ export type ProtocolData = {
   liquidityPools: LiquidityPools;
   lockedkVcmYieldRates: YieldRates;
   liquidityPoolRiskyYield: YieldRates;
-  carbonMarket: CarbonMarket;
   carbonClasses: CarbonClass[];
 };

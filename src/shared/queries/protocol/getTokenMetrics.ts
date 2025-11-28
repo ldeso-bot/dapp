@@ -2,10 +2,11 @@ import { PROTOCOL_DATA_CACHE_TIME_SECONDS } from '@/shared/constants/config.cons
 import { ChainId } from '@/shared/constants/networks.constants';
 import { SubgraphTokenSymbol } from '@/shared/constants/tokens.constants';
 import { AllMetrics, Metrics } from '@/shared/models/ProtocolData';
-import { getSdk } from '@/shared/utils/subgraph.utils';
+import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
 import { TokenSnapshot_Filter } from '@generated/gql/types/protocol.types';
 import { unstable_cache } from 'next/cache';
-import { formatUnits } from 'viem';
+import { mapToObj } from 'remeda';
+import { getHoursSinceEpoch24HoursAgo } from './protocol.utils';
 
 export const getTokenMetrics = async (
   chainId: ChainId
@@ -21,7 +22,6 @@ const getTokenMetricsUncached = async (
   chainId: ChainId
 ): Promise<AllMetrics> => {
   const sdk = getSdk(chainId);
-  const hoursSinceEpoch = Math.floor(Date.now() / 1000 / 3600);
 
   const [tokensResponse, ...tokenSnapshotsResponses] = await Promise.all([
     sdk.protocol.getTokens(),
@@ -29,7 +29,7 @@ const getTokenMetricsUncached = async (
       sdk.protocol
         .getTokenSnapshots({
           where: {
-            hoursSinceEpoch_lte: (hoursSinceEpoch - 24).toString(),
+            hoursSinceEpoch_lte: getHoursSinceEpoch24HoursAgo().toString(),
             symbol,
           } as TokenSnapshot_Filter,
         })
@@ -37,52 +37,61 @@ const getTokenMetricsUncached = async (
     ),
   ]);
 
+  // Create maps for faster lookups
+  const tokensMap = mapToObj(tokensResponse.tokens, (t) => [
+    t?.symbol ?? '',
+    t,
+  ]);
+
+  const tokenSnapshotsMap = mapToObj(tokenSnapshotsResponses, (t) => [
+    t?.symbol ?? '',
+    t,
+  ]);
+
   const getOneTokenMetrics = (symbol: SubgraphTokenSymbol): Metrics => {
-    const token = tokensResponse.tokens.find((t) => t.symbol === symbol);
-    const snapshot = tokenSnapshotsResponses.find((p) => p?.symbol === symbol);
+    const token = tokensMap[symbol];
+    const snapshot = tokenSnapshotsMap[symbol];
+
     // Supply
-    const supply = Number(formatUnits(BigInt(token?.totalSupply ?? '0'), 18));
+    const supply = formatStringToNumber(token?.totalSupply, 18);
 
     const snapshotSupply = snapshot?.supply
-      ? Number(formatUnits(BigInt(snapshot.totalAmountLocked), 18))
+      ? formatStringToNumber(snapshot.supply, 18)
       : supply;
 
-    const supplyChangePercent24h = supply
-      ? (supply - snapshotSupply) / supply
-      : 0;
+    const supplyChangePercent24h =
+      supply && snapshotSupply ? (supply - snapshotSupply) / snapshotSupply : 0;
 
     // TVL
-    const supplyLocked = Number(
-      formatUnits(BigInt(token?.totalAmountLocked ?? '0'), 18)
-    );
+    const supplyLocked = formatStringToNumber(token?.totalAmountLocked, 18);
 
     const snapshotTVL = snapshot?.totalAmountLocked
-      ? Number(formatUnits(BigInt(snapshot.totalAmountLocked), 18))
+      ? formatStringToNumber(snapshot.totalAmountLocked, 18)
       : supplyLocked;
 
-    const supplyLockedChangePercent24h = supplyLocked
-      ? (supplyLocked - snapshotTVL) / supplyLocked
-      : 0;
+    const supplyLockedChangePercent24h =
+      supplyLocked && snapshotTVL
+        ? (supplyLocked - snapshotTVL) / snapshotTVL
+        : 0;
 
     // Price
-    const valueUSD = Number(
-      formatUnits(BigInt(token?.priceUsdc?.priceUsdc ?? '0'), 6)
-    );
+    const valueUSD = formatStringToNumber(token?.priceUsdc?.priceUsdc, 6);
 
-    const snapshotPriceUsdc = snapshot?.priceUsdc
-      ? Number(formatUnits(BigInt(snapshot.priceUsdc), 6))
+    const snapshotValueUSD = snapshot?.priceUsdc
+      ? formatStringToNumber(snapshot.priceUsdc, 6)
       : valueUSD;
 
-    const valueChangePercent24h = valueUSD
-      ? (valueUSD - snapshotPriceUsdc) / valueUSD
-      : 0;
+    const valueUSDChangePercent24h =
+      valueUSD && snapshotValueUSD
+        ? (valueUSD - snapshotValueUSD) / snapshotValueUSD
+        : 0;
 
     // Address
     const address = token?.address || '';
 
     return {
       valueUSD,
-      valueUSDChangePercent24h: valueChangePercent24h,
+      valueUSDChangePercent24h,
       supply,
       supplyChangePercent24h,
       supplyLocked,

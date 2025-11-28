@@ -2,10 +2,9 @@ import { USE_MOCKS } from '@/shared/constants/config.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
 import { tokenInfoFromSubgraphSymbol } from '@/shared/constants/tokens.constants';
 import { Balances } from '@/shared/models/walletData';
-import { getSdk } from '@/shared/utils/subgraph.utils';
+import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
 import { getContract, getPublicClient } from '@/shared/utils/web3.utils';
 import { AccountBalance_Filter } from '@generated/gql/types/protocol.types';
-import { formatUnits } from 'viem';
 
 export const getBalances = async (
   chainId: ChainId,
@@ -32,7 +31,7 @@ export const getBalances = async (
     const usdcBalance = (await usdcContract.read.balanceOf([
       walletAddress,
     ])) as bigint;
-    res.usdc = Number(formatUnits(usdcBalance, 6)); // USDC has 6 decimals
+    res.usdc = formatStringToNumber(usdcBalance, 6); // USDC has 6 decimals
   } catch (error) {
     console.error('❌ Error fetching USDC balance via RPC:', error);
   }

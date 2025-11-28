@@ -8,7 +8,6 @@ import { Allocation, Allocations } from '@/shared/models/walletData';
 import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
 import { Allocation_Filter } from '@generated/gql/types/protocol.types';
 import { filter, isNonNullish } from 'remeda';
-import { formatUnits } from 'viem';
 
 export const getAllocations = async (
   chainId: ChainId,
@@ -44,7 +43,7 @@ export const getAllocations = async (
           allocation.carbonClass.priceUsdcPerTon?.priceUsdc,
           6
         ),
-        amount: Number(formatUnits(BigInt(allocation.amount), 18)),
+        amount: formatStringToNumber(allocation.amount, 18),
         holder: allocation.account.id,
         sharePercent: Number(
           allocation.token.totalAmountAllocated

@@ -8,7 +8,6 @@ import { Lock, Locks } from '@/shared/models/walletData';
 import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
 import { Lock_Filter } from '@generated/gql/types/protocol.types';
 import { filter, isNonNullish } from 'remeda';
-import { formatUnits } from 'viem';
 
 export const getLocks = async (
   chainId: ChainId,
@@ -41,7 +40,7 @@ export const getLocks = async (
 
     return {
       id: lock.id,
-      balance: Number(formatUnits(BigInt(lock.amount), 18)),
+      balance: formatStringToNumber(lock.amount, 18),
       valueUSD: formatStringToNumber(lock.token.priceUsdc?.priceUsdc, 6),
       apyPercent,
       riskyYieldPercent,

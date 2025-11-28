@@ -6,13 +6,16 @@ import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 export default function CarbonMarketCard(props: CardProps) {
   const { data } = useProtocolData();
+
+  const carbonClasses = data?.carbonClasses.filter((a) => a.valueUSD);
+
   return (
     <Card
       {...props}
       title="Carbon Market"
       tooltip="There should be a tooltip here"
     >
-      {data && (
+      {carbonClasses && (
         <div>
           {/* Titles*/}
           <div className="flex flex-row text-size-12 text-void-60 text-center">
@@ -25,16 +28,16 @@ export default function CarbonMarketCard(props: CardProps) {
             {/* Price Chart*/}
             <div className="w-full h-[21.2rem] grow-1">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart layout="vertical" data={data.carbonMarket}>
+                <BarChart layout="vertical" data={carbonClasses}>
                   <XAxis
                     type="number"
                     tickFormatter={(value) =>
                       `$${formatAmountWithUnits(value)}`
                     }
-                    ticks={[1, 10, 100, 1000]}
+                    ticks={[0.1, 1, 10]}
                     reversed
                     scale="log"
-                    domain={[0.9, 1000]}
+                    domain={[0.1, 10]}
                   />
                   <YAxis
                     type="category"
@@ -50,12 +53,12 @@ export default function CarbonMarketCard(props: CardProps) {
             <div className="w-[200] h-[21.2rem]">
               <BarChart
                 layout="vertical"
-                data={data.carbonMarket}
+                data={carbonClasses}
                 height={212}
                 width={200}
               >
                 <YAxis
-                  dataKey="category"
+                  dataKey="name"
                   type="category"
                   width={200}
                   {...Y_AXIS_PROPS}
@@ -68,7 +71,7 @@ export default function CarbonMarketCard(props: CardProps) {
             {/* Capacity Chart*/}
             <div className="w-full h-[21.2rem] grow-1">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart layout="vertical" data={data.carbonMarket}>
+                <BarChart layout="vertical" data={carbonClasses}>
                   <XAxis
                     type="number"
                     tickFormatter={(value) => formatAmountWithUnits(value)}
@@ -77,7 +80,7 @@ export default function CarbonMarketCard(props: CardProps) {
                     ticks={[1000, 10000, 100000, 1000000, 10000000, 100000000]}
                   />
                   <YAxis type="category" width={1} {...Y_AXIS_PROPS} />
-                  <Bar dataKey="capacityTonnes" {...BAR_PROPS} />
+                  <Bar dataKey="supplyTonnes" {...BAR_PROPS} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

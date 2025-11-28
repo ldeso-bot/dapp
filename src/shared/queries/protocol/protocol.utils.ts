@@ -1,10 +1,12 @@
-import { PROTOCOL_DATA_CACHE_TIME_SECONDS } from '@/shared/constants/config.constants';
+import {
+  PROTOCOL_DATA_CACHE_TIME_SECONDS,
+  USE_LOCAL_GRAPH_NODE,
+} from '@/shared/constants/config.constants';
 import { Token, tokens } from '@/shared/constants/tokens.constants';
 import { YieldRate, YieldRates, YieldType } from '@/shared/models/ProtocolData';
-import { Sdk } from '@/shared/utils/subgraph.utils';
+import { formatStringToNumber, Sdk } from '@/shared/utils/subgraph.utils';
 import { Maturity_Filter } from '@generated/gql/types/protocol.types';
 import { unstable_cache } from 'next/cache';
-import { formatUnits } from 'viem';
 import { getMockMaturationTimestamp, getMockYieldPercent } from './mocks';
 
 const tokensEligibleForIncentives: Record<YieldType, Token[]> = {
@@ -77,7 +79,7 @@ export const getYieldRates = async (sdk: Sdk, yieldType: YieldType) => {
     } else if (yieldType === YieldType.SYNTHETIC) {
       zeroCouponYieldCurve = maturity.SyntheticYieldZeroCouponYieldCurve;
     }
-    const yieldPercent = Number(formatUnits(BigInt(zeroCouponYieldCurve), 18));
+    const yieldPercent = formatStringToNumber(zeroCouponYieldCurve, 18);
 
     return {
       index,
@@ -108,4 +110,14 @@ export const getMockLockedVcmYieldRates = async (
     });
   }
   return yieldRates;
+};
+
+export const getHoursSinceEpoch24HoursAgo = () => {
+  let hoursSinceEpoch = Math.floor(Date.now() / 1000 / 3600);
+
+  // Local graph node does not have previous data (but mey has future data thanks to time travel)
+  if (!USE_LOCAL_GRAPH_NODE) {
+    hoursSinceEpoch = hoursSinceEpoch - 24;
+  }
+  return hoursSinceEpoch;
 };
