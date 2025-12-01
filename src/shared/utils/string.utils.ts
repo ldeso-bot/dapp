@@ -47,15 +47,27 @@ export const formatPriceUSD = (value: number, digits: number = 2): string => {
   return `$${nFormatter(value, digits)}`;
 };
 
-export const formatTimestamp = (timestamp?: number | null): string => {
+export const formatTimestamp = (
+  timestamp?: number | null,
+  month?: 'long' | 'short'
+): string => {
   if (!timestamp) return '';
 
   return new Date(Number(timestamp)).toLocaleDateString('en-US', {
     year: 'numeric',
-    month: 'long',
     day: 'numeric',
+    month: month ?? 'long',
   });
 };
+
+export const formatCurrentTime = (): string =>
+  new Date().toLocaleTimeString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
 
 /** Format a timestamp (seconds)to a date string mm/dd/yyyy */
 export const formatDate = (date: number): string => {

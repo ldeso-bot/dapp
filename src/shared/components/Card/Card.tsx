@@ -1,6 +1,6 @@
 import { cn } from '@/shared/utils/component.utils';
 import Skeleton from '../Skeleton/Skeleton';
-import Tooltip from '../Tooltip/Tooltip';
+import { Tooltip } from '../Tooltip/Tooltip';
 
 export type CardProps = {
   className?: string;
@@ -38,7 +38,9 @@ export default function Card({
             'justify-between': tooltipPosition == 'far',
           })}
         >
-          <div className={cn("text-void-50 text-size-16", titleClassName)}>{title}</div>
+          <div className={cn('text-void-50 text-size-16', titleClassName)}>
+            {title}
+          </div>
           {titleAddOnClose}
           {tooltip && <Tooltip content={tooltip} />}
         </div>

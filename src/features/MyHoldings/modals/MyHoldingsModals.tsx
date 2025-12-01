@@ -5,10 +5,16 @@ import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useAtom } from 'jotai';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
+import ClaimIncentivesFlow from './ClaimIncentives/ClaimIncentives';
+import { claimIncentivesDialogAtom } from './ClaimIncentives/claimIncentives.utils';
+import ClaimTokenFlow from './ClaimToken/ClaimToken';
+import { claimTokenDialogAtom } from './ClaimToken/claimToken.utils';
 import { lockTokenDialogAtom } from './LockToken/lockToken.utils';
 import LockTokenFlow from './LockToken/LockTokenFlow';
 import { stakeLpTokenDialogAtom } from './StakeLpToken/stakeLpToken.utils';
 import StakeLpTokenFlow from './StakeLpToken/StakeLpTokenFlow';
+import TopupLockFlow from './TopupLock/TopupLock';
+import { topupLockDialogAtom } from './TopupLock/topupLock.utils';
 import { unlockTokenDialogAtom } from './UnlockToken/unlockToken.utils';
 import UnlockTokenFlow from './UnlockToken/UnlockTokenFlow';
 import { unstakeLpTokenDialogAtom } from './UnstakeLpToken/unstakeLpToken.utils';
@@ -25,17 +31,38 @@ export default function MyHoldingsModals() {
   const [unlockTokenDialog, setUnlockTokenDialog] = useAtom(
     unlockTokenDialogAtom
   );
-  const { data } = useWalletData();
+  const [topupLockDialog, setTopupLockDialog] = useAtom(topupLockDialogAtom);
+  const [claimTokenDialog, setClaimTokenDialog] = useAtom(claimTokenDialogAtom);
+  const [claimIncentivesDialog, setClaimIncentivesDialog] = useAtom(
+    claimIncentivesDialogAtom
+  );
 
+  const { data } = useWalletData();
   const searchParams = useSearchParams();
 
   useEffect(() => {
     const action = searchParams.get('action');
+
     /* Close dialogs if navigation to /my_holdings with empty action parameter */
     setStakeLpTokenDialog({ open: false, token: null });
     setLockTokenDialog({ open: false, token: null });
     setUnstakeLpTokenDialog({ open: false, lock: null });
     setUnlockTokenDialog({ open: false, lock: null });
+    setTopupLockDialog({
+      open: false,
+      token: null,
+      currentLockAmount: 0,
+      totalAccruingRewards: 0,
+      baseApy: 0,
+      maturityDate: null,
+      tokenSymbol: null,
+    });
+    setClaimTokenDialog({ open: false, amount: null, token: null });
+    setClaimIncentivesDialog({
+      open: false,
+      claimablePrincipal: null,
+      totalAccruedRewards: null,
+    });
 
     if (action === null) return;
 
@@ -51,6 +78,27 @@ export default function MyHoldingsModals() {
     }
     if (action === 'lock_kvcm-usdc') {
       setStakeLpTokenDialog({ open: true, token: 'kvcm-usdc' });
+    }
+    if (action === 'topup') {
+      setTopupLockDialog({
+        open: true,
+        token: 'kvcm',
+        currentLockAmount: 0,
+        totalAccruingRewards: 0,
+        baseApy: 0,
+        maturityDate: null,
+        tokenSymbol: null,
+      });
+    }
+    if (action === 'claim_token') {
+      setClaimTokenDialog({ open: true, amount: null, token: null });
+    }
+    if (action === 'claim_incentives') {
+      setClaimIncentivesDialog({
+        open: true,
+        claimablePrincipal: null,
+        totalAccruedRewards: null,
+      });
     }
 
     if (action.startsWith('unlock_token_')) {
@@ -68,6 +116,9 @@ export default function MyHoldingsModals() {
     setStakeLpTokenDialog,
     setUnstakeLpTokenDialog,
     setUnlockTokenDialog,
+    setTopupLockDialog,
+    setClaimTokenDialog,
+    setClaimIncentivesDialog,
     data?.locks,
   ]);
 
@@ -84,6 +135,15 @@ export default function MyHoldingsModals() {
       </Dialog>
       <Dialog open={unlockTokenDialog.open}>
         <UnlockTokenFlow />
+      </Dialog>
+      <Dialog open={topupLockDialog.open}>
+        <TopupLockFlow />
+      </Dialog>
+      <Dialog open={claimTokenDialog.open}>
+        <ClaimTokenFlow />
+      </Dialog>
+      <Dialog open={claimIncentivesDialog.open}>
+        <ClaimIncentivesFlow />
       </Dialog>
     </>
   );

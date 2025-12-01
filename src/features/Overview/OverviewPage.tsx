@@ -20,13 +20,19 @@ export default function OverviewPage() {
         <K2PriceCard />
       </StackedCards>
 
-      <StackedCards>
-        <LockedKVcmYieldRatesCard />
-      </StackedCards>
+      <LockedKVcmYieldRatesCard />
+      <LiquidityPoolsCard />
+      <KVcmUsdcRiskyYieldCard />
 
-      <StackedCards>
-        <LiquidityPoolsCard />
-      </StackedCards>
+      {/* Hidden for the moment. Will probably be removed*/}
+      <div className="hidden">
+        <StackedCards>
+          {/* <CarbonBackingCard /> */}
+          {/* <LiquidityCard /> */}
+        </StackedCards>
+      </div>
+
+      <CarbonMarketCard />
 
       <StackedCards>
         <KVcmUsdcRiskyYieldCard />

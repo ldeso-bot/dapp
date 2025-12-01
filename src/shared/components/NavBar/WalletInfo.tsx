@@ -3,7 +3,6 @@
 import { formatAddress } from '@/shared/utils/string.utils';
 import { base, baseSepolia } from 'viem/chains';
 import { useAccount, useSwitchChain } from 'wagmi';
-import ClientOnly from '../ClientOnly/ClientOnly';
 import { Separator } from '../Separator/Separator';
 
 export default function WalletInfo() {
@@ -17,28 +16,26 @@ export default function WalletInfo() {
         ? ''
         : 'Unsupported chain. Please switch to Base.';
 
-  const doSwitchChain = () => {
+  const handleSwitchChain = () => {
     switchChain({ chainId: base.id });
   };
 
-  return (
-    <ClientOnly>
-      {address && (
-        <>
-          <div>
-            <div>My Wallet Address:</div>
-            <div className="text-void-40">{`${formatAddress(address)}`}</div>
-            <div
-              className="text-void-40 text-sm text-red cursor-pointer"
-              onClick={doSwitchChain}
-            >
-              {chainText}
-            </div>
-          </div>
+  if (!address) return null;
 
-          <Separator />
-        </>
-      )}
-    </ClientOnly>
+  return (
+    <div>
+      <Separator />
+      <div className="py-5">
+        <div>My Wallet Address:</div>
+        <div className="text-void-40">{`${formatAddress(address)}`}</div>
+        <div
+          className="text-void-40 text-sm text-red cursor-pointer"
+          onClick={handleSwitchChain}
+        >
+          {chainText}
+        </div>
+      </div>
+      <Separator />
+    </div>
   );
 }

@@ -10,6 +10,7 @@ import Icon from '../components/Icon/Icon';
 import contracts from './contracts.constants';
 
 export type LpToken = 'kvcm-usdc' | 'kvcm-k2';
+export type AllocationToken = 'k2' | 'kvcm';
 export type AllocatableToken = 'k2' | 'kvcm' | 'kvcm-usdc';
 export type LockableToken = AllocatableToken;
 export type Token = 'usdc' | 'k2' | 'kvcm' | 'kvcm-usdc' | 'kvcm-k2';
@@ -84,14 +85,14 @@ export const lpTokens = {
   'kvcm-k2': tokens['kvcm-k2'],
 } as const;
 
-export const allocatableTokens = {
+export const allocationTokens = {
   kvcm: tokens.kvcm,
   k2: tokens.k2,
   'kvcm-usdc': tokens['kvcm-usdc'],
 } as const;
 
 /** @alias */
-export const lockableTokens = allocatableTokens;
+export const lockableTokens = allocationTokens;
 
 export const tokenInfoFromSubgraphSymbol = (
   symbol: string
@@ -113,7 +114,7 @@ export const isToken = (token: unknown): token is Token => {
 export const isAllocatableToken = (
   token: unknown
 ): token is AllocatableToken => {
-  return isToken(token) && Object.keys(allocatableTokens).includes(token);
+  return isToken(token) && Object.keys(allocationTokens).includes(token);
 };
 
 export const isLockableToken = (token: unknown): token is LockableToken => {

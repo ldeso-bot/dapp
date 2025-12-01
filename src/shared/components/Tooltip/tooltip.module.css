@@ -3,15 +3,15 @@
 .TooltipContent {
   border-radius: 0.4rem;
   padding: 1rem 1.5rem;
-  font-size: 15px;
-  line-height: 1;
+  font-size: 1.4rem;
+  line-height: 1.25;
   color: white;
-  background-color: var(--void-70);
+  background-color: var(--void-80);
   box-shadow:
     hsl(206 22% 7% / 35%) 0px 1rem 3.8rem -1rem,
     hsl(206 22% 7% / 20%) 0px 1rem 2rem -1.5rem;
   user-select: none;
-  animation-duration: 400ms;
+  animation-duration: 200ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
   z-index: 5000;

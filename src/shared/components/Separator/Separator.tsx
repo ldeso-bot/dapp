@@ -1,3 +1,3 @@
 export const Separator = () => {
-  return <div className="border-void-20 border-t-1" />;
+  return <div className="border-gray-300 border-t-1" />;
 };

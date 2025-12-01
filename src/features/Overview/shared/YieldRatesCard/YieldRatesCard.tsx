@@ -69,7 +69,7 @@ export default function YieldRatesCard(props: Props) {
     <Card {...props} skeletonClassName="h-[27.2rem]">
       {!!data && (
         <>
-          <div className="flex flex-row justify-between bg-green-10 p-3 rounded-xl">
+          <div className="flex flex-row justify-between bg-green-10 p-3">
             <div>
               Resets every <b>90 days</b>. Next reset in{' '}
               {formatDateRelative(nextMaturityTimestamp)} (on:{' '}

@@ -10,6 +10,7 @@ export default function KVcmUsdcRiskyYieldCard(props: CardProps) {
   return (
     <YieldRatesCard
       {...props}
+      className="rounded-xl"
       title="kVCM/USDC Risky Yield"
       tooltip="Total dollar equivalent of all deposits, bonds, and Liquidity pools managed by the Protocol."
       data={data?.liquidityPoolRiskyYield}

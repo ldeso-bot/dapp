@@ -14,6 +14,7 @@ export default function CarbonMarketCard(props: CardProps) {
       {...props}
       title="Carbon Market"
       tooltip="There should be a tooltip here"
+      className="rounded-xl"
     >
       {carbonClasses && (
         <div>

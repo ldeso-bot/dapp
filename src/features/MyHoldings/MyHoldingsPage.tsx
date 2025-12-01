@@ -1,35 +1,69 @@
 'use client';
 
 import ConnectedFeature from '@/shared/components/ConnectedFeature/ConnectedFeature';
-import StackedCards from '@/shared/components/StackedCards/StackedCards';
-import { Suspense } from 'react';
-import IdleBalancesCard from './cards/IdleBalancesCard/IdleBalancesCard';
-import K2LocksCard from './cards/K2LocksCard/K2LocksCard';
-import KvcmLocksCard from './cards/KVcmLocksCard/KVcmLocksCard';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/shared/components/Tabs/Tabs';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useMemo } from 'react';
+import { SUPPORTED_TABS, TabValue } from './constants/tab.constants';
 import MyHoldingsModals from './modals/MyHoldingsModals';
+import { K2View } from './views/K2View';
+import { KvcmView } from './views/KvcmView';
+import { LiquidityPositionsView } from './views/LiquidityPositionsView';
+import { OverviewView } from './views/OverviewView';
 
-export default function MyHoldingsPage() {
+const MyHoldingsTabs = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const currentTab = useMemo((): TabValue => {
+    const activeView = searchParams.get('activeView');
+    return activeView && SUPPORTED_TABS.includes(activeView as TabValue)
+      ? (activeView as TabValue)
+      : 'overview';
+  }, [searchParams]);
+
+  const handleTabChange = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('activeView', value);
+    router.push(`?${params.toString()}`, { scroll: false });
+  };
+
   return (
-    <ConnectedFeature>
-      <Suspense>
-        <MyHoldingsModals />
-      </Suspense>
-      <div className="flex flex-col gap-4 lg:flex-row-reverse">
-        <div>
-          <StackedCards>
-            <IdleBalancesCard className="solo-card lg:w-[27.2rem]" />
-          </StackedCards>
-        </div>
-        <div className="flex flex-col gap-4 grow-1">
-          <StackedCards>
-            <KvcmLocksCard />
-          </StackedCards>
-
-          <StackedCards>
-            <K2LocksCard className="solo-card" />
-          </StackedCards>
-        </div>
-      </div>
-    </ConnectedFeature>
+    <Tabs value={currentTab} onValueChange={handleTabChange}>
+      <TabsList>
+        <TabsTrigger value="overview">Overview</TabsTrigger>
+        <TabsTrigger value="kvcm">kVCM</TabsTrigger>
+        <TabsTrigger value="k2">K2</TabsTrigger>
+        <TabsTrigger value="liquidity">Liquidity</TabsTrigger>
+      </TabsList>
+      <TabsContent value="overview">
+        <OverviewView />
+      </TabsContent>
+      <TabsContent className="flex flex-col gap-4" value="kvcm">
+        <KvcmView />
+      </TabsContent>
+      <TabsContent value="k2" className="flex flex-col gap-4">
+        <K2View />
+      </TabsContent>
+      <TabsContent value="liquidity">
+        <LiquidityPositionsView />
+      </TabsContent>
+    </Tabs>
   );
-}
+};
+
+const MyHoldingsPage = () => (
+  <ConnectedFeature>
+    <Suspense>
+      <MyHoldingsModals />
+      <MyHoldingsTabs />
+    </Suspense>
+  </ConnectedFeature>
+);
+
+export default MyHoldingsPage;

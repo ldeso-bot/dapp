@@ -1,17 +1,27 @@
 'use client';
 
 import { wagmiConfig } from '@/shared/constants/networks.constants';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/shared/utils/web3.utils';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { ConnectKitProvider } from 'connectkit';
-import { ReactNode } from 'react';
-import { WagmiProvider } from 'wagmi';
+import { ReactNode, useState } from 'react';
+import { State, WagmiProvider } from 'wagmi';
 
-const queryClient = new QueryClient();
+type ProvidersProps = {
+  children: ReactNode;
+  initialState?: State;
+};
 
-export function Providers({ children }: { children: ReactNode }) {
+export function Providers({ children, initialState }: ProvidersProps) {
+  const [client] = useState(() => queryClient);
+
   return (
-    <WagmiProvider config={wagmiConfig}>
-      <QueryClientProvider client={queryClient}>
+    <WagmiProvider
+      reconnectOnMount
+      config={wagmiConfig}
+      initialState={initialState}
+    >
+      <QueryClientProvider client={client}>
         <ConnectKitProvider>{children}</ConnectKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

@@ -1,4 +1,5 @@
 import helpIcon from '@/shared/images/help.svg';
+import { cn } from '@/shared/utils/component.utils';
 import { Tooltip as TooltipPrimitive } from 'radix-ui';
 import Icon from '../Icon/Icon';
 import styles from './tooltip.module.css';
@@ -6,25 +7,28 @@ import styles from './tooltip.module.css';
 type Props = {
   trigger?: React.ReactNode;
   content?: React.ReactNode;
+  className?: string;
 };
-export default function Tooltip({ trigger, content }: Props) {
+
+export const Tooltip = ({ trigger, content, className }: Props) => {
   if (!content) {
     return trigger;
   }
+
   if (!trigger) {
     trigger = <Icon icon={helpIcon} alt={'Help'} size={1.6} />;
   }
 
   return (
-    <TooltipPrimitive.Provider>
+    <TooltipPrimitive.Provider delayDuration={0}>
       <TooltipPrimitive.Root>
         <TooltipPrimitive.Trigger asChild>
           <div>{trigger}</div>
         </TooltipPrimitive.Trigger>
         <TooltipPrimitive.Portal>
           <TooltipPrimitive.Content
-            className={styles.TooltipContent}
             sideOffset={5}
+            className={cn(styles.TooltipContent, className)}
           >
             {content}
             <TooltipPrimitive.Arrow className={styles.TooltipArrow} />
@@ -33,4 +37,4 @@ export default function Tooltip({ trigger, content }: Props) {
       </TooltipPrimitive.Root>
     </TooltipPrimitive.Provider>
   );
-}
+};

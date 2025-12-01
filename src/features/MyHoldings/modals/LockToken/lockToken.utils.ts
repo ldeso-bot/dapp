@@ -78,8 +78,12 @@ export const findClosestMaturityByDays = (
   targetDays: number,
   yieldData: YieldRate[]
 ) => {
+  if (yieldData.length === 0) {
+    return null;
+  }
+
   const targetTimestamp = Date.now() + targetDays * 24 * 60 * 60;
-  return yieldData.reduce((closest: YieldRate, current: YieldRate) => {
+  return yieldData?.reduce((closest: YieldRate, current: YieldRate) => {
     return Math.abs(current.maturationTimestamp ?? 0 - targetTimestamp) <
       Math.abs(closest.maturationTimestamp ?? 0 - targetTimestamp)
       ? current

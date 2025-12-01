@@ -3,6 +3,7 @@ import contracts, {
 } from '@/shared/constants/contracts.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
 import { isChainId } from '@/shared/utils/typeguards';
+import { QueryClient } from '@tanstack/react-query';
 import {
   type Abi,
   type PublicClient,
@@ -32,6 +33,15 @@ export const getPublicClient = (chainId: ChainId): PublicClient => {
     transport: http(rpcUrls[chainId]),
   }) as PublicClient;
 };
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export function getContract(
   chainId: ChainId,

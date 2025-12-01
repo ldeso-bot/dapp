@@ -6,7 +6,7 @@ import {
   Token,
 } from '../constants/tokens.constants';
 
-export type Holding = {
+type Holding = {
   id: string;
   balance: number;
   valueUSD: number;

@@ -6,7 +6,7 @@ type Props = {
   className?: string;
   onClick?: () => void;
   href?: string;
-  colors?: 'primary' | 'secondary';
+  colors?: 'primary' | 'secondary' | 'positive' | 'neutral';
   context?: 'main' | 'flow';
   target?: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement> &
@@ -23,9 +23,11 @@ export default function Button({
   ...props
 }: Props) {
   className = cn(
-    'whitespace-nowrap flex items-center justify-center gap-2 border-1 border-foreground cursor-pointer hover:opacity-80 min-w-fit',
-    colors === 'primary' && 'bg-white text-void-80',
-    colors === 'secondary' && 'bg-void-80 text-white',
+    'whitespace-nowrap flex items-center justify-center rounded-lg gap-2 border-1 cursor-pointer hover:opacity-80 min-w-fit disabled:opacity-50 disabled:cursor-not-allowed',
+    colors === 'primary' && 'bg-white text-void-80 border-foreground',
+    colors === 'secondary' && 'bg-void-80 text-white border-foreground',
+    colors === 'positive' && 'bg-green-200 text-green-900 border-green-200',
+    colors === 'neutral' && 'bg-gray-100 text-gray-900 border-gray-300',
     context === 'main' && 'rounded-lg px-3 py-1',
     context === 'flow' && 'w-full px-6 py-3',
     className

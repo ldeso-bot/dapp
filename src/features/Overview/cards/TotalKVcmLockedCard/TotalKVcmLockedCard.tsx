@@ -3,8 +3,8 @@ import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import {
-    formatAmountWithCommas,
-    formatPriceUSDWithCommas,
+  formatAmountWithCommas,
+  formatPriceUSDWithCommas,
 } from '@/shared/utils/string.utils';
 import StatCard from '../../shared/StatCard/StatCard';
 
