@@ -57,7 +57,7 @@ const UnlockTokenForm: FormFlowStep<UnlockTokenFields> = ({ next, data }) => {
           />
           <Input
             label="Carbon Yield"
-            value={formatPercentage(lock.apyPercent)}
+            value={formatPercentage(lock.syntheticYieldApyPercent)}
             readOnly={true}
             tooltip={tooltip}
           />

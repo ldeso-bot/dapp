@@ -78,9 +78,7 @@ query getAllocations($where: Allocation_filter) {
       }
     }
     token {
-      symbol
-      address
-      totalAmountAllocated
+      ...TokenFragment
     }
     amount
   }
@@ -91,17 +89,32 @@ query getLocks($where: Lock_filter) {
     id
     type
     amount
+    maturityId
     account {
       id
     }
     token {
-      symbol
-      address
-      totalAmountLocked
-      priceUsdc {
-        priceUsdc
-      }
+      ...TokenFragment
     }
+    k2YieldShares
+    k2YieldPending
+    k2YieldEntryMidnightInfo {
+      ...MidnightInfoFragment
+    }
+    k2YieldClaimed
+
+    riskyYieldShares
+    riskyYieldPending
+    riskyYieldEntryMidnightInfo {
+      ...MidnightInfoFragment
+    }
+    riskyYieldClaimed
+
+    syntheticYieldShares
+    syntheticYieldEntryMidnightInfo {
+      ...MidnightInfoFragment
+    }
+    syntheticYieldClaimed
   }
 }
 
@@ -111,9 +124,17 @@ query getAccountBalances($where: AccountBalance_filter) {
       id
     }
     token {
-      symbol
-      address
+      ...TokenFragment
     }
     amount
+  }
+}
+
+query getLatestMidnightInfo {
+  midnightInfos(orderBy: midnightIndex, orderDirection: desc, first: 30) {
+    ...MidnightInfoFragment
+    previousMidnightInfo {
+      ...MidnightInfoFragment
+    }
   }
 }

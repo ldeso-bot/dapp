@@ -1,10 +1,28 @@
 fragment TokenFragment on Token {
   id
+  symbol
   address
+  totalSupply
+  totalAmountLocked
+  totalAmountAllocated
   priceUsdc {
     priceUsdc
   }
-  symbol
-  totalSupply
-  totalAmountLocked
+}
+
+fragment MidnightInfoFragment on MidnightInfo {
+  midnightIndex
+  maturityId
+  lastUpdated
+
+  k2YieldAccumulatorForK2
+  k2YieldAccumulatorForKVCM_K2_LP
+  k2YieldAccumulatorForKVCM
+
+  riskyYieldAccumulatorForKVCM_K2_LP
+  riskyYieldAccumulatorForKVCM_USDC_LP
+  riskyYieldAccumulatorForK2
+
+  syntheticYieldPps
+  syntheticYieldTotalShares
 }

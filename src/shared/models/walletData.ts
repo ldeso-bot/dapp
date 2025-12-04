@@ -6,18 +6,15 @@ import {
   Token,
 } from '../constants/tokens.constants';
 
-type Holding = {
+export type Lock = {
   id: string;
   balance: number;
   valueUSD: number;
-  apyPercent: number;
-};
-
-export type Lock = Holding & {
   endTimestamp: number;
   token: LockableToken;
-  riskyYieldPercent: number;
-  baseApyPercent: number;
+  riskyYieldApyPercent: number;
+  syntheticYieldApyPercent: number;
+  k2YieldApyPercent: number;
   rewards: {
     kvcm: number;
     k2: number;

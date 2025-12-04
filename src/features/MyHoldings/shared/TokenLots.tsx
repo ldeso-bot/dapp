@@ -94,7 +94,9 @@ export const TokenLots: FC<TokenLotsProps> = ({ isOpen, onOpenChange }) => {
                     <div className="w-px border-gray-400 border-r h-[1.8rem]" />
                     <div className="flex gap-1 text-gray-500">
                       <div>Base APY</div>
-                      <div>{formatPercentage(lock.baseApyPercent)}</div>
+                      <div>
+                        {formatPercentage(lock.syntheticYieldApyPercent)}
+                      </div>
                     </div>
                     <span className="text-gray-400">•</span>
                     <div className="flex gap-1 text-gray-500">
@@ -116,7 +118,7 @@ export const TokenLots: FC<TokenLotsProps> = ({ isOpen, onOpenChange }) => {
                             currentLockAmount: lock.balance,
                             totalAccruingRewards: lock.rewards.kvcm,
                             tokenSymbol: getTokenSymbol(lock.token),
-                            baseApy: lock.baseApyPercent,
+                            baseApy: lock.syntheticYieldApyPercent,
                             maturityDate: lock.endTimestamp,
                           })
                         }

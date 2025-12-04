@@ -3,6 +3,10 @@ dotenv.config();
 
 export const USE_LOCAL_GRAPH_NODE = process.env.USE_LOCAL_GRAPH_NODE === 'true';
 
+export const FORCE_WALLET_ADDRESS = process.env.FORCE_WALLET_ADDRESS
+  ? process.env.FORCE_WALLET_ADDRESS.toLowerCase()
+  : undefined;
+
 export const USE_MOCKS = !(process.env.USE_MOCKS === 'false');
 
 export const IS_DEVELOPMENT =

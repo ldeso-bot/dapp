@@ -12,7 +12,7 @@ import contracts from './contracts.constants';
 export type LpToken = 'kvcm-usdc' | 'kvcm-k2';
 export type AllocationToken = 'k2' | 'kvcm';
 export type AllocatableToken = 'k2' | 'kvcm' | 'kvcm-usdc';
-export type LockableToken = AllocatableToken;
+export type LockableToken = 'k2' | 'kvcm' | 'kvcm-usdc' | 'kvcm-k2';
 export type Token = 'usdc' | 'k2' | 'kvcm' | 'kvcm-usdc' | 'kvcm-k2';
 export type SubgraphTokenSymbol =
   | 'K2'
@@ -91,8 +91,10 @@ export const allocationTokens = {
   'kvcm-usdc': tokens['kvcm-usdc'],
 } as const;
 
-/** @alias */
-export const lockableTokens = allocationTokens;
+const lockableTokens = {
+  ...allocationTokens,
+  'kvcm-k2': tokens['kvcm-k2'],
+};
 
 export const tokenInfoFromSubgraphSymbol = (
   symbol: string
