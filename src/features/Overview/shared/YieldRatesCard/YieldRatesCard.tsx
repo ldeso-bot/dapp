@@ -20,7 +20,6 @@ import { ROUTES } from '@/shared/constants/route.constants';
 import { isToken, tokens } from '@/shared/constants/tokens.constants';
 import { YieldRates } from '@/shared/models/ProtocolData';
 import { formatDate, formatPercentage } from '@/shared/utils/string.utils';
-import { useEffect, useState } from 'react';
 import {
   Line,
   LineChart,
@@ -58,12 +57,8 @@ const formatDateRelative = (timestamp: number) => {
 
 export default function YieldRatesCard(props: Props) {
   const { data } = props;
-  const [nextMaturityTimestamp, setNextMaturityTimestamp] = useState(0);
-
-  useEffect(() => {
-    if (!data || data.length === 0) return;
-    setNextMaturityTimestamp(data[0].maturationTimestamp);
-  }, [data]);
+  const nextMaturityTimestamp =
+    data && data.length > 0 ? data[0].maturationTimestamp : 0;
 
   return (
     <Card {...props} skeletonClassName="h-[27.2rem]">

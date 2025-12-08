@@ -8,6 +8,7 @@ import Button from '@/shared/components/Button/Button';
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
 import { AllocationToken } from '@/shared/constants/tokens.constants';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
+import { useCurrentTimestamp } from '@/shared/hooks/useCurrentTimestamp';
 import { cn } from '@/shared/utils/component.utils';
 import {
   formatAmountWithCommas,
@@ -32,6 +33,8 @@ export const TokenLocks: FC<TokenLocksProps> = ({ isOpen, onOpenChange }) => {
   const setTopupLockDialog = useSetAtom(topupLockDialogAtom);
   const setClaimTokenDialog = useSetAtom(claimTokenDialogAtom);
 
+  const currentTimestamp = useCurrentTimestamp();
+
   const totalLocks = data?.locks?.length ?? 0;
 
   if (!totalLocks) return null;
@@ -55,8 +58,8 @@ export const TokenLocks: FC<TokenLocksProps> = ({ isOpen, onOpenChange }) => {
         <AccordionContent className="text-size-14">
           <div className="flex flex-col gap-3">
             {data?.locks.map((lock) => {
-              const isMatured = lock.endTimestamp < Date.now() / 1000;
-              const isMaturing = lock.endTimestamp > Date.now() / 1000;
+              const isMatured = lock.endTimestamp < currentTimestamp;
+              const isMaturing = lock.endTimestamp > currentTimestamp;
 
               return (
                 <div

@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
     config.externals.push('pino-pretty', 'encoding');
     return config;
   },
+  turbopack: {
+    root: './',
+  },
 };
 
 export default nextConfig;

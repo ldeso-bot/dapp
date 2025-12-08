@@ -3,7 +3,7 @@
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
-import { useLiveTimestamp } from '@/shared/hooks/useLiveTimestamp';
+import { useFormattedTimestamp } from '@/shared/hooks/useLiveTimestamp';
 import { cn } from '@/shared/utils/component.utils';
 import { formatPriceUSDWithCommas } from '@/shared/utils/string.utils';
 import { StatusCardBadge } from '../StatusCards/StatusCards';
@@ -65,7 +65,7 @@ export const PortfolioSnapshot = ({
   onHeartbeatNavigate,
   className,
 }: PortfolioSnapshotProps) => {
-  const liveTimestamp = useLiveTimestamp();
+  const liveTimestamp = useFormattedTimestamp();
 
   const status: EarningStatus = earningStatus || {
     status: heartbeat.every((row) => row.status === 'earning')
