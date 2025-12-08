@@ -94,6 +94,11 @@ body {
   line-height: 1.8rem;
 }
 
+.text-size-10 {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
 .text-size-8 {
   font-size: 0.8rem;
   line-height: 1.2rem;

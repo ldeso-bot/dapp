@@ -1,3 +1,7 @@
+import {
+  CARBON_CLASSES_INFO_MAP,
+  isCarbonClassId,
+} from '@/shared/constants/carbonClasses.constants';
 import { USE_MOCKS } from '@/shared/constants/config.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
 import {
@@ -28,7 +32,7 @@ export const getAllocations = async (
   });
 
   // Map allocations
-  const mappedAllocations = allocations.allocations.map(
+  const mappedAllocations = (allocations?.allocations ?? []).map(
     (allocation): Allocation | null => {
       const tokenInfo = tokenInfoFromSubgraphSymbol(allocation.token.symbol);
       if (!tokenInfo || !isAllocatableToken(tokenInfo.id)) {
@@ -36,13 +40,29 @@ export const getAllocations = async (
         return null;
       }
 
+      const priceUSD = formatStringToNumber(
+        allocation.carbonClass.priceUsdcPerTon?.priceUsdc,
+        6
+      );
+
+      const getPriceEffect = (price: number) => {
+        if (price < 10) return 'Low' as const;
+        if (price < 25) return 'Medium' as const;
+        return 'High' as const;
+      };
+
+      const carbonClassId = allocation.carbonClass.id.toLowerCase();
+      const carbonClassInfo = isCarbonClassId(carbonClassId)
+        ? CARBON_CLASSES_INFO_MAP[carbonClassId]
+        : null;
+      const category = carbonClassInfo?.category ?? 'Other';
+
       return {
+        priceUSD,
+        category,
         id: allocation.id,
         carbonClass: allocation.carbonClass.id,
-        priceUSD: formatStringToNumber(
-          allocation.carbonClass.priceUsdcPerTon?.priceUsdc,
-          6
-        ),
+        priceEffect: getPriceEffect(priceUSD),
         amount: formatStringToNumber(allocation.amount, 18),
         holder: allocation.account.id,
         sharePercent: Number(
@@ -68,10 +88,12 @@ const getMockAllocations = (): Allocations => {
     {
       id: '1',
       carbonClass: 'Water Filtration',
+      category: 'Carbon Dioxide Removals',
       priceUSD: 3.99,
+      priceEffect: 'Low',
       amount: 100,
       holder: '0x1234567890123456789012345678901234567890',
-      sharePercent: 0.1,
+      sharePercent: 0.9,
       token: {
         name: 'kvcm',
         address: '0x1234567890123456789012345678901234567890',
@@ -80,7 +102,9 @@ const getMockAllocations = (): Allocations => {
     {
       id: '2',
       carbonClass: 'Biochar (CHAR)',
+      category: 'Renewables',
       priceUSD: 36.97,
+      priceEffect: 'High',
       amount: 500,
       holder: '0x1234567890123456789012345678901234567890',
       sharePercent: 0.5,
@@ -92,7 +116,9 @@ const getMockAllocations = (): Allocations => {
     {
       id: '3',
       carbonClass: 'RNWBL',
+      category: 'Forestry',
       priceUSD: 3.99,
+      priceEffect: 'Low',
       amount: 300,
       holder: '0x1234567890123456789012345678901234567890',
       sharePercent: 0.3,
@@ -104,10 +130,12 @@ const getMockAllocations = (): Allocations => {
     {
       id: '4',
       carbonClass: 'Mangroves (MNGRV)',
-      priceUSD: 3.99,
+      category: 'Renewables',
+      priceUSD: 15.5,
+      priceEffect: 'Medium',
       amount: 100,
       holder: '0x1234567890123456789012345678901234567890',
-      sharePercent: 0.1,
+      sharePercent: 0.5,
       token: {
         name: 'kvcm',
         address: '0x1234567890123456789012345678901234567890',
@@ -116,7 +144,9 @@ const getMockAllocations = (): Allocations => {
     {
       id: '5',
       carbonClass: 'Water Filtration',
+      category: 'Carbon Dioxide Removals',
       priceUSD: 3.99,
+      priceEffect: 'Low',
       amount: 100,
       holder: '0x1234567890123456789012345678901234567890',
       sharePercent: 0.3,
@@ -128,7 +158,9 @@ const getMockAllocations = (): Allocations => {
     {
       id: '6',
       carbonClass: 'Mangroves (MNGRV)',
-      priceUSD: 3.99,
+      category: 'Renewables',
+      priceUSD: 15.5,
+      priceEffect: 'Medium',
       amount: 100,
       holder: '0x1234567890123456789012345678901234567890',
       sharePercent: 0.3,

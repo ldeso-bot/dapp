@@ -47,6 +47,12 @@ export const formatPriceUSD = (value: number, digits: number = 2): string => {
   return `$${nFormatter(value, digits)}`;
 };
 
+export const formatUTCTime = (date: Date = new Date()) => {
+  const hours = date.getUTCHours().toString().padStart(2, '0');
+  const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes} UTC`;
+};
+
 export const formatTimestamp = (
   timestamp?: number | null,
   month?: 'long' | 'short'

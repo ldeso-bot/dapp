@@ -88,7 +88,6 @@ export const lpTokens = {
 export const allocationTokens = {
   kvcm: tokens.kvcm,
   k2: tokens.k2,
-  'kvcm-usdc': tokens['kvcm-usdc'],
 } as const;
 
 const lockableTokens = {

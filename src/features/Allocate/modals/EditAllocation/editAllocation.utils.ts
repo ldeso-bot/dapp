@@ -2,8 +2,9 @@ import { Allocation } from '@/shared/models/walletData';
 import { atom } from 'jotai';
 
 export type EditAllocationFields = {
-  allocationId: string;
   amount: number;
+  carbonClass: string;
+  allocationId: string;
 };
 
 export const editAllocationDialogAtom = atom({

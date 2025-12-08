@@ -18,6 +18,7 @@ export default function EditAllocationFlow() {
 
   // Form and schema are deffined at the flow level
   const schema = z.object({
+    carbonClass: z.string(),
     allocationId: z.string(),
     amount: z.coerce
       .number()
@@ -27,6 +28,7 @@ export default function EditAllocationFlow() {
   const form = useForm<EditAllocationFields>({
     resolver: zodResolver(schema),
     defaultValues: {
+      carbonClass: editAllocationDialog.allocation?.carbonClass,
       allocationId: editAllocationDialog.allocation?.id,
       amount: editAllocationDialog.allocation?.amount ?? 0,
     },

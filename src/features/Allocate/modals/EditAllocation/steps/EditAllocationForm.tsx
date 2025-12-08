@@ -1,16 +1,14 @@
 'use client';
 
 import Button from '@/shared/components/Button/Button';
-import SoloCard from '@/shared/components/Card/SoloCard';
+import Card from '@/shared/components/Card/Card';
 import Input from '@/shared/components/Form/Input';
-import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
 import Form from '@/shared/components/Form/layout/Form';
 import InputGroup from '@/shared/components/Form/layout/InputGroup';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { useAtomValue } from 'jotai';
-import CarbonClassesCard from '../../../shared/CarbonClassesCard';
 import {
   EditAllocationFields,
   editAllocationDialogAtom,
@@ -31,41 +29,60 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({
   };
 
   if (!allocation) return null;
+
   return (
-    <div className="flex lg:flex-row flex-col gap-10 w-full justify-center">
-      <SoloCard
-        title="Edit allocation"
-        className="grow-1 max-w-[38.2rem] h-fit"
-      >
+    <Card className="rounded-lg px-6 py-4 overflow-y-auto">
+      <div className="space-y-2">
+        <h2 className="text-size-20 font-semibold text-gray-900">
+          Edit Allocation
+        </h2>
+        <p className="text-md text-gray-600">
+          Update how much you allocate to this class. Rebalancing doesn’t change
+          kVCM lock maturities.
+        </p>
+      </div>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         {formState.errors.allocationId?.message}
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <InputGroup>
-            <Input
-              label="Token"
-              defaultValue={tokens[allocation.token.name].symbol}
-              iconSrc={tokens[allocation.token.name].iconSrc}
-              readOnly
-            />
-            <Input
-              label="Amount"
-              type="number"
-              iconSrc={tokens[allocation.token.name].iconSrc}
-              {...form.register('amount')}
-              error={formState.errors.amount}
-            />
-          </InputGroup>
-          <ButtonGroup>
-            <Button colors="secondary" context="flow" type="submit">
-              Confirm Allocation
-            </Button>
-            <Button colors="primary" context="flow" href={`${ROUTES.ALLOCATE}`}>
-              Cancel
-            </Button>
-          </ButtonGroup>
-        </Form>
-      </SoloCard>
-      <CarbonClassesCard className="grow-1 max-w-[38.2rem]" />
-    </div>
+        <InputGroup>
+          <Input
+            label="Token"
+            defaultValue={tokens[allocation.token.name].symbol}
+            iconSrc={tokens[allocation.token.name].iconSrc}
+            readOnly
+          />
+          <Input
+            label="Amount"
+            type="number"
+            iconSrc={tokens[allocation.token.name].iconSrc}
+            {...form.register('amount')}
+            error={formState.errors.amount}
+          />
+          <Input
+            label="Carbon Class"
+            defaultValue={allocation.carbonClass}
+            readOnly
+          />
+        </InputGroup>
+        <div className="flex gap-3 w-full">
+          <Button
+            className="rounded-lg"
+            colors="primary"
+            context="flow"
+            href={`${ROUTES.ALLOCATE}`}
+          >
+            Cancel
+          </Button>
+          <Button
+            className="rounded-lg"
+            colors="secondary"
+            context="flow"
+            type="submit"
+          >
+            Save Allocation
+          </Button>
+        </div>
+      </Form>
+    </Card>
   );
 };
 

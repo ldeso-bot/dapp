@@ -1,18 +1,14 @@
+'use client';
+
 import Button from '@/shared/components/Button/Button';
-import Icon from '@/shared/components/Icon/Icon';
-import Edit from '@/shared/images/edit.svg';
+import { FC } from 'react';
 import { AllocationsTableItemProps } from './AllocationsTable.types';
 
-export default function AllocationEditButton({
-  allocation,
-}: AllocationsTableItemProps) {
+export const AllocationEditButton: FC<AllocationsTableItemProps> = (props) => {
+  const { allocation } = props;
   return (
-    <Button
-      className="w-full"
-      href={`?action=edit_allocation_${allocation.id}`}
-    >
-      <Icon icon={Edit} size={1.6} />
-      Edit
+    <Button className="w-fit" href={`?action=edit_allocation_${allocation.id}`}>
+      Edit Allocation
     </Button>
   );
-}
+};

@@ -26,13 +26,17 @@ export type Locks = Lock[];
 
 export type Balances = Record<LpToken | Token, number>;
 
+export type PriceEffect = 'Low' | 'Medium' | 'High';
+
 export type Allocation = {
   id: string;
   carbonClass: string;
   priceUSD: number;
   amount: number;
+  category: string; // add types for supported categories
   holder: Address;
   sharePercent: number;
+  priceEffect: PriceEffect;
   token: {
     name: AllocatableToken;
     address: Address;

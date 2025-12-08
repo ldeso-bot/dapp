@@ -1,8 +1,8 @@
 'use client';
 
 import Dialog from '@/shared/components/Dialog/Dialog';
+import { AllocationToken } from '@/shared/constants/tokens.constants';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
-import { isAllocatableToken } from '@/shared/constants/tokens.constants';
 import { useAtom } from 'jotai';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
@@ -34,8 +34,7 @@ export default function AllocateModals() {
     /* Open dialogs if navigating to /allocate with action parameter */
     if (action.startsWith('new_allocation_')) {
       const token = action.split('_')[2];
-      if (isAllocatableToken(token))
-        setNewAllocationDialog({ open: true, token });
+      setNewAllocationDialog({ open: true, token: token as AllocationToken });
     }
 
     if (action.startsWith('edit_allocation_')) {
@@ -54,12 +53,12 @@ export default function AllocateModals() {
   return (
     <>
       {editAllocationDialog.open == true && (
-        <Dialog open={editAllocationDialog.open} className="lg:w-full">
+        <Dialog open={editAllocationDialog.open}>
           <EditAllocationFlow />
         </Dialog>
       )}
       {newAllocationDialog.open == true && (
-        <Dialog open={newAllocationDialog.open} className="lg:w-full">
+        <Dialog open={newAllocationDialog.open}>
           <NewAllocationFlow />
         </Dialog>
       )}

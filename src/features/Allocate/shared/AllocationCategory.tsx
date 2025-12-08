@@ -4,11 +4,11 @@ import { cn } from '@/shared/utils/component.utils';
 import { type FC } from 'react';
 import { AllocationsTableItemProps } from './AllocationsTable.types';
 
-export const AllocationClass: FC<AllocationsTableItemProps> = (props) => {
+export const AllocationCategory: FC<AllocationsTableItemProps> = (props) => {
   const { allocation, className } = props;
   return (
-    <div className={cn('font-semibold text-size-16', className)}>
-      {allocation.carbonClass}
+    <div className={cn('text-gray-500 text-[1.3rem]', className)}>
+      {allocation.category}
     </div>
   );
 };

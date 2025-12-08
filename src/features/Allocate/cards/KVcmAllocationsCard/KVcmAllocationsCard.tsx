@@ -5,7 +5,7 @@ import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import Plus from '@/shared/images/plus.svg';
-import AllocationsTable from '../../shared/AllocationsTable';
+import { AllocationsTable } from '../../shared/AllocationsTable';
 
 export default function KvcmAllocationsCard(props: CardProps) {
   const { data } = useWalletData();
@@ -17,8 +17,11 @@ export default function KvcmAllocationsCard(props: CardProps) {
   return (
     <AllocationsTable
       {...props}
+      showCategoryFilter
       title="kVCM Allocations"
-      tooltip="There should be a tooltip here"
+      titleAddOnBadge="Price Lever"
+      titleClassName="text-size-18 font-medium"
+      tooltip="Rebalancing kVCM never unlocks your position early. Maturity dates stay unchanged."
       data={allocations}
       noAllocationComponent={
         <div className="bg-void-10 py-3 px-6 w-full">

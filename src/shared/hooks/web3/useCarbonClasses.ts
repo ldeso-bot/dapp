@@ -25,6 +25,5 @@ export const useCarbonClasses = () => {
       value: c.name,
       label: c.name,
     })) || [];
-
   return { categories, selectInputItems, ...rest };
 };

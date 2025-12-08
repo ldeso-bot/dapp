@@ -25,7 +25,7 @@ export default function Dialog({ open, children, className }: Props) {
           <DialogPrimitive.Title>
             <VisuallyHidden.Root>Dialog</VisuallyHidden.Root>
           </DialogPrimitive.Title>
-          <div className={cn('w-[38.2rem]', className)}>{children}</div>
+          <div className={cn('w-[48.2rem]', className)}>{children}</div>
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
