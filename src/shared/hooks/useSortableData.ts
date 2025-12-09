@@ -55,7 +55,7 @@ export function useSortableData<TData>(
     });
 
     return sorted;
-  }, [data, sortConfig, options?.customComparators]);
+  }, [data, sortConfig, options]);
 
   const requestSort = (key: keyof TData) => {
     let direction: SortDirection = 'asc';
