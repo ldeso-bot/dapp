@@ -35,10 +35,14 @@ query getTokenSnapshots($where: TokenSnapshot_filter) {
   }
 }
 
-query getMaturityManager {
-  maturityManagers(first: 1) {
+query getProtocolState {
+  protocolStates(first: 1) {
     firstActiveMaturityId
     lastActiveMaturityId
+    systemPauseStatus
+    kvcmStakingPauseStatus
+    k2StakingPauseStatus
+    lpStakingPauseStatus
   }
 }
 
@@ -90,6 +94,9 @@ query getLocks($where: Lock_filter) {
     type
     amount
     maturityId
+    maturity {
+      timestamp
+    }
     account {
       id
     }

@@ -58,8 +58,8 @@ export const TokenLocks: FC<TokenLocksProps> = ({ isOpen, onOpenChange }) => {
         <AccordionContent className="text-size-14">
           <div className="flex flex-col gap-3">
             {data?.locks.map((lock) => {
-              const isMatured = lock.endTimestamp < currentTimestamp;
-              const isMaturing = lock.endTimestamp > currentTimestamp;
+              const isMatured = lock.lockedUntil < currentTimestamp;
+              const isMaturing = lock.lockedUntil > currentTimestamp;
 
               return (
                 <div
@@ -77,7 +77,7 @@ export const TokenLocks: FC<TokenLocksProps> = ({ isOpen, onOpenChange }) => {
                     </div>
                     <span className="text-gray-400">•</span>
                     <div className="text-size-14 text-gray-500 font-[400]">
-                      {formatTimestamp(lock.endTimestamp * 1000, 'short')}
+                      {formatTimestamp(lock.lockedUntil * 1000, 'short')}
                     </div>
                     <span className="text-gray-400">•</span>
                     <div
@@ -122,7 +122,7 @@ export const TokenLocks: FC<TokenLocksProps> = ({ isOpen, onOpenChange }) => {
                             totalAccruingRewards: lock.rewards.kvcm,
                             tokenSymbol: getTokenSymbol(lock.token),
                             baseApy: lock.syntheticYieldApyPercent,
-                            maturityDate: lock.endTimestamp,
+                            maturityDate: lock.lockedUntil,
                           })
                         }
                       >

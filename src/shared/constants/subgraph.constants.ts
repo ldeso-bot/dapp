@@ -7,7 +7,8 @@ const GOLDSKY_API_KEY = process.env.GOLDSKY_API_KEY;
 let subgraphs = {
   [base.id]: {
     carbon: `${GOLDSKY_BASE_URL}/cm-base-carbon-production/latest/gn`,
-    protocol: `${GOLDSKY_BASE_URL}/cm-base-protocol-production/latest/gn`,
+    // TODO: update to latest before going to production
+    protocol: `${GOLDSKY_BASE_URL}/cm-base-protocol-production/20251210-081141-8b582c1/gn`,
   },
   [baseSepolia.id]: {
     carbon: `${GOLDSKY_BASE_URL}/cm-base-sepolia-carbon-staging/latest/gn`,

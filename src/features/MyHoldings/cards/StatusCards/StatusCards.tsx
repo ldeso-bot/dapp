@@ -5,7 +5,7 @@ import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
 import { cn } from '@/shared/utils/component.utils';
 import { type FC, ReactNode } from 'react';
 
-type BadgeVariant = 'green' | 'yellow' | 'gray' | 'blue';
+export type BadgeVariant = 'green' | 'yellow' | 'gray' | 'blue';
 
 type StatusCardTitleProps = {
   tooltip?: string;
@@ -13,11 +13,17 @@ type StatusCardTitleProps = {
   children: React.ReactNode;
 };
 
-export const StatusCard: FC<{ children: ReactNode }> = (props) => {
-  const { children } = props;
+export const StatusCard: FC<{
+  children: ReactNode;
+  skeletonClassName?: string;
+}> = (props) => {
+  const { children, skeletonClassName } = props;
   return (
-    <Card className="p-4 rounded-lg bg-gray-50 border border-gray-300">
-      <div className="flex flex-col gap-2">{children}</div>
+    <Card
+      className="p-4 rounded-lg bg-gray-50 border border-gray-300"
+      skeletonClassName={skeletonClassName}
+    >
+      {children && <div className="flex flex-col gap-2">{children}</div>}
     </Card>
   );
 };

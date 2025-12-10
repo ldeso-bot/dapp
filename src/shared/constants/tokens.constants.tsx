@@ -1,3 +1,4 @@
+import { HoldingsTabValue } from '@/features/MyHoldings/constants/tab.constants';
 import KlimaXIcon from '@/shared/images/k2.svg';
 import KVcmK2LPIcon from '@/shared/images/kvcm-k2.svg';
 import KVcmUsdcLPIcon from '@/shared/images/kvcm-usdc.svg';
@@ -28,6 +29,8 @@ export type TokenInfo = {
   icon: (size?: number) => ReactNode;
   iconSrc: StaticImageData;
   description: string;
+  lockDescription: string;
+  holdingsTab?: HoldingsTabValue;
 };
 
 export const tokens: Record<Token, TokenInfo> = {
@@ -38,6 +41,7 @@ export const tokens: Record<Token, TokenInfo> = {
     iconSrc: USDCIcon,
     subgraphSymbol: 'USDC',
     description: 'USDC',
+    lockDescription: '',
   },
   k2: {
     id: 'k2',
@@ -46,6 +50,8 @@ export const tokens: Record<Token, TokenInfo> = {
     iconSrc: KlimaXIcon,
     subgraphSymbol: 'K2',
     description: 'K2 Token',
+    lockDescription: 'K2 lock',
+    holdingsTab: 'k2',
   },
   kvcm: {
     id: 'kvcm',
@@ -54,6 +60,8 @@ export const tokens: Record<Token, TokenInfo> = {
     iconSrc: KlimaIcon,
     subgraphSymbol: 'KVCM',
     description: 'KVCM Token',
+    lockDescription: 'kVCM lock',
+    holdingsTab: 'kvcm',
   },
   'kvcm-usdc': {
     id: 'kvcm-usdc',
@@ -64,6 +72,8 @@ export const tokens: Record<Token, TokenInfo> = {
     iconSrc: KVcmUsdcLPIcon,
     subgraphSymbol: 'KVCM_USDC_LP',
     description: 'KVCM/USDC Liquidity Pool',
+    lockDescription: 'LP stake',
+    holdingsTab: 'liquidity',
   },
   'kvcm-k2': {
     id: 'kvcm-k2',
@@ -74,6 +84,8 @@ export const tokens: Record<Token, TokenInfo> = {
     subgraphSymbol: 'KVCM_K2_LP',
     iconSrc: KVcmK2LPIcon,
     description: 'KVCM/K2 Liquidity Pool',
+    lockDescription: 'LP stake',
+    holdingsTab: 'liquidity',
   },
 } as const;
 
@@ -92,6 +104,7 @@ export const allocationTokens = {
 
 const lockableTokens = {
   ...allocationTokens,
+  'kvcm-usdc': tokens['kvcm-usdc'],
   'kvcm-k2': tokens['kvcm-k2'],
 };
 

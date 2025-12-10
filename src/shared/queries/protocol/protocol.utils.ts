@@ -26,30 +26,34 @@ export const tokensEligibleForIncentives: Record<YieldType, Token[]> = {
 
 /**
  *
- * Gets the maturity manager from the subgraph
+ * Gets the protocol state from the subgraph
  * @param sdk
  * @returns
  */
-const getMaturityManager = async (sdk: Sdk) => {
+export const getProtocolState = async (sdk: Sdk) => {
   return unstable_cache(
     async () => {
-      const maturityManagers = await sdk.protocol.getMaturityManager();
-      const maturityManager = maturityManagers.maturityManagers[0];
-      if (!maturityManager) {
+      const protocolStates = await sdk.protocol.getProtocolState();
+      const protocolState = protocolStates.protocolStates[0];
+      if (!protocolState) {
         console.error('❌ Maturity manager not found');
         return null;
       }
-      return maturityManager;
+      return protocolState;
     },
     ['maturity-manager'],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
   )();
 };
 
+export type ProtocolState = NonNullable<
+  Awaited<ReturnType<typeof getProtocolState>>
+>;
+
 const getActiveMaturities = async (sdk: Sdk) => {
   return unstable_cache(
     async () => {
-      const maturityManager = await getMaturityManager(sdk);
+      const maturityManager = await getProtocolState(sdk);
       if (!maturityManager) return [];
       const maturities = await sdk.protocol.getMaturities({
         where: {

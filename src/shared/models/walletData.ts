@@ -6,11 +6,14 @@ import {
   Token,
 } from '../constants/tokens.constants';
 
+type LockStatus = 'active' | 'matured' | 'claimed';
+export type EarningStatus = 'earning' | 'paused';
+
 export type Lock = {
   id: string;
   balance: number;
   valueUSD: number;
-  endTimestamp: number;
+  lockedUntil: number;
   token: LockableToken;
   riskyYieldApyPercent: number;
   syntheticYieldApyPercent: number;
@@ -20,6 +23,8 @@ export type Lock = {
     k2: number;
     carbonTonnes: number;
   };
+  status: LockStatus;
+  earningStatus: EarningStatus;
 };
 
 export type Locks = Lock[];

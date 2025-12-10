@@ -5,7 +5,7 @@ import {
   tokenInfoFromSubgraphSymbol,
 } from '@/shared/constants/tokens.constants';
 import { YieldType } from '@/shared/models/ProtocolData';
-import { Lock, Locks } from '@/shared/models/walletData';
+import { EarningStatus, Lock, Locks } from '@/shared/models/walletData';
 import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
 import { Lock_Filter } from '@generated/gql/types/protocol.types';
 import { filter, isNonNullish } from 'remeda';
@@ -13,6 +13,8 @@ import {
   computeMidnightInfo,
   formatMidnightInfo,
   getLatestMidnightInfos,
+  getProtocolState,
+  ProtocolState,
   tokensEligibleForIncentives,
 } from '../protocol/protocol.utils';
 
@@ -26,7 +28,7 @@ export const getLocks = async (
   }
 
   // Fetch locks
-  const [locks, latestMidnightInfos] = await Promise.all([
+  const [locks, latestMidnightInfos, protocolState] = await Promise.all([
     sdk.protocol.getLocks({
       where: {
         account_: {
@@ -35,6 +37,7 @@ export const getLocks = async (
       } as Lock_Filter,
     }),
     getLatestMidnightInfos(sdk),
+    getProtocolState(sdk),
   ]);
 
   // Map locks
@@ -44,6 +47,11 @@ export const getLocks = async (
       console.warn('❓ Unknown lockable token:', lock.token.symbol);
       return null;
     }
+    if (!protocolState) {
+      console.error('❌ Protocol state not found');
+      return null;
+    }
+
     const balance = formatStringToNumber(lock.amount, 18);
     const valueUSD = formatStringToNumber(lock.token.priceUsdc?.priceUsdc, 6);
     let k2YieldApyPercent = 0;
@@ -51,6 +59,9 @@ export const getLocks = async (
     let syntheticYieldApyPercent = 0;
     let k2Rewards = 0;
     let kvcmRewards = 0;
+
+    // Compute earning status
+    const earningStatus = computeEarningStatus(protocolState, tokenInfo.id);
 
     const isSyntheticYieldEligible = tokensEligibleForIncentives[
       YieldType.SYNTHETIC
@@ -101,7 +112,16 @@ export const getLocks = async (
       }
     }
 
-    const endTimestamp = 0;
+    const lockedUntil = lock.maturity?.timestamp
+      ? formatStringToNumber(lock.maturity.timestamp, 10)
+      : 0;
+
+    const status =
+      balance <= 0
+        ? 'claimed'
+        : lockedUntil > new Date().getTime() / 1000
+          ? 'active'
+          : 'matured';
 
     return {
       id: lock.id,
@@ -110,7 +130,6 @@ export const getLocks = async (
       k2YieldApyPercent,
       riskyYieldApyPercent,
       syntheticYieldApyPercent,
-      endTimestamp,
       token: tokenInfo.id,
       rewards: {
         kvcm: kvcmRewards,
@@ -118,11 +137,44 @@ export const getLocks = async (
         // TODO: Not implemented yet in protocol
         carbonTonnes: 0,
       },
+      lockedUntil,
+      status,
+      earningStatus,
     };
   });
 
   // Cull and return locks
   return filter(mappedLocks, isNonNullish);
+};
+
+const computeEarningStatus = (
+  protocolState: ProtocolState,
+  tokenId: string
+): EarningStatus => {
+  const earningStatusFromBoolean = (boolean: boolean): EarningStatus =>
+    boolean ? 'paused' : 'earning';
+
+  let earningStatus: EarningStatus = earningStatusFromBoolean(
+    protocolState.systemPauseStatus
+  );
+
+  if (!protocolState.systemPauseStatus) {
+    if (tokenId === 'kvcm') {
+      earningStatus = earningStatusFromBoolean(
+        protocolState.kvcmStakingPauseStatus
+      );
+    } else if (tokenId === 'k2') {
+      earningStatus = earningStatusFromBoolean(
+        protocolState.k2StakingPauseStatus
+      );
+    } else if (tokenId === 'kvcm-usdc' || tokenId === 'kvcm-k2') {
+      earningStatus = earningStatusFromBoolean(
+        protocolState.lpStakingPauseStatus
+      );
+    }
+  }
+
+  return earningStatus;
 };
 
 const getMockLocks = (): Locks => {
@@ -134,13 +186,15 @@ const getMockLocks = (): Locks => {
       riskyYieldApyPercent: 0.06,
       syntheticYieldApyPercent: 0.07,
       k2YieldApyPercent: 0.12,
-      endTimestamp: 1719859200,
       token: 'kvcm',
       rewards: {
         kvcm: 31.5,
         k2: 22.34,
         carbonTonnes: 12,
       },
+      lockedUntil: 1719859200,
+      status: 'active',
+      earningStatus: 'earning',
     },
     {
       id: '2',
@@ -149,13 +203,15 @@ const getMockLocks = (): Locks => {
       riskyYieldApyPercent: 0.06,
       syntheticYieldApyPercent: 0.17,
       k2YieldApyPercent: 0.06,
-      endTimestamp: 1764515366,
       token: 'kvcm',
       rewards: {
         kvcm: 44.6,
         k2: 13.5,
         carbonTonnes: 12,
       },
+      lockedUntil: 1764515366,
+      status: 'active',
+      earningStatus: 'paused',
     },
   ];
 };

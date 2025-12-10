@@ -9,7 +9,7 @@ import {
 } from '@/shared/components/Tabs/Tabs';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useMemo } from 'react';
-import { SUPPORTED_TABS, TabValue } from './constants/tab.constants';
+import { HoldingsTabValue, SUPPORTED_TABS } from './constants/tab.constants';
 import MyHoldingsModals from './modals/MyHoldingsModals';
 import { K2View } from './views/K2View';
 import { KvcmView } from './views/KvcmView';
@@ -20,10 +20,10 @@ const MyHoldingsTabs = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const currentTab = useMemo((): TabValue => {
+  const currentTab = useMemo((): HoldingsTabValue => {
     const activeView = searchParams.get('activeView');
-    return activeView && SUPPORTED_TABS.includes(activeView as TabValue)
-      ? (activeView as TabValue)
+    return activeView && SUPPORTED_TABS.includes(activeView as HoldingsTabValue)
+      ? (activeView as HoldingsTabValue)
       : 'overview';
   }, [searchParams]);
 
