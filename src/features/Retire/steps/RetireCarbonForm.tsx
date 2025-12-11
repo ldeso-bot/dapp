@@ -29,10 +29,10 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
   return (
     <Card
       title="Retire Carbon"
-      className="w-[36rem] border-0 rounded-xl"
-      titleClassName="font-bold text-void-80 text-size-18"
+      className="w-[45rem] rounded-xl border border-gray-200"
+      titleClassName="font-semibold text-gray-800 text-size-20 tracking-tight"
     >
-      <Form onSubmit={form.handleSubmit(onSubmit)}>
+      <Form className="-mt-1.5" onSubmit={form.handleSubmit(onSubmit)}>
         <InputGroup>
           <SelectInput
             label="Carbon Class"
@@ -45,6 +45,7 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
           />
           <SelectInput
             label="Carbon Credit"
+            placeholder="Select from available carbon credits"
             defaultValue={`${carbonPrices[1].category}-${carbonPrices[1].type}`}
             items={Object.values(carbonPrices).map((carbonPrice) => ({
               label: `${carbonPrice.category} - ${carbonPrice.type}`,
@@ -65,7 +66,15 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
           <PayWithOptions value={paymentMethod} onChange={setPaymentMethod} />
           <PriceDetails paymentMethod={paymentMethod} />
         </InputGroup>
-        <ButtonGroup>
+        <ButtonGroup className="flex-row w-full">
+          <Button
+            className="rounded-md"
+            colors="primary"
+            context="flow"
+            href="/"
+          >
+            Cancel
+          </Button>
           <Button
             disabled
             className="rounded-md"
@@ -74,14 +83,6 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
             type="submit"
           >
             Retire Carbon
-          </Button>
-          <Button
-            className="rounded-md"
-            colors="primary"
-            context="flow"
-            href="/"
-          >
-            Cancel
           </Button>
         </ButtonGroup>
       </Form>

@@ -3,6 +3,7 @@
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
 import Input from '@/shared/components/Form/Input';
+import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
 import SelectInput from '@/shared/components/Form/SelectInput';
 import TokenAmountInput from '@/shared/components/Form/TokenAmountInput';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
@@ -26,11 +27,21 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
   return (
     <Card
       title="Sell Carbon"
-      className="w-[36rem] border-0 rounded-xl"
-      titleClassName="font-bold text-void-80 text-size-18">
+      className="w-[45rem] rounded-xl border border-gray-200"
+      titleClassName="font-semibold text-gray-800 text-size-20 tracking-tight"
+    >
       <div className="flex-1">
-        <div className="font-base text-void-50 text-size-12">
-          Quotes are not guaranteed due to ever-changing network conditions. Slippage may occur. Learn more
+        <div className="font-base text-gray-500 text-size-14">
+          Quotes are not guaranteed due to ever-changing network conditions.
+          Slippage may occur.{' '}
+          <a
+            href="#" // TODO: add link
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-green-80 underline"
+          >
+            Learn more
+          </a>
         </div>
       </div>
       <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
@@ -63,17 +74,26 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
               ...form.register('amount'),
             }}
           />
-          <Input className="h-[4rem]" label="Receive" placeholder="Select a token first" readOnly />
+          <Input
+            className="h-[4rem] pointer-events-none"
+            label="Receive"
+            placeholder="Select a token first"
+            readOnly
+          />
           <SlippageSlider form={form} />
         </div>
-        <div className="flex flex-col gap-3 w-full">
+        <ButtonGroup className="flex-row w-full">
+          <Button
+            colors="primary"
+            context="flow"
+            href={`${ROUTES.SELL_CARBON}`}
+          >
+            Cancel
+          </Button>
           <Button colors="secondary" context="flow" type="submit">
             Sell Carbon
           </Button>
-          <Button colors="primary" context="flow" href={`${ROUTES.SELL_CARBON}`}>
-            Cancel
-          </Button>
-        </div>
+        </ButtonGroup>
       </form>
     </Card>
   );

@@ -5,7 +5,7 @@ import InputWrapper, { InputWrapperProps } from './layout/InputWrapper';
 
 type Props = {
   iconSrc?: StaticImageData;
-  iconSize?: 'sm' | 'md',
+  iconSize?: 'sm' | 'md';
 } & Omit<InputWrapperProps, 'children'> &
   InputHTMLAttributes<HTMLInputElement>;
 
@@ -15,7 +15,7 @@ export default function Input({ iconSrc, iconSize = 'md', ...props }: Props) {
       <input
         {...props}
         className={cn(
-          'px-3 py-2 rounded-lg gap-2 w-full h-[4rem]',
+          'px-3 py-2 rounded-lg gap-2 w-full h-[4rem] border-gray-300',
           !props.disabled && !props.readOnly && 'border-1 hover:opacity-80',
           (props.disabled || props.readOnly) && 'border-1 bg-void-10',
           {

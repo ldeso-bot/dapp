@@ -12,8 +12,8 @@ export default function CarbonClassCard() {
     <div>
       <Card
         title="Carbon Class Prices"
-        className="w-[36rem] border-0 rounded-xl"
-        titleClassName="font-bold text-void-80 text-size-18"
+        className="w-[36rem] rounded-xl border border-gray-200"
+        titleClassName="font-semibold text-void-800 text-size-20 tracking-tight"
       >
         <div className="pt-2">
           {data?.carbonClasses.map((item, index) => (
