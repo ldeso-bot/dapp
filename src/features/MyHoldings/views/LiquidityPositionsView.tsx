@@ -33,6 +33,7 @@ export const LiquidityPositionsView = () => {
         concentratedPool: true,
         estimatedValue: 1267.89,
         tokenSymbol: getTokenSymbol('kvcm-usdc'),
+        token: 'kvcm-usdc',
         matured: {
           lots: 2,
           amount: '540.0',
@@ -68,6 +69,7 @@ export const LiquidityPositionsView = () => {
         concentratedPool: false,
         estimatedValue: 14.7,
         tokenSymbol: getTokenSymbol('kvcm-k2'),
+        token: 'kvcm-k2',
         matured: {
           lots: 0,
           amount: '0.00',
@@ -210,6 +212,7 @@ export const LiquidityPositionsView = () => {
                     <TokenLots
                       isOpen={tokenLotsOpen}
                       onOpenChange={setTokenLotsOpen}
+                      token={'kvcm-usdc'}
                     />
                   )}
                 </div>

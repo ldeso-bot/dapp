@@ -11,8 +11,11 @@ import { Lock_Filter } from '@generated/gql/types/protocol.types';
 import { filter, isNonNullish } from 'remeda';
 import {
   computeMidnightInfo,
+  computeMidnightInfoWithSelf,
   formatMidnightInfo,
   getLatestMidnightInfos,
+} from '../protocol/midnightInfo.utils';
+import {
   getProtocolState,
   ProtocolState,
   tokensEligibleForIncentives,
@@ -51,9 +54,17 @@ export const getLocks = async (
       console.error('❌ Protocol state not found');
       return null;
     }
+    const tokenPriceUSD = formatStringToNumber(
+      lock.token.priceUsdc?.priceUsdc,
+      6
+    );
 
-    const balance = formatStringToNumber(lock.amount, 18);
-    const valueUSD = formatStringToNumber(lock.token.priceUsdc?.priceUsdc, 6);
+    const lockedUntil = formatStringToNumber(lock.maturity?.timestamp, 0);
+    const isMatured = lockedUntil < new Date().getTime() / 1000;
+
+    const lockedAmount = formatStringToNumber(lock.amount, 18);
+    let positionAmount = lockedAmount;
+    const lockedValueUSD = lockedAmount * tokenPriceUSD;
     let k2YieldApyPercent = 0;
     let riskyYieldApyPercent = 0;
     let syntheticYieldApyPercent = 0;
@@ -73,60 +84,68 @@ export const getLocks = async (
       YieldType.K2
     ].includes(tokenInfo.id);
 
-    // latest midnight info for this lock's maturity
-    //TODO: Can someone check the maths?
-    const midnightInfo = latestMidnightInfos[lock.maturityId];
+    const lockMaturityMidnightInfo =
+      lock.maturity?.maturityMidnightInfo &&
+      computeMidnightInfoWithSelf(lock.maturity?.maturityMidnightInfo);
+
+    // Midnight info useful to compute yields for this lock
+    const midnightInfo = isMatured
+      ? // midnightInfo attached to the maturity if matured
+        lockMaturityMidnightInfo
+      : // otherwise, use the latest midnight info
+        latestMidnightInfos[Number(lock.maturityId)];
+
     if (midnightInfo) {
       // K2 yield
       if (isK2YieldEligible) {
-        k2YieldApyPercent = midnightInfo.k2Apy;
+        k2YieldApyPercent = midnightInfo.k2ApyFor[tokenInfo.id];
         k2Rewards += formatStringToNumber(lock.k2YieldPending, 18);
         if (lock.k2YieldEntryMidnightInfo) {
-          const { k2py } = computeMidnightInfo(
+          const { k2PyFor } = computeMidnightInfo(
             midnightInfo,
             formatMidnightInfo(lock.k2YieldEntryMidnightInfo)
           );
-          k2Rewards += k2py * formatStringToNumber(lock.k2YieldShares, 18);
+          k2Rewards +=
+            k2PyFor[tokenInfo.id] *
+            formatStringToNumber(lock.k2YieldShares, 18);
         }
       }
       // Risky yield
       if (isRiskyYieldEligible) {
-        riskyYieldApyPercent = midnightInfo.riskyYieldApy;
+        riskyYieldApyPercent = midnightInfo.kvcmApyFor[tokenInfo.id];
         kvcmRewards += formatStringToNumber(lock.riskyYieldPending, 18);
         if (lock.riskyYieldEntryMidnightInfo) {
-          const { riskyYieldPy } = computeMidnightInfo(
+          const { kvcmPyFor } = computeMidnightInfo(
             midnightInfo,
             formatMidnightInfo(lock.riskyYieldEntryMidnightInfo)
           );
           kvcmRewards +=
-            riskyYieldPy * formatStringToNumber(lock.riskyYieldShares, 18);
+            kvcmPyFor[tokenInfo.id] *
+            formatStringToNumber(lock.riskyYieldShares, 18);
         }
       }
       // Synthetic yield
       if (isSyntheticYieldEligible) {
-        syntheticYieldApyPercent = midnightInfo.syntheticYieldApy;
+        syntheticYieldApyPercent = midnightInfo.kvcmApyFor.kvcm;
         const claimable =
           formatStringToNumber(lock.syntheticYieldShares, 18) *
           midnightInfo.syntheticYieldPps;
-        kvcmRewards += claimable - balance;
+        kvcmRewards += claimable - lockedAmount;
+        positionAmount += kvcmRewards;
       }
     }
 
-    const lockedUntil = lock.maturity?.timestamp
-      ? formatStringToNumber(lock.maturity.timestamp, 10)
-      : 0;
+    const positionValueUSD = positionAmount * tokenPriceUSD;
 
     const status =
-      balance <= 0
-        ? 'claimed'
-        : lockedUntil > new Date().getTime() / 1000
-          ? 'active'
-          : 'matured';
+      positionAmount <= 0 ? 'claimed' : isMatured ? 'matured' : 'active';
 
     return {
       id: lock.id,
-      balance,
-      valueUSD,
+      lockedAmount,
+      lockedValueUSD,
+      positionAmount,
+      positionValueUSD,
       k2YieldApyPercent,
       riskyYieldApyPercent,
       syntheticYieldApyPercent,
@@ -181,8 +200,10 @@ const getMockLocks = (): Locks => {
   return [
     {
       id: '1',
-      balance: 1000,
-      valueUSD: 3000,
+      lockedAmount: 1000,
+      lockedValueUSD: 3000,
+      positionAmount: 1031.25,
+      positionValueUSD: 3093.25,
       riskyYieldApyPercent: 0.06,
       syntheticYieldApyPercent: 0.07,
       k2YieldApyPercent: 0.12,
@@ -198,8 +219,10 @@ const getMockLocks = (): Locks => {
     },
     {
       id: '2',
-      balance: 12.25,
-      valueUSD: 36.75,
+      lockedAmount: 12.25,
+      lockedValueUSD: 36.75,
+      positionAmount: 50.9375,
+      positionValueUSD: 152.8125,
       riskyYieldApyPercent: 0.06,
       syntheticYieldApyPercent: 0.17,
       k2YieldApyPercent: 0.06,

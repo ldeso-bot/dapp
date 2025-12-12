@@ -27,7 +27,7 @@ import Image from 'next/image';
 
 export const BalancesCard = (props: CardProps) => {
   const { data: walletData } = useWalletData();
-  const holdingsData = useHoldingsData();
+  const { data: holdingsData } = useHoldingsData();
 
   const balances = Object.entries(walletData?.balances ?? {}).map(
     ([token, balance]) => {

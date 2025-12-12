@@ -16,7 +16,7 @@ import {
 export default function StakeLpTokenFlow() {
   const unstakeLpTokenDialog = useAtomValue(unstakeLpTokenDialogAtom);
 
-  const max = unstakeLpTokenDialog.lock?.balance ?? 0;
+  const max = unstakeLpTokenDialog.lock?.lockedAmount ?? 0;
   // Form and schema are deffined at the flow level
   const schema = z.object({
     liquidityPositionId: z.string(),

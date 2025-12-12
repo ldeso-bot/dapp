@@ -51,13 +51,17 @@ query getMaturities($where: Maturity_filter) {
     timestamp
     maturityId
 
-    SyntheticYieldDiscountFactor
-    SyntheticYieldZeroCouponYieldCurve
-    SyntheticYieldUnscaledBondIssue
+    syntheticYieldDiscountFactor
+    syntheticYieldZeroCouponYieldCurve
+    syntheticYieldUnscaledBondIssue
 
-    RiskyYieldDiscountFactor
-    RiskyYieldZeroCouponYieldCurve
-    RiskyYieldUnscaledBondIssue
+    riskyYieldDiscountFactor
+    riskyYieldZeroCouponYieldCurve
+    riskyYieldUnscaledBondIssue
+
+    maturityMidnightInfo {
+      ...MidnightInfoFragment
+    }
   }
 }
 
@@ -96,6 +100,9 @@ query getLocks($where: Lock_filter) {
     maturityId
     maturity {
       timestamp
+      maturityMidnightInfo {
+        ...MidnightInfoWithPreviousMidnightInfoFragment
+      }
     }
     account {
       id
@@ -139,9 +146,6 @@ query getAccountBalances($where: AccountBalance_filter) {
 
 query getLatestMidnightInfo {
   midnightInfos(orderBy: midnightIndex, orderDirection: desc, first: 30) {
-    ...MidnightInfoFragment
-    previousMidnightInfo {
-      ...MidnightInfoFragment
-    }
+    ...MidnightInfoWithPreviousMidnightInfoFragment
   }
 }

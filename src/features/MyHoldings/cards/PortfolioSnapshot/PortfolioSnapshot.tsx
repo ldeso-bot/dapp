@@ -27,7 +27,7 @@ type PortfolioSnapshotProps = {
 export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
   const liveTimestamp = useFormattedTimestamp();
 
-  const holdingsData = useHoldingsData();
+  const { data: holdingsData } = useHoldingsData();
   const { data: walletData } = useWalletData();
   const locks = walletData?.locks;
 

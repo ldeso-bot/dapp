@@ -1,5 +1,9 @@
+import { LockableToken } from '@/shared/constants/tokens.constants';
 import { useCurrentTimestamp } from '@/shared/hooks/useCurrentTimestamp';
+import { AllMetrics } from '@/shared/models/ProtocolData';
 import { Lock } from '@/shared/models/walletData';
+import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { sumBy } from 'remeda';
 import { useProtocolData } from '../../../shared/hooks/api/useProtocolData';
 import { useWalletData } from '../../../shared/hooks/api/useWalletData';
 
@@ -17,307 +21,290 @@ const filterSoonToBeMaturedLocks = (
   return locks.filter((lock) => lock.lockedUntil < soonToBeMaturedTimestamp);
 };
 
-const locksSum = (locks: Lock[], func: (lock: Lock) => number): number =>
-  locks.reduce((acc, lock) => acc + func(lock), 0);
-
-/**
- * Hook for kVCM token holdings data
- */
-function useKvmHoldingsData() {
-  const { data: walletData } = useWalletData();
-  const { data: protocolData } = useProtocolData();
-  const currentTimestamp = useCurrentTimestamp();
-
-  if (!walletData || !protocolData) return null;
-
-  const metrics = protocolData.metrics;
-
-  // Balance
-  const balanceValue = walletData.balances.kvcm * metrics.kvcm.valueUSD;
-
-  // Filtered locks
-  const locks = walletData.locks.filter((lock) => lock.token === 'kvcm');
-  const activeLocks = filterActiveLocks(locks);
-  const maturedLocks = filterMaturedLocks(locks);
-  const soonToBeMaturedLocks = filterSoonToBeMaturedLocks(
-    activeLocks,
-    currentTimestamp
-  );
-
-  // Locked amount
-  const lockedAmount = locksSum(locks, (lock) => lock.balance);
-
-  // Locked value
-  const lockedValue = lockedAmount * metrics.kvcm.valueUSD;
-
-  // Claimable amounts
-  const kvcmClaimableAmount = locksSum(locks, (lock) => lock.rewards.kvcm);
-  const k2ClaimableAmount = locksSum(locks, (lock) => lock.rewards.k2);
-
-  // Claimable values
-  const kvcmClaimableValue = kvcmClaimableAmount * metrics.kvcm.valueUSD;
-  const k2ClaimableValue = k2ClaimableAmount * metrics.k2.valueUSD;
-  const claimableValue = kvcmClaimableValue + k2ClaimableValue;
-
-  return {
-    balanceValue,
-    lockedAmount,
-    locks,
-    activeLocks,
-    maturedLocks,
-    soonToBeMaturedLocks,
-    lockedValue,
-    kvcmClaimableAmount,
-    k2ClaimableAmount,
-    kvcmClaimableValue,
-    k2ClaimableValue,
-    claimableValue,
-  };
+interface ComputeLockRewardsParams {
+  locks: Lock[];
+  currentTimestamp: number;
+  metrics: AllMetrics;
+  lockedTokenValueUSD: number;
+  token: LockableToken;
 }
 
-/**
- * Hook for K2 token holdings data
- */
-function useK2HoldingsData() {
-  const { data: walletData } = useWalletData();
-  const { data: protocolData } = useProtocolData();
-  const currentTimestamp = useCurrentTimestamp();
+interface LockRewardsResult {
+  locks: Lock[];
+  activeLocks: Lock[];
+  maturedLocks: Lock[];
+  soonToBeMaturedLocks: Lock[];
+  lockedAmount: number;
+  lockedValue: number;
+  k2AccruingClaimableAmount: number;
+  kvcmAccruingClaimableAmount: number;
+  k2AccruingClaimableValue: number;
+  kvcmAccruingClaimableValue: number;
+  k2AccruedClaimableAmount: number;
+  kvcmAccruedClaimableAmount: number;
+  k2AccruedClaimableValue: number;
+  kvcmAccruedClaimableValue: number;
+  k2ClaimableAmount: number;
+  kvcmClaimableAmount: number;
+  k2ClaimableValue: number;
+  kvcmClaimableValue: number;
+  claimableValue: number;
+  positionAmount: number;
+  positionValue: number;
+}
 
-  if (!walletData || !protocolData) return null;
+type TokenHoldingsData = LockRewardsResult & {
+  balanceValue: number;
+  positionAmount: number;
+  positionValue: number;
+};
 
-  const metrics = protocolData.metrics;
+type AggregatedHoldingsData = {
+  kvcm: TokenHoldingsData;
+  k2: TokenHoldingsData;
+  kvcmK2: TokenHoldingsData;
+  kvcmUsdc: TokenHoldingsData;
+  liquidityActiveLocks: Lock[];
+  liquidityMaturedLocks: Lock[];
+  liquiditySoonToBeMaturedLocks: Lock[];
+  nbPoolsWithLocks: number;
+  balanceValue: number;
+  kvcmClaimableAmount: number;
+  k2ClaimableAmount: number;
+  liquidityLockedValue: number;
+  lockedValue: number;
+  claimableValueFromLiquidity: number;
+  claimableValue: number;
+  portfolioValue: number;
+};
 
-  // Balance
-  const balanceValue = walletData.balances.k2 * metrics.k2.valueUSD;
-
-  // Filtered locks
-  const locks = walletData.locks.filter((lock) => lock.token === 'k2');
+const computeLockRewards = ({
+  locks,
+  currentTimestamp,
+  metrics,
+  lockedTokenValueUSD,
+  token,
+}: ComputeLockRewardsParams): LockRewardsResult => {
   const activeLocks = filterActiveLocks(locks);
   const maturedLocks = filterMaturedLocks(locks);
   const soonToBeMaturedLocks = filterSoonToBeMaturedLocks(
     activeLocks,
     currentTimestamp
   );
-
   // Locked amount
-  const lockedAmount = locksSum(locks, (lock) => lock.balance);
+  const lockedAmount = sumBy(locks, (lock) => lock.lockedAmount);
 
   // Locked value
-  const lockedValue = lockedAmount * metrics.k2.valueUSD;
+  const lockedValue = lockedAmount * lockedTokenValueUSD;
 
-  // Claimable amounts
-  const k2ClaimableAmount = locksSum(locks, (lock) => lock.rewards.k2);
-  const kvcmClaimableAmount = locksSum(locks, (lock) => lock.rewards.kvcm);
+  // Accruing claimable amounts
+  const k2AccruingClaimableAmount = sumBy(
+    activeLocks,
+    (lock) => lock.rewards.k2
+  );
+  const kvcmAccruingClaimableAmount = sumBy(
+    activeLocks,
+    (lock) => lock.rewards.kvcm
+  );
 
-  // Claimable values
+  // Accruing claimable values
+  const k2AccruingClaimableValue =
+    k2AccruingClaimableAmount * metrics.k2.valueUSD;
+  const kvcmAccruingClaimableValue =
+    kvcmAccruingClaimableAmount * metrics.kvcm.valueUSD;
+
+  // Accrued claimable amounts
+  const k2AccruedClaimableAmount = sumBy(
+    maturedLocks,
+    (lock) => lock.rewards.k2
+  );
+  const kvcmAccruedClaimableAmount = sumBy(
+    maturedLocks,
+    (lock) => lock.rewards.kvcm
+  );
+
+  // Accrued claimable values
+  const k2AccruedClaimableValue =
+    k2AccruedClaimableAmount * metrics.k2.valueUSD;
+  const kvcmAccruedClaimableValue =
+    kvcmAccruedClaimableAmount * metrics.kvcm.valueUSD;
+
+  // Total claimable amounts
+  const k2ClaimableAmount =
+    k2AccruingClaimableAmount + k2AccruedClaimableAmount;
+  const kvcmClaimableAmount =
+    kvcmAccruingClaimableAmount + kvcmAccruedClaimableAmount;
+
+  // Total claimable values
   const k2ClaimableValue = k2ClaimableAmount * metrics.k2.valueUSD;
   const kvcmClaimableValue = kvcmClaimableAmount * metrics.kvcm.valueUSD;
   const claimableValue = k2ClaimableValue + kvcmClaimableValue;
 
+  // Principal
+  const positionAmount =
+    lockedAmount + token == 'kvcm' ? kvcmClaimableAmount : 0;
+  const positionValue = positionAmount * lockedTokenValueUSD;
+
   return {
-    balanceValue,
-    lockedAmount,
     locks,
     activeLocks,
     maturedLocks,
     soonToBeMaturedLocks,
+    lockedAmount,
     lockedValue,
+    k2AccruingClaimableAmount,
+    kvcmAccruingClaimableAmount,
+    k2AccruingClaimableValue,
+    kvcmAccruingClaimableValue,
+    k2AccruedClaimableAmount,
+    kvcmAccruedClaimableAmount,
+    k2AccruedClaimableValue,
+    kvcmAccruedClaimableValue,
     k2ClaimableAmount,
     kvcmClaimableAmount,
     k2ClaimableValue,
     kvcmClaimableValue,
     claimableValue,
+    positionAmount,
+    positionValue,
   };
-}
+};
 
 /**
- * Hook for KVCM-K2 LP token holdings data
+ * Computes the holdings data for a given token
+ * @param token - The token to get the holdings data for
+ * @returns
  */
-function useKvcmK2HoldingsData() {
+export function useTokenHoldingsData(
+  token: LockableToken
+): UseQueryResult<TokenHoldingsData | null, Error> {
   const { data: walletData } = useWalletData();
   const { data: protocolData } = useProtocolData();
   const currentTimestamp = useCurrentTimestamp();
 
-  if (!walletData || !protocolData) return null;
+  return useQuery({
+    queryKey: ['tokenHoldingsData', walletData, protocolData, token],
+    queryFn: () => {
+      if (!walletData || !protocolData || !currentTimestamp) return null;
+      const metrics = protocolData.metrics;
 
-  const metrics = protocolData.metrics;
+      // Balance
+      const balanceValue = walletData.balances[token] * metrics[token].valueUSD;
 
-  // Balance
-  const balanceValue =
-    walletData.balances['kvcm-k2'] * metrics['kvcm-k2'].valueUSD;
+      // Filtered locks
+      const locks = walletData.locks.filter((lock) => lock.token === token);
 
-  // Filtered locks
-  const locks = walletData.locks.filter((lock) => lock.token === 'kvcm-k2');
-  const activeLocks = filterActiveLocks(locks);
-  const maturedLocks = filterMaturedLocks(locks);
-  const soonToBeMaturedLocks = filterSoonToBeMaturedLocks(
-    activeLocks,
-    currentTimestamp
-  );
+      const rewards = computeLockRewards({
+        locks,
+        currentTimestamp: currentTimestamp,
+        metrics,
+        lockedTokenValueUSD: metrics.k2.valueUSD,
+        token,
+      });
 
-  // Locked amount
-  const lockedAmount = locksSum(locks, (lock) => lock.balance);
-
-  // Locked value
-  const lockedValue = lockedAmount * metrics.kvcm.valueUSD;
-
-  // Claimable amounts
-  const kvcmClaimableAmount = locksSum(locks, (lock) => lock.rewards.kvcm);
-  const k2ClaimableAmount = locksSum(locks, (lock) => lock.rewards.k2);
-
-  // Claimable values
-  const kvcmClaimableValue = kvcmClaimableAmount * metrics.kvcm.valueUSD;
-  const k2ClaimableValue = k2ClaimableAmount * metrics.k2.valueUSD;
-  const claimableValue = kvcmClaimableValue + k2ClaimableValue;
-
-  return {
-    balanceValue,
-    lockedAmount,
-    locks,
-    activeLocks,
-    maturedLocks,
-    soonToBeMaturedLocks,
-    lockedValue,
-    kvcmClaimableAmount,
-    k2ClaimableAmount,
-    kvcmClaimableValue,
-    k2ClaimableValue,
-    claimableValue,
-  };
-}
-
-/**
- * Hook for KVCM-USDC LP token holdings data
- */
-function useKvcmUsdcHoldingsData() {
-  const { data: walletData } = useWalletData();
-  const { data: protocolData } = useProtocolData();
-  const currentTimestamp = useCurrentTimestamp();
-
-  if (!walletData || !protocolData) return null;
-
-  const metrics = protocolData.metrics;
-
-  // Balance value
-  const balanceValue =
-    walletData.balances['kvcm-usdc'] * metrics['kvcm-usdc'].valueUSD;
-
-  // Filtered locks
-  const locks = walletData.locks.filter((lock) => lock.token === 'kvcm-usdc');
-  const activeLocks = filterActiveLocks(locks);
-  const maturedLocks = filterMaturedLocks(locks);
-  const soonToBeMaturedLocks = filterSoonToBeMaturedLocks(
-    activeLocks,
-    currentTimestamp
-  );
-
-  // Locked amount
-  const lockedAmount = locksSum(locks, (lock) => lock.balance);
-
-  // Locked value
-  const lockedValue = lockedAmount * metrics.kvcm.valueUSD;
-
-  // Claimable amounts
-  const kvcmClaimableAmount = locksSum(locks, (lock) => lock.rewards.kvcm);
-
-  // Claimable values
-  const kvcmClaimableValue = kvcmClaimableAmount * metrics.kvcm.valueUSD;
-  const claimableValue = kvcmClaimableValue;
-
-  return {
-    balanceValue,
-    lockedAmount,
-    locks,
-    activeLocks,
-    maturedLocks,
-    soonToBeMaturedLocks,
-    lockedValue,
-    kvcmClaimableAmount,
-    kvcmClaimableValue,
-    claimableValue,
-  };
+      return {
+        ...rewards,
+        balanceValue,
+        locks,
+        positionAmount: rewards.lockedAmount,
+        positionValue: rewards.lockedValue,
+      };
+    },
+  });
 }
 
 /**
  *
  * @returns Aggregated holdings data for the current wallet
  */
-export function useHoldingsData() {
-  const kvcmData = useKvmHoldingsData();
-  const k2Data = useK2HoldingsData();
-  const kvcmK2Data = useKvcmK2HoldingsData();
-  const kvcmUsdcData = useKvcmUsdcHoldingsData();
+export function useHoldingsData(): UseQueryResult<
+  AggregatedHoldingsData | null,
+  Error
+> {
+  const { data: walletData } = useWalletData();
+  const { data: kvcmData } = useTokenHoldingsData('kvcm');
+  const { data: k2Data } = useTokenHoldingsData('k2');
+  const { data: kvcmK2Data } = useTokenHoldingsData('kvcm-k2');
+  const { data: kvcmUsdcData } = useTokenHoldingsData('kvcm-usdc');
 
-  if (!kvcmData || !k2Data || !kvcmK2Data || !kvcmUsdcData) return null;
+  return useQuery({
+    queryKey: ['useHoldingsData', walletData?.address, walletData?.chainId],
+    queryFn: () => {
+      console.log('kvcmData', kvcmData);
+      if (!kvcmData || !k2Data || !kvcmK2Data || !kvcmUsdcData) return null;
+      console.log('a');
 
-  // Aggregate balances
-  const balanceValue =
-    kvcmData.balanceValue +
-    k2Data.balanceValue +
-    kvcmUsdcData.balanceValue +
-    kvcmK2Data.balanceValue;
+      // Aggregate balances
+      const balanceValue =
+        kvcmData.balanceValue +
+        k2Data.balanceValue +
+        kvcmUsdcData.balanceValue +
+        kvcmK2Data.balanceValue;
 
-  // Aggregate liquidity locks
-  const liquidityActiveLocks = kvcmK2Data.activeLocks.concat(
-    kvcmUsdcData.activeLocks
-  );
-  const liquidityMaturedLocks = kvcmK2Data.maturedLocks.concat(
-    kvcmUsdcData.maturedLocks
-  );
-  const liquiditySoonToBeMaturedLocks = kvcmK2Data.soonToBeMaturedLocks.concat(
-    kvcmUsdcData.soonToBeMaturedLocks
-  );
+      // Aggregate liquidity locks
+      const liquidityActiveLocks = kvcmK2Data.activeLocks.concat(
+        kvcmUsdcData.activeLocks
+      );
+      const liquidityMaturedLocks = kvcmK2Data.maturedLocks.concat(
+        kvcmUsdcData.maturedLocks
+      );
+      const liquiditySoonToBeMaturedLocks =
+        kvcmK2Data.soonToBeMaturedLocks.concat(
+          kvcmUsdcData.soonToBeMaturedLocks
+        );
 
-  // Aggregate locked values
-  const liquidityLockedValue =
-    kvcmUsdcData.lockedValue + kvcmK2Data.lockedValue;
-  const lockedValue =
-    kvcmData.lockedValue + k2Data.lockedValue + liquidityLockedValue;
+      // Aggregate locked values
+      const liquidityLockedValue =
+        kvcmUsdcData.lockedValue + kvcmK2Data.lockedValue;
+      const lockedValue =
+        kvcmData.lockedValue + k2Data.lockedValue + liquidityLockedValue;
 
-  // Aggregate claimable amounts
-  const kvcmClaimableAmount =
-    kvcmData.kvcmClaimableAmount +
-    k2Data.kvcmClaimableAmount +
-    kvcmK2Data.kvcmClaimableAmount +
-    kvcmUsdcData.kvcmClaimableAmount;
+      // Aggregate claimable amounts
+      const kvcmClaimableAmount =
+        kvcmData.kvcmClaimableAmount +
+        k2Data.kvcmClaimableAmount +
+        kvcmK2Data.kvcmClaimableAmount +
+        kvcmUsdcData.kvcmClaimableAmount;
 
-  const k2ClaimableAmount =
-    kvcmData.k2ClaimableAmount +
-    k2Data.k2ClaimableAmount +
-    kvcmK2Data.k2ClaimableAmount;
+      const k2ClaimableAmount =
+        kvcmData.k2ClaimableAmount +
+        k2Data.k2ClaimableAmount +
+        kvcmK2Data.k2ClaimableAmount;
 
-  // Aggregate claimable values
-  const claimableValueFromLiquidity =
-    kvcmK2Data.claimableValue + kvcmUsdcData.claimableValue;
+      // Aggregate claimable values
+      const claimableValueFromLiquidity =
+        kvcmK2Data.claimableValue + kvcmUsdcData.claimableValue;
 
-  const claimableValue =
-    kvcmData.claimableValue +
-    k2Data.claimableValue +
-    claimableValueFromLiquidity;
+      const claimableValue =
+        kvcmData.claimableValue +
+        k2Data.claimableValue +
+        claimableValueFromLiquidity;
 
-  const portfolioValue = lockedValue + claimableValue + balanceValue;
+      const portfolioValue = lockedValue + claimableValue + balanceValue;
 
-  const nbPoolsWithLocks =
-    (kvcmK2Data.locks.length > 0 ? 1 : 0) +
-    (kvcmUsdcData.locks.length > 0 ? 1 : 0);
+      const nbPoolsWithLocks =
+        (kvcmK2Data.locks.length > 0 ? 1 : 0) +
+        (kvcmUsdcData.locks.length > 0 ? 1 : 0);
 
-  return {
-    kvcm: kvcmData,
-    k2: k2Data,
-    kvcmK2: kvcmK2Data,
-    kvcmUsdc: kvcmUsdcData,
-    // Aggregated data
-    liquidityActiveLocks,
-    liquidityMaturedLocks,
-    liquiditySoonToBeMaturedLocks,
-    nbPoolsWithLocks,
-    balanceValue,
-    kvcmClaimableAmount,
-    k2ClaimableAmount,
-    liquidityLockedValue,
-    lockedValue,
-    claimableValueFromLiquidity,
-    claimableValue,
-    portfolioValue,
-  };
+      return {
+        kvcm: kvcmData,
+        k2: k2Data,
+        kvcmK2: kvcmK2Data,
+        kvcmUsdc: kvcmUsdcData,
+        // Aggregated data
+        liquidityActiveLocks,
+        liquidityMaturedLocks,
+        liquiditySoonToBeMaturedLocks,
+        nbPoolsWithLocks,
+        balanceValue,
+        kvcmClaimableAmount,
+        k2ClaimableAmount,
+        liquidityLockedValue,
+        lockedValue,
+        claimableValueFromLiquidity,
+        claimableValue,
+        portfolioValue,
+      };
+    },
+  });
 }

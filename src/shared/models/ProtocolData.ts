@@ -1,3 +1,4 @@
+import { ChainId } from '../constants/networks.constants';
 import { LpToken, Token } from '../constants/tokens.constants';
 
 export enum YieldType {
@@ -5,6 +6,9 @@ export enum YieldType {
   RISKY = 'RISKY',
   SYNTHETIC = 'SYNTHETIC',
 }
+
+/* Maturity 0 is for K2 */
+type MaturityId = number;
 
 /* Token Metrics */
 export type Metrics = {
@@ -36,7 +40,7 @@ export type LiquidityPools = LiquidityPoolInfo[];
 /* Klima Bond Yield Rates */
 export type YieldRate = {
   index: number; // Index relative to the first active maturity
-  maturityId: string; // protocol maturity Id
+  maturityId: MaturityId; // protocol maturity Id
   maturationTimestamp: number;
   yieldPercent: number;
   incentivesYield?: number;
@@ -54,11 +58,40 @@ export type CarbonClass = {
   valueUSDChangePercent24h: number;
 };
 
+export type ApyInfo = {
+  kvcm: number;
+  k2: number;
+  'kvcm-k2': number;
+  'kvcm-usdc': number;
+};
+
+export type ApyMidnightInfo = {
+  maturityId: MaturityId;
+  k2ApyFor: ApyInfo; // Yearly APY for each token
+  kvcmApyFor: ApyInfo; // Yearly APY for each token
+  k2PyFor: ApyInfo; // APY between two given midnights for each token
+  kvcmPyFor: ApyInfo; // APY between two given midnights for each token
+};
+
+/* Midnight Info */
+export type MidnightInfos = {
+  midnightIndex: number;
+  k2ApyForK2: number;
+  k2ApyForKVCM_K2_LP: number;
+  k2ApyForKVCM: number;
+  kvcmApyForKVCM_K2_LP: number;
+  kvcmApyForKVCM_USDC_LP: number;
+  kvcmApyForK2: number;
+  maturityApys: Record<MaturityId, ApyMidnightInfo>;
+};
+
 /* Protocol Data */
 export type ProtocolData = {
+  chainId: ChainId;
   metrics: AllMetrics;
   liquidityPools: LiquidityPools;
   lockedkVcmYieldRates: YieldRates;
   liquidityPoolRiskyYield: YieldRates;
   carbonClasses: CarbonClass[];
+  midnightInfos: MidnightInfos;
 };

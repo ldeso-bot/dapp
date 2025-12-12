@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const useCurrentTimestamp = (intervalMs = 1000) => {
+export const useCurrentTimestamp = (intervalMs = 60000) => {
   const [currentTimestamp, setCurrentTimestamp] = useState(() =>
     Math.floor(Date.now() / 1000)
   );

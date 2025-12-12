@@ -19,7 +19,7 @@ const mockData = {
 };
 
 export const PositionsCard = (props: CardProps) => {
-  const holdingsData = useHoldingsData();
+  const { data: holdingsData } = useHoldingsData();
 
   return (
     <Card

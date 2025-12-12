@@ -1,4 +1,4 @@
-import { AllocationToken } from '@/shared/constants/tokens.constants';
+import { LockableToken } from '@/shared/constants/tokens.constants';
 import { atom } from 'jotai';
 
 export type ClaimTokenFields = {
@@ -8,6 +8,6 @@ export type ClaimTokenFields = {
 
 export const claimTokenDialogAtom = atom({
   open: false,
-  token: null as AllocationToken | null,
+  token: null as LockableToken | null,
   amount: 0 as number | null,
 });

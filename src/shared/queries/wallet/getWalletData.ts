@@ -21,6 +21,8 @@ export async function getWalletData(
   ]);
 
   return {
+    address: walletAddressLowerCase,
+    chainId,
     locks,
     balances,
     allocations,

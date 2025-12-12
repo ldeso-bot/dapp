@@ -26,3 +26,10 @@ fragment MidnightInfoFragment on MidnightInfo {
   syntheticYieldPps
   syntheticYieldTotalShares
 }
+
+fragment MidnightInfoWithPreviousMidnightInfoFragment on MidnightInfo {
+  ...MidnightInfoFragment
+  previousMidnightInfo {
+    ...MidnightInfoFragment
+  }
+}

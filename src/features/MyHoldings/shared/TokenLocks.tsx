@@ -68,12 +68,12 @@ export const TokenLocks: FC<TokenLocksProps> = ({ isOpen, onOpenChange }) => {
                 >
                   <div className="flex items-center justify-start gap-2">
                     <div className="text-size-16 text-gray-900 font-medium">
-                      {formatAmountWithCommas(lock.balance)}{' '}
+                      {formatAmountWithCommas(lock.lockedAmount)}{' '}
                       {getTokenSymbol(lock.token)}
                     </div>
                     <span className="text-gray-400">•</span>
                     <div className="text-size-14 text-gray-500 font-[400]">
-                      {formatPriceUSDWithCommas(lock.valueUSD)}
+                      {formatPriceUSDWithCommas(lock.lockedValueUSD)}
                     </div>
                     <span className="text-gray-400">•</span>
                     <div className="text-size-14 text-gray-500 font-[400]">
@@ -118,7 +118,7 @@ export const TokenLocks: FC<TokenLocksProps> = ({ isOpen, onOpenChange }) => {
                           setTopupLockDialog({
                             open: true,
                             token: lock.token as AllocationToken,
-                            currentLockAmount: lock.balance,
+                            currentLockAmount: lock.lockedAmount,
                             totalAccruingRewards: lock.rewards.kvcm,
                             tokenSymbol: getTokenSymbol(lock.token),
                             baseApy: lock.syntheticYieldApyPercent,

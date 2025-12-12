@@ -10,7 +10,7 @@ import { useTabNavigation } from '../../hooks/useTabNavigation';
 export const PortfolioDistributionCard = (props: CardProps) => {
   const { navigateToTab } = useTabNavigation();
 
-  const holdingsData = useHoldingsData();
+  const { data: holdingsData } = useHoldingsData();
   const formattedData = holdingsData
     ? {
         segments: [

@@ -44,14 +44,14 @@ const UnlockTokenForm: FormFlowStep<UnlockTokenFields> = ({ next, data }) => {
             label="Bond Amount"
             type="number"
             iconSrc={tokens[lock.token].iconSrc}
-            value={lock.balance}
+            value={lock.lockedAmount}
             readOnly={true}
           />
           <Input
             label="K2 Rewards"
             type="number"
             iconSrc={tokens.k2.iconSrc}
-            value={lock.balance}
+            value={lock.lockedAmount}
             readOnly={true}
             tooltip={tooltip}
           />

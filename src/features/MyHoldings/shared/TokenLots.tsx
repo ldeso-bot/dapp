@@ -6,9 +6,8 @@ import {
 } from '@/shared/components/Accordion/Accordion';
 import Button from '@/shared/components/Button/Button';
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
-import { AllocationToken } from '@/shared/constants/tokens.constants';
+import { AllocationToken, Token } from '@/shared/constants/tokens.constants';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
-import { useCurrentTimestamp } from '@/shared/hooks/useCurrentTimestamp';
 import { cn } from '@/shared/utils/component.utils';
 import {
   formatAmountWithCommas,
@@ -24,20 +23,25 @@ import { topupLockDialogAtom } from '../modals/TopupLock/topupLock.utils';
 
 type TokenLotsProps = {
   isOpen?: boolean;
+  token: Token;
   onOpenChange?: (isOpen: boolean) => void;
 };
 
-export const TokenLots: FC<TokenLotsProps> = ({ isOpen, onOpenChange }) => {
+export const TokenLots: FC<TokenLotsProps> = ({
+  isOpen,
+  onOpenChange,
+  token,
+}) => {
   const { data } = useWalletData();
 
   const setTopupLockDialog = useSetAtom(topupLockDialogAtom);
   const setClaimTokenDialog = useSetAtom(claimTokenDialogAtom);
 
-  const currentTimestamp = useCurrentTimestamp();
+  const locks = data?.locks?.filter((lock) => lock.token === token) ?? [];
 
-  const totalLots = data?.locks?.length ?? 0;
+  const numberOfLots = locks.length;
 
-  if (!totalLots) return null;
+  if (!numberOfLots) return null;
 
   return (
     <Accordion
@@ -50,16 +54,16 @@ export const TokenLots: FC<TokenLotsProps> = ({ isOpen, onOpenChange }) => {
         <AccordionTrigger className="hover:no-underline border-t border-gray-100 flex items-center justify-start rounded-none gap-1">
           <div className="flex items-center gap-2">
             <div className="text-size-14 text-gray-900 font-[400]">
-              View lots ({totalLots})
+              View lots ({numberOfLots})
             </div>
             <Tooltip content="Lots tooltip here..." />
           </div>
         </AccordionTrigger>
         <AccordionContent className="text-size-14">
           <div className="flex flex-col gap-3">
-            {data?.locks.map((lock) => {
-              const isMatured = lock.lockedUntil < currentTimestamp;
-              const isMaturing = lock.lockedUntil > currentTimestamp;
+            {locks.map((lock) => {
+              const isMatured = lock.status === 'matured';
+              const isMaturing = lock.status === 'active';
 
               return (
                 <div
@@ -68,12 +72,12 @@ export const TokenLots: FC<TokenLotsProps> = ({ isOpen, onOpenChange }) => {
                 >
                   <div className="flex items-center justify-start gap-2">
                     <div className="text-size-16 text-gray-900 font-medium">
-                      {formatAmountWithCommas(lock.balance)}{' '}
+                      {formatAmountWithCommas(lock.lockedAmount)}{' '}
                       {getTokenSymbol(lock.token)}
                     </div>
                     <span className="text-gray-400">•</span>
                     <div className="text-size-14 text-gray-500 font-[400]">
-                      {formatPriceUSDWithCommas(lock.valueUSD)}
+                      {formatPriceUSDWithCommas(lock.lockedValueUSD)}
                     </div>
                     <span className="text-gray-400">•</span>
                     <div className="text-size-14 text-gray-500 font-[400]">
@@ -104,7 +108,8 @@ export const TokenLots: FC<TokenLotsProps> = ({ isOpen, onOpenChange }) => {
                     <span className="text-gray-400">•</span>
                     <div className="flex gap-1 text-gray-500">
                       <div>
-                        {lock.rewards.kvcm} {getTokenSymbol(lock.token)}
+                        {formatAmountWithCommas(lock.rewards.kvcm)}{' '}
+                        {getTokenSymbol(lock.token)}
                       </div>
                       <div>accrued</div>
                     </div>
@@ -118,7 +123,7 @@ export const TokenLots: FC<TokenLotsProps> = ({ isOpen, onOpenChange }) => {
                           setTopupLockDialog({
                             open: true,
                             token: lock.token as AllocationToken,
-                            currentLockAmount: lock.balance,
+                            currentLockAmount: lock.lockedAmount,
                             totalAccruingRewards: lock.rewards.kvcm,
                             tokenSymbol: getTokenSymbol(lock.token),
                             baseApy: lock.syntheticYieldApyPercent,
@@ -136,8 +141,8 @@ export const TokenLots: FC<TokenLotsProps> = ({ isOpen, onOpenChange }) => {
                       onClick={() =>
                         setClaimTokenDialog({
                           open: true,
-                          amount: 10, // lock.balance as number,
-                          token: lock.token as AllocationToken,
+                          amount: lock.lockedAmount,
+                          token: lock.token,
                         })
                       }
                     >
