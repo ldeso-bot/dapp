@@ -8,10 +8,16 @@ type Props = {
   className?: string;
   progressPercent: number;
   showProgressLabel?: boolean;
+  indeterminate?: boolean;
 };
 
 export const Progress: FC<Props> = (props) => {
-  const { progressPercent, showProgressLabel = true, className } = props;
+  const {
+    progressPercent,
+    showProgressLabel = true,
+    className,
+    indeterminate = false,
+  } = props;
 
   return (
     <div className="flex justify-between items-center gap-2">
@@ -24,15 +30,23 @@ export const Progress: FC<Props> = (props) => {
         )}
       >
         <ProgressPrimitive.Indicator
-          className="w-full h-full bg-green-40 rounded-full"
+          className={cn(
+            'w-full h-full rounded-full',
+            indeterminate ? '' : 'bg-green-40'
+          )}
           style={{
             transform: `translateX(-${Math.floor((1 - progressPercent) * 100)}%)`,
+            ...(indeterminate && {
+              backgroundColor: '#000',
+              backgroundImage:
+                'repeating-linear-gradient(90deg, #9ca3af 0, #9ca3af 4px, transparent 4px, transparent 8px)', // gray-400 for dashes
+            }),
           }}
         />
       </ProgressPrimitive.Root>
       {showProgressLabel && (
         <div className="w-[10%] text-size-10 text-gray-500 font-medium">
-          {progressPercent * 100}%
+          {(progressPercent * 100).toFixed(2)}%
         </div>
       )}
     </div>

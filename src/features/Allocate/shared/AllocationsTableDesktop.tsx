@@ -20,6 +20,7 @@ import { AllocationEditButton } from './AllocationEditButton';
 import { AllocationPrice } from './AllocationPrice';
 import { AllocationPriceEffect } from './AllocationPriceEffect';
 import { AllocationsCardProps } from './AllocationsTable.types';
+import { UnallocatedRow } from './UnallocatedRow';
 
 export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
   const {
@@ -29,7 +30,17 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
     sortConfig,
     onSort,
     tokenInfo,
+    unallocatedAmount,
+    totalAmount,
   } = props;
+
+  const showUnallocatedRow =
+    (tokenInfo.id === 'kvcm' || tokenInfo.id === 'k2') &&
+    unallocatedAmount !== undefined &&
+    unallocatedAmount > 0 &&
+    totalAmount !== undefined;
+
+  const isK2 = tokenInfo.id === 'k2';
 
   return (
     <Table className={cn('w-full mt-6', className)}>
@@ -49,21 +60,21 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
             label="Allocated"
             className="text-right justify-end"
           />
-          <SortableHeader
-            sortKey="priceEffect"
-            sortConfig={sortConfig}
-            onSort={onSort}
-            label="Price effect"
-            className="text-center justify-center"
-          />
+          {!isK2 && (
+            <SortableHeader
+              sortKey="priceEffect"
+              sortConfig={sortConfig}
+              onSort={onSort}
+              label="Price effect"
+              className="text-center justify-center"
+            />
+          )}
           <SortableHeader
             sortKey="priceUSD"
             sortConfig={sortConfig}
             onSort={onSort}
             label={
-              tokenInfo.id === 'kvcm'
-                ? `Indicative price`
-                : `Spread Contribution`
+              tokenInfo.id === 'kvcm' ? `Indicative price` : `Capacity effect`
             }
             className="text-center justify-center"
           />
@@ -71,7 +82,7 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
           <TableHead className="min-w-[2rem]">&nbsp;</TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody>
+      <TableBody borders="between">
         {data?.map((allocation) => (
           <AllocationTableRow
             key={allocation.id}
@@ -79,9 +90,17 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
             {...props}
           />
         ))}
-        {data?.length === 0 && (
+        {showUnallocatedRow && (
+          <UnallocatedRow
+            amount={unallocatedAmount}
+            totalAmount={totalAmount}
+            tokenSymbol={tokenInfo.id === 'kvcm' ? 'kVCM' : 'K2'}
+            isK2={isK2}
+          />
+        )}
+        {data?.length === 0 && !showUnallocatedRow && (
           <TableRow>
-            <TableCell colSpan={5} className="border-0">
+            <TableCell colSpan={isK2 ? 5 : 6} className="border-0">
               {noAllocationComponent}
             </TableCell>
           </TableRow>
@@ -94,8 +113,12 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
 const AllocationTableRow = (
   props: AllocationsCardProps & { allocation: Allocation }
 ) => {
-  const { allocation } = props;
+  const { allocation, tokenInfo, totalAmount } = props;
   const [isHovered, setIsHovered] = useState(false);
+  const isK2 = tokenInfo.id === 'k2';
+
+  const allocationPercent =
+    totalAmount && totalAmount > 0 ? allocation.amount / totalAmount : 0;
 
   return (
     <>
@@ -107,17 +130,19 @@ const AllocationTableRow = (
           <div className="flex flex-col gap-1">
             <AllocationClass {...props} />
             <AllocationCategory {...props} />
-            <Progress progressPercent={allocation.sharePercent} />
+            <Progress progressPercent={allocationPercent} />
           </div>
         </TableCell>
         <TableCell className="text-right border-0">
           <AllocationAmount {...props} />
         </TableCell>
-        <TableCell className="text-center border-0 ">
-          <div className="flex justify-center">
-            <AllocationPriceEffect {...props} />
-          </div>
-        </TableCell>
+        {!isK2 && (
+          <TableCell className="text-center border-0 ">
+            <div className="flex justify-center">
+              <AllocationPriceEffect {...props} />
+            </div>
+          </TableCell>
+        )}
         <TableCell className="text-left border-0">
           <div className="flex justify-center">
             <AllocationPrice {...props} />

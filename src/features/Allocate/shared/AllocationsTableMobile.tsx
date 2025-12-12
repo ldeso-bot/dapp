@@ -10,7 +10,7 @@ import { AllocationPriceEffect } from './AllocationPriceEffect';
 import { AllocationsCardProps } from './AllocationsTable.types';
 
 export const AllocationsTableMobile: FC<AllocationsCardProps> = (props) => {
-  const { className, data } = props;
+  const { className, data, totalAmount } = props;
 
   const labelAndValue = (label: ReactNode, value: ReactNode) => (
     <div className="flex flex-col">
@@ -45,7 +45,13 @@ export const AllocationsTableMobile: FC<AllocationsCardProps> = (props) => {
               )}
             </div>
             <div>
-              <Progress progressPercent={allocation.sharePercent} />
+              <Progress
+                progressPercent={
+                  totalAmount && totalAmount > 0
+                    ? allocation.amount / totalAmount
+                    : 0
+                }
+              />
             </div>
             <AllocationEditButton allocation={allocation} {...props} />
           </div>

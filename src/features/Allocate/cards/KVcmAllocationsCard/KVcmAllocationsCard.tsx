@@ -14,6 +14,11 @@ export default function KvcmAllocationsCard(props: CardProps) {
     (allocation) => allocation.token.name === 'kvcm'
   );
 
+  const totalKvcm = data?.balances?.kvcm || 0;
+  const allocatedKvcm =
+    allocations?.reduce((sum, alloc) => sum + alloc.amount, 0) || 0;
+  const unallocatedKvcm = totalKvcm - allocatedKvcm;
+
   return (
     <AllocationsTable
       {...props}
@@ -23,6 +28,8 @@ export default function KvcmAllocationsCard(props: CardProps) {
       titleClassName="text-size-18 font-medium"
       tooltip="Rebalancing kVCM never unlocks your position early. Maturity dates stay unchanged."
       data={allocations}
+      unallocatedAmount={unallocatedKvcm}
+      totalAmount={totalKvcm}
       noAllocationComponent={
         <div className="bg-void-10 py-3 px-6 w-full">
           You haven’t allocated any of your bonded kVCM yet. Get started.

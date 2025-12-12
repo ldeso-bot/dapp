@@ -11,6 +11,8 @@ export type AllocationsCardProps = CardProps & {
   showCategoryFilter?: boolean;
   sortConfig?: SortConfig<Allocation>;
   onSort?: (key: keyof Allocation) => void;
+  unallocatedAmount?: number;
+  totalAmount?: number;
 };
 
 export type AllocationsTableItemProps = Omit<AllocationsCardProps, 'data'> & {

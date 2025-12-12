@@ -14,6 +14,11 @@ export default function K2AllocationsCard(props: CardProps) {
     (allocation) => allocation.token.name === 'k2'
   );
 
+  const totalK2 = data?.balances?.k2 || 0;
+  const allocatedK2 =
+    allocations?.reduce((sum, alloc) => sum + alloc.amount, 0) || 0;
+  const unallocatedK2 = totalK2 - allocatedK2;
+
   return (
     <AllocationsTable
       {...props}
@@ -23,6 +28,8 @@ export default function K2AllocationsCard(props: CardProps) {
       titleClassName="text-size-18 font-medium"
       tooltip="Rebalancing kVCM never unlocks your position early. Maturity dates stay unchanged."
       data={allocations}
+      unallocatedAmount={unallocatedK2}
+      totalAmount={totalK2}
       noAllocationComponent={
         <div className="bg-void-10 py-3 px-6 w-full">
           You haven’t locked any of your K2 yet. Create a Lock to get started.

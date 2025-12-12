@@ -20,12 +20,13 @@ export const AllocationAmount: FC<AllocationsTableItemProps> = (props) => {
       : protocolData?.metrics.kvcm.valueUSD || 0;
     const usdValue = allocation.amount * tokenPrice;
     const sharePercent = allocation.sharePercent * 100;
-    const tokenLabel = isK2 ? 'K2' : 'kVCM';
+    const tokenSymbol = isK2 ? 'K2' : 'kVCM';
 
     return (
       <div className="text-right">
         <div className="font-medium text-gray-900 tabular-nums">
-          {formatAmountWithCommas(allocation.amount)} {tokenLabel}
+          {formatAmountWithCommas(allocation.amount)}{' '}
+          <span className="text-void-50 text-size-12">{tokenSymbol}</span>
         </div>
         <div className="text-size-12 text-void-50 tabular-nums">
           {formatPriceUSDWithCommas(usdValue)}
