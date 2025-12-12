@@ -221,18 +221,15 @@ export function useHoldingsData(): UseQueryResult<
   AggregatedHoldingsData | null,
   Error
 > {
-  const { data: walletData } = useWalletData();
   const { data: kvcmData } = useTokenHoldingsData('kvcm');
   const { data: k2Data } = useTokenHoldingsData('k2');
   const { data: kvcmK2Data } = useTokenHoldingsData('kvcm-k2');
   const { data: kvcmUsdcData } = useTokenHoldingsData('kvcm-usdc');
 
   return useQuery({
-    queryKey: ['useHoldingsData', walletData?.address, walletData?.chainId],
+    queryKey: ['useHoldingsData', kvcmData, k2Data, kvcmK2Data, kvcmUsdcData],
     queryFn: () => {
-      console.log('kvcmData', kvcmData);
       if (!kvcmData || !k2Data || !kvcmK2Data || !kvcmUsdcData) return null;
-      console.log('a');
 
       // Aggregate balances
       const balanceValue =
