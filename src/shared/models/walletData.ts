@@ -36,6 +36,18 @@ export type Lock = {
     k2: number;
     carbonTonnes: number;
   };
+  /** Claimable rewards */
+  claimableRewards: {
+    kvcm: number;
+    k2: number;
+  };
+  /** Pending rewards -only for k2 locks- */
+  accruingRewards: {
+    kvcm: number;
+    k2: number;
+  };
+  /** Whether the lock is claimable */
+  isClaimable: boolean;
   /** Status of the lock */
   status: LockStatus;
   /** Earning status of the lock */

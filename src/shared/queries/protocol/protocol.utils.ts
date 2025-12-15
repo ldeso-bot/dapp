@@ -34,7 +34,21 @@ export const getProtocolState = async (sdk: Sdk) => {
         console.error('❌ Maturity manager not found');
         return null;
       }
-      return protocolState;
+      return {
+        ...protocolState,
+        protocolStartTimestamp: formatStringToNumber(
+          protocolState.protocolStartTimestamp,
+          0
+        ),
+        firstActiveMaturityId: formatStringToNumber(
+          protocolState.firstActiveMaturityId,
+          0
+        ),
+        lastActiveMaturityId: formatStringToNumber(
+          protocolState.lastActiveMaturityId,
+          0
+        ),
+      };
     },
     ['maturity-manager'],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
@@ -48,13 +62,13 @@ export type ProtocolState = NonNullable<
 const getActiveMaturities = async (sdk: Sdk) => {
   return unstable_cache(
     async () => {
-      const maturityManager = await getProtocolState(sdk);
-      if (!maturityManager) return [];
+      const protocolState = await getProtocolState(sdk);
+      if (!protocolState) return [];
       const maturities = await sdk.protocol.getMaturities({
         where: {
-          maturityId_gte: maturityManager.firstActiveMaturityId,
-          maturityId_lte: maturityManager.lastActiveMaturityId,
-        } as Maturity_Filter,
+          maturityId_gte: protocolState.firstActiveMaturityId,
+          maturityId_lte: protocolState.lastActiveMaturityId,
+        } as unknown as Maturity_Filter,
       });
       return maturities.maturities;
     },

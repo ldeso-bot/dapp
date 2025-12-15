@@ -1,5 +1,6 @@
 import { USE_MOCKS } from '@/shared/constants/config.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
+import { ONE_DAY } from '@/shared/constants/protocol.constants';
 import {
   isLockableToken,
   tokenInfoFromSubgraphSymbol,
@@ -54,14 +55,50 @@ export const getLocks = async (
       console.error('❌ Protocol state not found');
       return null;
     }
+    /*
+    if (lock.token.symbol !== 'K2') {
+      return null;
+    }*/
     const tokenPriceUSD = formatStringToNumber(
       lock.token.priceUsdc?.priceUsdc,
       6
     );
 
+    const lockK2YieldClaimableAmount = formatStringToNumber(
+      lock.k2YieldClaimableAmount,
+      18
+    );
+    const lockRiskyYieldClaimableAmount = formatStringToNumber(
+      lock.riskyYieldClaimableAmount,
+      18
+    );
+    const lockYieldCutoffMidnightIndex = formatStringToNumber(
+      lock.yieldCutoffMidnightIndex,
+      0
+    );
+
+    const isK2Lock = tokenInfo.id === 'k2';
+
+    // Computing lock maturation
     const lockedUntil = formatStringToNumber(lock.maturity?.timestamp, 0);
     const isMatured = lockedUntil < new Date().getTime() / 1000;
 
+    // Computing rewards maturation information
+    // Splitting because of K2 locks. Lock is always mature but rewards are not
+    let claimLockedUntil = lockedUntil;
+
+    if (isK2Lock) {
+      if (lockK2YieldClaimableAmount || lockRiskyYieldClaimableAmount) {
+        claimLockedUntil =
+          protocolState.protocolStartTimestamp +
+          lockYieldCutoffMidnightIndex * ONE_DAY;
+      } else {
+        claimLockedUntil = 0;
+      }
+    }
+    const isClaimable = claimLockedUntil < new Date().getTime() / 1000;
+
+    //Computing rewards information
     const lockedAmount = formatStringToNumber(lock.amount, 18);
     let positionAmount = lockedAmount;
     const lockedValueUSD = lockedAmount * tokenPriceUSD;
@@ -70,6 +107,10 @@ export const getLocks = async (
     let syntheticYieldApyPercent = 0;
     let k2Rewards = 0;
     let kvcmRewards = 0;
+    let k2ClaimableRewards = 0;
+    let kvcmClaimableRewards = 0;
+    let k2AccruingRewards = 0;
+    let kvcmAccruingRewards = 0;
 
     // Compute earning status
     const earningStatus = computeEarningStatus(protocolState, tokenInfo.id);
@@ -88,16 +129,18 @@ export const getLocks = async (
       lock.maturity?.maturityMidnightInfo &&
       computeMidnightInfoWithSelf(lock.maturity?.maturityMidnightInfo);
 
-    // Midnight info useful to compute yields for this lock
-    const midnightInfo = isMatured
-      ? // midnightInfo attached to the maturity if matured
-        lockMaturityMidnightInfo
-      : // otherwise, use the latest midnight info
-        latestMidnightInfos[Number(lock.maturityId)];
+    // Midnight info relevant to compute yields for this lock
+    const midnightInfo =
+      !isMatured || isK2Lock
+        ? // Latest midnight info for non matured or K2 locks
+          latestMidnightInfos[lock.maturityId]
+        : // midnightInfo attached to the maturity for matured locks
+          lockMaturityMidnightInfo;
 
     if (midnightInfo) {
       // K2 yield
       if (isK2YieldEligible) {
+        // Total Rewards
         k2YieldApyPercent = midnightInfo.k2ApyFor[tokenInfo.id];
         k2Rewards += formatStringToNumber(lock.k2YieldPending, 18);
         if (lock.k2YieldEntryMidnightInfo) {
@@ -109,9 +152,15 @@ export const getLocks = async (
             k2PyFor[tokenInfo.id] *
             formatStringToNumber(lock.k2YieldShares, 18);
         }
+        // Claimable rewards
+        if (isClaimable) {
+          k2ClaimableRewards =
+            tokenInfo.id === 'k2' ? lockK2YieldClaimableAmount : k2Rewards;
+        }
       }
       // Risky yield
       if (isRiskyYieldEligible) {
+        // Total Rewards
         riskyYieldApyPercent = midnightInfo.kvcmApyFor[tokenInfo.id];
         kvcmRewards += formatStringToNumber(lock.riskyYieldPending, 18);
         if (lock.riskyYieldEntryMidnightInfo) {
@@ -123,6 +172,11 @@ export const getLocks = async (
             kvcmPyFor[tokenInfo.id] *
             formatStringToNumber(lock.riskyYieldShares, 18);
         }
+        // Claimable rewards
+        if (isClaimable) {
+          kvcmClaimableRewards =
+            tokenInfo.id === 'k2' ? lockRiskyYieldClaimableAmount : kvcmRewards;
+        }
       }
       // Synthetic yield
       if (isSyntheticYieldEligible) {
@@ -132,8 +186,11 @@ export const getLocks = async (
           midnightInfo.syntheticYieldPps;
         kvcmRewards += claimable - lockedAmount;
         positionAmount += kvcmRewards;
+        kvcmClaimableRewards = isClaimable ? kvcmRewards : 0;
       }
     }
+    k2AccruingRewards = k2Rewards - k2ClaimableRewards;
+    kvcmAccruingRewards = kvcmRewards - kvcmClaimableRewards;
 
     const positionValueUSD = positionAmount * tokenPriceUSD;
 
@@ -156,6 +213,15 @@ export const getLocks = async (
         // TODO: Not implemented yet in protocol
         carbonTonnes: 0,
       },
+      claimableRewards: {
+        kvcm: kvcmClaimableRewards,
+        k2: k2ClaimableRewards,
+      },
+      accruingRewards: {
+        kvcm: kvcmAccruingRewards,
+        k2: k2AccruingRewards,
+      },
+      isClaimable,
       lockedUntil,
       status,
       earningStatus,
@@ -213,6 +279,15 @@ const getMockLocks = (): Locks => {
         k2: 22.34,
         carbonTonnes: 12,
       },
+      claimableRewards: {
+        kvcm: 31.5,
+        k2: 22.34,
+      },
+      accruingRewards: {
+        kvcm: 0,
+        k2: 0,
+      },
+      isClaimable: true,
       lockedUntil: 1719859200,
       status: 'active',
       earningStatus: 'earning',
@@ -232,6 +307,15 @@ const getMockLocks = (): Locks => {
         k2: 13.5,
         carbonTonnes: 12,
       },
+      claimableRewards: {
+        kvcm: 44.6,
+        k2: 13.5,
+      },
+      accruingRewards: {
+        kvcm: 0,
+        k2: 0,
+      },
+      isClaimable: false,
       lockedUntil: 1764515366,
       status: 'active',
       earningStatus: 'paused',

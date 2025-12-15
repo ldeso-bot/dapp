@@ -67,16 +67,13 @@ const KvcmOverview = () => {
               <StatusCardTitle badge="green">Matured</StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
-                  {formatAmountWithCommas(Number(kvcmData.kvcmClaimableAmount))}{' '}
-                  kVCM
+                  {formatAmountWithCommas(kvcmData.kvcmClaimableAmount)} kVCM
                 </div>
                 <div className="text-size-14 text-gray-500 tabular-nums">
-                  {formatPriceUSDWithCommas(
-                    Number(kvcmData.kvcmClaimableValue)
-                  )}
+                  {formatPriceUSDWithCommas(kvcmData.kvcmClaimableValue)}
                 </div>
               </div>
-              {Number(kvcmData.kvcmClaimableValue) > 0 && (
+              {kvcmData.kvcmClaimableValue > 0 && (
                 <button
                   onClick={() => setTokenLocksOpen(true)}
                   className="cursor-pointer mt-3 text-size-14 text-gray-900 hover:text-gray-700 underline underline-offset-2 font-medium"
@@ -108,10 +105,10 @@ const KvcmOverview = () => {
               <StatusCardTitle badge="gray">Principal Locked</StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
-                  {formatAmountWithCommas(Number(kvcmData.lockedAmount))} kVCM
+                  {formatAmountWithCommas(kvcmData.lockedAmount)} kVCM
                 </div>
                 <div className="text-size-14 text-gray-500 tabular-nums">
-                  {formatPriceUSDWithCommas(Number(kvcmData.lockedValue))}
+                  {formatPriceUSDWithCommas(kvcmData.lockedValue)}
                 </div>
               </div>
             </>
@@ -123,11 +120,11 @@ const KvcmOverview = () => {
           <>
             <HoldingTotalPosition
               symbol="kVCM"
-              totalPosition={Number(kvcmData.positionAmount)}
+              totalPosition={kvcmData.positionAmount}
               tooltip="Total kVCM principal currently locked across all positions."
             />
             <HoldingEstimatedValue
-              estimatedValue={Number(kvcmData.positionValue)}
+              estimatedValue={kvcmData.positionValue}
               tooltip="Total value of your kVCM position including estimated accrued base accrual."
             />
           </>
@@ -168,30 +165,24 @@ const KvcmVariableRewards = () => {
             <VariableRewardsItemContent>
               <div className="flex flex-1 flex-col">
                 <span className="text-gray-900 font-medium">
-                  {formatAmountWithCommas(Number(kvcmData.k2ClaimableAmount))}{' '}
-                  K2
+                  {formatAmountWithCommas(kvcmData.k2ClaimableAmount)} K2
                 </span>
                 <span className="text-size-12 text-gray-500">
-                  {formatPriceUSDWithCommas(Number(kvcmData.k2ClaimableValue))}
+                  {formatPriceUSDWithCommas(kvcmData.k2ClaimableValue)}
                 </span>
                 <span className="text-size-12 text-gray-500">
                   Accrued to date:{' '}
-                  {formatAmountWithCommas(
-                    Number(kvcmData.k2AccruingClaimableAmount)
-                  )}{' '}
+                  {formatAmountWithCommas(kvcmData.k2AccruingClaimableAmount)}{' '}
                   K2 • Accruing:{' '}
-                  {formatAmountWithCommas(
-                    Number(kvcmData.k2AccruedClaimableAmount)
-                  )}{' '}
-                  K2
+                  {formatAmountWithCommas(kvcmData.k2AccruedClaimableAmount)} K2
                 </span>
               </div>
               <Button
                 onClick={() =>
                   setClaimIncentivesDialogState({
                     open: true,
-                    claimablePrincipal: Number(kvcmData.kvcmClaimableAmount),
-                    totalAccruedRewards: Number(kvcmData.claimableValue),
+                    claimablePrincipal: kvcmData.kvcmClaimableAmount,
+                    totalAccruedRewards: kvcmData.claimableValue,
                   })
                 }
                 colors="positive"

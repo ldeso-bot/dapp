@@ -37,6 +37,7 @@ query getTokenSnapshots($where: TokenSnapshot_filter) {
 
 query getProtocolState {
   protocolStates(first: 1) {
+    protocolStartTimestamp
     firstActiveMaturityId
     lastActiveMaturityId
     systemPauseStatus
@@ -110,6 +111,13 @@ query getLocks($where: Lock_filter) {
     token {
       ...TokenFragment
     }
+
+    # K2 lock specific field
+    k2YieldClaimableAmount
+    riskyYieldClaimableAmount
+    yieldCutoffMidnightIndex
+
+    # K2 yield field
     k2YieldShares
     k2YieldPending
     k2YieldEntryMidnightInfo {
@@ -117,6 +125,7 @@ query getLocks($where: Lock_filter) {
     }
     k2YieldClaimed
 
+    # Risky yield
     riskyYieldShares
     riskyYieldPending
     riskyYieldEntryMidnightInfo {
@@ -124,6 +133,7 @@ query getLocks($where: Lock_filter) {
     }
     riskyYieldClaimed
 
+    # Synthetic yield
     syntheticYieldShares
     syntheticYieldEntryMidnightInfo {
       ...MidnightInfoFragment

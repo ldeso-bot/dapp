@@ -25,11 +25,11 @@ interface ComputeLockRewardsParams {
   locks: Lock[];
   currentTimestamp: number;
   metrics: AllMetrics;
-  lockedTokenValueUSD: number;
-  token: LockableToken;
+  lockedToken: LockableToken;
+  lockedTokenBalance: number;
 }
 
-interface LockRewardsResult {
+interface TokenHoldingsData {
   locks: Lock[];
   activeLocks: Lock[];
   maturedLocks: Lock[];
@@ -51,13 +51,8 @@ interface LockRewardsResult {
   claimableValue: number;
   positionAmount: number;
   positionValue: number;
-}
-
-type TokenHoldingsData = LockRewardsResult & {
   balanceValue: number;
-  positionAmount: number;
-  positionValue: number;
-};
+}
 
 type AggregatedHoldingsData = {
   kvcm: TokenHoldingsData;
@@ -82,29 +77,32 @@ const computeLockRewards = ({
   locks,
   currentTimestamp,
   metrics,
-  lockedTokenValueUSD,
-  token,
-}: ComputeLockRewardsParams): LockRewardsResult => {
+  lockedToken,
+  lockedTokenBalance,
+}: ComputeLockRewardsParams): TokenHoldingsData => {
   const activeLocks = filterActiveLocks(locks);
   const maturedLocks = filterMaturedLocks(locks);
   const soonToBeMaturedLocks = filterSoonToBeMaturedLocks(
     activeLocks,
     currentTimestamp
   );
+  // Balance
+  const balanceValue = lockedTokenBalance * metrics[lockedToken].valueUSD;
+
   // Locked amount
   const lockedAmount = sumBy(locks, (lock) => lock.lockedAmount);
 
   // Locked value
-  const lockedValue = lockedAmount * lockedTokenValueUSD;
+  const lockedValue = lockedAmount * metrics[lockedToken].valueUSD;
 
   // Accruing claimable amounts
   const k2AccruingClaimableAmount = sumBy(
-    activeLocks,
-    (lock) => lock.rewards.k2
+    locks,
+    (lock) => lock.accruingRewards.k2
   );
   const kvcmAccruingClaimableAmount = sumBy(
-    activeLocks,
-    (lock) => lock.rewards.kvcm
+    locks,
+    (lock) => lock.accruingRewards.kvcm
   );
 
   // Accruing claimable values
@@ -115,12 +113,12 @@ const computeLockRewards = ({
 
   // Accrued claimable amounts
   const k2AccruedClaimableAmount = sumBy(
-    maturedLocks,
-    (lock) => lock.rewards.k2
+    locks,
+    (lock) => lock.claimableRewards.k2
   );
   const kvcmAccruedClaimableAmount = sumBy(
-    maturedLocks,
-    (lock) => lock.rewards.kvcm
+    locks,
+    (lock) => lock.claimableRewards.kvcm
   );
 
   // Accrued claimable values
@@ -142,10 +140,16 @@ const computeLockRewards = ({
 
   // Principal
   const positionAmount =
-    lockedAmount + token == 'kvcm' ? kvcmClaimableAmount : 0;
-  const positionValue = positionAmount * lockedTokenValueUSD;
+    lockedToken == 'kvcm'
+      ? lockedAmount + kvcmClaimableAmount
+      : lockedToken == 'k2'
+        ? lockedAmount + k2AccruingClaimableAmount + k2AccruedClaimableAmount
+        : lockedAmount;
+
+  const positionValue = positionAmount * metrics[lockedToken].valueUSD;
 
   return {
+    balanceValue,
     locks,
     activeLocks,
     maturedLocks,
@@ -188,9 +192,6 @@ export function useTokenHoldingsData(
       if (!walletData || !protocolData || !currentTimestamp) return null;
       const metrics = protocolData.metrics;
 
-      // Balance
-      const balanceValue = walletData.balances[token] * metrics[token].valueUSD;
-
       // Filtered locks
       const locks = walletData.locks.filter((lock) => lock.token === token);
 
@@ -198,16 +199,12 @@ export function useTokenHoldingsData(
         locks,
         currentTimestamp: currentTimestamp,
         metrics,
-        lockedTokenValueUSD: metrics.k2.valueUSD,
-        token,
+        lockedToken: token,
+        lockedTokenBalance: walletData.balances[token],
       });
 
       return {
         ...rewards,
-        balanceValue,
-        locks,
-        positionAmount: rewards.lockedAmount,
-        positionValue: rewards.lockedValue,
       };
     },
   });

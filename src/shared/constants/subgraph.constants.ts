@@ -8,7 +8,7 @@ let subgraphs = {
   [base.id]: {
     carbon: `${GOLDSKY_BASE_URL}/cm-base-carbon-production/latest/gn`,
     // TODO: update to latest before going to production
-    protocol: `${GOLDSKY_BASE_URL}/cm-base-protocol-production/20251211-145248-139dfdb/gn`,
+    protocol: `${GOLDSKY_BASE_URL}/cm-base-protocol-production/20251213-180417-0af694d/gn`,
   },
   [baseSepolia.id]: {
     carbon: `${GOLDSKY_BASE_URL}/cm-base-sepolia-carbon-staging/latest/gn`,
