@@ -212,7 +212,12 @@ export const computeMidnightInfo = (
  * @param midnightInfo
  */
 export const computeMidnightInfoWithSelf = (midnightInfo: MidnightInfo) => {
-  if (!midnightInfo.previousMidnightInfo) return undefined;
+  if (!midnightInfo.previousMidnightInfo) {
+    console.warn(
+      `MidnightInfo (midnightIndex: ${midnightInfo.midnightIndex}, maturityId: ${midnightInfo.maturityId}) has no previousMidnightInfo.`
+    );
+    return undefined;
+  }
   return computeMidnightInfo(
     formatMidnightInfo(midnightInfo),
     formatMidnightInfo(midnightInfo.previousMidnightInfo)
@@ -233,18 +238,19 @@ export const getLatestMidnightInfos = async (
         .midnightInfos;
       if (!midnightInfos) return {};
       const midnightIndex = midnightInfos[0].midnightIndex;
-      return mapToObj(
-        // Ensure that we only return midnightInfo for the same mmidnightIndex
-        midnightInfos
-          .filter(
-            (midnightInfo) => midnightInfo.midnightIndex === midnightIndex
-            // Map so it can be serialized
-          )
-          .map(computeMidnightInfoWithSelf)
-          .filter((midnightInfo) => midnightInfo !== undefined),
-        // Map by maturityId for faster lookups
-        (midnightInfo) => [Number(midnightInfo.maturityId), midnightInfo]
-      );
+      const mappedMidnightInfos = midnightInfos
+        .filter(
+          (midnightInfo) => midnightInfo.midnightIndex === midnightIndex
+          // Map so it can be serialized
+        )
+        .map(computeMidnightInfoWithSelf)
+        .filter((midnightInfo) => midnightInfo !== undefined);
+
+      // Map by maturityId for faster lookups
+      return mapToObj(mappedMidnightInfos, (midnightInfo) => [
+        Number(midnightInfo.maturityId),
+        midnightInfo,
+      ]);
     },
     ['latest-midnight-infos-for-active-maturities'],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }

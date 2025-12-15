@@ -8,6 +8,7 @@ import { type FC } from 'react';
 type RewardsCardProps = CardProps & {
   footNote?: string;
   description?: string;
+  skeletonClassName?: string;
 };
 
 type ItemProps = {
@@ -28,11 +29,11 @@ type ItemTitleProps = {
 };
 
 export const VariableRewardsCard: FC<RewardsCardProps> = (props) => {
-  const { children, className, ...rest } = props;
+  const { children, className, skeletonClassName, ...rest } = props;
   return (
     <Card
       {...rest}
-      skeletonClassName="h-[63.8rem]"
+      skeletonClassName={skeletonClassName ?? 'h-[63.8rem]'}
       className={cn(
         'rounded-lg border border-gray-300 !shadow-none',
         className

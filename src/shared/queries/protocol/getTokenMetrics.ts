@@ -1,7 +1,12 @@
 import { PROTOCOL_DATA_CACHE_TIME_SECONDS } from '@/shared/constants/config.constants';
+import {
+  AERODROME_K2_USDC_POOL_INDEX,
+  AERODROME_KVCM_USDC_POOL_INDEX,
+} from '@/shared/constants/contracts.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
 import { SubgraphTokenSymbol } from '@/shared/constants/tokens.constants';
 import { AllMetrics, Metrics } from '@/shared/models/ProtocolData';
+import { getAerodromePoolInfoByIndex } from '@/shared/utils/aerodrome.utils';
 import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
 import { TokenSnapshot_Filter } from '@generated/gql/types/protocol.types';
 import { unstable_cache } from 'next/cache';
@@ -23,19 +28,22 @@ const getTokenMetricsUncached = async (
 ): Promise<AllMetrics> => {
   const sdk = getSdk(chainId);
 
-  const [tokensResponse, ...tokenSnapshotsResponses] = await Promise.all([
-    sdk.protocol.getTokens(),
-    ...['KVCM', 'K2', 'KVCM_K2_LP', 'KVCM_USDC_LP'].map((symbol) =>
-      sdk.protocol
-        .getTokenSnapshots({
-          where: {
-            hoursSinceEpoch_lte: getHoursSinceEpoch24HoursAgo().toString(),
-            symbol,
-          } as TokenSnapshot_Filter,
-        })
-        .then((response) => response.tokenSnapshots[0])
-    ),
-  ]);
+  const [kvcmUsdcPool, k2UsdcPool, tokensResponse, ...tokenSnapshotsResponses] =
+    await Promise.all([
+      getAerodromePoolInfoByIndex(AERODROME_KVCM_USDC_POOL_INDEX),
+      getAerodromePoolInfoByIndex(AERODROME_K2_USDC_POOL_INDEX),
+      sdk.protocol.getTokens(),
+      ...['KVCM', 'K2', 'KVCM_K2_LP', 'KVCM_USDC_LP'].map((symbol) =>
+        sdk.protocol
+          .getTokenSnapshots({
+            where: {
+              hoursSinceEpoch_lte: getHoursSinceEpoch24HoursAgo().toString(),
+              symbol,
+            } as TokenSnapshot_Filter,
+          })
+          .then((response) => response.tokenSnapshots[0])
+      ),
+    ]);
 
   // Create maps for faster lookups
   const tokensMap = mapToObj(tokensResponse.tokens, (t) => [
@@ -48,7 +56,7 @@ const getTokenMetricsUncached = async (
     t,
   ]);
 
-  const getOneTokenMetrics = (symbol: SubgraphTokenSymbol): Metrics => {
+  const getProtocolTokenMetrics = (symbol: SubgraphTokenSymbol): Metrics => {
     const token = tokensMap[symbol];
     const snapshot = tokenSnapshotsMap[symbol];
 
@@ -62,16 +70,16 @@ const getTokenMetricsUncached = async (
     const supplyChangePercent24h =
       supply && snapshotSupply ? (supply - snapshotSupply) / snapshotSupply : 0;
 
-    // TVL
+    // Supply locked
     const supplyLocked = formatStringToNumber(token?.totalAmountLocked, 18);
 
-    const snapshotTVL = snapshot?.totalAmountLocked
+    const snapshotSupplyLocked = snapshot?.totalAmountLocked
       ? formatStringToNumber(snapshot.totalAmountLocked, 18)
       : supplyLocked;
 
     const supplyLockedChangePercent24h =
-      supplyLocked && snapshotTVL
-        ? (supplyLocked - snapshotTVL) / snapshotTVL
+      supplyLocked && snapshotSupplyLocked
+        ? (supplyLocked - snapshotSupplyLocked) / snapshotSupplyLocked
         : 0;
 
     // Price
@@ -89,6 +97,8 @@ const getTokenMetricsUncached = async (
     // Address
     const address = token?.address || '';
 
+    const valueLockedUSD = supplyLocked * valueUSD;
+
     return {
       valueUSD,
       valueUSDChangePercent24h,
@@ -97,13 +107,60 @@ const getTokenMetricsUncached = async (
       supplyLocked,
       supplyLockedChangePercent24h,
       address,
+      valueLockedUSD,
     };
   };
 
+  const getLpTokenMetrics = (
+    symbol: SubgraphTokenSymbol,
+    token0PriceUSD: number,
+    token1PriceUSD: number
+  ): Metrics => {
+    const token = tokensMap[symbol];
+    const pool = symbol === 'KVCM_K2_LP' ? k2UsdcPool : kvcmUsdcPool;
+
+    // Supply
+    const supply = pool.liquidity;
+
+    // Supply locked
+    const supplyLocked = pool.liquidity;
+
+    // Price
+    const valueLockedUSD =
+      pool.reserve0 * token0PriceUSD + pool.reserve1 * token1PriceUSD;
+
+    // Address
+    const address = token?.address || '';
+
+    return {
+      valueUSD: 0,
+      valueUSDChangePercent24h: 0,
+      supply,
+      supplyChangePercent24h: 0,
+      supplyLocked,
+      supplyLockedChangePercent24h: 0,
+      valueLockedUSD,
+      address,
+    };
+  };
+
+  const kvcmMetrics = getProtocolTokenMetrics('KVCM');
+  const k2Metrics = getProtocolTokenMetrics('K2');
+  const kvcmK2LpMetrics = getLpTokenMetrics(
+    'KVCM_K2_LP',
+    kvcmMetrics.valueUSD,
+    k2Metrics.valueUSD
+  );
+  const kvcmUsdcLpMetrics = getLpTokenMetrics(
+    'KVCM_USDC_LP',
+    kvcmMetrics.valueUSD,
+    1
+  );
+
   return {
-    kvcm: getOneTokenMetrics('KVCM'),
-    k2: getOneTokenMetrics('K2'),
-    'kvcm-k2': getOneTokenMetrics('KVCM_K2_LP'),
-    'kvcm-usdc': getOneTokenMetrics('KVCM_USDC_LP'),
+    kvcm: kvcmMetrics,
+    k2: k2Metrics,
+    'kvcm-k2': kvcmK2LpMetrics,
+    'kvcm-usdc': kvcmUsdcLpMetrics,
   };
 };

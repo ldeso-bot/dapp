@@ -7,9 +7,11 @@ import {
 } from '@/shared/constants/tokens.constants';
 import { YieldType } from '@/shared/models/ProtocolData';
 import { EarningStatus, Lock, Locks } from '@/shared/models/walletData';
+import { computeTokenAmountValueUSD } from '@/shared/utils/protocol.utils';
 import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
 import { Lock_Filter } from '@generated/gql/types/protocol.types';
 import { filter, isNonNullish } from 'remeda';
+import { getTokenMetrics } from '../protocol/getTokenMetrics';
 import {
   computeMidnightInfo,
   computeMidnightInfoWithSelf,
@@ -32,17 +34,19 @@ export const getLocks = async (
   }
 
   // Fetch locks
-  const [locks, latestMidnightInfos, protocolState] = await Promise.all([
-    sdk.protocol.getLocks({
-      where: {
-        account_: {
-          id: walletAddress,
-        },
-      } as Lock_Filter,
-    }),
-    getLatestMidnightInfos(sdk),
-    getProtocolState(sdk),
-  ]);
+  const [locks, latestMidnightInfos, protocolState, metrics] =
+    await Promise.all([
+      sdk.protocol.getLocks({
+        where: {
+          account_: {
+            id: walletAddress,
+          },
+        } as Lock_Filter,
+      }),
+      getLatestMidnightInfos(sdk),
+      getProtocolState(sdk),
+      getTokenMetrics(chainId),
+    ]);
 
   // Map locks
   const mappedLocks = locks.locks.map((lock): Lock | null => {
@@ -55,10 +59,6 @@ export const getLocks = async (
       console.error('❌ Protocol state not found');
       return null;
     }
-    /*
-    if (lock.token.symbol !== 'K2') {
-      return null;
-    }*/
     const tokenPriceUSD = formatStringToNumber(
       lock.token.priceUsdc?.priceUsdc,
       6
@@ -99,9 +99,13 @@ export const getLocks = async (
     const isClaimable = claimLockedUntil < new Date().getTime() / 1000;
 
     //Computing rewards information
-    const lockedAmount = formatStringToNumber(lock.amount, 18);
+    const lockedAmount = formatStringToNumber(lock.amount, tokenInfo.decimals);
     let positionAmount = lockedAmount;
-    const lockedValueUSD = lockedAmount * tokenPriceUSD;
+    const lockedValueUSD = computeTokenAmountValueUSD(
+      tokenInfo.id,
+      lockedAmount,
+      metrics
+    );
     let k2YieldApyPercent = 0;
     let riskyYieldApyPercent = 0;
     let syntheticYieldApyPercent = 0;
@@ -137,7 +141,11 @@ export const getLocks = async (
         : // midnightInfo attached to the maturity for matured locks
           lockMaturityMidnightInfo;
 
-    if (midnightInfo) {
+    if (!midnightInfo) {
+      console.warn(
+        `No midnight info found for lock ${lock.id} (maturityId: ${lock.maturityId})`
+      );
+    } else {
       // K2 yield
       if (isK2YieldEligible) {
         // Total Rewards
@@ -192,7 +200,11 @@ export const getLocks = async (
     k2AccruingRewards = k2Rewards - k2ClaimableRewards;
     kvcmAccruingRewards = kvcmRewards - kvcmClaimableRewards;
 
-    const positionValueUSD = positionAmount * tokenPriceUSD;
+    const positionValueUSD = computeTokenAmountValueUSD(
+      tokenInfo.id,
+      positionAmount,
+      metrics
+    );
 
     const status =
       positionAmount <= 0 ? 'claimed' : isMatured ? 'matured' : 'active';

@@ -76,7 +76,7 @@ const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({ next, data }) => {
           <Button
             colors="primary"
             context="flow"
-            href={`${ROUTES.MY_HOLDINGS}`}
+            href={`${ROUTES.MY_HOLDINGS}?activeView=liquidity`}
           >
             Cancel
           </Button>

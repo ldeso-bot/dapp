@@ -6,9 +6,7 @@ import KlimaIcon from '@/shared/images/kvcm.svg';
 import USDCIcon from '@/shared/images/usdc.svg';
 import { StaticImageData } from 'next/image';
 import { ReactNode } from 'react';
-import { base, baseSepolia } from 'viem/chains';
 import Icon from '../components/Icon/Icon';
-import contracts from './contracts.constants';
 
 export type LpToken = 'kvcm-usdc' | 'kvcm-k2';
 export type AllocationToken = 'k2' | 'kvcm';
@@ -22,6 +20,13 @@ export type SubgraphTokenSymbol =
   | 'KVCM_K2_LP'
   | 'USDC';
 
+/**
+ * Decimals for the Aerodrome liquidity tokens
+ * This is not really important as long that it is consistent across liquidity values
+ * It helps to display the liquidity values nicely though...
+ */
+export const AERODROME_LIQUIDITY_DECIMALS = 12;
+
 export type TokenInfo = {
   id: Token;
   symbol: string;
@@ -31,6 +36,7 @@ export type TokenInfo = {
   description: string;
   lockDescription: string;
   holdingsTab?: HoldingsTabValue;
+  decimals: number;
 };
 
 export const tokens: Record<Token, TokenInfo> = {
@@ -42,6 +48,7 @@ export const tokens: Record<Token, TokenInfo> = {
     subgraphSymbol: 'USDC',
     description: 'USDC',
     lockDescription: '',
+    decimals: 6,
   },
   k2: {
     id: 'k2',
@@ -52,6 +59,7 @@ export const tokens: Record<Token, TokenInfo> = {
     description: 'K2 Token',
     lockDescription: 'K2 lock',
     holdingsTab: 'k2',
+    decimals: 18,
   },
   kvcm: {
     id: 'kvcm',
@@ -62,6 +70,7 @@ export const tokens: Record<Token, TokenInfo> = {
     description: 'KVCM Token',
     lockDescription: 'kVCM lock',
     holdingsTab: 'kvcm',
+    decimals: 18,
   },
   'kvcm-usdc': {
     id: 'kvcm-usdc',
@@ -74,6 +83,7 @@ export const tokens: Record<Token, TokenInfo> = {
     description: 'KVCM/USDC Liquidity Pool',
     lockDescription: 'LP stake',
     holdingsTab: 'liquidity',
+    decimals: AERODROME_LIQUIDITY_DECIMALS,
   },
   'kvcm-k2': {
     id: 'kvcm-k2',
@@ -86,6 +96,7 @@ export const tokens: Record<Token, TokenInfo> = {
     description: 'KVCM/K2 Liquidity Pool',
     lockDescription: 'LP stake',
     holdingsTab: 'liquidity',
+    decimals: AERODROME_LIQUIDITY_DECIMALS,
   },
 } as const;
 
@@ -133,14 +144,4 @@ export const isAllocatableToken = (
 
 export const isLockableToken = (token: unknown): token is LockableToken => {
   return isToken(token) && Object.keys(lockableTokens).includes(token);
-};
-
-export const getTokenDecimals = (address: string): number => {
-  if (
-    address.toLowerCase() === contracts.USDC[base.id].toLowerCase() ||
-    address.toLowerCase() === contracts.USDC[baseSepolia.id].toLowerCase()
-  ) {
-    return 6;
-  }
-  return 18;
 };

@@ -1,9 +1,6 @@
 import { USE_MOCKS } from '@/shared/constants/config.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
-import {
-  getTokenDecimals,
-  tokenInfoFromSubgraphSymbol,
-} from '@/shared/constants/tokens.constants';
+import { tokenInfoFromSubgraphSymbol } from '@/shared/constants/tokens.constants';
 import { Balances } from '@/shared/models/walletData';
 import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
 import { getContract, getPublicClient } from '@/shared/utils/web3.utils';
@@ -57,7 +54,7 @@ export const getBalances = async (
     }
     res[tokenInfo.id] = formatStringToNumber(
       balance.amount,
-      getTokenDecimals(balance.token.address)
+      tokenInfo.decimals
     );
   });
 

@@ -102,14 +102,18 @@ export const TokenLots: FC<TokenLotsProps> = ({
                     <div className="flex gap-1 text-gray-500">
                       <div>Base APY</div>
                       <div>
-                        {formatPercentage(lock.syntheticYieldApyPercent)}
+                        {formatPercentage(
+                          token === 'kvcm'
+                            ? lock.syntheticYieldApyPercent
+                            : lock.riskyYieldApyPercent
+                        )}
                       </div>
                     </div>
                     <span className="text-gray-400">•</span>
                     <div className="flex gap-1 text-gray-500">
                       <div>
                         {formatAmountWithCommas(lock.rewards.kvcm)}{' '}
-                        {getTokenSymbol(lock.token)}
+                        {getTokenSymbol('kvcm')}
                       </div>
                       <div>accrued</div>
                     </div>

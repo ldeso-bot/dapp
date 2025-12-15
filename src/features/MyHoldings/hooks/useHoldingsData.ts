@@ -2,6 +2,7 @@ import { LockableToken } from '@/shared/constants/tokens.constants';
 import { useCurrentTimestamp } from '@/shared/hooks/useCurrentTimestamp';
 import { AllMetrics } from '@/shared/models/ProtocolData';
 import { Lock } from '@/shared/models/walletData';
+import { computeTokenAmountValueUSD } from '@/shared/utils/protocol.utils';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { sumBy } from 'remeda';
 import { useProtocolData } from '../../../shared/hooks/api/useProtocolData';
@@ -40,10 +41,12 @@ interface TokenHoldingsData {
   kvcmAccruingClaimableAmount: number;
   k2AccruingClaimableValue: number;
   kvcmAccruingClaimableValue: number;
+  accruingClaimableValue: number;
   k2AccruedClaimableAmount: number;
   kvcmAccruedClaimableAmount: number;
   k2AccruedClaimableValue: number;
   kvcmAccruedClaimableValue: number;
+  accruedClaimableValue: number;
   k2ClaimableAmount: number;
   kvcmClaimableAmount: number;
   k2ClaimableValue: number;
@@ -86,14 +89,18 @@ const computeLockRewards = ({
     activeLocks,
     currentTimestamp
   );
-  // Balance
-  const balanceValue = lockedTokenBalance * metrics[lockedToken].valueUSD;
+
+  const computeValueUSD = (amount: number) =>
+    computeTokenAmountValueUSD(lockedToken, amount, metrics);
 
   // Locked amount
   const lockedAmount = sumBy(locks, (lock) => lock.lockedAmount);
 
+  // Balance
+  const balanceValue = computeValueUSD(lockedTokenBalance);
+
   // Locked value
-  const lockedValue = lockedAmount * metrics[lockedToken].valueUSD;
+  const lockedValue = computeValueUSD(lockedAmount);
 
   // Accruing claimable amounts
   const k2AccruingClaimableAmount = sumBy(
@@ -110,6 +117,8 @@ const computeLockRewards = ({
     k2AccruingClaimableAmount * metrics.k2.valueUSD;
   const kvcmAccruingClaimableValue =
     kvcmAccruingClaimableAmount * metrics.kvcm.valueUSD;
+  const accruingClaimableValue =
+    k2AccruingClaimableValue + kvcmAccruingClaimableValue;
 
   // Accrued claimable amounts
   const k2AccruedClaimableAmount = sumBy(
@@ -132,6 +141,8 @@ const computeLockRewards = ({
     k2AccruingClaimableAmount + k2AccruedClaimableAmount;
   const kvcmClaimableAmount =
     kvcmAccruingClaimableAmount + kvcmAccruedClaimableAmount;
+  const accruedClaimableValue =
+    k2AccruedClaimableValue + kvcmAccruedClaimableValue;
 
   // Total claimable values
   const k2ClaimableValue = k2ClaimableAmount * metrics.k2.valueUSD;
@@ -146,7 +157,7 @@ const computeLockRewards = ({
         ? lockedAmount + k2AccruingClaimableAmount + k2AccruedClaimableAmount
         : lockedAmount;
 
-  const positionValue = positionAmount * metrics[lockedToken].valueUSD;
+  const positionValue = computeValueUSD(positionAmount);
 
   return {
     balanceValue,
@@ -158,9 +169,11 @@ const computeLockRewards = ({
     lockedValue,
     k2AccruingClaimableAmount,
     kvcmAccruingClaimableAmount,
+    accruingClaimableValue,
     k2AccruingClaimableValue,
     kvcmAccruingClaimableValue,
     k2AccruedClaimableAmount,
+    accruedClaimableValue,
     kvcmAccruedClaimableAmount,
     k2AccruedClaimableValue,
     kvcmAccruedClaimableValue,

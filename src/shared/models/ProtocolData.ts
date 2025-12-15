@@ -18,6 +18,7 @@ export type Metrics = {
   supplyChangePercent24h: number;
   supplyLocked: number;
   supplyLockedChangePercent24h: number;
+  valueLockedUSD: number;
   address: string;
 };
 

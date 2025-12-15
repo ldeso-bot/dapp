@@ -39,18 +39,18 @@ export const getLiquidityPools = async (
   };
 
   const getOneLiquidityPool = (token: LpToken): LiquidityPoolInfo => {
-    const tvl =
+    const tvlUSD =
       lpData[token].token0ValueUSD * lpData[token].reserve0 +
       lpData[token].token1ValueUSD * lpData[token].reserve1;
 
     const annualEmissions = lpData[token].emissions * 60 * 60 * 24 * 365;
     const annualEmissionsUSD = annualEmissions * (aeroPrice ?? 0);
 
-    const apyYearly = annualEmissionsUSD / tvl;
+    const apyYearly = annualEmissionsUSD / tvlUSD;
 
     return {
       token,
-      tvlUSD: tvl,
+      tvlUSD,
       apyYearly,
     };
   };

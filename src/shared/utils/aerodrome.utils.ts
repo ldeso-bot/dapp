@@ -1,9 +1,9 @@
 import { getContract, getPublicClient } from '@/shared/utils/web3.utils';
 import { unstable_cache } from 'next/cache';
-import { base } from 'viem/chains';
+import { base, baseSepolia } from 'viem/chains';
 import { IS_DEVELOPMENT } from '../constants/config.constants';
 import contracts from '../constants/contracts.constants';
-import { getTokenDecimals } from '../constants/tokens.constants';
+import { AERODROME_LIQUIDITY_DECIMALS } from '../constants/tokens.constants';
 import { formatStringToNumber } from './subgraph.utils';
 
 type Pool = {
@@ -118,6 +118,16 @@ const getAerodromePoolByIndex = async (
   return pool[0];
 };
 
+const getTokenDecimals = (address: string): number => {
+  if (
+    address.toLowerCase() === contracts.USDC[base.id].toLowerCase() ||
+    address.toLowerCase() === contracts.USDC[baseSepolia.id].toLowerCase()
+  ) {
+    return 6;
+  }
+  return 18;
+};
+
 /**
  * Caches and converts raw pool data into a more usable format
  * @param index
@@ -132,6 +142,7 @@ export const getAerodromePoolInfoByIndex = async (index: number) => {
       reserve0: 0,
       reserve1: 0,
       emissions: 0,
+      liquidity: 0,
     };
   }
 
@@ -140,10 +151,7 @@ export const getAerodromePoolInfoByIndex = async (index: number) => {
   if (
     pool.emissions_token.toLowerCase() === contracts.AERO[base.id].toLowerCase()
   ) {
-    emissions = formatStringToNumber(
-      pool.emissions,
-      getTokenDecimals(pool.emissions_token)
-    );
+    emissions = formatStringToNumber(pool.emissions, pool.decimals);
   }
 
   return unstable_cache(
@@ -158,6 +166,10 @@ export const getAerodromePoolInfoByIndex = async (index: number) => {
           getTokenDecimals(pool.token1)
         ),
         emissions,
+        liquidity: formatStringToNumber(
+          pool.liquidity,
+          AERODROME_LIQUIDITY_DECIMALS
+        ),
       };
     },
     [`aerodrome-pool-by-index-${index}`],

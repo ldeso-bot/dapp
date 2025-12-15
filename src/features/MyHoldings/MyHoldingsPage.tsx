@@ -13,7 +13,7 @@ import { HoldingsTabValue, SUPPORTED_TABS } from './constants/tab.constants';
 import MyHoldingsModals from './modals/MyHoldingsModals';
 import { K2View } from './views/K2View';
 import { KvcmView } from './views/KvcmView';
-import { LiquidityPositionsView } from './views/LiquidityPositionsView';
+import { LiquidityPositionsView } from './views/LiquidityPositionsView/LiquidityPositionView';
 import { OverviewView } from './views/OverviewView';
 
 const MyHoldingsTabs = () => {
