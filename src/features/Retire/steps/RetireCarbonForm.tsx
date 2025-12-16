@@ -10,8 +10,8 @@ import TokenAmountInput from '@/shared/components/Form/TokenAmountInput';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { useState } from 'react';
-import PayWithOptions from '../components/PayWithOptions/PayWithOptions';
-import PriceDetails from '../components/PriceDetails/PriceDetails';
+import { PayWithOptions } from '../components/PayWithOptions';
+import { PriceDetails } from '../components/PriceDetails';
 import { RetireCarbonFields, carbonPrices } from '../retire.constants';
 
 const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {

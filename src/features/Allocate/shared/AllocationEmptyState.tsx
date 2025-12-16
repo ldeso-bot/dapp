@@ -36,7 +36,7 @@ export const AllocationEmptyState = ({ onStartAllocating }: Props) => {
       flowItems={allocationFlowItems}
       cta={emptyStateButtonConfig}
       stats={allocationStats}
-      benefitSection={{
+      infoCardsSection={{
         title: 'Why Allocate?',
         description:
           'Allocate your locked tokens to influence carbon class prices and support market health.',

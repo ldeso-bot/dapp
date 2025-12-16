@@ -3,14 +3,14 @@
 import Icon from '@/shared/components/Icon/Icon';
 import { cn } from '@/shared/utils/component.utils';
 import { useState } from 'react';
-import { paymentOptions } from './../../retire.constants';
+import { paymentOptions } from '../retire.constants';
 
 type Props = {
   value?: string;
   onChange?: (value: string) => void;
 };
 
-export default function PayWithOptions(props: Props) {
+export const PayWithOptions = (props: Props) => {
   const [selected, setSelected] = useState(props.value);
 
   const handleSelect = (value: string) => {
@@ -48,4 +48,4 @@ export default function PayWithOptions(props: Props) {
       </div>
     </div>
   );
-}
+};

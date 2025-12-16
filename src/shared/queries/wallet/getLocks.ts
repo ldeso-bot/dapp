@@ -59,10 +59,6 @@ export const getLocks = async (
       console.error('❌ Protocol state not found');
       return null;
     }
-    const tokenPriceUSD = formatStringToNumber(
-      lock.token.priceUsdc?.priceUsdc,
-      6
-    );
 
     const lockK2YieldClaimableAmount = formatStringToNumber(
       lock.k2YieldClaimableAmount,

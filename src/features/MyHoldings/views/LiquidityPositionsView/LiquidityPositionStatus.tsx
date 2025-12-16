@@ -14,10 +14,6 @@ import { useHoldingsData } from '../../hooks/useHoldingsData';
 import { stakeLpTokenDialogAtom } from '../../modals/StakeLpToken/stakeLpToken.utils';
 import { HoldingEstimatedValue } from '../../shared/HoldingEstimatedValue';
 
-type AggregatedHoldingsData = NonNullable<
-  ReturnType<typeof useHoldingsData>['data']
->;
-
 interface LiquidityPositionStatusProps {
   token: LpToken;
 }

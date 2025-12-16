@@ -14,10 +14,6 @@ import {
 import { getTokenSymbol } from '@/shared/utils/token.utils';
 import { useHoldingsData } from '../../hooks/useHoldingsData';
 
-type AggregatedHoldingsData = NonNullable<
-  ReturnType<typeof useHoldingsData>['data']
->;
-
 interface LiquidityPositionRewardsProps {
   token: LpToken;
 }

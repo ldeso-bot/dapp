@@ -9,7 +9,7 @@ import TokenAmountInput from '@/shared/components/Form/TokenAmountInput';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
-import SlippageSlider from '../components/SlippageSlider/SlippageSlider';
+import { SlippageSlider } from '../components/SlippageSlider';
 import { SellCarbonFields, carbonPrices } from '../sellCarbon.constants';
 
 const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {

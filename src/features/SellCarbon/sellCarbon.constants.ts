@@ -84,7 +84,7 @@ export const sellCarbonFlowItems = [
   createFlowItem(KvcmIcon, 'Receive kVCM', 'Instant kVCM at market price.', 2),
 ];
 
-export const sellCarbonBenefitCards: BenefitCard[] = [
+const sellCarbonBenefitCards: BenefitCard[] = [
   {
     icon: CarbonCreditsIcon,
     title: 'Carbon Classes',
@@ -104,6 +104,13 @@ export const sellCarbonBenefitCards: BenefitCard[] = [
       'Exchange your carbon credits directly with the protocol. No order books, no waiting - receive kVCM immediately.',
   },
 ];
+
+export const sellCarbonInfoCardsSection = {
+  title: 'Why Sell with Klima?',
+  description:
+    'Convert your carbon credits into kVCM with instant liquidity and transparent pricing.',
+  cards: sellCarbonBenefitCards,
+};
 
 export const sellCarbonStats: StatItem[] = [
   {

@@ -1,13 +1,13 @@
 'use client';
 
 import Icon from '@/shared/components/Icon/Icon';
-import { paymentOptions } from '../../retire.constants';
+import { paymentOptions } from '../retire.constants';
 
 type Props = {
   paymentMethod: string;
 };
 
-export default function PriceDetails(props: Props) {
+export const PriceDetails = (props: Props) => {
   const selectedPaymentOption =
     paymentOptions.find(({ value }) => value === props.paymentMethod) ??
     paymentOptions[0];
@@ -30,4 +30,4 @@ export default function PriceDetails(props: Props) {
       </div>
     </div>
   );
-}
+};

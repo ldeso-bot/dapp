@@ -8,7 +8,7 @@ import { useParsedForm } from '@/shared/hooks/web3/useParsedForm';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useAccount } from 'wagmi';
-import { SellCarbonEmptyState } from './components/SellCarbonEmptyState/SellCarbonEmptyState';
+import { SellCarbonEmptyState } from './components/SellCarbonEmptyState';
 import { SellCarbonFields, sellCarbonSchema } from './sellCarbon.constants';
 import SellCarbonApprove from './steps/SellCarbonApprove';
 import SellCarbonForm from './steps/SellCarbonForm';

@@ -11,9 +11,10 @@ export default function EmptyState({
   flowItems,
   cta,
   stats,
-  benefitSection,
+  infoCardsSection,
   docsCallout,
   showParticle = true,
+  customCalloutSection,
 }: EmptyStateProps) {
   const CtaIcon = cta.icon;
   const primaryColor = '#00994a';
@@ -293,20 +294,20 @@ export default function EmptyState({
           </div>
         </div>
       </div>
-      {(benefitSection || docsCallout) && (
+      {(infoCardsSection || docsCallout) && (
         <div className="px-16">
-          {benefitSection && (
+          {infoCardsSection && (
             <div id="benefits" className="mx-auto px-4 pb-20 md:pb-24">
               <div className="text-center mb-16 md:mb-20 animate-fade-in-up">
                 <h2 className="text-7xl font-bold mb-6 md:mb-8">
-                  {benefitSection.title}
+                  {infoCardsSection.title}
                 </h2>
                 <p className="text-size-20 text-gray-600 max-w-5xl mx-auto leading-tight">
-                  {benefitSection.description}
+                  {infoCardsSection.description}
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
-                {benefitSection.cards.map((card, i) => {
+                {infoCardsSection.cards.map((card, i) => {
                   const CardIcon = card.icon;
                   return (
                     <div
@@ -373,6 +374,7 @@ export default function EmptyState({
               </a>
             </div>
           )}
+          {customCalloutSection && customCalloutSection}
         </div>
       )}
     </div>

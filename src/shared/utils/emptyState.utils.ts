@@ -40,7 +40,7 @@ export type EmptyStateProps = {
   flowItems: FlowItem[];
   cta: CtaConfig;
   stats?: StatItem[];
-  benefitSection?: {
+  infoCardsSection?: {
     title: string;
     description: string;
     cards: BenefitCard[];
@@ -49,6 +49,7 @@ export type EmptyStateProps = {
   topographicBackgroundId?: string;
   primaryColor?: string;
   showParticle?: boolean;
+  customCalloutSection?: ReactNode;
 };
 
 export type WalletState = 'disconnected' | 'connected-no-locks' | 'has-locks';

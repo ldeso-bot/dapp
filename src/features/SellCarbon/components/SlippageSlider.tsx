@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import Slider from "@/shared/components/Slider/Slider";
-import { UseFormReturn } from "react-hook-form";
-import { SellCarbonFields } from "../../sellCarbon.constants";
+import Slider from '@/shared/components/Slider/Slider';
+import { UseFormReturn } from 'react-hook-form';
+import { SellCarbonFields } from '../sellCarbon.constants';
 
 type Props = {
   form: UseFormReturn<SellCarbonFields>;
-}
+};
 
-export default function SlippageSlider({ form }: Props) {
+export const SlippageSlider = ({ form }: Props) => {
   const slippage = form.watch('slippage');
   return (
     <div className="flex flex-col gap-2">
@@ -18,5 +18,5 @@ export default function SlippageSlider({ form }: Props) {
       </div>
       <Slider name="slippage" control={form?.control} />
     </div>
-  )
-}
+  );
+};

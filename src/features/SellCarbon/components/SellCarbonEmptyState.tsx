@@ -3,11 +3,11 @@
 import EmptyState from '@/shared/components/EmptyState/EmptyState';
 import { useEmptyStateButton } from '@/shared/hooks/useEmptyStateButton';
 import {
-  sellCarbonBenefitCards,
   sellCarbonDocsCallout,
   sellCarbonFlowItems,
+  sellCarbonInfoCardsSection,
   sellCarbonStats,
-} from '../../sellCarbon.constants';
+} from '../sellCarbon.constants';
 
 type Props = {
   onStartSelling?: () => void;
@@ -36,12 +36,7 @@ export const SellCarbonEmptyState = ({ onStartSelling }: Props) => {
       flowItems={sellCarbonFlowItems}
       cta={emptyStateButtonConfig}
       stats={sellCarbonStats}
-      benefitSection={{
-        title: 'Why Sell with Klima?',
-        description:
-          'Convert your carbon credits into kVCM with instant liquidity and transparent pricing.',
-        cards: sellCarbonBenefitCards,
-      }}
+      infoCardsSection={sellCarbonInfoCardsSection}
       docsCallout={sellCarbonDocsCallout}
     />
   );
