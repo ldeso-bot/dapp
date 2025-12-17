@@ -1,6 +1,5 @@
 'use client';
 
-import ConnectedFeature from '@/shared/components/ConnectedFeature/ConnectedFeature';
 import {
   Tabs,
   TabsContent,
@@ -11,10 +10,10 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useMemo } from 'react';
 import { HoldingsTabValue, SUPPORTED_TABS } from './constants/tab.constants';
 import MyHoldingsModals from './modals/MyHoldingsModals';
-import { K2View } from './views/K2View';
-import { KvcmView } from './views/KvcmView';
+import { K2View } from './views/K2View/K2View';
+import { KvcmView } from './views/KVCMView/KvcmView';
 import { LiquidityPositionsView } from './views/LiquidityPositionsView/LiquidityPositionView';
-import { OverviewView } from './views/OverviewView';
+import { OverviewView } from './views/OverviewView/OverviewView';
 
 const MyHoldingsTabs = () => {
   const router = useRouter();
@@ -58,12 +57,10 @@ const MyHoldingsTabs = () => {
 };
 
 const MyHoldingsPage = () => (
-  <ConnectedFeature>
-    <Suspense>
-      <MyHoldingsModals />
-      <MyHoldingsTabs />
-    </Suspense>
-  </ConnectedFeature>
+  <Suspense>
+    <MyHoldingsModals />
+    <MyHoldingsTabs />
+  </Suspense>
 );
 
 export default MyHoldingsPage;

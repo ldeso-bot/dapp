@@ -1,11 +1,11 @@
 'use client';
 
-import EmptyState from '@/shared/components/EmptyState/EmptyState';
+import { EmptyState } from '@/shared/components/EmptyState/EmptyState';
 import { useEmptyStateButton } from '@/shared/hooks/useEmptyStateButton';
 import {
-  allocationBenefitCards,
   allocationDocsCallout,
   allocationFlowItems,
+  allocationInfoCards,
   allocationStats,
 } from '../allocate.constants';
 
@@ -31,17 +31,11 @@ export const AllocationEmptyState = ({ onStartAllocating }: Props) => {
           Prices.
         </>
       }
-      showParticle
       description="Allocate your locked kVCM and K2 to influence carbon class prices and protocol purchase behavior."
       flowItems={allocationFlowItems}
       cta={emptyStateButtonConfig}
       stats={allocationStats}
-      infoCardsSection={{
-        title: 'Why Allocate?',
-        description:
-          'Allocate your locked tokens to influence carbon class prices and support market health.',
-        cards: allocationBenefitCards,
-      }}
+      infoCards={allocationInfoCards}
       docsCallout={allocationDocsCallout}
     />
   );

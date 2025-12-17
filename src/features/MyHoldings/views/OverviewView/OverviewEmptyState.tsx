@@ -3,20 +3,20 @@
 import { EmptyState } from '@/shared/components/EmptyState/EmptyState';
 import { useEmptyStateButton } from '@/shared/hooks/useEmptyStateButton';
 import {
-  sellCarbonDocsCallout,
-  sellCarbonFlowItems,
-  sellCarbonInfoCards,
-  sellCarbonStats,
-} from '../sellCarbon.constants';
+  overviewCarbonStats,
+  overviewDocsCallout,
+  overviewFlowItems,
+  overviewInfoCards,
+} from './overview.constants';
 
 type Props = {
   onStartSelling?: () => void;
 };
 
-export const SellCarbonEmptyState = ({ onStartSelling }: Props) => {
+export const OverviewEmptyState = ({ onStartSelling }: Props) => {
   const emptyStateButtonConfig = useEmptyStateButton({
     onStartAction: onStartSelling,
-    disconnectedDescription: 'Fair, transparent pricing.',
+    disconnectedDescription: 'View and manage your positions.',
     noLocksDescription:
       'Lock kVCM or K2 tokens in positions before you can allocate.',
     hasLocksActionText: 'Start Selling',
@@ -26,17 +26,17 @@ export const SellCarbonEmptyState = ({ onStartSelling }: Props) => {
     <EmptyState
       title={
         <>
-          Sell Carbon.
+          Deploy Capital.
           <br />
-          Receive kVCM.
+          Drive Climate Impact.
         </>
       }
-      description="Exchange your carbon credits for kVCM at transparent, market-driven prices."
-      flowItems={sellCarbonFlowItems}
+      description="Lock kVCM and K2 into Klima strategies that earn rewards and support carbon markets."
+      flowItems={overviewFlowItems}
       cta={emptyStateButtonConfig}
-      stats={sellCarbonStats}
-      infoCards={sellCarbonInfoCards}
-      docsCallout={sellCarbonDocsCallout}
+      stats={overviewCarbonStats}
+      infoCards={overviewInfoCards}
+      docsCallout={overviewDocsCallout}
     />
   );
 };

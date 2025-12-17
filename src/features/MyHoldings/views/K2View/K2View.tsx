@@ -21,11 +21,11 @@ import {
   formatPriceUSDWithCommas,
 } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
-import { useTokenHoldingsData } from '../hooks/useHoldingsData';
-import { claimTokenDialogAtom } from '../modals/ClaimToken/claimToken.utils';
-import { topupLockDialogAtom } from '../modals/TopupLock/topupLock.utils';
-import { HoldingEstimatedValue } from '../shared/HoldingEstimatedValue';
-import { HoldingTotalPosition } from '../shared/HoldingTotalPosition';
+import { useTokenHoldingsData } from '../../hooks/useHoldingsData';
+import { claimTokenDialogAtom } from '../../modals/ClaimToken/claimToken.utils';
+import { topupLockDialogAtom } from '../../modals/TopupLock/topupLock.utils';
+import { HoldingEstimatedValue } from '../../shared/HoldingEstimatedValue';
+import { HoldingTotalPosition } from '../../shared/HoldingTotalPosition';
 
 export const K2View = () => {
   const setTopupLockDialog = useSetAtom(topupLockDialogAtom);

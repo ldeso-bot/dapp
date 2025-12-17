@@ -1,14 +1,6 @@
 import { MenuBookIcon } from '@/shared/components/Svg/MenuBookIcon';
 import { ReactNode } from 'react';
 
-type FlowItem = {
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  sublabel: string;
-  bgColor?: string;
-  glowColor?: string;
-};
-
 type CtaConfig = {
   text: string;
   icon: React.ComponentType<{ className?: string }>;
@@ -16,10 +8,19 @@ type CtaConfig = {
   description?: string | ReactNode;
 };
 
-export type BenefitCard = {
+export type FlowItemProps = {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  sublabel: string;
+  bgColor?: string;
+  glowColor?: string;
+};
+
+type InfoCard = {
   icon: React.ComponentType<{ className?: string }>;
   title: string;
   description: string;
+  cta?: Pick<CtaConfig, 'text'> & { activeView: string };
 };
 
 export type StatItem = {
@@ -27,39 +28,48 @@ export type StatItem = {
   label: string;
 };
 
-export type DocsCallout = {
+export type StatsCardsProps = {
+  stats: StatItem[];
+};
+
+export type DocsCalloutProps = {
   title: string;
   description: string;
   href: string;
   icon: React.ComponentType<{ className?: string }>;
 };
 
+export type InfoCardsProps = {
+  title: string;
+  description: string;
+  cards: InfoCard[];
+  showSteps?: boolean;
+};
+
 export type EmptyStateProps = {
   title: string | ReactNode;
   description: string;
-  flowItems: FlowItem[];
+  flowItems: FlowItemProps[];
   cta: CtaConfig;
   stats?: StatItem[];
-  infoCardsSection?: {
-    title: string;
-    description: string;
-    cards: BenefitCard[];
-  };
-  docsCallout?: DocsCallout;
+  infoCards?: InfoCardsProps;
+  docsCallout?: DocsCalloutProps;
   topographicBackgroundId?: string;
   primaryColor?: string;
-  showParticle?: boolean;
   customCalloutSection?: ReactNode;
 };
 
 export type WalletState = 'disconnected' | 'connected-no-locks' | 'has-locks';
 
 const KLIMA_DOCS_URL = 'https://docs.klimaprotocol.com/';
-export const DEFAULT_DOCS_CALLOUT: Omit<DocsCallout, 'title' | 'description'> =
-  {
-    href: KLIMA_DOCS_URL,
-    icon: MenuBookIcon,
-  };
+
+export const DEFAULT_DOCS_CALLOUT: Omit<
+  DocsCalloutProps,
+  'title' | 'description'
+> = {
+  href: KLIMA_DOCS_URL,
+  icon: MenuBookIcon,
+};
 
 const FLOW_ITEM_STYLES = [
   {
@@ -81,7 +91,7 @@ export const createFlowItem = (
   label: string,
   sublabel: string,
   index: number
-): FlowItem => {
+): FlowItemProps => {
   const style = FLOW_ITEM_STYLES[index % FLOW_ITEM_STYLES.length];
   return {
     icon,

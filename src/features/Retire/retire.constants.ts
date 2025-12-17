@@ -4,11 +4,7 @@ import { DocIcon } from '@/shared/components/Svg/DocIcon';
 import { GlobeIcon } from '@/shared/components/Svg/GlobeIcon';
 import { KvcmIcon } from '@/shared/components/Svg/KvcmIcon';
 import { tokens } from '@/shared/constants/tokens.constants';
-import {
-  BenefitCard,
-  createFlowItem,
-  StatItem,
-} from '@/shared/utils/emptyState.utils';
+import { createFlowItem, type StatItem } from '@/shared/utils/emptyState.utils';
 import { z } from 'zod';
 
 interface CarbonPrice {
@@ -106,30 +102,28 @@ export const retireCarbonStats: StatItem[] = [
   },
 ];
 
-const retireCarbonBenefitCards: BenefitCard[] = [
-  {
-    icon: BadgeIcon,
-    title: 'Blockchain-Verified',
-    description:
-      'Receive a proof-of-retirement certificate that is publicly verifiable and blockchain-secured via Carbonmark.',
-  },
-  {
-    icon: DocIcon,
-    title: 'Public Beneficiary Details',
-    description:
-      'Connect the certificate to yourself or your enterprise by publishing public beneficiary details.',
-  },
-  {
-    icon: CarbonCreditsIcon,
-    title: 'Diverse Selection',
-    description:
-      'Choose from a wide selection of carbon credits, vintages, and methodologies.',
-  },
-];
-
-export const retireCarbonInfoCardsSection = {
+export const retireCarbonInfoCards = {
   title: 'Why Retire with Klima?',
   description:
     'Retire carbon credits to permanently offset emissions and receive verifiable proof of your climate action.',
-  cards: retireCarbonBenefitCards,
+  cards: [
+    {
+      icon: BadgeIcon,
+      title: 'Blockchain-Verified',
+      description:
+        'Receive a proof-of-retirement certificate that is publicly verifiable and blockchain-secured via Carbonmark.',
+    },
+    {
+      icon: DocIcon,
+      title: 'Public Beneficiary Details',
+      description:
+        'Connect the certificate to yourself or your enterprise by publishing public beneficiary details.',
+    },
+    {
+      icon: CarbonCreditsIcon,
+      title: 'Diverse Selection',
+      description:
+        'Choose from a wide selection of carbon credits, vintages, and methodologies.',
+    },
+  ],
 };

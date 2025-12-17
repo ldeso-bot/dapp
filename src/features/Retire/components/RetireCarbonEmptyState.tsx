@@ -1,13 +1,13 @@
 'use client';
 
-import EmptyState from '@/shared/components/EmptyState/EmptyState';
+import { ImportantToKnow } from '@/features/Retire/components/ImportantToKnow';
+import { EmptyState } from '@/shared/components/EmptyState/EmptyState';
 import { useEmptyStateButton } from '@/shared/hooks/useEmptyStateButton';
 import {
   retireCarbonFlowItems,
-  retireCarbonInfoCardsSection,
+  retireCarbonInfoCards,
   retireCarbonStats,
 } from '../retire.constants';
-import { ImportantToKnow } from './ImportantToKnow';
 
 type Props = {
   onStartSelling?: () => void;
@@ -25,7 +25,6 @@ export const RetireCarbonEmptyState = ({ onStartSelling }: Props) => {
 
   return (
     <EmptyState
-      showParticle
       title={
         <>
           Retire Carbon. <br /> Make It Permanent.
@@ -35,7 +34,7 @@ export const RetireCarbonEmptyState = ({ onStartSelling }: Props) => {
       flowItems={retireCarbonFlowItems}
       cta={emptyStateButtonConfig}
       stats={retireCarbonStats}
-      infoCardsSection={retireCarbonInfoCardsSection}
+      infoCards={retireCarbonInfoCards}
       customCalloutSection={<ImportantToKnow />}
     />
   );

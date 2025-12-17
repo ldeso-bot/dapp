@@ -25,12 +25,12 @@ import {
 } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
 import { useState } from 'react';
-import { useTokenHoldingsData } from '../hooks/useHoldingsData';
-import { claimIncentivesDialogAtom } from '../modals/ClaimIncentives/claimIncentives.utils';
-import { lockTokenDialogAtom } from '../modals/LockToken/lockToken.utils';
-import { HoldingEstimatedValue } from '../shared/HoldingEstimatedValue';
-import { HoldingTotalPosition } from '../shared/HoldingTotalPosition';
-import { TokenLots } from '../shared/TokenLots';
+import { useTokenHoldingsData } from '../../hooks/useHoldingsData';
+import { claimIncentivesDialogAtom } from '../../modals/ClaimIncentives/claimIncentives.utils';
+import { lockTokenDialogAtom } from '../../modals/LockToken/lockToken.utils';
+import { HoldingEstimatedValue } from '../../shared/HoldingEstimatedValue';
+import { HoldingTotalPosition } from '../../shared/HoldingTotalPosition';
+import { TokenLots } from '../../shared/TokenLots';
 
 export const KvcmView = () => {
   const setLockTokenDialogState = useSetAtom(lockTokenDialogAtom);
