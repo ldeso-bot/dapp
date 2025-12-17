@@ -27,7 +27,7 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
   return (
     <Card
       title="Sell Carbon"
-      className="w-[45rem] rounded-xl border border-gray-200"
+      className="w-[45rem] rounded-xl border border-gray-200 h-fit"
       titleClassName="font-semibold text-gray-800 text-size-20 tracking-tight"
     >
       <div className="flex-1">
