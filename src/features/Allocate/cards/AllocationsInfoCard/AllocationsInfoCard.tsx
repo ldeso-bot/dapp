@@ -1,6 +1,7 @@
 'use client';
 
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
+import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { formatAmountWithCommas } from '@/shared/utils/string.utils';
 import { useMemo } from 'react';
@@ -9,9 +10,10 @@ import { UnallocatedTokenDisplay } from '../../shared/UnallocatedTokenDisplay';
 
 export const AllocationsInfoCard = () => {
   const { data: walletData } = useWalletData();
+  const { data: protocolData } = useProtocolData();
 
   const stats = useMemo(() => {
-    if (!walletData) {
+    if (!walletData || !protocolData) {
       return null;
     }
 
@@ -23,8 +25,8 @@ export const AllocationsInfoCard = () => {
       0
     );
 
-    const kvcmPrice = 0; // protocolData.metrics.kvcm.valueUSD || 0;
-    const k2Price = 0; // protocolData.metrics.k2.valueUSD || 0;
+    const kvcmPrice = protocolData.metrics.kvcm.valueUSD || 0;
+    const k2Price = protocolData.metrics.k2.valueUSD || 0;
 
     const kvcmAllocations = allocations.filter((a) => a.token.name === 'kvcm');
     const kvcmAllocated = kvcmAllocations.reduce((sum, a) => sum + a.amount, 0);
@@ -64,7 +66,7 @@ export const AllocationsInfoCard = () => {
       highestKvcmInfluence,
       highestK2Influence,
     };
-  }, [walletData]);
+  }, [walletData, protocolData]);
 
   return (
     <div className="text-card-foreground flex flex-col gap-6 rounded-xl p-5 py-8 bg-white border border-gray-300">
