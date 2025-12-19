@@ -21,40 +21,50 @@ import {
   formatPriceUSDWithCommas,
 } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
+import { useAccount } from 'wagmi';
 import { useTokenHoldingsData } from '../../hooks/useHoldingsData';
 import { claimTokenDialogAtom } from '../../modals/ClaimToken/claimToken.utils';
 import { topupLockDialogAtom } from '../../modals/TopupLock/topupLock.utils';
 import { HoldingEstimatedValue } from '../../shared/HoldingEstimatedValue';
 import { HoldingTotalPosition } from '../../shared/HoldingTotalPosition';
+import { K2Onboarding } from './K2Onboarding';
 
 export const K2View = () => {
+  const account = useAccount();
   const setTopupLockDialog = useSetAtom(topupLockDialogAtom);
   const { data: k2Data } = useTokenHoldingsData('k2');
   const { data: protocolData } = useProtocolData();
+
   return (
     <>
-      <InfoCard
-        title="K2 Position"
-        tooltipId="k2-position"
-        buttonLabel="Deposit"
-        onButtonClick={() =>
-          k2Data &&
-          protocolData?.midnightInfos &&
-          setTopupLockDialog({
-            open: true,
-            token: 'k2',
-            currentLockAmount: k2Data.lockedAmount ?? 0,
-            totalAccruingRewards: k2Data.k2AccruingClaimableAmount ?? 0,
-            tokenSymbol: 'K2',
-            baseApy: protocolData.midnightInfos.k2ApyForK2 ?? 0,
-            maturityDate: k2Data.locks[0].lockedUntil ?? 0,
-          })
-        }
-        description="Lock K2 to earn variable K2 incentives and a share of kVCM yield. After 24h you can request an unlock; principal becomes claimable at the daily cutoff. You can also allocate in-position K2 to carbon classes."
-        content={<K2Overview />}
-      />
-      <K2VariableRewards />
-      <RecentActivity />
+      {!account.isConnected ? (
+        <K2Onboarding />
+      ) : (
+        <>
+          <InfoCard
+            title="K2 Position"
+            tooltipId="k2-position"
+            buttonLabel="Deposit"
+            onButtonClick={() =>
+              k2Data &&
+              protocolData?.midnightInfos &&
+              setTopupLockDialog({
+                open: true,
+                token: 'k2',
+                currentLockAmount: k2Data.lockedAmount ?? 0,
+                totalAccruingRewards: k2Data.k2AccruingClaimableAmount ?? 0,
+                tokenSymbol: 'K2',
+                baseApy: protocolData.midnightInfos.k2ApyForK2 ?? 0,
+                maturityDate: k2Data.locks[0].lockedUntil ?? 0,
+              })
+            }
+            description="Lock K2 to earn variable K2 incentives and a share of kVCM yield. After 24h you can request an unlock; principal becomes claimable at the daily cutoff. You can also allocate in-position K2 to carbon classes."
+            content={<K2Overview />}
+          />
+          <K2VariableRewards />
+          <RecentActivity />
+        </>
+      )}
     </>
   );
 };

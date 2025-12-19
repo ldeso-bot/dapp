@@ -4,7 +4,6 @@ import { cn } from '@/shared/utils/component.utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Icon from '../Icon/Icon';
-import Tag from '../Tag/Tag';
 import { NavItem } from './navbar.utils';
 
 type NavBarItemProps = NavItem;
@@ -13,7 +12,7 @@ export default function NavBarItem({
   icon,
   label,
   href,
-  isAdvanced,
+  isDisabled = false,
 }: NavBarItemProps) {
   const pathname = usePathname();
   const isActive = pathname === href;
@@ -23,6 +22,8 @@ export default function NavBarItem({
       className={cn(
         'flex items-center justify-between gap-2 py-2 px-1',
         isActive && 'font-bold bg-void-10 rounded-xl',
+        isDisabled &&
+          'opacity-80 hover:opacity-80 cursor-not-allowed pointer-events-none font-normal',
         !isActive && 'hover:opacity-80'
       )}
     >
@@ -30,7 +31,6 @@ export default function NavBarItem({
         <Icon icon={icon} alt={label} size={2} />
         <div>{label}</div>
       </div>
-      {isAdvanced && <Tag>Advanced</Tag>}
     </Link>
   );
 }

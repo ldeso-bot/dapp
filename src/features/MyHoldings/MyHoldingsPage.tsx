@@ -15,6 +15,8 @@ import { KvcmView } from './views/KVCMView/KvcmView';
 import { LiquidityPositionsView } from './views/LiquidityPositionsView/LiquidityPositionView';
 import { OverviewView } from './views/OverviewView/OverviewView';
 
+const tabClassName = 'z-100 py-4 px-3 text-size-14 font-medium rounded-full';
+
 const MyHoldingsTabs = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -35,10 +37,18 @@ const MyHoldingsTabs = () => {
   return (
     <Tabs value={currentTab} onValueChange={handleTabChange}>
       <TabsList>
-        <TabsTrigger value="overview">Overview</TabsTrigger>
-        <TabsTrigger value="kvcm">kVCM</TabsTrigger>
-        <TabsTrigger value="k2">K2</TabsTrigger>
-        <TabsTrigger value="liquidity">Liquidity</TabsTrigger>
+        <TabsTrigger className={tabClassName} value="overview">
+          Overview
+        </TabsTrigger>
+        <TabsTrigger className={tabClassName} value="kvcm">
+          kVCM
+        </TabsTrigger>
+        <TabsTrigger className={tabClassName} value="k2">
+          K2
+        </TabsTrigger>
+        <TabsTrigger className={tabClassName} value="liquidity">
+          Liquidity
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="overview">
         <OverviewView />

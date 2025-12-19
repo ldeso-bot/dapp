@@ -25,30 +25,39 @@ import {
 } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
 import { useState } from 'react';
+import { useAccount } from 'wagmi';
 import { useTokenHoldingsData } from '../../hooks/useHoldingsData';
 import { claimIncentivesDialogAtom } from '../../modals/ClaimIncentives/claimIncentives.utils';
 import { lockTokenDialogAtom } from '../../modals/LockToken/lockToken.utils';
 import { HoldingEstimatedValue } from '../../shared/HoldingEstimatedValue';
 import { HoldingTotalPosition } from '../../shared/HoldingTotalPosition';
 import { TokenLots } from '../../shared/TokenLots';
+import { KvcmOnboarding } from './KvcmOnboarding';
 
 export const KvcmView = () => {
+  const account = useAccount();
   const setLockTokenDialogState = useSetAtom(lockTokenDialogAtom);
 
   return (
     <>
-      <InfoCard
-        title="kVCM Locks"
-        buttonLabel="Lock"
-        tooltipId="kvcm-locks"
-        description="Lock kVCM for a fixed term to earn Base Accrual (accrues daily; pays at maturity — no early unlock). Incentives (K2) accrue on locked kVCM and are claimable anytime."
-        onButtonClick={() =>
-          setLockTokenDialogState({ open: true, token: 'kvcm' })
-        }
-        content={<KvcmOverview />}
-      />
-      <KvcmVariableRewards />
-      <RecentActivity />
+      {!account.isConnected ? (
+        <KvcmOnboarding />
+      ) : (
+        <>
+          <InfoCard
+            title="kVCM Locks"
+            buttonLabel="Lock"
+            tooltipId="kvcm-locks"
+            description="Lock kVCM for a fixed term to earn Base Accrual (accrues daily; pays at maturity — no early unlock). Incentives (K2) accrue on locked kVCM and are claimable anytime."
+            onButtonClick={() =>
+              setLockTokenDialogState({ open: true, token: 'kvcm' })
+            }
+            content={<KvcmOverview />}
+          />
+          <KvcmVariableRewards />
+          <RecentActivity />
+        </>
+      )}
     </>
   );
 };

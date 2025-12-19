@@ -11,7 +11,7 @@ export type NavItem = {
   icon: StaticImageData;
   label: string;
   href: string;
-  isAdvanced?: boolean;
+  isDisabled?: boolean;
 };
 
 export const navItems: NavItem[] = [
@@ -39,11 +39,11 @@ export const navItems: NavItem[] = [
     icon: allocateIcon,
     label: 'Allocate',
     href: ROUTES.ALLOCATE,
-    isAdvanced: true,
   },
   {
     icon: carbonUniversityIcon,
     label: 'Carbon University',
-    href: ROUTES.CARBON_UNIVERSITY,
+    href: '#',
+    isDisabled: true,
   },
 ];

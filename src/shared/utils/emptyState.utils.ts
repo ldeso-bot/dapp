@@ -1,11 +1,12 @@
 import { MenuBookIcon } from '@/shared/components/Svg/MenuBookIcon';
 import { ReactNode } from 'react';
 
-type CtaConfig = {
+export type CtaConfig = {
   text: string;
   icon: React.ComponentType<{ className?: string }>;
   onClick: () => void;
   description?: string | ReactNode;
+  className?: string;
 };
 
 export type FlowItemProps = {
