@@ -18,7 +18,7 @@ const contracts: Record<string, contractInfo> = {
   },
   USDC: {
     [base.id]: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-    [baseSepolia.id]: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // No USDC on testnet
+    [baseSepolia.id]: '0x036CbD53842c5426634e7929541eC2318f3dCF7e', // No USDC on testnet
     abi: USDC,
   },
   KlimaProtocol: {
@@ -33,12 +33,12 @@ const contracts: Record<string, contractInfo> = {
   },
   KVCM: {
     [base.id]: '0x00fBAC94Fec8D4089d3fe979F39454F48c71A65d',
-    [baseSepolia.id]: '0x00000000000000000000000000000000000000000', // No testnet address yet
+    [baseSepolia.id]: '0x4231968b210489379BB40f1C2e6275978477094b', // No testnet address yet
     abi: USDC,
   },
   K2: {
     [base.id]: '0x59081d974a0C635Fae3e8195F34f879B591B6519',
-    [baseSepolia.id]: '0x00000000000000000000000000000000000000000', // No testnet address yet
+    [baseSepolia.id]: '0xDBaeE9Af470913Ba360379817661C836d8657ebD', // No testnet address yet
     abi: USDC,
   },
   AERO: {

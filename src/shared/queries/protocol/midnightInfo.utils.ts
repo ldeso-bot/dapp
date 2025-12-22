@@ -236,7 +236,7 @@ export const getLatestMidnightInfos = async (
     async () => {
       const midnightInfos = (await sdk.protocol.getLatestMidnightInfo())
         .midnightInfos;
-      if (!midnightInfos) return {};
+      if (!midnightInfos || midnightInfos.length === 0) return {};
       const midnightIndex = midnightInfos[0].midnightIndex;
       const mappedMidnightInfos = midnightInfos
         .filter(
