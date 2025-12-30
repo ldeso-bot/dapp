@@ -2,7 +2,6 @@ import { ROUTES } from '@/shared/constants/route.constants';
 import { StaticImageData } from 'next/image';
 import allocateIcon from './images/allocate.svg';
 import burnCarbonIcon from './images/burn-carbon.svg';
-import carbonUniversityIcon from './images/carbon-university.svg';
 import myHoldingsIcon from './images/my-holdings.svg';
 import protocolOverviewIcon from './images/protocol-overview.svg';
 import sellCarbonIcon from './images/sell-carbon.svg';
@@ -32,18 +31,12 @@ export const navItems: NavItem[] = [
   },
   {
     icon: sellCarbonIcon,
-    label: 'Sell Carbon',
+    label: 'Sell',
     href: ROUTES.SELL_CARBON,
   },
   {
     icon: allocateIcon,
     label: 'Allocate',
     href: ROUTES.ALLOCATE,
-  },
-  {
-    icon: carbonUniversityIcon,
-    label: 'Carbon University',
-    href: '#',
-    isDisabled: true,
   },
 ];

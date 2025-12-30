@@ -28,7 +28,7 @@ export default function NavBarItem({
       )}
     >
       <div className="flex items-center gap-2">
-        <Icon icon={icon} alt={label} size={2} />
+        <Icon icon={icon} alt={label} size={1.8} />
         <div>{label}</div>
       </div>
     </Link>
