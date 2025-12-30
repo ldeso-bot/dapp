@@ -32,7 +32,7 @@ export default function Card({
   return (
     <div
       className={cn(
-        'flex flex-col box-shadow border-void-20 border-1 bg-background p-5',
+        'flex flex-col rounded-lg border-gray-300 border-1 bg-background p-5',
         className
       )}
     >
