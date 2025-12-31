@@ -9,6 +9,7 @@ export type TopupLockFields = {
   totalAccruingRewards: number;
   baseApy: number;
   maturityDate: number;
+  maturityId: number;
 };
 
 const topupLockDialogState = {
@@ -19,6 +20,7 @@ const topupLockDialogState = {
   totalAccruingRewards: 0 as number | null,
   baseApy: 0 as number | null,
   maturityDate: null as number | null,
+  maturityId: null as number | null,
 };
 
 export const topupLockDialogAtom = atom(topupLockDialogState);

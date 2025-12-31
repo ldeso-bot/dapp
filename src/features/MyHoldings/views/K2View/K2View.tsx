@@ -56,6 +56,7 @@ export const K2View = () => {
                 tokenSymbol: 'K2',
                 baseApy: protocolData.midnightInfos.k2ApyForK2 ?? 0,
                 maturityDate: k2Data.locks[0].lockedUntil ?? 0,
+                maturityId: k2Data.locks[0].maturityId ?? 1,
               })
             }
             description="Lock K2 to earn variable K2 incentives and a share of kVCM yield. After 24h you can request an unlock; principal becomes claimable at the daily cutoff. You can also allocate in-position K2 to carbon classes."

@@ -7,8 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useAtomValue } from 'jotai';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import TopupLockConfirm from './steps/TopupLockConfirm';
-import TopupLockForm from './steps/TopupLockForm';
+import { TopupLockForm } from './steps/TopupLockForm';
 import { topupLockDialogAtom, TopupLockFields } from './topupLock.utils';
 
 export default function TopupLockFlow() {
@@ -20,6 +19,7 @@ export default function TopupLockFlow() {
     totalAccruingRewards: z.number(),
     baseApy: z.number(),
     maturityDate: z.number(),
+    maturityId: z.number(),
     tokenSymbol: z.string(),
     amount: z.coerce
       .number()
@@ -35,17 +35,14 @@ export default function TopupLockFlow() {
       totalAccruingRewards: topupLockDialog.totalAccruingRewards ?? 0,
       baseApy: topupLockDialog.baseApy ?? 0,
       maturityDate: topupLockDialog.maturityDate ?? 0,
+      maturityId: topupLockDialog.maturityId ?? 1,
       token: topupLockDialog.token ?? DEFAULT_LP_TOKEN,
       tokenSymbol: topupLockDialog.tokenSymbol ?? '',
     },
   });
-  const parsedForm = useParsedForm(form, schema);
 
-  // Form is passed to each step (we could pass schema too)
+  const parsedForm = useParsedForm(form, schema);
   return (
-    <Steps
-      components={[TopupLockForm, TopupLockConfirm]}
-      data={{ form, schema, parsedForm }}
-    />
+    <Steps components={[TopupLockForm]} data={{ form, schema, parsedForm }} />
   );
 }

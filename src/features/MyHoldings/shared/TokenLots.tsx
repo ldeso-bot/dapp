@@ -132,6 +132,7 @@ export const TokenLots: FC<TokenLotsProps> = ({
                             tokenSymbol: getTokenSymbol(lock.token),
                             baseApy: lock.syntheticYieldApyPercent,
                             maturityDate: lock.lockedUntil,
+                            maturityId: lock.maturityId,
                           })
                         }
                       >

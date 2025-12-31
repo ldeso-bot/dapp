@@ -4,6 +4,7 @@ import { useHoldingsData } from '@/features/MyHoldings/hooks/useHoldingsData';
 import Card, { CardProps } from '@/shared/components/Card/Card';
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
 import { cn } from '@/shared/utils/component.utils';
+import { calculatePercentage } from '@/shared/utils/math.utils';
 import { formatPriceUSDWithCommas } from '@/shared/utils/string.utils';
 import { useTabNavigation } from '../../hooks/useTabNavigation';
 
@@ -17,40 +18,45 @@ export const PortfolioDistributionCard = (props: CardProps) => {
           {
             type: 'kvcm',
             label: 'kVCM Locks',
-            value: holdingsData.kvcm.lockedValue,
-            percentage:
-              (holdingsData.kvcm.lockedValue / holdingsData.portfolioValue) *
-              100,
+            value: holdingsData.kvcm.lockedValue || 0,
+            percentage: calculatePercentage(
+              holdingsData.kvcm.lockedValue,
+              holdingsData.portfolioValue
+            ),
             color: 'bg-[#00a329]',
           },
           {
             type: 'k2',
             label: 'K2 Position',
-            value: holdingsData.k2.lockedValue,
-            percentage:
-              (holdingsData.k2.lockedValue / holdingsData.portfolioValue) * 100,
+            value: holdingsData.k2.lockedValue || 0,
+            percentage: calculatePercentage(
+              holdingsData.k2.lockedValue,
+              holdingsData.portfolioValue
+            ),
             color: 'bg-gray-600',
           },
           {
             type: 'liquidity',
             label: 'Liquidity',
-            value: holdingsData.liquidityLockedValue,
-            percentage:
-              (holdingsData.liquidityLockedValue /
-                holdingsData.portfolioValue) *
-              100,
+            value: holdingsData.liquidityLockedValue || 0,
+            percentage: calculatePercentage(
+              holdingsData.liquidityLockedValue,
+              holdingsData.portfolioValue
+            ),
             color: 'bg-gray-400',
           },
           {
             type: 'claimables',
             label: 'Claimables',
-            value: holdingsData.claimableValue,
-            percentage:
-              (holdingsData.claimableValue / holdingsData.portfolioValue) * 100,
+            value: holdingsData.claimableValue || 0,
+            percentage: calculatePercentage(
+              holdingsData.claimableValue,
+              holdingsData.portfolioValue
+            ),
             color: 'bg-green-500',
           },
         ],
-        totalValue: holdingsData.portfolioValue,
+        totalValue: holdingsData.portfolioValue || 0,
       }
     : null;
 

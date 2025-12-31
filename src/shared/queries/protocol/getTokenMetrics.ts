@@ -11,6 +11,7 @@ import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
 import { TokenSnapshot_Filter } from '@generated/gql/types/protocol.types';
 import { unstable_cache } from 'next/cache';
 import { mapToObj } from 'remeda';
+import { base } from 'viem/chains';
 import { getHoursSinceEpoch24HoursAgo } from './protocol.utils';
 
 export const getTokenMetrics = async (
@@ -21,6 +22,31 @@ export const getTokenMetrics = async (
     [`token-metrics-${chainId}`],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
   )();
+};
+
+const getMainnetKvcmPrice = async (): Promise<number> => {
+  try {
+    const mainnetSdk = getSdk(base.id);
+    const mainnetPool = await getAerodromePoolInfoByIndex(
+      AERODROME_KVCM_USDC_POOL_INDEX
+    );
+
+    // Calculate KVCM price from mainnet pool reserves - reserve0 is KVCM, reserve1 is USDC
+    if (mainnetPool.reserve0 > 0) {
+      return mainnetPool.reserve1 / mainnetPool.reserve0;
+    }
+
+    // Fallback: try to get from mainnet subgraph
+    const tokensResponse = await mainnetSdk.protocol.getTokens();
+    const kvcmToken = tokensResponse.tokens.find((t) => t?.symbol === 'KVCM');
+    if (kvcmToken?.priceUsdc?.priceUsdc) {
+      return formatStringToNumber(kvcmToken.priceUsdc.priceUsdc, 6);
+    }
+    return 0;
+  } catch (error) {
+    console.error('Failed to fetch mainnet KVCM price:', error);
+    return 0;
+  }
 };
 
 const getTokenMetricsUncached = async (
@@ -56,7 +82,9 @@ const getTokenMetricsUncached = async (
     t,
   ]);
 
-  const getProtocolTokenMetrics = (symbol: SubgraphTokenSymbol): Metrics => {
+  const getProtocolTokenMetrics = async (
+    symbol: SubgraphTokenSymbol
+  ): Promise<Metrics> => {
     const token = tokensMap[symbol];
     const snapshot = tokenSnapshotsMap[symbol];
 
@@ -82,8 +110,15 @@ const getTokenMetricsUncached = async (
         ? (supplyLocked - snapshotSupplyLocked) / snapshotSupplyLocked
         : 0;
 
-    // Price
-    const valueUSD = formatStringToNumber(token?.priceUsdc?.priceUsdc, 6);
+    // Price - for KVCM, try to get mainnet price first
+    let tokenPriceUSD = formatStringToNumber(token?.priceUsdc?.priceUsdc, 6);
+    if (symbol === 'KVCM') {
+      const mainnetPrice = await getMainnetKvcmPrice();
+      if (mainnetPrice > 0) {
+        tokenPriceUSD = mainnetPrice;
+      }
+    }
+    const valueUSD = tokenPriceUSD;
 
     const snapshotValueUSD = snapshot?.priceUsdc
       ? formatStringToNumber(snapshot.priceUsdc, 6)
@@ -144,8 +179,9 @@ const getTokenMetricsUncached = async (
     };
   };
 
-  const kvcmMetrics = getProtocolTokenMetrics('KVCM');
-  const k2Metrics = getProtocolTokenMetrics('K2');
+  const kvcmMetrics = await getProtocolTokenMetrics('KVCM');
+  const k2Metrics = await getProtocolTokenMetrics('K2');
+
   const kvcmK2LpMetrics = getLpTokenMetrics(
     'KVCM_K2_LP',
     kvcmMetrics.valueUSD,

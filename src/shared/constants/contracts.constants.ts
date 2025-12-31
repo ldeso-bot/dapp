@@ -1,3 +1,4 @@
+import KlimaDiamond from '@/shared/utils/abis/KlimaDiamond.json';
 import USDC from '@/shared/utils/abis/USDC.json';
 import USDCTransferWithPermit from '@/shared/utils/abis/USDCTransferWithPermit.json';
 import VelodromeSugar from '@/shared/utils/abis/VelodromeSugar.json';
@@ -21,10 +22,15 @@ const contracts: Record<string, contractInfo> = {
     [baseSepolia.id]: '0x036CbD53842c5426634e7929541eC2318f3dCF7e', // No USDC on testnet
     abi: USDC,
   },
-  KlimaProtocol: {
+  KvcmStaking: {
     [base.id]: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // TODO: add mainnet address
-    [baseSepolia.id]: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // TODO: add testnet address
-    abi: USDC,
+    [baseSepolia.id]: '0x4bfd0C3f99Ed111eb7a702a599e099243b58BB68',
+    abi: KlimaDiamond,
+  },
+  K2Staking: {
+    [base.id]: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // TODO: add mainnet address
+    [baseSepolia.id]: '0x4bfd0C3f99Ed111eb7a702a599e099243b58BB68',
+    abi: KlimaDiamond,
   },
   VelodromeSugar: {
     [base.id]: '0x9DE6Eab7a910A288dE83a04b6A43B52Fd1246f1E',

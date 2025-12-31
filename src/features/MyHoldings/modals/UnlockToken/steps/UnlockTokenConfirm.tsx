@@ -31,7 +31,7 @@ const UnlockTokenConfirm: FormFlowStep<UnlockTokenFields> = ({
   const onSubmit = async () => {
     setAlert({
       title: 'Unlock Successful',
-      description: `You've successfully unlocked ${lock.lockedAmount} of your ${tokens[lock.token].symbol} tokens! You can manage your positions in the "my holdings" dashboard.`,
+      description: `You've successfully unlocked ${lock.lockedAmount} of your ${tokens[lock.token].symbol} tokens! You can manage your positions in the "My Holdings" dashboard.`,
       type: 'success',
       links: [
         {

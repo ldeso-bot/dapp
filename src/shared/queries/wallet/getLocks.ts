@@ -215,6 +215,7 @@ export const getLocks = async (
       riskyYieldApyPercent,
       syntheticYieldApyPercent,
       token: tokenInfo.id,
+      maturityId: formatStringToNumber(lock.maturityId, 0),
       rewards: {
         kvcm: kvcmRewards,
         k2: k2Rewards,
@@ -274,6 +275,7 @@ const getMockLocks = (): Locks => {
   return [
     {
       id: '1',
+      maturityId: 1,
       lockedAmount: 1000,
       lockedValueUSD: 3000,
       positionAmount: 1031.25,
@@ -302,6 +304,7 @@ const getMockLocks = (): Locks => {
     },
     {
       id: '2',
+      maturityId: 2,
       lockedAmount: 12.25,
       lockedValueUSD: 36.75,
       positionAmount: 50.9375,

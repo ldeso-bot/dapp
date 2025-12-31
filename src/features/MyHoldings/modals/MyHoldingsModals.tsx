@@ -51,7 +51,8 @@ export default function MyHoldingsModals() {
     setTopupLockDialog({
       open: false,
       token: null,
-      currentLockAmount: 0,
+      currentLockAmount: null,
+      maturityId: null,
       totalAccruingRewards: 0,
       baseApy: 0,
       maturityDate: null,
@@ -83,7 +84,8 @@ export default function MyHoldingsModals() {
       setTopupLockDialog({
         open: true,
         token: 'kvcm',
-        currentLockAmount: 0,
+        currentLockAmount: null,
+        maturityId: null,
         totalAccruingRewards: 0,
         baseApy: 0,
         maturityDate: null,

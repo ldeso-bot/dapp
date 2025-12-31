@@ -11,8 +11,8 @@ import {
   TableRow,
 } from '@/shared/components/Table/table';
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
-import { isLpToken, Token } from '@/shared/constants/tokens.constants';
-import { useWalletData } from '@/shared/hooks/api/useWalletData';
+import { Token } from '@/shared/constants/tokens.constants';
+import { useTokenBalances } from '@/shared/hooks/useTokenBalances';
 import { cn } from '@/shared/utils/component.utils';
 import {
   formatAmountWithCommas,
@@ -26,43 +26,8 @@ import {
 import Image from 'next/image';
 
 export const BalancesCard = (props: CardProps) => {
-  const { data: walletData } = useWalletData();
+  const tokenBalances = useTokenBalances();
   const { data: holdingsData } = useHoldingsData();
-
-  const balances = Object.entries(walletData?.balances ?? {}).map(
-    ([token, balance]) => {
-      let usdValue = 0;
-      let deployedBalance = 0;
-      let deployedUsdValue = 0;
-      if (token === 'kvcm') {
-        usdValue = holdingsData?.kvcm.balanceValue ?? 0;
-        deployedBalance = holdingsData?.kvcm.lockedAmount ?? 0;
-        deployedUsdValue = holdingsData?.kvcm.lockedValue ?? 0;
-      } else if (token === 'k2') {
-        usdValue = holdingsData?.k2.balanceValue ?? 0;
-        deployedBalance = holdingsData?.k2.lockedAmount ?? 0;
-        deployedUsdValue = holdingsData?.k2.lockedValue ?? 0;
-      } else if (token === 'kvcm-usdc') {
-        usdValue = holdingsData?.kvcmUsdc.balanceValue ?? 0;
-        deployedBalance = holdingsData?.kvcmUsdc.lockedAmount ?? 0;
-        deployedUsdValue = holdingsData?.kvcmUsdc.lockedValue ?? 0;
-      } else if (token === 'kvcm-k2') {
-        usdValue = holdingsData?.kvcmK2.balanceValue ?? 0;
-        deployedBalance = holdingsData?.kvcmK2.lockedAmount ?? 0;
-        deployedUsdValue = holdingsData?.kvcmK2.lockedValue ?? 0;
-      }
-
-      return {
-        asset: token,
-        balance: balance.toString(),
-        token: token,
-        usdValue,
-        deployedBalance,
-        deployedUsdValue,
-        lpToken: isLpToken(token),
-      };
-    }
-  );
 
   return (
     <Card
@@ -94,7 +59,7 @@ export const BalancesCard = (props: CardProps) => {
               </TableRow>
             </TableHeader>
             <TableBody borders="between">
-              {balances?.map((balance) => (
+              {tokenBalances?.map((balance) => (
                 <TableRow className="!border-gray-200" key={balance.asset}>
                   <TableCell>
                     <div className="flex flex-row gap-3 items-center">

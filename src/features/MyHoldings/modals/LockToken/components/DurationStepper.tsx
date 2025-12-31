@@ -1,25 +1,55 @@
 'use client';
 
-import { Control, Controller } from 'react-hook-form';
+import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
+import { FormControlProps } from '@/shared/utils/form.types';
+import type { FC } from 'react';
+import { Controller } from 'react-hook-form';
 import { LockTokenFields } from '../lockToken.utils';
 
-const formatLockDuration = (days: number) => {
-  const years = days / 365;
+export const formatLockDuration = (days: number) => {
   if (days < 30) {
-    return `${days}d`;
+    return `≈ ${days} days`;
   } else if (days < 365) {
     const months = Math.round(days / 30);
-    return `~${months}mo`;
+    return `≈ ${months} mo`;
   } else {
-    return `~${Math.round(years * 10) / 10}y`;
+    const years = Math.floor(days / 365);
+    const remainingDays = days - years * 365;
+    const months = Math.round(remainingDays / 30);
+    if (months === 0) {
+      return `≈ ${years} yr`;
+    }
+    return `≈ ${years} yr ${months} mo`;
   }
 };
 
-type Props = {
-  control: Control<LockTokenFields>;
+const getDaysFromTimestamp = (timestamp: number): number => {
+  const now = Math.floor(Date.now() / 1000);
+  const diff = timestamp - now;
+  return Math.max(0, Math.floor(diff / 86400));
 };
 
-export default function DurationStepper({ control }: Props) {
+const formatMaturityDate = (timestamp: number): string => {
+  const dateObj = new Date(timestamp * 1000);
+  return dateObj.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+};
+
+export const DurationStepper: FC<FormControlProps<LockTokenFields>> = ({
+  control,
+}) => {
+  const { data: protocolData } = useProtocolData();
+  const maturities = protocolData?.lockedkVcmYieldRates ?? [];
+
+  const currentMaturityDays =
+    maturities?.map((maturity) => ({
+      maturity,
+      days: getDaysFromTimestamp(maturity.maturationTimestamp),
+    })) ?? [];
+
   return (
     <>
       <label className="text-size-14 font-medium">Custom Maturity</label>
@@ -27,14 +57,73 @@ export default function DurationStepper({ control }: Props) {
         name="duration"
         control={control}
         render={({ field }) => {
-          const duration = Number(field.value);
+          const currentDuration = Number(field.value);
+
+          if (maturities.length === 0) {
+            return (
+              <div className="flex items-center justify-center space-x-4 p-4 bg-[#EFEFEF] rounded-lg">
+                <div className="flex-1 text-center text-size-14 text-void-40">
+                  No maturities available
+                </div>
+              </div>
+            );
+          }
+
+          let currentMaturity = currentMaturityDays.find(
+            (m) => Math.abs(m.days - currentDuration) <= 1
+          )?.maturity;
+
+          if (!currentMaturity) {
+            const closest = currentMaturityDays.reduce((closest, current) => {
+              return Math.abs(current.days - currentDuration) <
+                Math.abs(closest.days - currentDuration)
+                ? current
+                : closest;
+            });
+            currentMaturity = closest.maturity;
+          }
+
+          const currentIndex = maturities.findIndex(
+            (m) => m.maturityId === currentMaturity.maturityId
+          );
+          const hasPrevious = currentIndex > 0;
+          const hasNext = currentIndex < maturities.length - 1;
+
+          const handlePrevious = () => {
+            if (hasPrevious) {
+              const prevMaturity = maturities[currentIndex - 1];
+              const days = getDaysFromTimestamp(
+                prevMaturity.maturationTimestamp
+              );
+              field.onChange(days);
+            }
+          };
+
+          const handleNext = () => {
+            if (hasNext) {
+              const nextMaturity = maturities[currentIndex + 1];
+              const days = getDaysFromTimestamp(
+                nextMaturity.maturationTimestamp
+              );
+              field.onChange(days);
+            }
+          };
+
+          const displayDate = formatMaturityDate(
+            currentMaturity.maturationTimestamp
+          );
+          const displayDuration = formatLockDuration(
+            getDaysFromTimestamp(currentMaturity.maturationTimestamp)
+          );
+
           return (
             <div className="flex items-center justify-center space-x-4 p-4 bg-[#EFEFEF] rounded-lg">
               <button
-                disabled={duration <= 90}
-                onClick={() => field.onChange([Math.max(90, duration - 90)])}
+                type="button"
+                disabled={!hasPrevious}
+                onClick={handlePrevious}
                 className="cursor-pointer flex items-center justify-center w-12 h-12 border-2 border-void-20 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none hover:border-void-40 bg-white active:bg-[#EFEFEF] transition-all"
-                aria-label="Decrease duration by 90 days"
+                aria-label="Previous maturity"
               >
                 <svg
                   className="w-5 h-5 text-void-60"
@@ -52,17 +141,18 @@ export default function DurationStepper({ control }: Props) {
               </button>
               <div className="flex-1 text-center">
                 <div className="text-size-16 font-bold text-black">
-                  {formatLockDuration(duration)}
+                  {displayDate}
                 </div>
                 <div className="text-size-12 text-void-40">
-                  Step {Math.floor(duration / 90)} of 40
+                  {displayDuration}
                 </div>
               </div>
               <button
-                disabled={duration >= 3600}
-                onClick={() => field.onChange([Math.min(3600, duration + 90)])}
+                type="button"
+                disabled={!hasNext}
+                onClick={handleNext}
                 className="cursor-pointer flex items-center justify-center w-12 h-12 bg-white border-2 border-void-20 rounded-lg disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-void-40 active:bg-[#EFEFEF] transition-all"
-                aria-label="Increase duration by 90 days"
+                aria-label="Next maturity"
               >
                 <svg
                   className="w-5 h-5 text-void-60"
@@ -84,4 +174,4 @@ export default function DurationStepper({ control }: Props) {
       />
     </>
   );
-}
+};

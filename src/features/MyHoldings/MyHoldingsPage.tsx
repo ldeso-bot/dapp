@@ -15,7 +15,7 @@ import { KvcmView } from './views/KVCMView/KvcmView';
 import { LiquidityPositionsView } from './views/LiquidityPositionsView/LiquidityPositionView';
 import { OverviewView } from './views/OverviewView/OverviewView';
 
-const tabClassName = 'z-100 py-4 px-3 text-size-14 font-medium rounded-full';
+const tabClassName = 'py-4 px-3 text-size-14 font-medium rounded-full';
 
 const MyHoldingsTabs = () => {
   const router = useRouter();

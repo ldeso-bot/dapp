@@ -1,96 +1,79 @@
 'use client';
 
 import { YieldRate } from '@/shared/models/ProtocolData';
+import { formatLockDuration } from '../modals/LockToken/components/DurationStepper';
 
 type Props = {
   amount: number;
+  duration: number;
   selectedMaturity: YieldRate;
 };
 
-export default function YieldBreakdownCard({
+export const YieldBreakdownCard = ({
   amount,
+  duration,
   selectedMaturity,
-}: Props) {
+}: Props) => {
   // todo - replace with actual calculations
   const totalYield =
     selectedMaturity.yieldPercent ??
     3 + (selectedMaturity.incentivesYield ?? 0);
   const baseYieldFormatted = (selectedMaturity.yieldPercent * 100).toFixed(2);
-  const totalYieldFormatted = (totalYield * amount).toFixed(2);
   const incentivesYieldFormatted = (
     selectedMaturity.incentivesYield ?? 0 * amount
   ).toFixed(2);
+  const lockDuration = formatLockDuration(Number(duration));
 
   return (
     <>
       <label className="text-size-14 font-medium">Final Yield Breakdown</label>
-      <section className="grid grid-cols-1 gap-4">
-        <div className="flex flex-col box-shadow border-1 border-green-40 rounded-xl bg-green-10 p-4">
+      <section className="grid grid-cols-1 gap-3">
+        <div className="flex flex-col box-shadow border-1 border-gray-300 rounded-xl bg-gray-100 p-4">
           <div className="flex flex-col">
             <div className="flex justify-between items-center mb-1">
-              <div className="text-size-14 text-void-50 space-y-1">
-                Base Yield¹ (Guaranteed)
-              </div>
-              <div className="text-size-16 text-void-50 space-y-1 font-semibold">
+              <div className="text-size-14 text-gray-600">Base Accrual</div>
+              <div className="text-size-16 text-gray-900 space-y-1 tracking-tight font-semibold">
                 {baseYieldFormatted}% APR
               </div>
             </div>
-            <div className="flex justify-between items-center">
-              <div className="text-size-12 text-void-50 space-y-1">
-                At maturity:
-              </div>
-              <div className="text-size-12 text-void-50 space-y-1">+0 kVCM</div>
-            </div>
-            <div className="flex justify-between items-center">
-              <div className="text-size-12 text-void-50 space-y-1">
-                Yearly rate:
-              </div>
-              <div className="text-size-12 text-void-50 space-y-1">
-                +{baseYieldFormatted} kVCM/year
-              </div>
+            <div className="text-size-12 text-gray-500">
+              Base accrual from kVCM inflation at maturity for your selected
+              term.
             </div>
           </div>
         </div>
-        <div className="flex flex-col box-shadow border-1 border-void-20 rounded-xl bg-[#EFEFEF] p-4">
+        <div className="flex flex-col box-shadow border-1 border-gray-300 rounded-xl bg-gray-100 p-4">
           <div className="flex flex-col gap-2 h-full">
             <div className="flex flex-col gap-[0.15rem]">
               <div className="flex justify-between items-center mb-1">
-                <div className="text-size-14 text-void-50 space-y-1 tracking-tight">
-                  Incentives K2 Tokens² (Variable)
+                <div className="text-size-14 text-gray-600">
+                  K2 Incentives (Variable)
                 </div>
-                <div className="text-size-14 text-void-50 space-y-1 tracking-tight">
-                  K2 rewards
-                </div>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="text-size-12 text-void-50 space-y-1">
-                  Daily K2:
-                </div>
-                <div className="text-size-12 text-void-50 space-y-1">
-                  +{incentivesYieldFormatted} K2
+                <div className="text-size-12 text-gray-900 space-y-1 tracking-tight">
+                  ~ {incentivesYieldFormatted} K2 / kVCM / epoch
                 </div>
               </div>
-              <div className="flex justify-between items-center">
-                <div className="text-size-12 text-void-50 space-y-1">
-                  Yearly rate:
-                </div>
-                <div className="text-size-12 text-void-50 space-y-1">
-                  +{incentivesYieldFormatted} K2/year
-                </div>
+              <div className="text-size-12 text-gray-500">
+                K2 Incentives earned by your time-locked kVCM. K2 amounts are
+                variable and may change, including to 0.
               </div>
             </div>
           </div>
         </div>
-        <div className="p-4 bg-void-80 rounded-xl text-center">
-          <h3 className="text-size-14 font-medium text-void-20 mb-1">
-            Total Value at Maturity
-          </h3>
-          <p className="text-white font-semibold text-size-18">
-            {totalYieldFormatted} kVCM
-          </p>
-          <p className="text-void-20 mt-1">+ 0 K2 tokens</p>
+        <div className="flex flex-col box-shadow border-1 border-gray-300 rounded-xl bg-gray-100 p-4">
+          <div className="flex flex-col gap-2 h-full">
+            <div className="flex flex-col gap-[0.15rem]">
+              <div className="text-size-14 text-gray-600 text-center">
+                Enter token amount above to see your returns
+              </div>
+              <div className="text-size-12 text-gray-500 text-center">
+                Lock duration - {lockDuration} • Base accrual:{' '}
+                {baseYieldFormatted}%
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </>
   );
-}
+};

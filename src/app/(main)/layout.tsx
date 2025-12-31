@@ -44,7 +44,7 @@ export default async function RootLayout({
           <div className="flex flex-col lg:flex-row">
             <DesktopNavBar />
             <MobileNavBar />
-            <div className="flex flex-col flex-1">
+            <div className="flex flex-col flex-1 relative overflow-x-hidden">
               <Alert />
               <div className="flex-1 bg-void-10 p-6">{children}</div>
               <Footer />

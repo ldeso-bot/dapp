@@ -7,6 +7,7 @@ import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
 import Form from '@/shared/components/Form/layout/Form';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
+import { calculatePercentage } from '@/shared/utils/math.utils';
 import { formatAmountWithCommas } from '@/shared/utils/string.utils';
 import { useAtom } from 'jotai';
 import { useMemo, useState } from 'react';
@@ -126,7 +127,7 @@ const ClaimIncentivesForm: FormFlowStep<ClaimIncentivesFields> = ({
               <p className="text-size-12 text-muted-foreground">
                 {claimIncentivesDialog?.claimablePrincipal &&
                 claimIncentivesDialog?.claimablePrincipal > 0
-                  ? `${((principalAmount / claimIncentivesDialog.claimablePrincipal) * 100).toFixed(1)}% of total accrued rewards`
+                  ? `${calculatePercentage(principalAmount, claimIncentivesDialog.claimablePrincipal).toFixed(1)}% of total accrued rewards`
                   : 'No rewards available'}
               </p>
             </div>

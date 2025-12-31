@@ -8,15 +8,16 @@ import { useAtomValue } from 'jotai';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { lockTokenDialogAtom, LockTokenFields } from './lockToken.utils';
-import LockTokenConfirm from './steps/LockTokenConfirm';
-import LockTokenForm from './steps/LockTokenForm';
+import { LockTokenForm } from './steps/LockTokenForm';
 
 export default function LockTokenFlow() {
   const lockTokenDialog = useAtomValue(lockTokenDialogAtom);
-  // Form and schema are deffined at the flow level
+
   const schema = z.object({
     token: z.string(),
     duration: z.coerce.number(),
+    maturityId: z.coerce.number().optional(),
+    maturityDate: z.coerce.number().optional(),
     amount: z.coerce
       .number()
       .gt(0, 'Amount must be a positive integer')
@@ -26,19 +27,17 @@ export default function LockTokenFlow() {
   const form = useForm<LockTokenFields>({
     resolver: zodResolver(schema),
     defaultValues: {
-      token: lockTokenDialog.token ?? DEFAULT_ALLOCATION_TOKEN,
       amount: 0,
       duration: 365,
+      maturityId: undefined,
+      maturityDate: undefined,
+      token: lockTokenDialog.token ?? DEFAULT_ALLOCATION_TOKEN,
     },
   });
 
   const parsedForm = useParsedForm(form, schema);
 
-  // Form is passed to each step (we could pass schema too)
   return (
-    <Steps
-      components={[LockTokenForm, LockTokenConfirm]}
-      data={{ form, schema, parsedForm }}
-    />
+    <Steps components={[LockTokenForm]} data={{ form, schema, parsedForm }} />
   );
 }

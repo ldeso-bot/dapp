@@ -30,9 +30,14 @@ export const computeTokenAmountValueUSD = (
   if (token === 'kvcm-k2' || token === 'kvcm-usdc') {
     // Lp Tokens are positions, they do not have an intrinsic value.
     // We compute the value based on the position amount and the value locked in the pool.
-    return (amount / metrics[token].supply) * metrics[token].valueLockedUSD;
+    const supply = metrics[token]?.supply || 0;
+    const valueLockedUSD = metrics[token]?.valueLockedUSD || 0;
+
+    if (supply === 0) return 0;
+    return (amount / supply) * valueLockedUSD;
   } else {
     // Regular tokens have an intrinsic value.
-    return amount * metrics[token].valueUSD;
+    const valueUSD = metrics[token]?.valueUSD || 0;
+    return amount * valueUSD;
   }
 };

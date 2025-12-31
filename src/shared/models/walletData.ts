@@ -22,6 +22,8 @@ export type Lock = {
   positionValueUSD: number;
   /** Timestamp of the lock's maturity */
   lockedUntil: number;
+  /** Maturity ID */
+  maturityId: number;
   /** Locked token */
   token: LockableToken;
   /** Risky yield APY */

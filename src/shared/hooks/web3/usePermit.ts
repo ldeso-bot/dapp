@@ -47,13 +47,20 @@ export function usePermit(params: UsePermitParams) {
       // TODO: This could be cached at the server level
       if (!tokenContract) throw new Error('Token contract is not ready');
       const name = await tokenContract.read.name();
-      const version = await tokenContract.read.version();
+
+      // Try to get version, fallback to "1" if not available
+      let version = '1';
+      try {
+        const versionResult = await tokenContract.read.version();
+        if (isString(versionResult)) {
+          version = versionResult;
+        }
+      } catch (error) {
+        console.warn('Using default version "1" for permit signature', error);
+      }
 
       if (!isString(name)) {
         throw new Error('Name is not a string');
-      }
-      if (!isString(version)) {
-        throw new Error('Version is not a number');
       }
 
       const domain = {
