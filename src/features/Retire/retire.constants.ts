@@ -45,32 +45,6 @@ export const retireCarbonSchema = z.object({
     .int('Amount must be a positive integer'),
 });
 
-export const carbonPrices: CarbonPrice[] = [
-  {
-    id: 0,
-    category: 'Removal',
-    type: 'High Durability',
-    priceUSD: 5.75,
-    changeUSD: 4.5,
-  },
-  {
-    id: 1,
-    category: 'Removal',
-    type: 'Biochar',
-    priceUSD: 4.2,
-    changeUSD: 0.0,
-  },
-  { id: 2, category: 'Removal', type: 'NBS', priceUSD: 3.85, changeUSD: -3.0 },
-  { id: 3, category: 'Avoidance', type: 'NBS', priceUSD: 2.95, changeUSD: 1.7 },
-  {
-    id: 4,
-    category: 'Avoidance',
-    type: 'Energy Efficiency',
-    priceUSD: 2.4,
-    changeUSD: -3.2,
-  },
-];
-
 export const retireCarbonFlowItems = [
   createFlowItem(KvcmIcon, 'Your kVCM', 'kVCM tokens in your wallet.', 0),
   createFlowItem(

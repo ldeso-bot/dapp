@@ -4,6 +4,7 @@ import { WalletData } from '@/shared/models/walletData';
 import { getAllocations } from '@/shared/queries/wallet/getAllocations';
 import { getBalances } from '@/shared/queries/wallet/getBalances';
 import { getLocks } from '@/shared/queries/wallet/getLocks';
+import { getCreditBalances } from './getCreditBalances';
 
 export async function getWalletData(
   chainId: ChainId,
@@ -14,10 +15,11 @@ export async function getWalletData(
     FORCE_WALLET_ADDRESS ? FORCE_WALLET_ADDRESS : walletAddress
   ).toLowerCase();
 
-  const [locks, balances, allocations] = await Promise.all([
+  const [locks, balances, allocations, creditBalances] = await Promise.all([
     getLocks(chainId, walletAddressLowerCase),
     getBalances(chainId, walletAddressLowerCase),
     getAllocations(chainId, walletAddressLowerCase),
+    getCreditBalances(chainId, walletAddressLowerCase),
   ]);
 
   return {
@@ -26,5 +28,6 @@ export async function getWalletData(
     locks,
     balances,
     allocations,
+    creditBalances,
   };
 }

@@ -1,5 +1,5 @@
-import { Slider as SliderPrimitive } from "radix-ui";
-import { Control, Controller, FieldValues, Path } from "react-hook-form";
+import { Slider as SliderPrimitive } from 'radix-ui';
+import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 
 type Props<T extends FieldValues> = {
   max?: number;
@@ -8,7 +8,12 @@ type Props<T extends FieldValues> = {
   control: Control<T>;
 };
 
-export default function Slider<T extends FieldValues>({ name, control, max = 100, step = 1 }: Props<T>) {
+export default function Slider<T extends FieldValues>({
+  name,
+  control,
+  max = 100,
+  step = 1,
+}: Props<T>) {
   return (
     <Controller
       name={name}
@@ -17,8 +22,8 @@ export default function Slider<T extends FieldValues>({ name, control, max = 100
         return (
           <SliderPrimitive.Root
             className="relative flex h-5 w-full touch-none select-none items-center"
-            onValueChange={field.onChange}
-            onChange={field.onChange}
+            onValueChange={(value) => field.onChange(value[0])}
+            onChange={(value) => field.onChange(value)}
             defaultValue={[field.value]}
             max={max}
             step={step}
@@ -26,11 +31,10 @@ export default function Slider<T extends FieldValues>({ name, control, max = 100
             <SliderPrimitive.Track className="relative h-[5px] grow bg-[#C3C3C3]">
               <SliderPrimitive.Range className="absolute h-full bg-[#464646]" />
             </SliderPrimitive.Track>
-            <SliderPrimitive.Thumb
-              className="block size-3 rounded-[10px] bg-[#464646] hover:transparent focus:none focus:outline-none"
-            />
+            <SliderPrimitive.Thumb className="block size-3 rounded-[10px] bg-[#464646] hover:transparent focus:none focus:outline-none" />
           </SliderPrimitive.Root>
-        )
-      }} />
-  )
-};
+        );
+      }}
+    />
+  );
+}

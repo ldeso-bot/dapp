@@ -1,4 +1,4 @@
-import { CarbonClass } from '@/shared/models/ProtocolData';
+import { CarbonClass } from '@/shared/models/shared';
 import { unique } from 'remeda';
 import { useProtocolData } from '../api/useProtocolData';
 

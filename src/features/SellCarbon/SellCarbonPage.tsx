@@ -20,8 +20,8 @@ export default function SellCarbonPage() {
   const form = useForm<SellCarbonFields>({
     resolver: zodResolver(schema),
     defaultValues: {
-      paymentMethod: '',
       amount: 0,
+      amountReceived: 0,
       slippage: 50,
       token: '',
       carbonClass: '',

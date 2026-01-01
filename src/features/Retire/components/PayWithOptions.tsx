@@ -30,8 +30,10 @@ export const PayWithOptions = (props: Props) => {
               {
                 'bg-white border-void-50': selected !== token.value,
                 'bg-green-10 border-green-40': selected === token.value,
+                'cursor-not-allowed': token.value === 'usdc',
               }
             )}
+            title={token.value === 'usdc' ? 'Coming soon' : undefined}
           >
             <input
               type="radio"
@@ -39,7 +41,8 @@ export const PayWithOptions = (props: Props) => {
               value={token.value}
               checked={selected === token.value}
               onChange={() => handleSelect(token.value)}
-              className="sr-only"
+              className="sr-only cursor-none"
+              disabled={token.value === 'usdc'}
             />
             <Icon icon={token.icon} size={2} />
             <span>{token.label}</span>

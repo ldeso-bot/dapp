@@ -1,18 +1,20 @@
-import {
-  CARBON_CLASSES_INFO_MAP,
-  isCarbonClassId,
-} from '@/shared/constants/carbonClasses.constants';
+import { getCarbonClassInfo } from '@/shared/constants/carbonClasses.constants';
 import { USE_MOCKS } from '@/shared/constants/config.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
+import { CarbonClass } from '@/shared/models/shared';
+import { formatAddress } from '@/shared/utils/string.utils';
 import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
-import { CreditToken_Filter } from '@generated/gql/types/carbon.types';
 import {
   CarbonClass_Filter,
   TokenSnapshot_Filter,
 } from '@generated/gql/types/protocol.types';
-import { mapToObj } from 'remeda';
-import { CarbonClass } from '../../models/ProtocolData';
-import { getHoursSinceEpoch24HoursAgo } from './protocol.utils';
+import { filter, isNonNullish, mapToObj } from 'remeda';
+import { mockRegisteredTokens } from './mocks';
+import {
+  getCreditsTokenMap,
+  getHoursSinceEpoch24HoursAgo,
+  mapToApiCreditToken,
+} from './protocol.utils';
 
 export const getCarbonClasses = async (
   chainId: ChainId
@@ -30,34 +32,19 @@ export const getCarbonClasses = async (
 
   const carbonClasses = response?.carbonClasses ?? [];
 
-  // Create a list of all involved registered tokens
-  const registeredTokenIds = carbonClasses.flatMap(
-    (c) => c.registeredCredits?.map((r) => r.creditTokenId) ?? []
-  );
-
-  // Create a list of carbonClassIds
-
-  const [registeredTokensResponse, ...tokenSnapshotsResponses] =
-    await Promise.all([
-      sdk.carbon.getCreditTokens({
-        where: { creditTokenId_in: registeredTokenIds } as CreditToken_Filter,
-      }),
-      ...carbonClasses.map((carbonClass) =>
-        sdk.protocol
-          .getTokenSnapshots({
-            where: {
-              hoursSinceEpoch_lte: getHoursSinceEpoch24HoursAgo().toString(),
-              tokenAddress: carbonClass.carbonClassId,
-            } as TokenSnapshot_Filter,
-          })
-          .then((response) => response.tokenSnapshots[0])
-      ),
-    ]);
-
-  const registeredTokensMap = mapToObj(
-    registeredTokensResponse.creditTokens,
-    (t) => [t.creditTokenId, t]
-  );
+  const [tokensMap, ...tokenSnapshotsResponses] = await Promise.all([
+    getCreditsTokenMap(sdk),
+    ...carbonClasses.map((carbonClass) =>
+      sdk.protocol
+        .getTokenSnapshots({
+          where: {
+            hoursSinceEpoch_lte: getHoursSinceEpoch24HoursAgo().toString(),
+            tokenAddress: carbonClass.carbonClassId,
+          } as TokenSnapshot_Filter,
+        })
+        .then((response) => response.tokenSnapshots[0])
+    ),
+  ]);
 
   const tokenSnapshotsMap = mapToObj(tokenSnapshotsResponses, (t) => [
     t?.tokenAddress ?? '',
@@ -68,8 +55,7 @@ export const getCarbonClasses = async (
   return carbonClasses?.map((c) => {
     // Add up the supply tonnes of all registered tokens
     const supplyTonnes = c.registeredCredits.reduce(
-      (acc, r) =>
-        acc + (registeredTokensMap[r.creditTokenId]?.totalSupplyTonnes ?? 0),
+      (acc, r) => acc + (tokensMap[r.creditTokenId]?.totalSupplyTonnes ?? 0),
       0
     );
 
@@ -89,105 +75,136 @@ export const getCarbonClasses = async (
     const carbonClassId = c.carbonClassId.toLowerCase();
 
     // Get hardcoded carbon class info
-    const carbonClassInfo = isCarbonClassId(carbonClassId)
-      ? CARBON_CLASSES_INFO_MAP[carbonClassId]
-      : null;
+    const carbonClassInfo = getCarbonClassInfo(chainId, carbonClassId);
+
+    const registeredTokens = filter(
+      c.registeredCredits.map((r) =>
+        mapToApiCreditToken(tokensMap[r.creditTokenId])
+      ),
+      isNonNullish
+    );
 
     return {
-      name: carbonClassInfo?.name ?? c.id,
+      carbonClassId,
+      name: carbonClassInfo?.name ?? formatAddress(c.carbonClassId),
       category: carbonClassInfo?.category ?? 'Other',
       valueUSD,
       valueUSDChangePercent24h,
       supplyTonnes,
-    };
+      registeredTokens,
+    } satisfies CarbonClass;
   });
 };
 
 const getMockCarbonClasses = (): CarbonClass[] => {
   return [
     {
+      carbonClassId: '0x1234567890123456789012345678901234567890',
       name: 'Ocean Alkalinity Enhancement (OAE)',
       category: 'Carbon Dioxide Removals',
       valueUSD: 12.04,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.01,
+      registeredTokens: mockRegisteredTokens,
     },
     {
+      carbonClassId: '0x1234567890123456789012345678901234567891',
       name: 'Enhanced Rock Weathering (ERW)',
       category: 'Carbon Dioxide Removals',
       valueUSD: 3.99,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.01,
+      registeredTokens: mockRegisteredTokens,
     },
     {
+      carbonClassId: '0x1234567890123456789012345678901234567892',
       name: 'Nature Based CDR (NBCDR)',
       category: 'Carbon Dioxide Removals',
       valueUSD: 1.02,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.01,
+      registeredTokens: mockRegisteredTokens,
     },
     {
+      carbonClassId: '0x1234567890123456789012345678901234567893',
       name: 'Biochar (CHAR)',
       category: 'Carbon Dioxide Removals',
       valueUSD: 36.97,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.01,
+      registeredTokens: mockRegisteredTokens,
     },
     {
+      carbonClassId: '0x1234567890123456789012345678901234567894',
       name: 'Reducint Emissions from Deforestation and Forest Degredation (REDD)',
       category: 'Forestry',
       valueUSD: 12.04,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.01,
+      registeredTokens: mockRegisteredTokens,
     },
     {
+      carbonClassId: '0x1234567890123456789012345678901234567895',
       name: 'Afforestation, Reforestation, and Revegetation (ARR)',
       category: 'Forestry',
       valueUSD: 3.99,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.01,
+      registeredTokens: mockRegisteredTokens,
     },
     {
+      carbonClassId: '0x1234567890123456789012345678901234567896',
       name: 'Improved Forest Management (IFM)',
       category: 'Forestry',
       valueUSD: 1.02,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.04,
+      registeredTokens: mockRegisteredTokens,
     },
     {
+      carbonClassId: '0x1234567890123456789012345678901234567897',
       name: 'Mangroves (MNGRV)',
       category: 'Blue Carbon',
       valueUSD: 12.04,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.01,
+      registeredTokens: mockRegisteredTokens,
     },
     {
+      carbonClassId: '0x1234567890123456789012345678901234567898',
       name: 'Water Filtration',
       category: 'Blue Carbon',
       valueUSD: 3.99,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.01,
+      registeredTokens: mockRegisteredTokens,
     },
     {
+      carbonClassId: '0x1234567890123456789012345678901234567899',
       name: 'RNWBL',
       category: 'Carbon Dioxide Avoidance',
       valueUSD: 12.04,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.03,
+      registeredTokens: mockRegisteredTokens,
     },
     {
+      carbonClassId: '0x1234567890123456789012345678901234567900',
       name: 'Cookstoves',
       category: 'Carbon Dioxide Avoidance',
       valueUSD: 3.99,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.01,
+      registeredTokens: mockRegisteredTokens,
     },
     {
+      carbonClassId: '0x1234567890123456789012345678901234567901',
       name: 'Landfill Gas',
       category: 'Carbon Dioxide Avoidance',
       valueUSD: 1.02,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.1,
+      registeredTokens: mockRegisteredTokens,
     },
   ];
 };

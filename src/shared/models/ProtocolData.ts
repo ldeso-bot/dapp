@@ -1,5 +1,6 @@
 import { ChainId } from '../constants/networks.constants';
 import { LpToken, Token } from '../constants/tokens.constants';
+import { CarbonClass } from './shared';
 
 export enum YieldType {
   K2 = 'K2',
@@ -49,15 +50,6 @@ export type YieldRate = {
 };
 
 export type YieldRates = YieldRate[];
-
-/* Carbon Market */
-export type CarbonClass = {
-  name: string;
-  category: string;
-  valueUSD: number;
-  supplyTonnes: number;
-  valueUSDChangePercent24h: number;
-};
 
 export type ApyInfo = {
   kvcm: number;

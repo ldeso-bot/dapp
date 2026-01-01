@@ -1,7 +1,4 @@
-import {
-  CARBON_CLASSES_INFO_MAP,
-  isCarbonClassId,
-} from '@/shared/constants/carbonClasses.constants';
+import { getCarbonClassInfo } from '@/shared/constants/carbonClasses.constants';
 import { USE_MOCKS } from '@/shared/constants/config.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
 import {
@@ -52,9 +49,7 @@ export const getAllocations = async (
       };
 
       const carbonClassId = allocation.carbonClass.id.toLowerCase();
-      const carbonClassInfo = isCarbonClassId(carbonClassId)
-        ? CARBON_CLASSES_INFO_MAP[carbonClassId]
-        : null;
+      const carbonClassInfo = getCarbonClassInfo(chainId, carbonClassId);
       const category = carbonClassInfo?.category ?? 'Other';
 
       return {

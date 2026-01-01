@@ -4,9 +4,12 @@ import {
 } from '@/shared/constants/config.constants';
 import { Token, tokens } from '@/shared/constants/tokens.constants';
 import { YieldRate, YieldRates, YieldType } from '@/shared/models/ProtocolData';
+import { ApiCreditToken } from '@/shared/models/shared';
 import { formatStringToNumber, Sdk } from '@/shared/utils/subgraph.utils';
+import { GetCreditTokensQuery } from '@generated/gql/types/carbon.types';
 import { Maturity_Filter } from '@generated/gql/types/protocol.types';
 import { unstable_cache } from 'next/cache';
+import { mapToObj } from 'remeda';
 import { getMockMaturationTimestamp, getMockYieldPercent } from './mocks';
 
 export const tokensEligibleForIncentives: Record<YieldType, Token[]> = {
@@ -138,4 +141,40 @@ export const getHoursSinceEpoch24HoursAgo = () => {
     hoursSinceEpoch = hoursSinceEpoch - 24;
   }
   return hoursSinceEpoch;
+};
+
+/**
+ * Gets a map of all credit tokens by their credit token ID
+ * Cached for 1 minute
+ * @param sdk
+ * @returns
+ */
+export const getCreditsTokenMap = async (sdk: Sdk) => {
+  return unstable_cache(
+    async () => {
+      const credits = await sdk.carbon.getCreditTokens();
+      return mapToObj(
+        credits.creditTokens,
+        (credit: GetCreditTokensQuery['creditTokens'][number]) => [
+          credit.creditTokenId,
+          credit,
+        ]
+      );
+    },
+    ['credits-map'],
+    { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
+  )();
+};
+
+export const mapToApiCreditToken = (
+  token?: GetCreditTokensQuery['creditTokens'][number]
+): ApiCreditToken | null => {
+  if (!token) return null;
+
+  return {
+    creditTokenId: token.creditTokenId,
+    project: {
+      name: token.project?.metadata?.name ?? token.creditTokenId,
+    },
+  };
 };

@@ -1,6 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
 export const USE_LOCAL_GRAPH_NODE = process.env.USE_LOCAL_GRAPH_NODE === 'true';
 
 export const FORCE_WALLET_ADDRESS = process.env.FORCE_WALLET_ADDRESS
@@ -14,3 +11,5 @@ export const IS_DEVELOPMENT =
 
 export const PROTOCOL_DATA_CACHE_TIME_SECONDS = IS_DEVELOPMENT ? 1 : 60;
 export const WALLET_DATA_CACHE_TIME_SECONDS = 1;
+
+export const DEV_MODE = process.env.NEXT_PUBLIC_DEV_MODE === 'true';

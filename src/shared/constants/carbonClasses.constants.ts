@@ -1,4 +1,7 @@
-export const CARBON_CLASSES_INFO_MAP = {
+import { base, baseSepolia } from 'viem/chains';
+import { ChainId } from './networks.constants';
+
+const BASE_CARBON_CLASSES_INFO_MAP = {
   '0xc83709888c975576c00000000000000000000311': {
     name: 'Ocean Alkalinity Enhancement (OAE)',
     category: 'Carbon Dioxide Removals',
@@ -17,8 +20,40 @@ export const CARBON_CLASSES_INFO_MAP = {
   },
 };
 
-export const isCarbonClassId = (
-  id: string
-): id is keyof typeof CARBON_CLASSES_INFO_MAP => {
-  return id in CARBON_CLASSES_INFO_MAP;
+const BASE_SEPOLIA_CARBON_CLASSES_INFO_MAP = {
+  '0x64e2c0ccf5c4ac629efe5c9de3a6efa5f018a966': {
+    name: 'Ocean Alkalinity Enhancement (OAE)',
+    category: 'Carbon Dioxide Removals',
+  },
+};
+
+const isBaseCarbonClassId = (
+  carbonClassId: unknown
+): carbonClassId is keyof typeof BASE_CARBON_CLASSES_INFO_MAP => {
+  return (
+    typeof carbonClassId === 'string' &&
+    carbonClassId in BASE_CARBON_CLASSES_INFO_MAP
+  );
+};
+
+const isBaseSepoliaCarbonClassId = (
+  carbonClassId: unknown
+): carbonClassId is keyof typeof BASE_SEPOLIA_CARBON_CLASSES_INFO_MAP => {
+  return (
+    typeof carbonClassId === 'string' &&
+    carbonClassId in BASE_SEPOLIA_CARBON_CLASSES_INFO_MAP
+  );
+};
+
+export const getCarbonClassInfo = (chainId: ChainId, carbonClassId: string) => {
+  if (chainId === base.id) {
+    return isBaseCarbonClassId(carbonClassId)
+      ? BASE_CARBON_CLASSES_INFO_MAP[carbonClassId]
+      : null;
+  } else if (chainId === baseSepolia.id) {
+    return isBaseSepoliaCarbonClassId(carbonClassId)
+      ? BASE_SEPOLIA_CARBON_CLASSES_INFO_MAP[carbonClassId]
+      : null;
+  }
+  return null;
 };

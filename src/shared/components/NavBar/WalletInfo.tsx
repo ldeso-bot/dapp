@@ -1,5 +1,6 @@
 'use client';
 
+import { DEV_MODE } from '@/shared/constants/config.constants';
 import { formatAddress } from '@/shared/utils/string.utils';
 import { base, baseSepolia } from 'viem/chains';
 import { useAccount, useSwitchChain } from 'wagmi';
@@ -13,11 +14,13 @@ export default function WalletInfo() {
     chain == baseSepolia
       ? 'Testnet'
       : chain == base
-        ? ''
+        ? DEV_MODE
+          ? 'Switch to Sepolia testnet'
+          : ''
         : 'Unsupported chain. Please switch to Base.';
 
   const handleSwitchChain = () => {
-    switchChain({ chainId: base.id });
+    switchChain({ chainId: chain == base ? baseSepolia.id : base.id });
   };
 
   if (!address) return null;

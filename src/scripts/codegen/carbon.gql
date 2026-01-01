@@ -3,3 +3,15 @@ query getCreditTokens($where: CreditToken_filter) {
     ...CreditTokenFragment
   }
 }
+
+query getCreditBalances($where: CreditBalance_filter) {
+  creditBalances(where: $where, first: 1000) {
+    account {
+      id
+    }
+    credit {
+      ...CreditTokenFragment
+    }
+    balance
+  }
+}

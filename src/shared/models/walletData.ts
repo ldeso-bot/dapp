@@ -3,9 +3,9 @@ import { ChainId } from '../constants/networks.constants';
 import {
   AllocatableToken,
   LockableToken,
-  LpToken,
   Token,
 } from '../constants/tokens.constants';
+import { CarbonClass } from './shared';
 
 type LockStatus = 'active' | 'matured' | 'claimed';
 export type EarningStatus = 'earning' | 'paused';
@@ -58,7 +58,7 @@ export type Lock = {
 
 export type Locks = Lock[];
 
-export type Balances = Record<LpToken | Token, number>;
+export type Balances = Record<Token, number>;
 
 export type PriceEffect = 'Low' | 'Medium' | 'High';
 
@@ -78,6 +78,13 @@ export type Allocation = {
 };
 export type Allocations = Allocation[];
 
+export type CreditBalance = {
+  balance: number;
+  creditTokenId: string;
+  name: string;
+  registeredClasses: CarbonClass[];
+};
+
 /* Wallet Data */
 export type WalletData = {
   address: string;
@@ -85,4 +92,5 @@ export type WalletData = {
   locks: Locks;
   balances: Balances;
   allocations: Allocations;
+  creditBalances: CreditBalance[];
 };

@@ -91,15 +91,14 @@ export const useLockToken = (params: {
   const { token, amount, maturityId } = params;
   const { address: userAddress, chain } = useAccount();
 
-  const stakingContractName = token === 'kvcm' ? 'KvcmStaking' : 'K2Staking';
   const tokenContractName = token.toUpperCase() as 'KVCM' | 'K2';
 
   const { contract: tokenContract } = useContract(tokenContractName);
-  const { contract: stakingContract } = useContract(stakingContractName);
+  const { contract: stakingContract } = useContract('StakingManagerDiamond');
 
   const permit = usePermit({
     value: amount,
-    spenderName: stakingContractName,
+    spenderName: 'StakingManagerDiamond',
     tokenName: token.toUpperCase() as 'KVCM' | 'K2',
   });
 

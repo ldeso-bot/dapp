@@ -6,6 +6,7 @@ import Dialog from '@/shared/components/Dialog/Dialog';
 import Input from '@/shared/components/Form/Input';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { tokens } from '@/shared/constants/tokens.constants';
+import { useContract } from '@/shared/hooks/web3/useContract';
 import { formatAddress } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
 import { SellCarbonFields } from '../sellCarbon.constants';
@@ -21,6 +22,8 @@ const SellCarbonApprove: FormFlowStep<SellCarbonFields> = ({
   const onSubmit = async () => {
     setSellCarbonDialogState({ open: false, token: null });
   };
+
+  const { contract } = useContract('AAMDiamond');
 
   return (
     <Dialog className="bg-overlay-10" open={true}>
@@ -38,10 +41,7 @@ const SellCarbonApprove: FormFlowStep<SellCarbonFields> = ({
             transfer tokens on your behalf.
             <Input
               label="Contract Address"
-              // @todo replace address
-              value={formatAddress(
-                '0x061138CBfEA4531D9ae118e36B86e7CD27649523'
-              )}
+              value={formatAddress(contract?.address)}
               readOnly
             />
             <Input
@@ -55,8 +55,7 @@ const SellCarbonApprove: FormFlowStep<SellCarbonFields> = ({
               label="You are receiving"
               readOnly
               iconSize="sm"
-              iconSrc={tokens.kvcm.iconSrc}
-              value={`${parsedForm.current?.amount} ${tokens.kvcm.symbol}`}
+              value={`${parsedForm.current?.amountReceived}`}
             />
           </div>
           <div className="flex flex-col gap-3 w-full">

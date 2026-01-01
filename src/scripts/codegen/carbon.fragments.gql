@@ -16,6 +16,9 @@ fragment CreditTokenFragment on CreditToken {
   tokenAddress
   project {
     projectId
+    metadata {
+      name
+    }
   }
   provenanceKey
 }
