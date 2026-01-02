@@ -96,6 +96,7 @@ query getAllocations($where: Allocation_filter) {
 query getLocks($where: Lock_filter) {
   locks(where: $where) {
     id
+    contractLockId
     type
     amount
     maturityId

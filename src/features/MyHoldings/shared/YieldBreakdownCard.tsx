@@ -15,9 +15,6 @@ export const YieldBreakdownCard = ({
   selectedMaturity,
 }: Props) => {
   // todo - replace with actual calculations
-  const totalYield =
-    selectedMaturity.yieldPercent ??
-    3 + (selectedMaturity.incentivesYield ?? 0);
   const baseYieldFormatted = (selectedMaturity.yieldPercent * 100).toFixed(2);
   const incentivesYieldFormatted = (
     selectedMaturity.incentivesYield ?? 0 * amount

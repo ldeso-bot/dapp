@@ -7,14 +7,6 @@ import { tokens } from '@/shared/constants/tokens.constants';
 import { createFlowItem, type StatItem } from '@/shared/utils/emptyState.utils';
 import { z } from 'zod';
 
-interface CarbonPrice {
-  id: number;
-  category: string;
-  type: string;
-  priceUSD: number;
-  changeUSD: number;
-}
-
 export type RetireCarbonFields = {
   carbonClass: string;
   carbonCredit: string;
