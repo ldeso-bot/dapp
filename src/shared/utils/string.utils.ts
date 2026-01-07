@@ -1,4 +1,5 @@
 import { isNullish } from 'remeda';
+import { parseUnits } from 'viem';
 
 /*
   Formats a number to a string with a suffix.
@@ -104,4 +105,12 @@ export const formatPriceUSDWithCommas = (
   digits: number = 2
 ): string => {
   return `$${formatAmountWithCommas(value, digits)}`;
+};
+
+/** A wrapper around parseUnits to handle null values and return a bigint */
+export const parseAmount = (value?: number, decimals?: number): bigint => {
+  if (!decimals || !value) {
+    return 0n;
+  }
+  return parseUnits(String(value), decimals);
 };

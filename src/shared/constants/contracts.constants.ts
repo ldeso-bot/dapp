@@ -1,4 +1,5 @@
-import KlimaDiamond from '@/shared/utils/abis/KlimaDiamond.json';
+import AAMDiamond from '@/shared/utils/abis/AAMDiamond.json';
+import StakingManagerDiamond from '@/shared/utils/abis/StakingManagerDiamond.json';
 import USDC from '@/shared/utils/abis/USDC.json';
 import USDCTransferWithPermit from '@/shared/utils/abis/USDCTransferWithPermit.json';
 import VelodromeSugar from '@/shared/utils/abis/VelodromeSugar.json';
@@ -25,12 +26,12 @@ const contracts = {
   StakingManagerDiamond: {
     [base.id]: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // TODO: add mainnet address
     [baseSepolia.id]: '0x4bfd0C3f99Ed111eb7a702a599e099243b58BB68',
-    abi: KlimaDiamond,
+    abi: StakingManagerDiamond,
   },
   AAMDiamond: {
     [base.id]: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // TODO: add mainnet address
     [baseSepolia.id]: '0x5BC312a85ac0A5d14D5FeDb05B4f96AB256eD14E',
-    abi: KlimaDiamond,
+    abi: AAMDiamond,
   },
   VelodromeSugar: {
     [base.id]: '0x9DE6Eab7a910A288dE83a04b6A43B52Fd1246f1E',

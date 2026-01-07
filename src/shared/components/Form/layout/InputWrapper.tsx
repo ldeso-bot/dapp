@@ -16,18 +16,17 @@ export default function InputWrapper(props: InputWrapperProps) {
   const { label, error, tooltip, addOnLabel, children } = props;
   return (
     <div className={cn('flex flex-col gap-2 items-start w-full')}>
-      {label ||
-        (addOnLabel && (
-          <div className="w-full flex justify-between">
-            <div className="flex items-center gap-2">
-              <label className="text-size-14 font-medium">{label}</label>
-              {tooltip && <Tooltip content={tooltip} />}
-            </div>
-            {addOnLabel && (
-              <div className="text-size-14 font-medium">{addOnLabel}</div>
-            )}
+      {(label || addOnLabel) && (
+        <div className="w-full flex justify-between">
+          <div className="flex items-center gap-2">
+            <label className="text-size-14 font-medium">{label}</label>
+            {tooltip && <Tooltip content={tooltip} />}
           </div>
-        ))}
+          {addOnLabel && (
+            <div className="text-size-14 font-medium">{addOnLabel}</div>
+          )}
+        </div>
+      )}
       {children}
       <InputError error={error} />
     </div>

@@ -2,14 +2,16 @@
 
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
-import Input from '@/shared/components/Form/Input';
 import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
 import SelectInput from '@/shared/components/Form/SelectInput';
 import TokenAmountInput from '@/shared/components/Form/TokenAmountInput';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
+import { parseAmount } from '@/shared/utils/string.utils';
 import { useEffect, useMemo } from 'react';
+import { zeroAddress } from 'viem';
+import SellCarbonQuoter from '../components/SellCarbonQuoter';
 import { SlippageSlider } from '../components/SlippageSlider';
 import { SellCarbonFields } from '../sellCarbon.constants';
 
@@ -28,17 +30,19 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
 
   const carbonClass = watch('carbonClass');
 
-  const selectedBalance = creditBalances.find((b) => b.creditTokenId === token);
+  const selectedBalance = creditBalances.find(
+    (b) => b.creditToken.creditTokenId === token
+  );
 
   const carbonClasses = useMemo(
     () => selectedBalance?.registeredClasses ?? [],
     [selectedBalance]
   );
 
+  const amount = watch('amount');
+
+  /* TODO: Remove this when quoter works */
   useEffect(() => {
-    // TODO:get amount received from quoter
-    console.log(token);
-    console.log(carbonClass);
     form.setValue('amountReceived', Math.random() * 100);
   }, [token, carbonClass, form]);
 
@@ -80,8 +84,8 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
               <SelectInput
                 label="Token"
                 items={Object.values(creditBalances).map((balance) => ({
-                  label: balance.name,
-                  value: balance.creditTokenId,
+                  label: balance.creditToken.name,
+                  value: balance.creditToken.creditTokenId,
                 }))}
                 defaultValue={form.getValues('token')}
                 {...form.register('token')}
@@ -93,7 +97,7 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
                   label: carbonClass.name,
                   value: carbonClass.carbonClassId,
                 }))}
-                defaultValue={form.getValues('carbonClass')}
+                value={carbonClass}
                 {...form.register('carbonClass')}
                 error={form.formState.errors.carbonClass}
               />
@@ -111,13 +115,24 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
                 name="amount"
                 control={form.control}
               />
-              <Input
-                className="h-[4rem] pointer-events-none"
-                label="Receive"
-                placeholder="Select a token first"
-                readOnly
-                {...form.register('amountReceived')}
-              />
+              {/* TODO: set maturityId and couponBurnParams */}
+              {selectedBalance && carbonClass && amount && (
+                <SellCarbonQuoter
+                  form={form}
+                  carbonClass={carbonClass}
+                  address={selectedBalance?.creditToken.address}
+                  tokenId={selectedBalance?.creditToken.tokenId}
+                  amount={parseAmount(
+                    amount,
+                    selectedBalance.creditToken.decimals
+                  )}
+                  maturityId={0}
+                  couponBurnParams={{
+                    tonnes: 0,
+                    from: zeroAddress,
+                  }}
+                />
+              )}
               <SlippageSlider form={form} />
             </div>
             <ButtonGroup className="flex-row w-full">

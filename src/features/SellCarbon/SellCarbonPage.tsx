@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form';
 import { useAccount } from 'wagmi';
 import { SellCarbonEmptyState } from './components/SellCarbonEmptyState';
 import { SellCarbonFields, sellCarbonSchema } from './sellCarbon.constants';
-import SellCarbonApprove from './steps/SellCarbonApprove';
+import SellCarbonConfirm from './steps/SellCarbonConfirm';
 import SellCarbonForm from './steps/SellCarbonForm';
 
 export default function SellCarbonPage() {
@@ -44,7 +44,7 @@ export default function SellCarbonPage() {
           </div>
           <div className="flex gap-4 space-between mx-auto max-w-7xl">
             <Steps
-              components={[SellCarbonForm, SellCarbonApprove]}
+              components={[SellCarbonForm, SellCarbonConfirm]}
               data={{ form, schema, parsedForm }}
             />
             <CarbonClassCard />

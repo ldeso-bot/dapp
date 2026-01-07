@@ -3,9 +3,10 @@ import { ChainId } from '@/shared/constants/networks.constants';
 import { CreditBalance } from '@/shared/models/walletData';
 import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
 import { CreditBalance_Filter } from '@generated/gql/types/carbon.types';
-import { filter } from 'remeda';
+import { filter, isNonNullish } from 'remeda';
 import { getCarbonClasses } from '../protocol/getCarbonClasses';
-import { mockRegisteredTokens } from '../protocol/mocks';
+import { mockTokens } from '../protocol/mocks';
+import { mapToApiCreditToken } from '../protocol/protocol.utils';
 
 export const getCreditBalances = async (
   chainId: ChainId,
@@ -27,13 +28,14 @@ export const getCreditBalances = async (
   ]);
 
   const balances = creditBalances.creditBalances.map(
-    (balance): CreditBalance => {
+    (balance): CreditBalance | null => {
+      const creditToken = mapToApiCreditToken(balance.credit);
+      if (!creditToken) {
+        return null;
+      }
       return {
         balance: formatStringToNumber(balance.balance, 18),
-        creditTokenId: balance.credit.creditTokenId,
-        name:
-          balance.credit.project?.metadata?.name ??
-          balance.credit.creditTokenId,
+        creditToken,
         registeredClasses: carbonClasses.filter((c) =>
           c.registeredTokens.some(
             (t) => t.creditTokenId === balance.credit.creditTokenId
@@ -44,15 +46,17 @@ export const getCreditBalances = async (
   );
 
   // Return only balances from registered tokens
-  return filter(balances, (b) => b.registeredClasses.length > 0);
+  return filter(
+    filter(balances, isNonNullish),
+    (b) => b.registeredClasses.length > 0
+  );
 };
 
 const getMockCreditBalances = (): CreditBalance[] => {
   return [
     {
       balance: 1000,
-      creditTokenId: '0x1234567890123456789012345678901234567890',
-      name: 'Credit Token 1',
+      creditToken: mockTokens[0],
       registeredClasses: [
         {
           name: 'Carbon Class 1',
@@ -61,7 +65,7 @@ const getMockCreditBalances = (): CreditBalance[] => {
           supplyTonnes: 1000,
           valueUSDChangePercent24h: 0.01,
           carbonClassId: '0x1234567890123456789012345678901234567890',
-          registeredTokens: mockRegisteredTokens,
+          registeredTokens: mockTokens,
         },
       ],
     },

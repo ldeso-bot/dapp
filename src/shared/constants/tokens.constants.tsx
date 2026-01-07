@@ -1,4 +1,5 @@
 import { HoldingsTabValue } from '@/features/MyHoldings/constants/tab.constants';
+import CarbonCreditIconImg from '@/shared/images/carbon-credit-token.svg';
 import KlimaXIcon from '@/shared/images/k2.svg';
 import KVcmK2LPIcon from '@/shared/images/kvcm-k2.svg';
 import KVcmUsdcLPIcon from '@/shared/images/kvcm-usdc.svg';
@@ -145,3 +146,5 @@ export const isAllocatableToken = (
 export const isLockableToken = (token: unknown): token is LockableToken => {
   return isToken(token) && Object.keys(lockableTokens).includes(token);
 };
+
+export { CarbonCreditIconImg };

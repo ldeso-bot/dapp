@@ -25,7 +25,7 @@ export default function Input({ iconSrc, iconSize = 'md', ...props }: Props) {
           props.className
         )}
         style={{
-          backgroundImage: `url(${iconSrc?.src})`,
+          backgroundImage: iconSrc ? `url(${iconSrc.src})` : 'none',
           backgroundSize: 'auto 2rem',
           backgroundRepeat: 'no-repeat',
           backgroundPositionY: 'center',

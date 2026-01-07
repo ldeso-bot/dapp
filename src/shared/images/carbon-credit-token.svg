@@ -1,0 +1,15 @@
+<svg width="195" height="195" viewBox="0 0 195 195" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Circular background -->
+  <circle cx="97.5" cy="97.5" r="97.5" fill="#00B82E"/>
+  
+  <!-- Tree symbol representing carbon credits -->
+  <!-- Top leaves -->
+  <circle cx="97.5" cy="70" r="20" fill="white"/>
+  <!-- Middle leaves -->
+  <circle cx="70" cy="97.5" r="16" fill="white"/>
+  <circle cx="125" cy="97.5" r="16" fill="white"/>
+  <circle cx="97.5" cy="105" r="16" fill="white"/>
+  <!-- Stem -->
+  <rect x="95" y="110" width="5" height="25" rx="2.5" fill="white"/>
+</svg>
+

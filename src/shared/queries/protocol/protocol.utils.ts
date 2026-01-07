@@ -4,7 +4,7 @@ import {
 } from '@/shared/constants/config.constants';
 import { Token, tokens } from '@/shared/constants/tokens.constants';
 import { YieldRate, YieldRates, YieldType } from '@/shared/models/ProtocolData';
-import { ApiCreditToken } from '@/shared/models/shared';
+import { ApiCreditToken, TOKEN_STANDARDS } from '@/shared/models/shared';
 import { formatStringToNumber, Sdk } from '@/shared/utils/subgraph.utils';
 import { GetCreditTokensQuery } from '@generated/gql/types/carbon.types';
 import { Maturity_Filter } from '@generated/gql/types/protocol.types';
@@ -173,6 +173,12 @@ export const mapToApiCreditToken = (
 
   return {
     creditTokenId: token.creditTokenId,
+    tokenId: token.tokenId,
+    address: token.tokenAddress,
+    name: token.project.metadata?.name ?? token.creditTokenId,
+    decimals: token.decimals,
+    // TODO: use token.standard when available
+    standard: TOKEN_STANDARDS.ERC20,
     project: {
       name: token.project?.metadata?.name ?? token.creditTokenId,
     },

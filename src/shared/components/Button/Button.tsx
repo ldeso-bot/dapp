@@ -1,5 +1,7 @@
 import { cn } from '@/shared/utils/component.utils';
 import Link from 'next/link';
+import { isNullish } from 'remeda';
+import Spinner, { SpinnerColor } from '../Spinner/Spinner';
 
 type Props = {
   children: React.ReactNode;
@@ -9,10 +11,12 @@ type Props = {
   colors?: 'primary' | 'secondary' | 'positive' | 'neutral';
   context?: 'main' | 'flow';
   target?: string;
+  loading?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement> &
   React.LinkHTMLAttributes<HTMLAnchorElement>;
 
 export default function Button({
+  loading,
   children,
   className,
   onClick,
@@ -32,15 +36,24 @@ export default function Button({
     context === 'flow' && 'w-full px-6 py-3',
     className
   );
+
+  // Disable loading buttons
+  if (loading && isNullish(props.disabled)) {
+    props.disabled = true;
+  }
+
+  const spinnerColor: SpinnerColor =
+    colors === 'secondary' || colors === 'positive' ? 'white' : 'primary';
+
   return (
     <>
       {!href ? (
         <button className={className} onClick={onClick} {...props}>
-          {children}
+          {loading ? <Spinner color={spinnerColor} /> : children}
         </button>
       ) : (
         <Link href={href} className={className} target={target} {...props}>
-          {children}
+          {loading ? <Spinner color={spinnerColor} /> : children}
         </Link>
       )}
     </>

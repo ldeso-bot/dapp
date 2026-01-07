@@ -5,7 +5,7 @@ import {
   LockableToken,
   Token,
 } from '../constants/tokens.constants';
-import { CarbonClass } from './shared';
+import { ApiCreditToken, CarbonClass } from './shared';
 
 type LockStatus = 'active' | 'matured' | 'claimed';
 export type EarningStatus = 'earning' | 'paused';
@@ -80,8 +80,7 @@ export type Allocations = Allocation[];
 
 export type CreditBalance = {
   balance: number;
-  creditTokenId: string;
-  name: string;
+  creditToken: ApiCreditToken;
   registeredClasses: CarbonClass[];
 };
 

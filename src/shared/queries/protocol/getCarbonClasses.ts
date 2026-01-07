@@ -9,7 +9,7 @@ import {
   TokenSnapshot_Filter,
 } from '@generated/gql/types/protocol.types';
 import { filter, isNonNullish, mapToObj } from 'remeda';
-import { mockRegisteredTokens } from './mocks';
+import { mockTokens } from './mocks';
 import {
   getCreditsTokenMap,
   getHoursSinceEpoch24HoursAgo,
@@ -105,7 +105,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 12.04,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.01,
-      registeredTokens: mockRegisteredTokens,
+      registeredTokens: mockTokens,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567891',
@@ -114,7 +114,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 3.99,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.01,
-      registeredTokens: mockRegisteredTokens,
+      registeredTokens: mockTokens,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567892',
@@ -123,7 +123,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 1.02,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.01,
-      registeredTokens: mockRegisteredTokens,
+      registeredTokens: mockTokens,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567893',
@@ -132,7 +132,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 36.97,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.01,
-      registeredTokens: mockRegisteredTokens,
+      registeredTokens: mockTokens,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567894',
@@ -141,7 +141,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 12.04,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.01,
-      registeredTokens: mockRegisteredTokens,
+      registeredTokens: mockTokens,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567895',
@@ -150,7 +150,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 3.99,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.01,
-      registeredTokens: mockRegisteredTokens,
+      registeredTokens: mockTokens,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567896',
@@ -159,7 +159,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 1.02,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.04,
-      registeredTokens: mockRegisteredTokens,
+      registeredTokens: mockTokens,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567897',
@@ -168,7 +168,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 12.04,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.01,
-      registeredTokens: mockRegisteredTokens,
+      registeredTokens: mockTokens,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567898',
@@ -177,7 +177,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 3.99,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.01,
-      registeredTokens: mockRegisteredTokens,
+      registeredTokens: mockTokens,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567899',
@@ -186,7 +186,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 12.04,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.03,
-      registeredTokens: mockRegisteredTokens,
+      registeredTokens: mockTokens,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567900',
@@ -195,7 +195,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 3.99,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.01,
-      registeredTokens: mockRegisteredTokens,
+      registeredTokens: mockTokens,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567901',
@@ -204,7 +204,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 1.02,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.1,
-      registeredTokens: mockRegisteredTokens,
+      registeredTokens: mockTokens,
     },
   ];
 };
