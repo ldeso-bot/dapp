@@ -7,7 +7,8 @@ import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 export default function CarbonMarketCard(props: CardProps) {
   const { data } = useProtocolData();
 
-  const carbonClasses = data?.carbonClasses.filter((a) => a.valueUSD);
+  /** TODO: Show only carbon classes with valueUSD, */
+  const carbonClasses = data?.carbonClasses; /*.filter((a) => a.valueUSD);*/
 
   return (
     <Card

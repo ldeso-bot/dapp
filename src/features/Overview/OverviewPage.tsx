@@ -32,23 +32,13 @@ export default function OverviewPage() {
       <LiquidityPoolsCard />
       <KVcmUsdcRiskyYieldCard />
 
-      {/* Hidden for the moment. Will probably be removed*/}
-      <div className="hidden">
-        <StackedCards>
-          {/* <CarbonBackingCard /> */}
-          {/* <LiquidityCard /> */}
-        </StackedCards>
-      </div>
-
       <CarbonMarketCard />
 
-      <StackedCards>
-        <KVcmUsdcRiskyYieldCard />
-      </StackedCards>
-
-      <StackedCards>
-        <CarbonMarketCard />
-      </StackedCards>
+      {/* Hidden for the moment. Will probably be removed*/}
+      <div className="hidden">
+        {/* <CarbonBackingCard /> */}
+        {/* <LiquidityCard /> */}
+      </div>
     </div>
   );
 }
