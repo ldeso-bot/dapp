@@ -37,7 +37,10 @@ export const TokenLots: FC<TokenLotsProps> = ({
   const setTopupLockDialog = useSetAtom(topupLockDialogAtom);
   const setClaimTokenDialog = useSetAtom(claimTokenDialogAtom);
 
-  const locks = data?.locks?.filter((lock) => lock.token === token) ?? [];
+  const locks =
+    data?.locks
+      ?.filter((lock) => lock.token === token)
+      .sort((a, b) => a.lockedUntil - b.lockedUntil) ?? [];
 
   const numberOfLots = locks.length;
 
