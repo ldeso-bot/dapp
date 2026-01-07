@@ -33,3 +33,26 @@ fragment MidnightInfoWithPreviousMidnightInfoFragment on MidnightInfo {
     ...MidnightInfoFragment
   }
 }
+
+fragment LockActionFragment on LockAction {
+  type
+  amount
+
+  yieldCutoffMidnightIndex
+
+  k2YieldShares
+  k2YieldPending
+  k2YieldEntryMidnightInfo {
+    ...MidnightInfoFragment
+  }
+
+  riskyYieldShares
+  riskyYieldPending
+  riskyYieldEntryMidnightInfo {
+    ...MidnightInfoFragment
+  }
+
+  syntheticYieldEntryMidnightInfo {
+    ...MidnightInfoFragment
+  }
+}

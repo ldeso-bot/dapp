@@ -9,7 +9,10 @@ import { YieldType } from '@/shared/models/ProtocolData';
 import { EarningStatus, Lock, Locks } from '@/shared/models/walletData';
 import { computeTokenAmountValueUSD } from '@/shared/utils/protocol.utils';
 import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
-import { Lock_Filter } from '@generated/gql/types/protocol.types';
+import {
+  Lock_Filter,
+  LockActionType,
+} from '@generated/gql/types/protocol.types';
 import { filter, isNonNullish } from 'remeda';
 import { getTokenMetrics } from '../protocol/getTokenMetrics';
 import {
@@ -60,6 +63,8 @@ export const getLocks = async (
       return null;
     }
 
+    const mintingInfo = lock.lastSharesMintingAction;
+
     const lockK2YieldClaimableAmount = formatStringToNumber(
       lock.k2YieldClaimableAmount,
       18
@@ -69,7 +74,7 @@ export const getLocks = async (
       18
     );
     const lockYieldCutoffMidnightIndex = formatStringToNumber(
-      lock.yieldCutoffMidnightIndex,
+      mintingInfo?.yieldCutoffMidnightIndex,
       0
     );
 
@@ -146,15 +151,15 @@ export const getLocks = async (
       if (isK2YieldEligible) {
         // Total Rewards
         k2YieldApyPercent = midnightInfo.k2ApyFor[tokenInfo.id];
-        k2Rewards += formatStringToNumber(lock.k2YieldPending, 18);
-        if (lock.k2YieldEntryMidnightInfo) {
+        k2Rewards += formatStringToNumber(mintingInfo?.amount, 18);
+        if (mintingInfo?.k2YieldEntryMidnightInfo) {
           const { k2PyFor } = computeMidnightInfo(
             midnightInfo,
-            formatMidnightInfo(lock.k2YieldEntryMidnightInfo)
+            formatMidnightInfo(mintingInfo.k2YieldEntryMidnightInfo)
           );
           k2Rewards +=
             k2PyFor[tokenInfo.id] *
-            formatStringToNumber(lock.k2YieldShares, 18);
+            formatStringToNumber(mintingInfo.k2YieldShares, 18);
         }
         // Claimable rewards
         if (isClaimable) {
@@ -166,15 +171,15 @@ export const getLocks = async (
       if (isRiskyYieldEligible) {
         // Total Rewards
         riskyYieldApyPercent = midnightInfo.kvcmApyFor[tokenInfo.id];
-        kvcmRewards += formatStringToNumber(lock.riskyYieldPending, 18);
-        if (lock.riskyYieldEntryMidnightInfo) {
+        kvcmRewards += formatStringToNumber(mintingInfo?.amount, 18);
+        if (mintingInfo?.riskyYieldEntryMidnightInfo) {
           const { kvcmPyFor } = computeMidnightInfo(
             midnightInfo,
-            formatMidnightInfo(lock.riskyYieldEntryMidnightInfo)
+            formatMidnightInfo(mintingInfo.riskyYieldEntryMidnightInfo)
           );
           kvcmRewards +=
             kvcmPyFor[tokenInfo.id] *
-            formatStringToNumber(lock.riskyYieldShares, 18);
+            formatStringToNumber(mintingInfo.riskyYieldShares, 18);
         }
         // Claimable rewards
         if (isClaimable) {
@@ -185,9 +190,22 @@ export const getLocks = async (
       // Synthetic yield
       if (isSyntheticYieldEligible) {
         syntheticYieldApyPercent = midnightInfo.kvcmApyFor.kvcm;
-        const claimable =
-          formatStringToNumber(lock.syntheticYieldShares, 18) *
-          midnightInfo.syntheticYieldPps;
+
+        const claimable = lock.lockActions.reduce((acc, action) => {
+          if (action.type === LockActionType.SHARES_MINTED) {
+            const actionAmount = formatStringToNumber(action.amount, 18); // Amount locked
+            const actionPps = formatStringToNumber(
+              action.syntheticYieldEntryMidnightInfo?.syntheticYieldPps,
+              18
+            ); // PPS at the time the lock shares are minted (during next midnight)
+            const actionShares = actionAmount * actionPps; // Shares minted
+            const currentPps = midnightInfo.syntheticYieldPps; // Pps now (or at the time of maturation)
+            const actionRewards = actionShares * currentPps; // Rewards for the action
+            return acc + actionRewards;
+          }
+          return acc;
+        }, 0);
+
         kvcmRewards += claimable - lockedAmount;
         positionAmount += kvcmRewards;
         kvcmClaimableRewards = isClaimable ? kvcmRewards : 0;

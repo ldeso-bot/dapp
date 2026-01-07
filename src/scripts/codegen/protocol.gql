@@ -113,33 +113,21 @@ query getLocks($where: Lock_filter) {
       ...TokenFragment
     }
 
-    # K2 lock specific field
-    k2YieldClaimableAmount
-    riskyYieldClaimableAmount
-    yieldCutoffMidnightIndex
-
-    # K2 yield field
-    k2YieldShares
-    k2YieldPending
-    k2YieldEntryMidnightInfo {
-      ...MidnightInfoFragment
+    lockActions {
+      ...LockActionFragment
     }
+
+    lastSharesMintingAction {
+      ...LockActionFragment
+    }
+
     k2YieldClaimed
-
-    # Risky yield
-    riskyYieldShares
-    riskyYieldPending
-    riskyYieldEntryMidnightInfo {
-      ...MidnightInfoFragment
-    }
     riskyYieldClaimed
 
-    # Synthetic yield
-    syntheticYieldShares
-    syntheticYieldEntryMidnightInfo {
-      ...MidnightInfoFragment
-    }
     syntheticYieldClaimed
+
+    k2YieldClaimableAmount
+    riskyYieldClaimableAmount
   }
 }
 
