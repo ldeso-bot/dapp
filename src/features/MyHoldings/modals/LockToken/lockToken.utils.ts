@@ -182,10 +182,9 @@ export const useLockToken = (params: {
 
   const lock = useCallback(async () => {
     try {
+      const queryKey = [`wallet-data-${userAddress}`];
       // Get current wallet data before transaction
-      const currentData = queryClient.getQueryData<WalletData>([
-        `wallet-data-${userAddress}`,
-      ]);
+      const currentData = queryClient.getQueryData<WalletData>([queryKey]);
       const currentLockCount = currentData?.locks.length ?? 0;
 
       let txHash: `0x${string}` | undefined;
@@ -210,9 +209,10 @@ export const useLockToken = (params: {
       }
 
       await waitForTransaction(txHash);
-
+      // Invalidate the query to ensure fresh data
+      await queryClient.invalidateQueries({ queryKey });
       const dataUpdated = await refetchWithRetry({
-        queryKey: [`wallet-data-${userAddress}`],
+        queryKey,
         maxRetries: 10,
         retryDelay: 1000,
         validate: (data: unknown) => {
@@ -246,9 +246,7 @@ export const useLockToken = (params: {
           '⚠️ Data validation timeout, but transaction was successful'
         );
       }
-      return {
-        error: null,
-      };
+      return { error: null };
     } catch (error) {
       console.error('❌ Lock error:', error);
       return handleWeb3Error(error);

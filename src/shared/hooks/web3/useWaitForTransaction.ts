@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { usePublicClient } from 'wagmi';
 
-export const useWaitForTransaction = (confirmations: number = 2) => {
+export const useWaitForTransaction = (confirmations: number = 3) => {
   const publicClient = usePublicClient();
   const waitForTransaction = useCallback(
     async (hash: `0x${string}`) => {
