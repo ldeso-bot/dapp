@@ -23,7 +23,7 @@ export default function TopupLockFlow() {
     tokenSymbol: z.string(),
     amount: z.coerce
       .number()
-      .gt(0, 'Amount must be a positive integer')
+      .gt(0, 'Amount must be greater than 0')
       .int('Amount must be a positive integer'),
   });
 

@@ -1,0 +1,143 @@
+'use client';
+
+import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
+import {
+  MILLISECONDS_PER_DAY,
+  ONE_DAY,
+} from '@/shared/constants/protocol.constants';
+import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
+import { useCurrentTimestamp } from '@/shared/hooks/useCurrentTimestamp';
+import { cn } from '@/shared/utils/component.utils';
+import {
+  calculateApproxDuration,
+  formatDateDDMMYYYY,
+  getDaysFromTimestamp,
+} from '@/shared/utils/date.utils';
+import { FormControlProps } from '@/shared/utils/form.types';
+import { findClosestMaturityByDays } from '@/shared/utils/protocol.utils';
+import { useMemo } from 'react';
+import { Controller } from 'react-hook-form';
+import { DurationFormFields } from './DurationStepper';
+
+const PRESET_DURATIONS = [
+  { days: 90, description: 'Shortest' }, // 3 months
+  { days: 365, description: 'Short' }, // 1 year
+  { days: 1095, description: 'Medium' }, // 3 years
+  { days: 3650, description: 'Longest' }, // 10 years
+] as const;
+
+// @todo - replace with actual data...
+const getNextResetInfo = () => {
+  const today = new Date();
+  const nextResetDate = new Date('2025-12-14');
+  const daysUntilReset = Math.ceil(
+    (nextResetDate.getTime() - today.getTime()) / MILLISECONDS_PER_DAY
+  );
+  return { nextResetDate, daysUntilReset };
+};
+
+export const DurationSelector = <T extends DurationFormFields>({
+  control,
+  name,
+}: FormControlProps<T>) => {
+  const currentTimestamp = useCurrentTimestamp();
+  const { data: protocolData } = useProtocolData();
+  const { nextResetDate, daysUntilReset } = getNextResetInfo();
+
+  const presetDurations = useMemo(() => {
+    const maturities = protocolData?.lockedkVcmYieldRates ?? [];
+    const firstMaturity = maturities[0] ?? null;
+    const shortestDays = firstMaturity
+      ? getDaysFromTimestamp(firstMaturity.maturationTimestamp, true)
+      : PRESET_DURATIONS[0].days;
+
+    const lastMaturity = maturities[maturities.length - 1] ?? null;
+    const longestDays = lastMaturity
+      ? getDaysFromTimestamp(lastMaturity.maturationTimestamp, true)
+      : PRESET_DURATIONS[PRESET_DURATIONS.length - 1].days;
+
+    return PRESET_DURATIONS.map((preset, index) => {
+      const isFirst = index === 0;
+      const isLast = index === PRESET_DURATIONS.length - 1;
+      const daysToUse = isFirst
+        ? shortestDays
+        : isLast
+          ? longestDays
+          : preset.days;
+
+      const maturity = findClosestMaturityByDays(daysToUse, maturities);
+      const timestamp = maturity?.maturationTimestamp
+        ? maturity.maturationTimestamp
+        : currentTimestamp + daysToUse * ONE_DAY;
+
+      return {
+        ...preset,
+        days: daysToUse,
+        label: formatDateDDMMYYYY(timestamp),
+        baseAPY: maturity?.yieldPercent ?? 3,
+        approxDuration: calculateApproxDuration(timestamp),
+      };
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [protocolData?.lockedkVcmYieldRates]);
+
+  return (
+    <div className="flex flex-col gap-2 mt-2">
+      <div className="flex items-center gap-2">
+        <label className="text-size-16 font-medium">Maturity</label>
+        <Tooltip
+          className="max-w-[30rem] text-size-12 p-3"
+          content="Maturity is a fixed date. Remaining time shrinks daily until the roll, then dates roll forward."
+        />
+      </div>
+      <p className="text-size-12 text-void-40">
+        Duration between maturities is 90 days. Choose from supported dates.
+        Next roll over in{' '}
+        <span className="font-bold text-gray-900">{daysUntilReset} days</span> (
+        {nextResetDate.toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        })}
+        ).
+      </p>
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        {presetDurations.map((preset) => (
+          <Controller
+            name={name}
+            key={preset.days}
+            control={control}
+            render={({ field }) => {
+              const isSelected = field.value === preset.days;
+              return (
+                <Tooltip
+                  trigger={
+                    <button
+                      type="button"
+                      onClick={() => field.onChange(preset.days)}
+                      className={cn(
+                        'w-full flex flex-col items-center px-3 py-2 border-2 rounded-xl text-center',
+                        isSelected
+                          ? 'border-gray-200 bg-green-10 text-green-80'
+                          : 'border-gray-200 hover:border-gray-300'
+                      )}
+                    >
+                      <div className="text-size-14 font-medium">
+                        {preset.label}
+                      </div>
+                      <div className="text-size-12 text-gray-500">
+                        {preset.description}
+                      </div>
+                    </button>
+                  }
+                  content={preset.approxDuration}
+                  className="text-size-12 p-2"
+                />
+              );
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};

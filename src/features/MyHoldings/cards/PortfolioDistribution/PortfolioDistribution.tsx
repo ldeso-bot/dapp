@@ -13,51 +13,56 @@ export const PortfolioDistributionCard = (props: CardProps) => {
 
   const { data: holdingsData } = useHoldingsData();
   const formattedData = holdingsData
-    ? {
-        segments: [
-          {
-            type: 'kvcm',
-            label: 'kVCM Locks',
-            value: holdingsData.kvcm.lockedValue || 0,
-            percentage: calculatePercentage(
-              holdingsData.kvcm.lockedValue,
-              holdingsData.portfolioValue
-            ),
-            color: 'bg-[#00a329]',
-          },
-          {
-            type: 'k2',
-            label: 'K2 Position',
-            value: holdingsData.k2.lockedValue || 0,
-            percentage: calculatePercentage(
-              holdingsData.k2.lockedValue,
-              holdingsData.portfolioValue
-            ),
-            color: 'bg-gray-600',
-          },
-          {
-            type: 'liquidity',
-            label: 'Liquidity',
-            value: holdingsData.liquidityLockedValue || 0,
-            percentage: calculatePercentage(
-              holdingsData.liquidityLockedValue,
-              holdingsData.portfolioValue
-            ),
-            color: 'bg-gray-400',
-          },
-          {
-            type: 'claimables',
-            label: 'Claimables',
-            value: holdingsData.claimableValue || 0,
-            percentage: calculatePercentage(
-              holdingsData.claimableValue,
-              holdingsData.portfolioValue
-            ),
-            color: 'bg-green-500',
-          },
-        ],
-        totalValue: holdingsData.portfolioValue || 0,
-      }
+    ? (() => {
+        const distributionPortfolioValue =
+          holdingsData.lockedValue + holdingsData.claimableValue;
+
+        return {
+          segments: [
+            {
+              type: 'kvcm',
+              label: 'kVCM Locks',
+              value: holdingsData.kvcm.lockedValue || 0,
+              percentage: calculatePercentage(
+                holdingsData.kvcm.lockedValue,
+                distributionPortfolioValue
+              ),
+              color: 'bg-[#00a329]',
+            },
+            {
+              type: 'k2',
+              label: 'K2 Position',
+              value: holdingsData.k2.lockedValue || 0,
+              percentage: calculatePercentage(
+                holdingsData.k2.lockedValue,
+                distributionPortfolioValue
+              ),
+              color: 'bg-gray-600',
+            },
+            {
+              type: 'liquidity',
+              label: 'Liquidity',
+              value: holdingsData.liquidityLockedValue || 0,
+              percentage: calculatePercentage(
+                holdingsData.liquidityLockedValue,
+                distributionPortfolioValue
+              ),
+              color: 'bg-gray-400',
+            },
+            {
+              type: 'claimables',
+              label: 'Claimables',
+              value: holdingsData.claimableValue || 0,
+              percentage: calculatePercentage(
+                holdingsData.claimableValue,
+                distributionPortfolioValue
+              ),
+              color: 'bg-green-500',
+            },
+          ],
+          totalValue: distributionPortfolioValue || 0,
+        };
+      })()
     : null;
 
   return (

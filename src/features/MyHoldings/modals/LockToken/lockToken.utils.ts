@@ -3,10 +3,9 @@ import { useRefetchWithRetry } from '@/shared/hooks/useRefetchWithRetry';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { usePermit } from '@/shared/hooks/web3/usePermit';
 import { useWaitForTransaction } from '@/shared/hooks/web3/useWaitForTransaction';
-import { YieldRate } from '@/shared/models/ProtocolData';
 import { WalletData } from '@/shared/models/walletData';
 import { PermitReturn } from '@/shared/utils/web3.types';
-import { handleWeb3Error } from '@/shared/utils/web3.utils';
+import { handleWeb3Error, isUserRejection } from '@/shared/utils/web3.utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { atom } from 'jotai';
 import { useCallback } from 'react';
@@ -147,11 +146,16 @@ export const useLockToken = (params: {
     if (!tokenContract || !stakingContract || !chain) {
       throw new Error('Contract or chain not ready');
     }
-    await tokenContract.write.approve([stakingContract.address, amount], {
-      chain,
-    });
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    return await lockWithAllowance();
+    try {
+      await tokenContract.write.approve([stakingContract.address, amount], {
+        chain,
+      });
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      return await lockWithAllowance();
+    } catch (approveError) {
+      console.error('❌ Approval error:', approveError);
+      throw approveError;
+    }
   }, [tokenContract, stakingContract, amount, chain, lockWithAllowance]);
 
   const lockWithPermit = useCallback(async () => {
@@ -184,7 +188,7 @@ export const useLockToken = (params: {
       ]);
       const currentLockCount = currentData?.locks.length ?? 0;
 
-      let txHash: `0x${string}`;
+      let txHash: `0x${string}` | undefined;
       const hasSufficientAllowance = await checkAllowance();
       if (hasSufficientAllowance) {
         txHash = await lockWithAllowance();
@@ -193,9 +197,18 @@ export const useLockToken = (params: {
           txHash = await lockWithPermit();
         } catch (permitError) {
           console.warn('Permit failed, using approve + lock flow', permitError);
-          txHash = await approveAndLock();
+          if (!isUserRejection(permitError)) {
+            txHash = await approveAndLock();
+          } else {
+            throw permitError;
+          }
         }
       }
+
+      if (!txHash) {
+        throw new Error('No transaction hash');
+      }
+
       await waitForTransaction(txHash);
 
       const dataUpdated = await refetchWithRetry({
@@ -258,26 +271,4 @@ export const useLockToken = (params: {
     checkAllowance,
     contract: stakingContract,
   };
-};
-
-export const findClosestMaturityByDays = (
-  targetDays: number,
-  yieldData: YieldRate[]
-) => {
-  if (yieldData.length === 0) {
-    return null;
-  }
-
-  const nowInSeconds = Math.floor(Date.now() / 1000);
-  const targetTimestamp = nowInSeconds + targetDays * 24 * 60 * 60;
-
-  return yieldData?.reduce((closest: YieldRate, current: YieldRate) => {
-    const currentDiff = Math.abs(
-      (current.maturationTimestamp ?? 0) - targetTimestamp
-    );
-    const closestDiff = Math.abs(
-      (closest.maturationTimestamp ?? 0) - targetTimestamp
-    );
-    return currentDiff < closestDiff ? current : closest;
-  });
 };

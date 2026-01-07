@@ -1,7 +1,8 @@
 'use client';
 
-import { DurationSelector } from '@/features/MyHoldings/modals/LockToken/components/DurationSelector';
-import { DurationStepper } from '@/features/MyHoldings/modals/LockToken/components/DurationStepper';
+import { DurationSelector } from '@/features/MyHoldings/shared/DurationSelector';
+import { DurationSlider } from '@/features/MyHoldings/shared/DurationSlider';
+import { DurationStepper } from '@/features/MyHoldings/shared/DurationStepper';
 import { YieldBreakdownCard } from '@/features/MyHoldings/shared/YieldBreakdownCard';
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
@@ -9,6 +10,7 @@ import Input from '@/shared/components/Form/Input';
 import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
 import Form from '@/shared/components/Form/layout/Form';
 import InputGroup from '@/shared/components/Form/layout/InputGroup';
+import { RootError } from '@/shared/components/Form/RootError';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import {
@@ -20,14 +22,14 @@ import {
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useTransactionHandler } from '@/shared/hooks/useTransactionHandler';
+import { isMaturityWithinDays } from '@/shared/utils/date.utils';
+import { findClosestMaturityByDays } from '@/shared/utils/protocol.utils';
 import { formatAmountWithCommas } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
 import { useEffect } from 'react';
 import { parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
-import { DurationSlider } from '../components/DurationSlider';
 import {
-  findClosestMaturityByDays,
   lockTokenDialogAtom,
   LockTokenFields,
   useLockToken,
@@ -39,9 +41,10 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
   const { data: walletData } = useWalletData();
   const { data: protocolData } = useProtocolData();
 
-  const { handleSubmit, formState, watch } = form;
   const setLockTokenDialogState = useSetAtom(lockTokenDialogAtom);
   const { handleTransaction, isSubmitting } = useTransactionHandler();
+
+  const { handleSubmit, formState, watch, setError, clearErrors } = form;
 
   const token = watch('token');
   const amount = watch('amount');
@@ -52,8 +55,31 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
   const tokenInfo = tokens[typedToken];
   const tokenBalance = walletData?.balances?.[typedToken] ?? 0;
 
-  const amountWei =
-    amount && amount > 0 ? parseUnits(String(amount), tokenInfo.decimals) : 0n;
+  const isValidAmount = !!(amount && amount > 0);
+  const amountWei = isValidAmount
+    ? parseUnits(String(amount), tokenInfo.decimals)
+    : 0n;
+
+  const maturity = findClosestMaturityByDays(
+    Number(duration),
+    protocolData?.lockedkVcmYieldRates ?? []
+  );
+
+  const maturityDate = maturity?.maturationTimestamp;
+  const fullMaturity = protocolData?.lockedkVcmYieldRates?.find(
+    (m) => m.maturityId === maturity?.maturityId
+  );
+  const isMaturityWithin3Days =
+    isValidAmount && isMaturityWithinDays(maturityDate, 3);
+  const isMaturityWithin30Days =
+    isValidAmount && isMaturityWithinDays(maturityDate, 30);
+
+  useEffect(() => {
+    if (maturity) {
+      form.setValue('maturityId', maturity.maturityId);
+      form.setValue('maturityDate', maturity.maturationTimestamp);
+    }
+  }, [duration, maturity, form]);
 
   const { lock } = useLockToken({
     token: typedToken as AllocatableToken,
@@ -61,21 +87,10 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
     maturityId: maturityId ?? 1,
   });
 
-  const selectedMaturity = findClosestMaturityByDays(
-    Number(duration),
-    protocolData?.lockedkVcmYieldRates ?? []
-  );
-
-  useEffect(() => {
-    if (selectedMaturity) {
-      form.setValue('maturityId', selectedMaturity.maturityId);
-      form.setValue('maturityDate', selectedMaturity.maturationTimestamp);
-    }
-  }, [duration, selectedMaturity, form]);
-
   const onSubmit = async () => {
     if (!isConnected) return;
-    await handleTransaction(lock, {
+    clearErrors('root');
+    const result = await handleTransaction(lock, {
       successTitle: 'Lock Successful',
       successDescription: `You've successfully locked ${amount} ${tokenInfo.symbol}! You can manage your positions in the "My Holdings" dashboard.`,
       errorDescription:
@@ -89,6 +104,10 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
         }, 300);
       },
     });
+
+    if (result.error) {
+      setError('root', { type: 'manual', message: result.error });
+    }
   };
 
   return (
@@ -96,13 +115,13 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
       <h2 className="text-size-20 font-semibold text-gray-900">
         Lock {tokenInfo.symbol} Tokens
       </h2>
-      <Form className="pt-0" onSubmit={handleSubmit(onSubmit)}>
+      <Form className="pt-0 relative" onSubmit={handleSubmit(onSubmit)}>
         <InputGroup className="pt-3">
           <div className="flex flex-col gap-1">
             <div className="flex items-start gap-2">
               <Input
                 type="number"
-                className="pl-10"
+                iconSize="sm"
                 iconSrc={tokens[typedToken].iconSrc}
                 {...form.register('amount')}
                 error={formState.errors.amount}
@@ -120,10 +139,10 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
               {tokenInfo.symbol}
             </span>
           </div>
-          <DurationSelector control={form.control} />
+          <DurationSelector name="duration" control={form.control} />
           <div className="space-y-2 flex flex-col gap-2">
-            <DurationStepper control={form.control} />
-            <DurationSlider control={form.control} />
+            <DurationStepper name="duration" control={form.control} />
+            <DurationSlider name="duration" control={form.control} />
           </div>
           <div className="text-size-12 text-void-40">
             <p>
@@ -136,13 +155,27 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
               and are claimable at maturity.
             </p>
           </div>
-          {selectedMaturity && (
+          {fullMaturity && (
             <YieldBreakdownCard
               duration={duration}
               amount={watch('amount')}
-              selectedMaturity={selectedMaturity}
+              selectedMaturity={fullMaturity}
             />
           )}
+          {formState.errors.root && (
+            <RootError
+              sticky={false}
+              errorMessage={formState.errors.root.message ?? ''}
+            />
+          )}
+          {isMaturityWithin3Days ? (
+            <RootError errorMessage="Time to maturity reset is in less than 3 days. Pay attention to short maturity dates; rewards may be minimal. Consider choosing a later maturity." />
+          ) : isMaturityWithin30Days ? (
+            <RootError
+              variant="warning"
+              errorMessage="Time to maturity reset is in less than 30 days. Pay attention to short maturity dates; rewards may not accrue for very long."
+            />
+          ) : null}
         </InputGroup>
         <ButtonGroup className="flex-row">
           <Button

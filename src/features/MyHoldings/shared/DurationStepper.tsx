@@ -1,10 +1,14 @@
 'use client';
 
+import { ONE_DAY } from '@/shared/constants/protocol.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { FormControlProps } from '@/shared/utils/form.types';
-import type { FC } from 'react';
 import { Controller } from 'react-hook-form';
-import { LockTokenFields } from '../lockToken.utils';
+
+export type DurationFormFields = {
+  duration: number;
+  [key: string]: unknown;
+} & Record<string, unknown>;
 
 export const formatLockDuration = (days: number) => {
   if (days < 30) {
@@ -26,7 +30,7 @@ export const formatLockDuration = (days: number) => {
 const getDaysFromTimestamp = (timestamp: number): number => {
   const now = Math.floor(Date.now() / 1000);
   const diff = timestamp - now;
-  return Math.max(0, Math.floor(diff / 86400));
+  return Math.max(0, Math.floor(diff / ONE_DAY));
 };
 
 const formatMaturityDate = (timestamp: number): string => {
@@ -38,9 +42,10 @@ const formatMaturityDate = (timestamp: number): string => {
   });
 };
 
-export const DurationStepper: FC<FormControlProps<LockTokenFields>> = ({
+export const DurationStepper = <T extends DurationFormFields>({
+  name,
   control,
-}) => {
+}: FormControlProps<T>) => {
   const { data: protocolData } = useProtocolData();
   const maturities = protocolData?.lockedkVcmYieldRates ?? [];
 
@@ -54,7 +59,7 @@ export const DurationStepper: FC<FormControlProps<LockTokenFields>> = ({
     <>
       <label className="text-size-14 font-medium">Custom Maturity</label>
       <Controller
-        name="duration"
+        name={name}
         control={control}
         render={({ field }) => {
           const currentDuration = Number(field.value);

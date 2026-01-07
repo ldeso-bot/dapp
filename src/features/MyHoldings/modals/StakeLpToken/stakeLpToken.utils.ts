@@ -4,7 +4,9 @@ import { atom } from 'jotai';
 export type StakeLpTokenFields = {
   token: string;
   amount: number;
-  maturityDate: number;
+  duration: number;
+  maturityId?: number;
+  maturityDate?: number;
 };
 
 export const stakeLpTokenDialogAtom = atom({

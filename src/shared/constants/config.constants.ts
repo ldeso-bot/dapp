@@ -4,7 +4,7 @@ export const FORCE_WALLET_ADDRESS = process.env.FORCE_WALLET_ADDRESS
   ? process.env.FORCE_WALLET_ADDRESS.toLowerCase()
   : undefined;
 
-export const USE_MOCKS = !(process.env.USE_MOCKS === 'false');
+export const USE_MOCKS = process.env.USE_MOCKS === 'true';
 
 export const IS_DEVELOPMENT =
   !process.env.VERCEL_ENV || process.env.VERCEL_ENV === 'development';

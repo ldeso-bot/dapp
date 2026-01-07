@@ -1,7 +1,7 @@
 'use client';
 
 import { YieldRate } from '@/shared/models/ProtocolData';
-import { formatLockDuration } from '../modals/LockToken/components/DurationStepper';
+import { formatLockDuration } from './DurationStepper';
 
 type Props = {
   amount: number;

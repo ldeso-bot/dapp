@@ -1,89 +1,168 @@
 'use client';
 
+import { DurationSelector } from '@/features/MyHoldings/shared/DurationSelector';
+import { DurationSlider } from '@/features/MyHoldings/shared/DurationSlider';
+import { DurationStepper } from '@/features/MyHoldings/shared/DurationStepper';
 import Button from '@/shared/components/Button/Button';
-import SoloCard from '@/shared/components/Card/SoloCard';
+import Card from '@/shared/components/Card/Card';
 import Input from '@/shared/components/Form/Input';
 import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
 import Form from '@/shared/components/Form/layout/Form';
 import InputGroup from '@/shared/components/Form/layout/InputGroup';
-import SelectInput from '@/shared/components/Form/SelectInput';
+import { RootError } from '@/shared/components/Form/RootError';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
-import Yield from '@/shared/components/Yield/Yield';
-import { ROUTES } from '@/shared/constants/route.constants';
 import {
   DEFAULT_LP_TOKEN,
   isLpToken,
   lpTokens,
   tokens,
 } from '@/shared/constants/tokens.constants';
-import {
-  MATURITY_DATES,
-  MATURITY_DATES_OPTIONS,
-} from '@/shared/utils/protocol.utils';
-import { useAtomValue } from 'jotai';
+import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
+import { useWalletData } from '@/shared/hooks/api/useWalletData';
+import { useTransactionHandler } from '@/shared/hooks/useTransactionHandler';
+import { isMaturityWithinDays } from '@/shared/utils/date.utils';
+import { findClosestMaturityByDays } from '@/shared/utils/protocol.utils';
+import { formatAmountWithCommas } from '@/shared/utils/string.utils';
+import { useSetAtom } from 'jotai';
+import { useEffect } from 'react';
+import { useAccount } from 'wagmi';
 import {
   stakeLpTokenDialogAtom,
   StakeLpTokenFields,
 } from '../stakeLpToken.utils';
 
-const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({ next, data }) => {
+export const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({
+  data,
+}) => {
   const { form } = data;
-  const { handleSubmit, formState, watch } = form;
-  const stakeLpTokenDialogState = useAtomValue(stakeLpTokenDialogAtom);
+  const { isConnected } = useAccount();
+  const { data: walletData } = useWalletData();
+  const { data: protocolData } = useProtocolData();
 
-  // Wrapping next into handleSubmit to ensure the form is valid before going to the validation step
-  const onSubmit = () => {
-    next();
-  };
+  const setStakeLpTokenDialogState = useSetAtom(stakeLpTokenDialogAtom);
+  const { isSubmitting } = useTransactionHandler();
+
+  const { handleSubmit, formState, watch } = form;
 
   const token = watch('token');
+  const amount = watch('amount');
+  const duration = watch('duration');
+  const maturityId = watch('maturityId');
 
   const typedToken = isLpToken(token) ? token : DEFAULT_LP_TOKEN;
+  const tokenInfo = tokens[typedToken];
+  const tokenBalance = walletData?.balances?.[typedToken] ?? 0;
+
+  const isValidAmount = !!(amount && amount > 0);
+  const lpTokenDisplayName = lpTokens[typedToken]?.symbol || typedToken;
+
+  const maturity = findClosestMaturityByDays(
+    Number(duration),
+    protocolData?.lockedkVcmYieldRates ?? []
+  );
+
+  const maturityDate = maturity?.maturationTimestamp;
+  const isMaturityWithin3Days =
+    isValidAmount && isMaturityWithinDays(maturityDate, 3);
+  const isMaturityWithin30Days =
+    isValidAmount && isMaturityWithinDays(maturityDate, 30);
+
+  useEffect(() => {
+    if (maturity) {
+      form.setValue('maturityId', maturity.maturityId);
+      form.setValue('maturityDate', maturity.maturationTimestamp);
+    }
+  }, [duration, maturity, form]);
+
+  // @todo - wire up...
+  const onSubmit = async () => {
+    if (!isConnected) return;
+    console.log('onSubmit', { token, amount, duration, maturityId });
+  };
 
   return (
-    <SoloCard title="Lock LP Tokens">
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <InputGroup>
-          <SelectInput
-            label="Token"
-            defaultValue={stakeLpTokenDialogState.token ?? DEFAULT_LP_TOKEN}
-            items={Object.entries(lpTokens).map(([key, token]) => ({
-              value: key,
-              label: token.symbol,
-              icon: token.icon(),
-            }))}
-            {...form.register('token')}
-          />
-          <Yield baseApy={0.06} riskyYield={0.14}></Yield>
-          <Input
-            label="Amount"
-            type="number"
-            iconSrc={tokens[typedToken].iconSrc}
-            {...form.register('amount')}
-            error={formState.errors.amount}
-          />
-          <SelectInput
-            label="Maturity Date"
-            items={MATURITY_DATES_OPTIONS}
-            {...form.register('maturityDate')}
-            defaultValue={MATURITY_DATES[0]}
-          />
+    <Card className="rounded-lg px-6 py-4 max-h-[70vh] overflow-y-auto w-[42rem] mx-auto">
+      <h2 className="text-size-20 font-semibold text-gray-900">
+        Stake {lpTokenDisplayName} LP
+      </h2>
+      <Form className="pt-0 relative" onSubmit={handleSubmit(onSubmit)}>
+        <InputGroup className="pt-3">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-start gap-2">
+              <Input
+                type="number"
+                iconSize="md"
+                iconSrc={tokens[typedToken].iconSrc}
+                {...form.register('amount')}
+                error={formState.errors.amount}
+              />
+              <Button
+                type="button"
+                colors="secondary"
+                className="rounded-xl min-h-[4rem]"
+                onClick={() => form.setValue('amount', Number(tokenBalance))}
+              >
+                Max
+              </Button>
+            </div>
+            <span className="text-size-12 text-gray-500">
+              Balance: {formatAmountWithCommas(Number(tokenBalance))}{' '}
+              {tokenInfo.symbol}
+            </span>
+          </div>
+          <DurationSelector name="duration" control={form.control} />
+          <div className="space-y-2 flex flex-col gap-2">
+            <DurationStepper name="duration" control={form.control} />
+            <DurationSlider name="duration" control={form.control} />
+          </div>
+          <div className="text-size-12 text-void-40">
+            <p>
+              Duration between maturities is 90 days. Choose from 40 supported
+              dates.
+            </p>
+            <div className="w-full h-[1px] bg-void-20 my-2" />
+            <p>
+              Rewards (kVCM, K2) accrue until maturity and are claimable at
+              maturity.
+            </p>
+          </div>
+          {formState.errors.root && (
+            <RootError
+              sticky={false}
+              errorMessage={formState.errors.root.message ?? ''}
+            />
+          )}
+          {isMaturityWithin3Days ? (
+            <RootError errorMessage="Time to maturity reset is in less than 3 days. Pay attention to short maturity dates; rewards may be minimal. Consider choosing a later maturity." />
+          ) : isMaturityWithin30Days ? (
+            <RootError
+              variant="warning"
+              errorMessage="Time to maturity reset is in less than 30 days. Pay attention to short maturity dates; rewards may not accrue for very long."
+            />
+          ) : null}
         </InputGroup>
-        <ButtonGroup>
-          <Button colors="secondary" context="flow" type="submit">
-            Lock LP Tokens
-          </Button>
+        <ButtonGroup className="flex-row">
           <Button
             colors="primary"
             context="flow"
-            href={`${ROUTES.MY_HOLDINGS}?activeView=liquidity`}
+            className="rounded-xl"
+            onClick={() =>
+              setStakeLpTokenDialogState({ open: false, token: null })
+            }
           >
             Cancel
           </Button>
+          <Button
+            className="rounded-xl"
+            colors="secondary"
+            context="flow"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Staking...' : 'Stake'}
+          </Button>
         </ButtonGroup>
       </Form>
-    </SoloCard>
+    </Card>
   );
 };
-
-export default StakeLpTokenForm;

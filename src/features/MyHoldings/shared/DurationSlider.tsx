@@ -1,21 +1,22 @@
 'use client';
 
+import { ONE_DAY } from '@/shared/constants/protocol.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { FormControlProps } from '@/shared/utils/form.types';
 import { Slider as SliderPrimitive } from 'radix-ui';
-import type { FC } from 'react';
 import { Controller } from 'react-hook-form';
-import { LockTokenFields } from '../lockToken.utils';
+import { DurationFormFields } from './DurationStepper';
 
 const getDaysFromTimestamp = (timestamp: number): number => {
   const now = Math.floor(Date.now() / 1000);
   const diff = timestamp - now;
-  return Math.max(0, Math.floor(diff / 86400));
+  return Math.max(0, Math.floor(diff / ONE_DAY));
 };
 
-export const DurationSlider: FC<FormControlProps<LockTokenFields>> = ({
+export const DurationSlider = <T extends DurationFormFields>({
+  name,
   control,
-}) => {
+}: FormControlProps<T>) => {
   const { data: protocolData } = useProtocolData();
 
   const maturities = protocolData?.lockedkVcmYieldRates ?? [];
@@ -29,11 +30,10 @@ export const DurationSlider: FC<FormControlProps<LockTokenFields>> = ({
         <span>Longest</span>
       </div>
       <Controller
-        name="duration"
+        name={name}
         control={control}
         render={({ field }) => {
           const currentDuration = Number(field.value);
-
           // Find the current maturity index based on duration
           // First try to find an exact match (within 1 day)
           let currentIndex = maturityDays.findIndex(

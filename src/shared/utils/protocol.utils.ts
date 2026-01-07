@@ -1,19 +1,5 @@
-import { ONE_MONTH, ONE_YEAR } from '@/shared/constants/protocol.constants';
 import { LockableToken } from '../constants/tokens.constants';
-import { AllMetrics } from '../models/ProtocolData';
-
-export const MATURITY_DATES = [ONE_MONTH, ONE_YEAR] as const;
-
-export const MATURITY_DATES_OPTIONS = [
-  {
-    value: ONE_MONTH,
-    label: '1 month',
-  },
-  {
-    value: 365,
-    label: '1 year',
-  },
-];
+import { AllMetrics, YieldRate, YieldRates } from '../models/ProtocolData';
 
 /**
  * Computes the value of a token amount in USD taking into account that LP tokens are positions and do not have an intrinsic value.
@@ -40,4 +26,26 @@ export const computeTokenAmountValueUSD = (
     const valueUSD = metrics[token]?.valueUSD || 0;
     return amount * valueUSD;
   }
+};
+
+export const findClosestMaturityByDays = (
+  targetDays: number,
+  yieldData: YieldRates
+) => {
+  if (yieldData.length === 0) {
+    return null;
+  }
+
+  const nowInSeconds = Math.floor(Date.now() / 1000);
+  const targetTimestamp = nowInSeconds + targetDays * 24 * 60 * 60;
+
+  return yieldData?.reduce((closest: YieldRate, current: YieldRate) => {
+    const currentDiff = Math.abs(
+      (current.maturationTimestamp ?? 0) - targetTimestamp
+    );
+    const closestDiff = Math.abs(
+      (closest.maturationTimestamp ?? 0) - targetTimestamp
+    );
+    return currentDiff < closestDiff ? current : closest;
+  });
 };

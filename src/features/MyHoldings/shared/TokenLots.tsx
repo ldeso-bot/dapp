@@ -56,7 +56,23 @@ export const TokenLots: FC<TokenLotsProps> = ({
             <div className="text-size-14 text-gray-900 font-[400]">
               View lots ({numberOfLots})
             </div>
-            <Tooltip content="Lots tooltip here..." />
+            <Tooltip
+              className="max-w-[30rem] text-size-12 p-3"
+              content={
+                <div className="space-y-2">
+                  <div>
+                    <strong>Top up:</strong> Add principal to a lock without
+                    changing its maturity date. New principal starts accruing
+                    immediately.
+                  </div>
+                  <div>
+                    <strong>Claim:</strong> Available only at maturity. Claims
+                    principal plus Base Accrual from matured locks. No early
+                    unlock.
+                  </div>
+                </div>
+              }
+            />
           </div>
         </AccordionTrigger>
         <AccordionContent className="text-size-14">

@@ -205,8 +205,10 @@ export function useTokenHoldingsData(
       if (!walletData || !protocolData || !currentTimestamp) return null;
       const metrics = protocolData.metrics;
 
-      // Filtered locks
-      const locks = walletData.locks.filter((lock) => lock.token === token);
+      // Filtered locks, sorted by maturity date (earliest first)
+      const locks = walletData.locks
+        .filter((lock) => lock.token === token)
+        .sort((a, b) => a.lockedUntil - b.lockedUntil);
 
       const rewards = computeLockRewards({
         locks,

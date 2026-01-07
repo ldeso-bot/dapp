@@ -23,16 +23,7 @@ export const useTransactionHandler = () => {
     try {
       const { error } = await transactionFn();
 
-      if (error) {
-        setAlert({
-          title: options.errorTitle ?? 'Error',
-          description:
-            error || options.errorDescription || 'Transaction failed',
-          type: 'error',
-          links: [],
-        });
-        return { success: false, error };
-      } else {
+      if (!error) {
         setAlert({
           title: options.successTitle ?? 'Success',
           description: options.successDescription,
@@ -41,16 +32,12 @@ export const useTransactionHandler = () => {
         });
         options.onSuccess?.();
         return { success: true, error: null };
+      } else {
+        return { success: false, error };
       }
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : 'An unexpected error occurred';
-      setAlert({
-        title: options.errorTitle ?? 'Error',
-        description: errorMessage,
-        type: 'error',
-        links: [],
-      });
       return { success: false, error: errorMessage };
     } finally {
       setIsSubmitting(false);

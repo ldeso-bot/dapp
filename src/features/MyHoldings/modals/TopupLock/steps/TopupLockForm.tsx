@@ -6,6 +6,7 @@ import Card from '@/shared/components/Card/Card';
 import Input from '@/shared/components/Form/Input';
 import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
 import Form from '@/shared/components/Form/layout/Form';
+import { RootError } from '@/shared/components/Form/RootError';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import {
@@ -14,7 +15,10 @@ import {
   isToken,
   tokens,
 } from '@/shared/constants/tokens.constants';
+import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useTransactionHandler } from '@/shared/hooks/useTransactionHandler';
+import { isMaturityWithinDays } from '@/shared/utils/date.utils';
+import { formatAmountWithCommas } from '@/shared/utils/string.utils';
 import { useAtom } from 'jotai';
 import { parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -30,11 +34,13 @@ import {
 export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
   const { form } = data;
   const { isConnected } = useAccount();
-  const { handleSubmit, formState, watch } = form;
+  const { data: walletData } = useWalletData();
 
   const [topupLockDialogState, setTopupLockDialogState] =
     useAtom(topupLockDialogAtom);
   const { handleTransaction, isSubmitting } = useTransactionHandler();
+
+  const { handleSubmit, formState, watch, setError, clearErrors } = form;
 
   const token = watch('token');
   const amount = watch('amount');
@@ -49,8 +55,15 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
   const maturityDate = topupLockDialogState.maturityDate ?? null;
   const baseApy = topupLockDialogState.baseApy ?? 0;
 
-  const amountWei =
-    amount && amount > 0 ? parseUnits(String(amount), tokenInfo.decimals) : 0n;
+  const isValidAmount = !!(amount && amount > 0);
+  const availableBalance = Number(walletData?.balances?.[typedToken] ?? 0);
+
+  const amountWei = isValidAmount
+    ? parseUnits(String(amount), tokenInfo.decimals)
+    : 0n;
+
+  const isMaturityWithin3Days =
+    isValidAmount && isMaturityWithinDays(maturityDate, 3);
 
   const { lock } = useLockToken({
     token: typedToken as AllocatableToken,
@@ -60,7 +73,8 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
 
   const onSubmit = async () => {
     if (!isConnected) return;
-    await handleTransaction(lock, {
+    clearErrors('root');
+    const result = await handleTransaction(lock, {
       successTitle: 'Top up Successful',
       successDescription: `You've successfully topped up ${amount} ${tokenInfo.symbol}! You can manage your positions in the "My Holdings" dashboard.`,
       errorDescription: 'Something went wrong with your top up.',
@@ -73,6 +87,9 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
         }, 300);
       },
     });
+    if (result.error) {
+      setError('root', { type: 'manual', message: result.error });
+    }
   };
 
   const reset = () => setTopupLockDialogState(resetTopupLockDialog());
@@ -83,7 +100,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
       <p className="text-size-14 text-gray-500">
         Keep this maturity; new amount accrues from now.
       </p>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form className="gap-4" onSubmit={handleSubmit(onSubmit)}>
         <StatsCard
           baseApy={baseApy}
           tokenSymbol={tokenSymbol}
@@ -91,13 +108,32 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
           currentLockAmount={currentLockAmount}
           totalAccruingRewards={totalAccruingRewards}
         />
-        <Input
-          label="Amount to add"
-          type="number"
-          iconSrc={tokens[typedToken].iconSrc}
-          {...form.register('amount')}
-          error={formState.errors.amount}
-        />
+        <div className="flex flex-col gap-1">
+          <Input
+            label="Amount to add"
+            type="number"
+            iconSize="sm"
+            iconSrc={tokens[typedToken].iconSrc}
+            {...form.register('amount')}
+            error={formState.errors.amount}
+            addOnButton={
+              <Button
+                type="button"
+                colors="secondary"
+                className="rounded-xl min-h-[4rem]"
+                onClick={() =>
+                  form.setValue('amount', Number(availableBalance))
+                }
+              >
+                Max
+              </Button>
+            }
+          />
+          <span className="text-size-12 text-gray-600">
+            Balance: {formatAmountWithCommas(availableBalance)}{' '}
+            {tokenInfo.symbol}
+          </span>
+        </div>
         <div className="flex flex-col gap-3">
           <TotalMaturity
             tokenSymbol={tokenSymbol}
@@ -106,6 +142,15 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
           />
           <K2Incentives k2Incentives={totalAccruingRewards} />
         </div>
+        {formState.errors.root && (
+          <RootError
+            sticky={false}
+            errorMessage={formState.errors.root.message ?? ''}
+          />
+        )}
+        {isValidAmount && isMaturityWithin3Days && (
+          <RootError errorMessage="Time to maturity reset is in less than 3 days. Pay attention to short maturity dates; rewards may be minimal. Consider choosing a later maturity." />
+        )}
         <ButtonGroup className="flex-row">
           <Button colors="primary" context="flow" onClick={() => reset()}>
             Cancel

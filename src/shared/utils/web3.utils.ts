@@ -77,3 +77,11 @@ export const handleWeb3Error = (error: unknown) => {
     error: 'An unknown error occurred',
   };
 };
+
+export const isUserRejection = (error: unknown) =>
+  isViemError(error) &&
+  error instanceof Error &&
+  (error.message?.toLowerCase().includes('rejected') ||
+    error.message?.toLowerCase().includes('denied') ||
+    error.message?.toLowerCase().includes('user rejected') ||
+    error.message?.toLowerCase().includes('user denied'));
