@@ -1,5 +1,6 @@
 'use client';
 
+import { useAllocationData } from '@/features/Allocate/hooks/useAllocationData';
 import {
   StatusCard,
   StatusCardTitle,
@@ -14,6 +15,7 @@ import {
 import { InfoCard } from '@/features/MyHoldings/shared/InfoCard';
 import { RecentActivity } from '@/features/MyHoldings/shared/RecentActivity';
 import Button from '@/shared/components/Button/Button';
+import { ROUTES } from '@/shared/constants/route.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useNextMaturity } from '@/shared/hooks/useNextMaturity';
 import {
@@ -24,6 +26,7 @@ import {
   formatTimestamp,
 } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
+import Link from 'next/link';
 import { useState } from 'react';
 import { useAccount } from 'wagmi';
 import { useTokenHoldingsData } from '../../hooks/useHoldingsData';
@@ -67,6 +70,13 @@ const KvcmOverview = () => {
   const { timestamp: nextMaturityDate, daysFromNow: nextMaturityInDays } =
     useNextMaturity();
   const { data: kvcmData } = useTokenHoldingsData('kvcm');
+  const { data: allocationData } = useAllocationData();
+
+  const allocated = allocationData?.kvcm.allocated ?? 0;
+  const unallocated = kvcmData
+    ? Math.max(0, kvcmData.lockedAmount - allocated)
+    : 0;
+
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -118,6 +128,20 @@ const KvcmOverview = () => {
                 </div>
                 <div className="text-size-14 text-gray-500 tabular-nums">
                   {formatPriceUSDWithCommas(kvcmData.lockedValue)}
+                </div>
+                <div className="text-size-14 text-gray-500 mt-2 space-y-0.5">
+                  <div>
+                    <Link
+                      href={ROUTES.ALLOCATE}
+                      className="underline text-gray-900 hover:text-gray-700"
+                    >
+                      Allocated to carbon classes:
+                    </Link>{' '}
+                    {formatAmountWithCommas(allocated)} kVCM
+                  </div>
+                  <div>
+                    Unallocated: {formatAmountWithCommas(unallocated)} kVCM
+                  </div>
                 </div>
               </div>
             </>

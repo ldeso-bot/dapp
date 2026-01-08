@@ -1,3 +1,4 @@
+import { useAllocationData } from '@/features/Allocate/hooks/useAllocationData';
 import Button from '@/shared/components/Button/Button';
 import { CardProps } from '@/shared/components/Card/Card';
 import Icon from '@/shared/components/Icon/Icon';
@@ -9,15 +10,11 @@ import { AllocationsTable } from '../../shared/AllocationsTable';
 
 export default function K2AllocationsCard(props: CardProps) {
   const { data } = useWalletData();
-
-  const allocations = data?.allocations?.filter(
-    (allocation) => allocation.token.name === 'k2'
-  );
+  const { data: allocationData } = useAllocationData();
 
   const totalK2 = data?.balances?.k2 || 0;
-  const allocatedK2 =
-    allocations?.reduce((sum, alloc) => sum + alloc.amount, 0) || 0;
-  const unallocatedK2 = totalK2 - allocatedK2;
+  const allocations = allocationData?.k2.allocations || [];
+  const unallocatedK2 = allocationData?.k2.unallocated || 0;
 
   return (
     <AllocationsTable

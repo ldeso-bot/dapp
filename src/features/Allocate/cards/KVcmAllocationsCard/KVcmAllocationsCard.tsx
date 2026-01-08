@@ -1,3 +1,4 @@
+import { useAllocationData } from '@/features/Allocate/hooks/useAllocationData';
 import Button from '@/shared/components/Button/Button';
 import { CardProps } from '@/shared/components/Card/Card';
 import Icon from '@/shared/components/Icon/Icon';
@@ -9,15 +10,11 @@ import { AllocationsTable } from '../../shared/AllocationsTable';
 
 export default function KvcmAllocationsCard(props: CardProps) {
   const { data } = useWalletData();
-
-  const allocations = data?.allocations?.filter(
-    (allocation) => allocation.token.name === 'kvcm'
-  );
+  const { data: allocationData } = useAllocationData();
 
   const totalKvcm = data?.balances?.kvcm || 0;
-  const allocatedKvcm =
-    allocations?.reduce((sum, alloc) => sum + alloc.amount, 0) || 0;
-  const unallocatedKvcm = totalKvcm - allocatedKvcm;
+  const allocations = allocationData?.kvcm.allocations || [];
+  const unallocatedKvcm = allocationData?.kvcm.unallocated || 0;
 
   return (
     <AllocationsTable

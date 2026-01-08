@@ -12,10 +12,11 @@ import KvcmAllocationsCard from './cards/KVcmAllocationsCard/KVcmAllocationsCard
 import AllocateModals from './modals/AllocateModals';
 import { AllocationEmptyState } from './shared/AllocationEmptyState';
 
-export default function AllocatePage() {
+const AllocatePage = () => {
   const { address } = useAccount();
-  const { data: holdingsData } = useHoldingsData();
   const { data: walletData } = useWalletData();
+  const { data: holdingsData } = useHoldingsData();
+
   const displayOnboarding =
     walletData?.allocations.length === 0 &&
     (!address ||
@@ -45,4 +46,6 @@ export default function AllocatePage() {
       )}
     </Suspense>
   );
-}
+};
+
+export default AllocatePage;

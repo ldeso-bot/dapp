@@ -1,73 +1,15 @@
 'use client';
 
+import { useAllocationData } from '@/features/Allocate/hooks/useAllocationData';
+import { Divider } from '@/shared/components/Divider/Divider';
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
-import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
-import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { formatAmountWithCommas } from '@/shared/utils/string.utils';
-import { useMemo } from 'react';
 import { AllocatedTokenDisplay } from '../../shared/AllocatedTokenDisplay';
+import { AllocationMetric } from '../../shared/AllocationMetric';
 import { UnallocatedTokenDisplay } from '../../shared/UnallocatedTokenDisplay';
 
 export const AllocationsInfoCard = () => {
-  const { data: walletData } = useWalletData();
-  const { data: protocolData } = useProtocolData();
-
-  const stats = useMemo(() => {
-    if (!walletData || !protocolData) {
-      return null;
-    }
-
-    const allocations = walletData.allocations || [];
-    const balances = walletData.balances || { kvcm: 0, k2: 0 };
-
-    const totalAllocated = allocations.reduce(
-      (sum, alloc) => sum + alloc.amount,
-      0
-    );
-
-    const kvcmPrice = protocolData.metrics.kvcm.valueUSD || 0;
-    const k2Price = protocolData.metrics.k2.valueUSD || 0;
-
-    const kvcmAllocations = allocations.filter((a) => a.token.name === 'kvcm');
-    const kvcmAllocated = kvcmAllocations.reduce((sum, a) => sum + a.amount, 0);
-    const unallocatedKvcm = balances.kvcm - kvcmAllocated;
-    const unallocatedKvcmUSD = unallocatedKvcm * kvcmPrice;
-    const kvcmClasses = new Set(kvcmAllocations.map((a) => a.carbonClass)).size;
-    const kvcmAllocatedPercent =
-      balances.kvcm > 0 ? kvcmAllocated / balances.kvcm : 0;
-    const highestKvcmInfluence = kvcmAllocations.reduce(
-      (max, alloc) =>
-        alloc.sharePercent > (max?.sharePercent || 0) ? alloc : max,
-      null as (typeof kvcmAllocations)[0] | null
-    );
-
-    const k2Allocations = allocations.filter((a) => a.token.name === 'k2');
-    const k2Allocated = k2Allocations.reduce((sum, a) => sum + a.amount, 0);
-    const unallocatedK2 = balances.k2 - k2Allocated;
-    const unallocatedK2USD = unallocatedK2 * k2Price;
-    const k2Classes = new Set(k2Allocations.map((a) => a.carbonClass)).size;
-    const k2AllocatedPercent = balances.k2 > 0 ? k2Allocated / balances.k2 : 0;
-    const highestK2Influence = k2Allocations.reduce(
-      (max, alloc) =>
-        alloc.sharePercent > (max?.sharePercent || 0) ? alloc : max,
-      null as (typeof k2Allocations)[0] | null
-    );
-
-    return {
-      totalAllocated,
-      unallocatedKvcm,
-      unallocatedKvcmUSD,
-      unallocatedK2,
-      unallocatedK2USD,
-      kvcmClasses,
-      k2Classes,
-      kvcmAllocatedPercent,
-      k2AllocatedPercent,
-      highestKvcmInfluence,
-      highestK2Influence,
-    };
-  }, [walletData, protocolData]);
-
+  const { data: stats } = useAllocationData();
   return (
     <div className="text-card-foreground flex flex-col gap-6 rounded-xl p-5 py-8 bg-white border border-gray-300">
       <div className="space-y-3">
@@ -83,59 +25,41 @@ export const AllocationsInfoCard = () => {
               <Tooltip content="Total amount of tokens allocated across all carbon classes" />
             </div>
           </div>
-
-          <div className="h-8 w-px bg-gray-200" />
-
+          <Divider />
           <UnallocatedTokenDisplay
-            amount={stats?.unallocatedKvcm || 0}
-            usdValue={stats?.unallocatedKvcmUSD || 0}
+            amount={stats?.kvcm.unallocated || 0}
+            usdValue={stats?.kvcm.unallocatedUSD || 0}
             tokenSymbol="kVCM"
             label="Unallocated kVCM"
           />
-
-          <div className="h-8 w-px bg-gray-200" />
-
+          <Divider />
           <UnallocatedTokenDisplay
-            amount={stats?.unallocatedK2 || 0}
-            usdValue={stats?.unallocatedK2USD || 0}
+            amount={stats?.k2.unallocated || 0}
+            usdValue={stats?.k2.unallocatedUSD || 0}
             tokenSymbol="K2"
             label="Unallocated K2"
           />
-
-          <div className="h-8 w-px bg-gray-200" />
-
-          <div className="text-center">
-            <div className="text-size-14 font-bold text-gray-900">
-              Pricing on
-            </div>
-            <div className="text-size-12 text-gray-500">
-              {stats?.kvcmClasses}{' '}
-              {stats?.kvcmClasses === 1 ? 'class' : 'classes'}
-            </div>
-          </div>
-
-          <div className="h-8 w-px bg-gray-200" />
-
-          <div className="text-center">
-            <div className="text-size-14 font-bold text-gray-900">
-              K2 allocated
-            </div>
-            <div className="text-size-12 text-gray-500">
-              {stats?.k2Classes} {stats?.k2Classes === 1 ? 'class' : 'classes'}
-            </div>
-          </div>
+          <Divider />
+          <AllocationMetric
+            title="Pricing on"
+            value={stats?.kvcm.classes ?? 0}
+          />
+          <Divider />
+          <AllocationMetric
+            title="K2 allocated"
+            value={stats?.k2.classes ?? 0}
+          />
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
           <AllocatedTokenDisplay
             tokenName="kVCM"
-            allocatedPercent={stats?.kvcmAllocatedPercent || 0}
-            highestInfluence={stats?.highestKvcmInfluence}
+            allocatedPercent={stats?.kvcm.allocatedPercent || 0}
+            highestInfluence={stats?.kvcm.highestInfluence}
           />
           <AllocatedTokenDisplay
             tokenName="K2"
-            allocatedPercent={stats?.k2AllocatedPercent || 0}
-            highestInfluence={stats?.highestK2Influence}
+            allocatedPercent={stats?.k2.allocatedPercent || 0}
+            highestInfluence={stats?.k2.highestInfluence}
           />
         </div>
       </div>
