@@ -17,7 +17,7 @@ export default function TotalKVcmLockedCard(props: CardProps) {
     <StatCard
       {...props}
       buttonText="Lock kVCM"
-      buttonHref={`${ROUTES.MY_HOLDINGS}?action=lock_kvcm`}
+      buttonHref={`${ROUTES.MY_HOLDINGS}?activeView=kvcm&action=lock_kvcm`}
       title="Total kVCM Locked"
       tooltip="kVCM locks offer yield which is claimable at maturity."
       tooltipPosition="far"

@@ -3,8 +3,8 @@
 import Dialog from '@/shared/components/Dialog/Dialog';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useAtom } from 'jotai';
-import { useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useRef } from 'react';
 import ClaimIncentivesFlow from './ClaimIncentives/ClaimIncentives';
 import { claimIncentivesDialogAtom } from './ClaimIncentives/claimIncentives.utils';
 import ClaimTokenFlow from './ClaimToken/ClaimToken';
@@ -20,7 +20,14 @@ import UnlockTokenFlow from './UnlockToken/UnlockTokenFlow';
 import { unstakeLpTokenDialogAtom } from './UnstakeLpToken/unstakeLpToken.utils';
 import UnstakeLpTokenFlow from './UnstakeLpToken/UnstakeLpTokenFlow';
 
-export default function MyHoldingsModals() {
+export const MyHoldingsModals = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { data } = useWalletData();
+
+  // tracks previous dialog state to detect when a dialog closes
+  const prevHasOpenDialogRef = useRef(false);
   const [lockTokenDialog, setLockTokenDialog] = useAtom(lockTokenDialogAtom);
   const [stakeLpTokenDialog, setStakeLpTokenDialog] = useAtom(
     stakeLpTokenDialogAtom
@@ -37,8 +44,43 @@ export default function MyHoldingsModals() {
     claimIncentivesDialogAtom
   );
 
-  const { data } = useWalletData();
-  const searchParams = useSearchParams();
+  useEffect(() => {
+    const hasOpenDialog =
+      lockTokenDialog.open ||
+      stakeLpTokenDialog.open ||
+      unstakeLpTokenDialog.open ||
+      unlockTokenDialog.open ||
+      topupLockDialog.open ||
+      claimTokenDialog.open ||
+      claimIncentivesDialog.open;
+
+    const shouldRemoveActionParam =
+      !hasOpenDialog &&
+      prevHasOpenDialogRef.current &&
+      searchParams.get('action');
+
+    if (shouldRemoveActionParam) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete('action');
+      const newSearch = params.toString();
+      router.replace(newSearch ? `?${newSearch}` : pathname, {
+        scroll: false,
+      });
+    }
+    // tracks current state for next render to detect dialog close
+    prevHasOpenDialogRef.current = hasOpenDialog;
+  }, [
+    lockTokenDialog.open,
+    stakeLpTokenDialog.open,
+    unstakeLpTokenDialog.open,
+    unlockTokenDialog.open,
+    topupLockDialog.open,
+    claimTokenDialog.open,
+    claimIncentivesDialog.open,
+    searchParams,
+    router,
+    pathname,
+  ]);
 
   useEffect(() => {
     const action = searchParams.get('action');
@@ -149,4 +191,4 @@ export default function MyHoldingsModals() {
       </Dialog>
     </>
   );
-}
+};
