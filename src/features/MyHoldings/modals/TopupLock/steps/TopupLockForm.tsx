@@ -3,6 +3,7 @@
 import { useLockToken } from '@/features/MyHoldings/modals/LockToken/lockToken.utils';
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
+import { DialogHeader } from '@/shared/components/Dialog/DialogHeader';
 import Input from '@/shared/components/Form/Input';
 import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
 import Form from '@/shared/components/Form/layout/Form';
@@ -96,7 +97,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
 
   return (
     <Card className="rounded-lg px-6 py-4 overflow-y-auto w-[42rem]">
-      <h2 className="text-size-20 font-semibold text-gray-900">Top up lock</h2>
+      <DialogHeader showCloseButton title="Top up lock" onClose={reset} />
       <p className="text-size-14 text-gray-500">
         Keep this maturity; new amount accrues from now.
       </p>

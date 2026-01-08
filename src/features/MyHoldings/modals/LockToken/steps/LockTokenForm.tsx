@@ -6,6 +6,7 @@ import { DurationStepper } from '@/features/MyHoldings/shared/DurationStepper';
 import { YieldBreakdownCard } from '@/features/MyHoldings/shared/YieldBreakdownCard';
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
+import { DialogHeader } from '@/shared/components/Dialog/DialogHeader';
 import Input from '@/shared/components/Form/Input';
 import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
 import Form from '@/shared/components/Form/layout/Form';
@@ -112,9 +113,11 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
 
   return (
     <Card className="rounded-lg px-6 py-4 max-h-[70vh] overflow-y-auto w-[42rem] mx-auto">
-      <h2 className="text-size-20 font-semibold text-gray-900">
-        Lock {tokenInfo.symbol} Tokens
-      </h2>
+      <DialogHeader
+        showCloseButton
+        title={`Lock ${tokenInfo.symbol} Tokens`}
+        onClose={() => setLockTokenDialogState({ open: false, token: null })}
+      />
       <Form className="pt-0 relative" onSubmit={handleSubmit(onSubmit)}>
         <InputGroup className="pt-3">
           <div className="flex flex-col gap-1">

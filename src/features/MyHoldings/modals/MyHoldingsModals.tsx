@@ -14,7 +14,10 @@ import LockTokenFlow from './LockToken/LockTokenFlow';
 import { stakeLpTokenDialogAtom } from './StakeLpToken/stakeLpToken.utils';
 import StakeLpTokenFlow from './StakeLpToken/StakeLpTokenFlow';
 import TopupLockFlow from './TopupLock/TopupLock';
-import { topupLockDialogAtom } from './TopupLock/topupLock.utils';
+import {
+  resetTopupLockDialog,
+  topupLockDialogAtom,
+} from './TopupLock/topupLock.utils';
 import { unlockTokenDialogAtom } from './UnlockToken/unlockToken.utils';
 import UnlockTokenFlow from './UnlockToken/UnlockTokenFlow';
 import { unstakeLpTokenDialogAtom } from './UnstakeLpToken/unstakeLpToken.utils';
@@ -168,7 +171,10 @@ export const MyHoldingsModals = () => {
 
   return (
     <>
-      <Dialog open={lockTokenDialog.open}>
+      <Dialog
+        open={lockTokenDialog.open}
+        onClose={() => setLockTokenDialog({ open: false, token: null })}
+      >
         <LockTokenFlow />
       </Dialog>
       <Dialog open={stakeLpTokenDialog.open}>
@@ -180,7 +186,10 @@ export const MyHoldingsModals = () => {
       <Dialog open={unlockTokenDialog.open}>
         <UnlockTokenFlow />
       </Dialog>
-      <Dialog open={topupLockDialog.open}>
+      <Dialog
+        open={topupLockDialog.open}
+        onClose={() => setTopupLockDialog(resetTopupLockDialog())}
+      >
         <TopupLockFlow />
       </Dialog>
       <Dialog open={claimTokenDialog.open}>
