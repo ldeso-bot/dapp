@@ -57,7 +57,7 @@ interface TokenHoldingsData {
   balanceValue: number;
 }
 
-type AggregatedHoldingsData = {
+export type AggregatedHoldingsData = {
   kvcm: TokenHoldingsData;
   k2: TokenHoldingsData;
   kvcmK2: TokenHoldingsData;
