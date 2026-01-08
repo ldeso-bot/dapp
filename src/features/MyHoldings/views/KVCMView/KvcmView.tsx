@@ -73,9 +73,7 @@ const KvcmOverview = () => {
   const { data: allocationData } = useAllocationData();
 
   const allocated = allocationData?.kvcm.allocated ?? 0;
-  const unallocated = kvcmData
-    ? Math.max(0, kvcmData.lockedAmount - allocated)
-    : 0;
+  const unallocated = allocationData?.kvcm.unallocated ?? 0;
 
   return (
     <>
