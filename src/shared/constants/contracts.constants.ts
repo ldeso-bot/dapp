@@ -20,7 +20,7 @@ const contracts = {
   },
   USDC: {
     [base.id]: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-    [baseSepolia.id]: '0x036CbD53842c5426634e7929541eC2318f3dCF7e', // No USDC on testnet
+    [baseSepolia.id]: '0x9F10F3cF0eE0EfA366bc280008b354E155e15421', // No USDC on testnet
     abi: USDC,
   },
   StakingManagerDiamond: {
