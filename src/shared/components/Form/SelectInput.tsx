@@ -1,9 +1,12 @@
-import ArrowDown from '@/shared/images/arrow_down.svg';
-import { cn } from '@/shared/utils/component.utils';
-import { Select as SelectPrimitive } from 'radix-ui';
 import React, { ReactNode } from 'react';
 import { FieldError } from 'react-hook-form';
-import Icon from '../Icon/Icon';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../Select/Select';
 import InputWrapper from './layout/InputWrapper';
 
 type SelectInputItem = {
@@ -19,7 +22,7 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   defaultValue?: string | number;
 };
 
-export default function Select({
+export default function SelectInput({
   label,
   items,
   defaultValue,
@@ -37,52 +40,31 @@ export default function Select({
 
   // Convert value to string for compatibility
   const stringValue = props.value ? String(props.value) : undefined;
+  const stringDefaultValue = defaultValue ? String(defaultValue) : undefined;
+
   return (
     <InputWrapper label={label} error={error}>
-      <SelectPrimitive.Root
+      <Select
         value={stringValue}
         disabled={props.disabled ?? props.readOnly}
         onValueChange={onValueChange}
-        defaultValue={String(defaultValue)}
+        defaultValue={stringDefaultValue}
       >
-        <SelectPrimitive.Trigger className="w-full">
-          <div
-            className={cn(
-              'bg-void-10 rounded-lg min-h-[4rem] flex justify-between items-center border border-gray-300',
-              !props.disabled && 'border-1 cursor-pointer hover:opacity-80'
-            )}
-          >
-            <SelectPrimitive.Value placeholder={props.placeholder} />
-            <SelectPrimitive.Icon className="px-2">
-              <Icon icon={ArrowDown} size={1.4} />
-            </SelectPrimitive.Icon>
-          </div>
-        </SelectPrimitive.Trigger>
-        <SelectPrimitive.Portal>
-          <SelectPrimitive.Content className="z-2000">
-            <SelectPrimitive.ScrollUpButton />
-            <SelectPrimitive.Viewport className="bg-background rounded-lg p-2 pl-3 w-full">
-              {items.map((item) => (
-                <SelectPrimitive.Item
-                  key={item.value}
-                  value={String(item.value)}
-                >
-                  <SelectPrimitive.ItemText>
-                    <div className="bg-void-10 rounded-lg p-2 pl-3 cursor-pointer">
-                      <div className="flex flex-row gap-2 font-size-14 items-center">
-                        {item.icon}
-                        {item.label}
-                      </div>
-                    </div>
-                  </SelectPrimitive.ItemText>
-                </SelectPrimitive.Item>
-              ))}
-            </SelectPrimitive.Viewport>
-            <SelectPrimitive.ScrollDownButton />
-            <SelectPrimitive.Arrow />
-          </SelectPrimitive.Content>
-        </SelectPrimitive.Portal>
-      </SelectPrimitive.Root>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder={props.placeholder} />
+        </SelectTrigger>
+        <SelectContent>
+          {items.map((item) => (
+            <SelectItem
+              key={item.value}
+              value={String(item.value)}
+              icon={item.icon}
+            >
+              {item.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </InputWrapper>
   );
 }
