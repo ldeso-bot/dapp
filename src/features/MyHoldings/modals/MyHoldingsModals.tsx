@@ -9,6 +9,8 @@ import ClaimIncentivesFlow from './ClaimIncentives/ClaimIncentives';
 import { claimIncentivesDialogAtom } from './ClaimIncentives/claimIncentives.utils';
 import ClaimTokenFlow from './ClaimToken/ClaimToken';
 import { claimTokenDialogAtom } from './ClaimToken/claimToken.utils';
+import { depositK2TokenDialogAtom } from './DepositK2Token/depositK2Token.utils';
+import DepositK2TokenFlow from './DepositK2Token/DepositK2TokenFlow';
 import { lockTokenDialogAtom } from './LockToken/lockToken.utils';
 import LockTokenFlow from './LockToken/LockTokenFlow';
 import { stakeLpTokenDialogAtom } from './StakeLpToken/stakeLpToken.utils';
@@ -45,6 +47,9 @@ export const MyHoldingsModals = () => {
   const [claimTokenDialog, setClaimTokenDialog] = useAtom(claimTokenDialogAtom);
   const [claimIncentivesDialog, setClaimIncentivesDialog] = useAtom(
     claimIncentivesDialogAtom
+  );
+  const [depositK2TokenDialog, setDepositK2TokenDialog] = useAtom(
+    depositK2TokenDialogAtom
   );
 
   useEffect(() => {
@@ -109,6 +114,7 @@ export const MyHoldingsModals = () => {
       claimablePrincipal: null,
       totalAccruedRewards: null,
     });
+    setDepositK2TokenDialog({ open: false });
 
     if (action === null) return;
 
@@ -117,7 +123,7 @@ export const MyHoldingsModals = () => {
       setLockTokenDialog({ open: true, token: 'kvcm' });
     }
     if (action === 'lock_k2') {
-      setLockTokenDialog({ open: true, token: 'k2' });
+      setDepositK2TokenDialog({ open: true });
     }
     if (action === 'lock_kvcm-k2') {
       setStakeLpTokenDialog({ open: true, token: 'kvcm-k2' });
@@ -166,6 +172,7 @@ export const MyHoldingsModals = () => {
     setTopupLockDialog,
     setClaimTokenDialog,
     setClaimIncentivesDialog,
+    setDepositK2TokenDialog,
     data?.locks,
   ]);
 
@@ -197,6 +204,9 @@ export const MyHoldingsModals = () => {
       </Dialog>
       <Dialog open={claimIncentivesDialog.open}>
         <ClaimIncentivesFlow />
+      </Dialog>
+      <Dialog open={depositK2TokenDialog.open}>
+        <DepositK2TokenFlow />
       </Dialog>
     </>
   );

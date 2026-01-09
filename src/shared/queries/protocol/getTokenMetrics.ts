@@ -27,16 +27,6 @@ export const getTokenMetrics = async (
 const getMainnetKvcmPrice = async (): Promise<number> => {
   try {
     const mainnetSdk = getSdk(base.id);
-    const mainnetPool = await getAerodromePoolInfoByIndex(
-      AERODROME_KVCM_USDC_POOL_INDEX
-    );
-
-    // Calculate KVCM price from mainnet pool reserves - reserve0 is KVCM, reserve1 is USDC
-    if (mainnetPool.reserve0 > 0) {
-      return mainnetPool.reserve1 / mainnetPool.reserve0;
-    }
-
-    // Fallback: try to get from mainnet subgraph
     const tokensResponse = await mainnetSdk.protocol.getTokens();
     const kvcmToken = tokensResponse.tokens.find((t) => t?.symbol === 'KVCM');
     if (kvcmToken?.priceUsdc?.priceUsdc) {
@@ -45,6 +35,21 @@ const getMainnetKvcmPrice = async (): Promise<number> => {
     return 0;
   } catch (error) {
     console.error('Failed to fetch mainnet KVCM price:', error);
+    return 0;
+  }
+};
+
+const getMainnetK2Price = async (): Promise<number> => {
+  try {
+    const mainnetSdk = getSdk(base.id);
+    const tokensResponse = await mainnetSdk.protocol.getTokens();
+    const k2Token = tokensResponse.tokens.find((t) => t?.symbol === 'K2');
+    if (k2Token?.priceUsdc?.priceUsdc) {
+      return formatStringToNumber(k2Token.priceUsdc.priceUsdc, 6);
+    }
+    return 0;
+  } catch (error) {
+    console.error('Failed to fetch mainnet K2 price:', error);
     return 0;
   }
 };
@@ -110,10 +115,14 @@ const getTokenMetricsUncached = async (
         ? (supplyLocked - snapshotSupplyLocked) / snapshotSupplyLocked
         : 0;
 
-    // Price - for KVCM, try to get mainnet price first
     let tokenPriceUSD = formatStringToNumber(token?.priceUsdc?.priceUsdc, 6);
     if (symbol === 'KVCM') {
       const mainnetPrice = await getMainnetKvcmPrice();
+      if (mainnetPrice > 0) {
+        tokenPriceUSD = mainnetPrice;
+      }
+    } else if (symbol === 'K2') {
+      const mainnetPrice = await getMainnetK2Price();
       if (mainnetPrice > 0) {
         tokenPriceUSD = mainnetPrice;
       }

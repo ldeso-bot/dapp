@@ -6,7 +6,7 @@ import { FormControlProps } from '@/shared/utils/form.types';
 import { Controller } from 'react-hook-form';
 
 export type DurationFormFields = {
-  duration: number;
+  duration?: number;
   [key: string]: unknown;
 } & Record<string, unknown>;
 

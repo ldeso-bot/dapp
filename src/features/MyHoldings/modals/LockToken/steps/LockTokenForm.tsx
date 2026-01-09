@@ -23,7 +23,7 @@ import {
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useTransactionHandler } from '@/shared/hooks/useTransactionHandler';
-import { isMaturityWithinDays } from '@/shared/utils/date.utils';
+import { delay, isMaturityWithinDays } from '@/shared/utils/date.utils';
 import { findClosestMaturityByDays } from '@/shared/utils/protocol.utils';
 import { formatAmountWithCommas } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
@@ -83,26 +83,25 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
   }, [duration, maturity, form]);
 
   const { lock } = useLockToken({
-    token: typedToken as AllocatableToken,
     amount: amountWei,
+    token: typedToken as AllocatableToken,
     maturityId: maturityId ?? 1,
   });
 
   const onSubmit = async () => {
     if (!isConnected) return;
     clearErrors('root');
+
     const result = await handleTransaction(lock, {
       successTitle: 'Lock Successful',
       successDescription: `You've successfully locked ${amount} ${tokenInfo.symbol}! You can manage your positions in the "My Holdings" dashboard.`,
       errorDescription:
         'Something went wrong and your lock was not successful.',
       successLinks: [{ label: 'My Holdings', href: ROUTES.MY_HOLDINGS }],
-      onSuccess: () => {
-        setTimeout(() => {
-          // Small delay to let UI update before closing modal
-          setLockTokenDialogState({ open: false, token: null });
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }, 300);
+      onSuccess: async () => {
+        await delay(300);
+        setLockTokenDialogState({ open: false, token: null });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       },
     });
 
@@ -119,8 +118,11 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
         onClose={() => setLockTokenDialogState({ open: false, token: null })}
       />
       <Form className="pt-0 relative" onSubmit={handleSubmit(onSubmit)}>
-        <InputGroup className="pt-3">
-          <div className="flex flex-col gap-1">
+        <InputGroup className="pt-1">
+          <div className="flex flex-col gap-1 pt-3">
+            <div className="flex flex-col gap-1">
+              <label className="text-size-14 font-medium">Amount to lock</label>
+            </div>
             <div className="flex items-start gap-2">
               <Input
                 type="number"
@@ -142,28 +144,32 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
               {tokenInfo.symbol}
             </span>
           </div>
-          <DurationSelector name="duration" control={form.control} />
-          <div className="space-y-2 flex flex-col gap-2">
-            <DurationStepper name="duration" control={form.control} />
-            <DurationSlider name="duration" control={form.control} />
-          </div>
-          <div className="text-size-12 text-void-40">
-            <p>
-              Duration between maturities is 90 days. Choose from supported
-              dates.
-            </p>
-            <div className="w-full h-[1px] bg-void-20 my-2" />
-            <p>
-              Rewards (kVCM base, optional K2 incentives) accrue until maturity
-              and are claimable at maturity.
-            </p>
-          </div>
-          {fullMaturity && (
-            <YieldBreakdownCard
-              duration={duration}
-              amount={watch('amount')}
-              selectedMaturity={fullMaturity}
-            />
+          {duration !== undefined && (
+            <>
+              <DurationSelector name="duration" control={form.control} />
+              <div className="space-y-2 flex flex-col gap-2">
+                <DurationStepper name="duration" control={form.control} />
+                <DurationSlider name="duration" control={form.control} />
+              </div>
+              <div className="text-size-12 text-void-40">
+                <p>
+                  Duration between maturities is 90 days. Choose from supported
+                  dates.
+                </p>
+                <div className="w-full h-[1px] bg-void-20 my-2" />
+                <p>
+                  Rewards (kVCM base, optional K2 incentives) accrue until
+                  maturity and are claimable at maturity.
+                </p>
+              </div>
+              {fullMaturity && duration !== undefined && (
+                <YieldBreakdownCard
+                  duration={duration}
+                  amount={watch('amount')}
+                  selectedMaturity={fullMaturity}
+                />
+              )}
+            </>
           )}
           {formState.errors.root && (
             <RootError

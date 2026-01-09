@@ -19,6 +19,7 @@ import { getTokenSymbol } from '@/shared/utils/token.utils';
 import { useSetAtom } from 'jotai';
 import { type FC } from 'react';
 import { claimTokenDialogAtom } from '../modals/ClaimToken/claimToken.utils';
+import { depositK2TokenDialogAtom } from '../modals/DepositK2Token/depositK2Token.utils';
 import { topupLockDialogAtom } from '../modals/TopupLock/topupLock.utils';
 
 type TokenLotsProps = {
@@ -33,8 +34,8 @@ export const TokenLots: FC<TokenLotsProps> = ({
   token,
 }) => {
   const { data } = useWalletData();
-
   const setTopupLockDialog = useSetAtom(topupLockDialogAtom);
+  const setDepositK2TokenDialog = useSetAtom(depositK2TokenDialogAtom);
   const setClaimTokenDialog = useSetAtom(claimTokenDialogAtom);
 
   const locks =
@@ -142,18 +143,22 @@ export const TokenLots: FC<TokenLotsProps> = ({
                       <Button
                         colors="neutral"
                         className="text-size-12"
-                        onClick={() =>
-                          setTopupLockDialog({
-                            open: true,
-                            token: lock.token as AllocationToken,
-                            currentLockAmount: lock.lockedAmount,
-                            totalAccruingRewards: lock.rewards.kvcm,
-                            tokenSymbol: getTokenSymbol(lock.token),
-                            baseApy: lock.syntheticYieldApyPercent,
-                            maturityDate: lock.lockedUntil,
-                            maturityId: lock.maturityId,
-                          })
-                        }
+                        onClick={() => {
+                          if (lock.token === 'k2') {
+                            setDepositK2TokenDialog({ open: true });
+                          } else {
+                            setTopupLockDialog({
+                              open: true,
+                              token: lock.token as AllocationToken,
+                              currentLockAmount: lock.lockedAmount,
+                              totalAccruingRewards: lock.rewards.kvcm,
+                              tokenSymbol: getTokenSymbol(lock.token),
+                              baseApy: lock.syntheticYieldApyPercent,
+                              maturityDate: lock.lockedUntil,
+                              maturityId: lock.maturityId,
+                            });
+                          }
+                        }}
                       >
                         Topup
                       </Button>

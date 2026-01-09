@@ -88,3 +88,6 @@ export const calculateApproxDuration = (timestamp: number): string => {
   }
   return `Duration ~${years} yr ${months} mo`;
 };
+
+export const delay = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));

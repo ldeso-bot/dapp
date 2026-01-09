@@ -18,7 +18,7 @@ import {
 } from '@/shared/constants/tokens.constants';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useTransactionHandler } from '@/shared/hooks/useTransactionHandler';
-import { isMaturityWithinDays } from '@/shared/utils/date.utils';
+import { delay, isMaturityWithinDays } from '@/shared/utils/date.utils';
 import { formatAmountWithCommas } from '@/shared/utils/string.utils';
 import { useAtom } from 'jotai';
 import { parseUnits } from 'viem';
@@ -80,12 +80,10 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
       successDescription: `You've successfully topped up ${amount} ${tokenInfo.symbol}! You can manage your positions in the "My Holdings" dashboard.`,
       errorDescription: 'Something went wrong with your top up.',
       successLinks: [{ label: 'My Holdings', href: ROUTES.MY_HOLDINGS }],
-      onSuccess: () => {
-        setTimeout(() => {
-          // Small delay to let UI update before closing modal
-          setTopupLockDialogState(resetTopupLockDialog());
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }, 300);
+      onSuccess: async () => {
+        await delay(300);
+        setTopupLockDialogState(resetTopupLockDialog());
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       },
     });
     if (result.error) {

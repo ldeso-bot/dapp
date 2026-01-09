@@ -12,31 +12,31 @@ import { LockTokenForm } from './steps/LockTokenForm';
 
 export default function LockTokenFlow() {
   const lockTokenDialog = useAtomValue(lockTokenDialogAtom);
+  const token = lockTokenDialog.token ?? DEFAULT_ALLOCATION_TOKEN;
 
   const schema = z.object({
     token: z.string(),
-    duration: z.coerce.number(),
-    maturityId: z.coerce.number().optional(),
-    maturityDate: z.coerce.number().optional(),
     amount: z.coerce
       .number()
       .gt(0, 'Amount must be a positive integer')
       .int('Amount must be a positive integer'),
+    duration: z.coerce.number(),
+    maturityId: z.coerce.number(),
+    maturityDate: z.coerce.number(),
   });
 
   const form = useForm<LockTokenFields>({
     resolver: zodResolver(schema),
     defaultValues: {
+      token,
       amount: 0,
       duration: 365,
       maturityId: undefined,
       maturityDate: undefined,
-      token: lockTokenDialog.token ?? DEFAULT_ALLOCATION_TOKEN,
     },
   });
 
   const parsedForm = useParsedForm(form, schema);
-
   return (
     <Steps components={[LockTokenForm]} data={{ form, schema, parsedForm }} />
   );
