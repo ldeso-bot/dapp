@@ -1,12 +1,12 @@
 'use client';
 
-import { YieldRate } from '@/shared/models/ProtocolData';
+import { Maturity } from '@/shared/models/ProtocolData';
 import { formatLockDuration } from './DurationStepper';
 
 type Props = {
   amount: number;
   duration: number;
-  selectedMaturity: YieldRate;
+  selectedMaturity: Maturity;
 };
 
 export const YieldBreakdownCard = ({
@@ -15,9 +15,11 @@ export const YieldBreakdownCard = ({
   selectedMaturity,
 }: Props) => {
   // todo - replace with actual calculations
-  const baseYieldFormatted = (selectedMaturity.yieldPercent * 100).toFixed(2);
+  const baseYieldFormatted = (
+    selectedMaturity.syntheticYieldZeroCouponYieldCurve * 100
+  ).toFixed(2);
   const incentivesYieldFormatted = (
-    selectedMaturity.incentivesYield ?? 0 * amount
+    selectedMaturity.riskyYieldZeroCouponYieldCurve ?? 0 * amount
   ).toFixed(2);
   const lockDuration = formatLockDuration(Number(duration));
 

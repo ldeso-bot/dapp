@@ -19,7 +19,7 @@ export const DurationSlider = <T extends DurationFormFields>({
 }: FormControlProps<T>) => {
   const { data: protocolData } = useProtocolData();
 
-  const maturities = protocolData?.lockedkVcmYieldRates ?? [];
+  const maturities = protocolData?.maturities ?? [];
   const maturityDays =
     maturities?.map((m) => getDaysFromTimestamp(m.maturationTimestamp)) ?? [];
 

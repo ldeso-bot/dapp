@@ -17,8 +17,8 @@ import {
   ONE_YEAR,
 } from '@/shared/constants/protocol.constants';
 import { ROUTES } from '@/shared/constants/route.constants';
-import { isToken, tokens } from '@/shared/constants/tokens.constants';
-import { YieldRates } from '@/shared/models/ProtocolData';
+import { isToken, Token, tokens } from '@/shared/constants/tokens.constants';
+import { Maturity } from '@/shared/models/ProtocolData';
 import { formatDate, formatPercentage } from '@/shared/utils/string.utils';
 import {
   Line,
@@ -32,7 +32,9 @@ import {
 import ChartTooltip from '../../../../shared/components/Tooltip/ChartTooltip';
 
 type Props = CardProps & {
-  data?: YieldRates;
+  data?: Maturity[];
+  yieldField: keyof Maturity;
+  tokens: Token[];
 };
 
 const getDurationFromIndex = (index: number) => {
@@ -55,14 +57,30 @@ const formatDateRelative = (timestamp: number) => {
   return `${formatYears} ${formatDays}`;
 };
 
+type YieldRate = Maturity & {
+  yieldPercent: number;
+  tokens: Token[];
+};
+
 export default function YieldRatesCard(props: Props) {
-  const { data } = props;
+  const { data, yieldField, tokens } = props;
   const nextMaturityTimestamp =
     data && data.length > 0 ? data[0].maturationTimestamp : 0;
 
+  /**
+   * Format maturities data for the chart
+   */
+  const yieldRates: YieldRate[] | undefined = data?.map(
+    (maturity): YieldRate => ({
+      ...maturity,
+      yieldPercent: maturity[yieldField],
+      tokens,
+    })
+  );
+
   return (
     <Card {...props} skeletonClassName="h-[27.2rem]">
-      {!!data && (
+      {!!yieldRates && (
         <>
           <div className="flex flex-row justify-between bg-green-10 p-3">
             <div>
@@ -76,7 +94,7 @@ export default function YieldRatesCard(props: Props) {
           </div>
           <div className="w-full h-[27.2rem]">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={data} {...CHART_PROPS}>
+              <LineChart data={yieldRates} {...CHART_PROPS}>
                 <XAxis
                   dataKey="index"
                   label={{
@@ -115,8 +133,8 @@ export default function YieldRatesCard(props: Props) {
 
 function YieldChartTooltip({ active, payload }: TooltipProps<number, string>) {
   if (active && payload && payload.length) {
-    const item = payload[0].payload;
-    const token = item.tokens[0];
+    const item = payload[0].payload as YieldRate;
+    const token = item.tokens.at(0);
     if (!isToken(token)) return null;
 
     const tokenInfo = tokens[token];

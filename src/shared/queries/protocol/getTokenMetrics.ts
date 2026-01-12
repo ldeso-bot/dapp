@@ -7,7 +7,11 @@ import { ChainId } from '@/shared/constants/networks.constants';
 import { SubgraphTokenSymbol } from '@/shared/constants/tokens.constants';
 import { AllMetrics, Metrics } from '@/shared/models/ProtocolData';
 import { getAerodromePoolInfoByIndex } from '@/shared/utils/aerodrome.utils';
-import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
+import {
+  formatStringToNumber,
+  getSdk,
+  Sdk,
+} from '@/shared/utils/subgraph.utils';
 import { TokenSnapshot_Filter } from '@generated/gql/types/protocol.types';
 import { unstable_cache } from 'next/cache';
 import { mapToObj } from 'remeda';
@@ -17,8 +21,9 @@ import { getHoursSinceEpoch24HoursAgo } from './protocol.utils';
 export const getTokenMetrics = async (
   chainId: ChainId
 ): Promise<AllMetrics> => {
+  const sdk = getSdk(chainId);
   return unstable_cache(
-    async () => getTokenMetricsUncached(chainId),
+    async () => getTokenMetricsUncached(sdk),
     [`token-metrics-${chainId}`],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
   )();
@@ -54,11 +59,7 @@ const getMainnetK2Price = async (): Promise<number> => {
   }
 };
 
-const getTokenMetricsUncached = async (
-  chainId: ChainId
-): Promise<AllMetrics> => {
-  const sdk = getSdk(chainId);
-
+const getTokenMetricsUncached = async (sdk: Sdk): Promise<AllMetrics> => {
   const [kvcmUsdcPool, k2UsdcPool, tokensResponse, ...tokenSnapshotsResponses] =
     await Promise.all([
       getAerodromePoolInfoByIndex(AERODROME_KVCM_USDC_POOL_INDEX),

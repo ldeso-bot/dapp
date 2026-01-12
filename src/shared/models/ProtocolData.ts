@@ -1,5 +1,5 @@
 import { ChainId } from '../constants/networks.constants';
-import { LpToken, Token } from '../constants/tokens.constants';
+import { LpToken } from '../constants/tokens.constants';
 import { CarbonClass } from './shared';
 
 export enum YieldType {
@@ -39,17 +39,13 @@ export type LiquidityPoolInfo = {
 
 export type LiquidityPools = LiquidityPoolInfo[];
 
-/* Klima Bond Yield Rates */
-export type YieldRate = {
-  index: number; // Index relative to the first active maturity
-  maturityId: MaturityId; // protocol maturity Id
+export type Maturity = {
+  index: number;
+  maturityId: MaturityId;
   maturationTimestamp: number;
-  yieldPercent: number;
-  incentivesYield?: number;
-  tokens: Token[]; // Tokens that are eligible for incentives
+  syntheticYieldZeroCouponYieldCurve: number;
+  riskyYieldZeroCouponYieldCurve: number;
 };
-
-export type YieldRates = YieldRate[];
 
 export type ApyInfo = {
   kvcm: number;
@@ -83,8 +79,7 @@ export type ProtocolData = {
   chainId: ChainId;
   metrics: AllMetrics;
   liquidityPools: LiquidityPools;
-  lockedkVcmYieldRates: YieldRates;
-  liquidityPoolRiskyYield: YieldRates;
+  maturities: Maturity[];
   carbonClasses: CarbonClass[];
   midnightInfos: MidnightInfos;
 };

@@ -37,7 +37,7 @@ export const getLocks = async (
   }
 
   // Fetch locks
-  const [locks, latestMidnightInfos, protocolState, metrics] =
+  const [locks, latestMidnightInfos, protocolState, tokenMetrics] =
     await Promise.all([
       sdk.protocol.getLocks({
         where: {
@@ -105,7 +105,7 @@ export const getLocks = async (
     const lockedValueUSD = computeTokenAmountValueUSD(
       tokenInfo.id,
       lockedAmount,
-      metrics
+      tokenMetrics
     );
     let k2YieldApyPercent = 0;
     let riskyYieldApyPercent = 0;
@@ -132,7 +132,10 @@ export const getLocks = async (
 
     const lockMaturityMidnightInfo =
       lock.maturity?.maturityMidnightInfo &&
-      computeMidnightInfoWithSelf(lock.maturity?.maturityMidnightInfo);
+      computeMidnightInfoWithSelf(
+        lock.maturity?.maturityMidnightInfo,
+        tokenMetrics
+      );
 
     // Midnight info relevant to compute yields for this lock
     const midnightInfo =
@@ -155,7 +158,8 @@ export const getLocks = async (
         if (mintingInfo?.k2YieldEntryMidnightInfo) {
           const { k2PyFor } = computeMidnightInfo(
             midnightInfo,
-            formatMidnightInfo(mintingInfo.k2YieldEntryMidnightInfo)
+            formatMidnightInfo(mintingInfo.k2YieldEntryMidnightInfo),
+            tokenMetrics
           );
           k2Rewards +=
             k2PyFor[tokenInfo.id] *
@@ -175,7 +179,8 @@ export const getLocks = async (
         if (mintingInfo?.riskyYieldEntryMidnightInfo) {
           const { kvcmPyFor } = computeMidnightInfo(
             midnightInfo,
-            formatMidnightInfo(mintingInfo.riskyYieldEntryMidnightInfo)
+            formatMidnightInfo(mintingInfo.riskyYieldEntryMidnightInfo),
+            tokenMetrics
           );
           kvcmRewards +=
             kvcmPyFor[tokenInfo.id] *
@@ -217,7 +222,7 @@ export const getLocks = async (
     const positionValueUSD = computeTokenAmountValueUSD(
       tokenInfo.id,
       positionAmount,
-      metrics
+      tokenMetrics
     );
 
     const status =

@@ -52,14 +52,6 @@ query getMaturities($where: Maturity_filter) {
     timestamp
     maturityId
 
-    syntheticYieldDiscountFactor
-    syntheticYieldZeroCouponYieldCurve
-    syntheticYieldUnscaledBondIssue
-
-    riskyYieldDiscountFactor
-    riskyYieldZeroCouponYieldCurve
-    riskyYieldUnscaledBondIssue
-
     maturityMidnightInfo {
       ...MidnightInfoFragment
     }

@@ -63,11 +63,11 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
 
   const maturity = findClosestMaturityByDays(
     Number(duration),
-    protocolData?.lockedkVcmYieldRates ?? []
+    protocolData?.maturities ?? []
   );
 
   const maturityDate = maturity?.maturationTimestamp;
-  const fullMaturity = protocolData?.lockedkVcmYieldRates?.find(
+  const fullMaturity = protocolData?.maturities?.find(
     (m) => m.maturityId === maturity?.maturityId
   );
   const isMaturityWithin3Days =

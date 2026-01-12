@@ -13,7 +13,9 @@ export default function KVcmUsdcRiskyYieldCard(props: CardProps) {
       className="rounded-xl"
       title="kVCM/USDC Risky Yield"
       tooltip="Total dollar equivalent of all deposits, bonds, and Liquidity pools managed by the Protocol."
-      data={data?.liquidityPoolRiskyYield}
+      data={data?.maturities}
+      yieldField="riskyYieldZeroCouponYieldCurve"
+      tokens={['kvcm-usdc']}
     />
   );
 }

@@ -58,7 +58,7 @@ export const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({
 
   const maturity = findClosestMaturityByDays(
     Number(duration),
-    protocolData?.lockedkVcmYieldRates ?? []
+    protocolData?.maturities ?? []
   );
 
   const maturityDate = maturity?.maturationTimestamp;

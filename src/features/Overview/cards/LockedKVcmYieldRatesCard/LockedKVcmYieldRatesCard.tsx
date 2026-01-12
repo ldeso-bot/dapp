@@ -12,7 +12,9 @@ export default function LockedKVcmYieldRatesCard(props: CardProps) {
       className="rounded-xl"
       title="Locked kVCM Yield Rates"
       tooltip="Historical kVCM yield rates over time"
-      data={data?.lockedkVcmYieldRates}
+      data={data?.maturities}
+      yieldField="syntheticYieldZeroCouponYieldCurve"
+      tokens={['kvcm']}
     />
   );
 }

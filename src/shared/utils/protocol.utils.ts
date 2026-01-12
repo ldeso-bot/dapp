@@ -1,5 +1,5 @@
 import { LockableToken } from '../constants/tokens.constants';
-import { AllMetrics, YieldRate, YieldRates } from '../models/ProtocolData';
+import { AllMetrics, Maturity } from '../models/ProtocolData';
 
 /**
  * Computes the value of a token amount in USD taking into account that LP tokens are positions and do not have an intrinsic value.
@@ -30,16 +30,16 @@ export const computeTokenAmountValueUSD = (
 
 export const findClosestMaturityByDays = (
   targetDays: number,
-  yieldData: YieldRates
+  maturities: Maturity[]
 ) => {
-  if (yieldData.length === 0) {
+  if (maturities.length === 0) {
     return null;
   }
 
   const nowInSeconds = Math.floor(Date.now() / 1000);
   const targetTimestamp = nowInSeconds + targetDays * 24 * 60 * 60;
 
-  return yieldData?.reduce((closest: YieldRate, current: YieldRate) => {
+  return maturities?.reduce((closest: Maturity, current: Maturity) => {
     const currentDiff = Math.abs(
       (current.maturationTimestamp ?? 0) - targetTimestamp
     );

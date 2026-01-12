@@ -29,6 +29,7 @@ const sdkForChain = (chain: keyof typeof subgraphs) => {
   return {
     carbon: getCarbonSdk(carbonClient),
     protocol: getProtocolSdk(protocolClient),
+    chain,
   };
 };
 
@@ -40,7 +41,7 @@ const sdks = {
   [baseSepolia.id]: sdkForChain(baseSepolia.id),
 };
 
-export type Sdk = (typeof sdks)[keyof typeof sdks];
+export type Sdk = ReturnType<typeof sdkForChain>;
 
 /**
  * Gets the SDK for the given chain ID

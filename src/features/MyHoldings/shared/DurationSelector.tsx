@@ -45,7 +45,7 @@ export const DurationSelector = <T extends DurationFormFields>({
   const { nextResetDate, daysUntilReset } = getNextResetInfo();
 
   const presetDurations = useMemo(() => {
-    const maturities = protocolData?.lockedkVcmYieldRates ?? [];
+    const maturities = protocolData?.maturities ?? [];
     const firstMaturity = maturities[0] ?? null;
     const shortestDays = firstMaturity
       ? getDaysFromTimestamp(firstMaturity.maturationTimestamp, true)
@@ -74,12 +74,12 @@ export const DurationSelector = <T extends DurationFormFields>({
         ...preset,
         days: daysToUse,
         label: formatDateDDMMYYYY(timestamp),
-        baseAPY: maturity?.yieldPercent ?? 3,
+        baseAPY: maturity?.syntheticYieldZeroCouponYieldCurve ?? 3,
         approxDuration: calculateApproxDuration(timestamp),
       };
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [protocolData?.lockedkVcmYieldRates]);
+  }, [protocolData?.maturities]);
 
   return (
     <div className="flex flex-col gap-2 mt-2">

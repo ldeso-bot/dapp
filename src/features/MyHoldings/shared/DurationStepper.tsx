@@ -47,7 +47,7 @@ export const DurationStepper = <T extends DurationFormFields>({
   control,
 }: FormControlProps<T>) => {
   const { data: protocolData } = useProtocolData();
-  const maturities = protocolData?.lockedkVcmYieldRates ?? [];
+  const maturities = protocolData?.maturities ?? [];
 
   const currentMaturityDays =
     maturities?.map((maturity) => ({
