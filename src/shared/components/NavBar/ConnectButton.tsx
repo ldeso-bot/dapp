@@ -1,7 +1,7 @@
 'use client';
 
 import logoutIcon from '@/shared/images/logout.svg';
-import { ConnectKitButton } from 'connectkit';
+import { ConnectButton as RainbowConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useDisconnect } from 'wagmi';
 import Button from '../Button/Button';
 import Icon from '../Icon/Icon';
@@ -24,14 +24,15 @@ export default function ConnectButton({ className }: Props) {
   }
 
   return (
-    <ConnectKitButton.Custom>
-      {({ isConnecting, show }) => {
+    <RainbowConnectButton.Custom>
+      {({ openConnectModal, mounted }) => {
+        if (!mounted) return null;
         return (
-          <Button onClick={show} className={className}>
-            {isConnecting ? 'Connecting...' : 'Connect wallet'}
+          <Button onClick={openConnectModal} className={className}>
+            Connect wallet
           </Button>
         );
       }}
-    </ConnectKitButton.Custom>
+    </RainbowConnectButton.Custom>
   );
 }

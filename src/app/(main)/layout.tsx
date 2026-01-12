@@ -2,15 +2,12 @@ import Alert from '@/features/Alert/Alert';
 import Footer from '@/shared/components/Footer/Footer';
 import DesktopNavBar from '@/shared/components/NavBar/DesktopNavBar';
 import MobileNavBar from '@/shared/components/NavBar/MobileNavBar';
-import { wagmiConfig } from '@/shared/constants/networks.constants';
 import '@/shared/css/globals.css';
 import { canaryTokenTrackingScript } from '@/shared/utils/canary-token.utils';
 import { isProduction } from '@/shared/utils/environment.utils';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
-import { headers } from 'next/headers';
 import Script from 'next/script';
-import { cookieToInitialState } from 'wagmi';
 import { Providers } from '../providers';
 
 const inter = Inter({
@@ -22,12 +19,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const headersList = await headers();
-  const initialState = cookieToInitialState(
-    wagmiConfig,
-    headersList.get('cookie')
-  );
-
   return (
     <html lang="en">
       <Head>
@@ -40,7 +31,7 @@ export default async function RootLayout({
         )}
       </Head>
       <body className={inter.className}>
-        <Providers initialState={initialState}>
+        <Providers>
           <div className="flex flex-col lg:flex-row">
             <DesktopNavBar />
             <MobileNavBar />

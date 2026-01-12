@@ -1,10 +1,14 @@
 'use client';
 
-import { wagmiConfig } from '@/shared/constants/networks.constants';
+import { ConnectModalDisclaimer } from '@/shared/components/RainbowKit/ConnectModalDisclaimer';
+import { UnsupportedNetworkModal } from '@/shared/components/RainbowKit/UnsupportedNetworkModal';
+import { DOCS_URL } from '@/shared/constants/urls.constants';
+import { createWagmiConfig } from '@/shared/utils/wagmi.utils';
 import { queryClient } from '@/shared/utils/web3.utils';
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import '@rainbow-me/rainbowkit/styles.css';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { ConnectKitProvider } from 'connectkit';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 import { State, WagmiProvider } from 'wagmi';
 
 type ProvidersProps = {
@@ -15,6 +19,10 @@ type ProvidersProps = {
 export function Providers({ children, initialState }: ProvidersProps) {
   const [client] = useState(() => queryClient);
 
+  const wagmiConfig = useMemo(() => {
+    return createWagmiConfig();
+  }, []);
+
   return (
     <WagmiProvider
       reconnectOnMount
@@ -22,7 +30,17 @@ export function Providers({ children, initialState }: ProvidersProps) {
       initialState={initialState}
     >
       <QueryClientProvider client={client}>
-        <ConnectKitProvider>{children}</ConnectKitProvider>
+        <RainbowKitProvider
+          modalSize="compact"
+          appInfo={{
+            appName: 'Klima v2',
+            learnMoreUrl: `${DOCS_URL}`,
+            disclaimer: ConnectModalDisclaimer,
+          }}
+        >
+          <UnsupportedNetworkModal />
+          {children}
+        </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );
