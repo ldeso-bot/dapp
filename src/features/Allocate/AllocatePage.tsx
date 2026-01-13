@@ -12,16 +12,21 @@ import KvcmAllocationsCard from './cards/KVcmAllocationsCard/KVcmAllocationsCard
 import AllocateModals from './modals/AllocateModals';
 import { AllocationEmptyState } from './shared/AllocationEmptyState';
 
-const AllocatePage = () => {
-  const { address } = useAccount();
-  const { data: walletData } = useWalletData();
+function AllocatePage() {
+  const { address, isConnected } = useAccount();
   const { data: holdingsData } = useHoldingsData();
+  const { data: walletData } = useWalletData();
 
-  const displayOnboarding =
-    walletData?.allocations.length === 0 &&
-    (!address ||
-      (holdingsData?.kvcm.lockedAmount === 0 &&
-        holdingsData?.k2.lockedAmount === 0));
+  // @todo - fix - need to show various button states on the onboarding screen
+
+  // const displayOnboarding =
+  //   isConnected ||
+  //   (walletData?.allocations?.length === 0 &&
+  //     (!address ||
+  //       (holdingsData?.kvcm?.lockedAmount === 0 &&
+  //         holdingsData?.k2?.lockedAmount === 0)));
+
+  const displayOnboarding = !isConnected;
 
   return (
     <Suspense>
@@ -46,6 +51,6 @@ const AllocatePage = () => {
       )}
     </Suspense>
   );
-};
+}
 
 export default AllocatePage;
