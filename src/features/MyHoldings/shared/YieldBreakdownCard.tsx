@@ -25,7 +25,7 @@ export const YieldBreakdownCard = ({
 
   return (
     <>
-      <label className="text-size-14 font-medium">Final Yield Breakdown</label>
+      <label className="text-size-14 font-medium">Final Incentives Breakdown</label>
       <section className="grid grid-cols-1 gap-3">
         <div className="flex flex-col box-shadow border-1 border-gray-300 rounded-xl bg-gray-100 p-4">
           <div className="flex flex-col">

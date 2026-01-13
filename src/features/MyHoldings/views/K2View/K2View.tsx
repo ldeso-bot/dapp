@@ -43,7 +43,7 @@ export const K2View = () => {
             tooltipId="k2-position"
             buttonLabel="Deposit"
             onButtonClick={() => setDepositK2TokenDialog({ open: true })}
-            description="Lock K2 to earn variable K2 incentives and a share of kVCM yield. After 24h you can request an unlock; principal becomes claimable at the daily cutoff. You can also allocate in-position K2 to carbon classes."
+            description="Lock K2 to earn variable K2 incentives and a share of kVCM incentives. After 24h you can request an unlock; principal becomes claimable at the daily cutoff. You can also allocate in-position K2 to carbon classes."
             content={<K2Overview />}
           />
           <K2VariableRewards />

@@ -10,8 +10,8 @@ export default function LockedKVcmYieldRatesCard(props: CardProps) {
     <YieldRatesCard
       {...props}
       className="rounded-xl"
-      title="Locked kVCM Yield Rates"
-      tooltip="Historical kVCM yield rates over time"
+      title="Locked kVCM Incentive Rates"
+      tooltip="kVCM incentive rates over time"
       data={data?.maturities}
       yieldField="syntheticYieldZeroCouponYieldCurve"
       tokens={['kvcm']}

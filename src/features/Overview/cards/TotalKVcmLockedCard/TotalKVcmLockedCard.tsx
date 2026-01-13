@@ -19,7 +19,7 @@ export default function TotalKVcmLockedCard(props: CardProps) {
       buttonText="Lock kVCM"
       buttonHref={`${ROUTES.MY_HOLDINGS}?activeView=kvcm&action=lock_kvcm`}
       title="Total kVCM Locked"
-      tooltip="kVCM locks offer yield which is claimable at maturity."
+      tooltip="kVCM locks offer kVCM incentives which are claimable at maturity."
       tooltipPosition="far"
       primaryValue={formatAmountWithCommas(amount, 0)}
       secondaryValue={formatPriceUSDWithCommas(price * amount, 0)}

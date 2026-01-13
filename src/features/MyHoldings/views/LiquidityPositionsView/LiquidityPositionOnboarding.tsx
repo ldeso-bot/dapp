@@ -22,7 +22,7 @@ export const LiquidityPositionOnboarding = () => {
   return (
     <OnboardingContainer
       title="Liquidity Positions"
-      description="Deposit liquidity to earn trading fees. Stake your LP in Klima for a fixed term to earn an additional share of kVCM yield, plus K2 incentives. Unstake when your term ends."
+      description="Deposit liquidity to earn trading fees. Stake your LP in Klima for a fixed term to earn an additional share of kVCM incentives, plus K2 incentives. Unstake when your term ends."
     >
       <NoPositionsHeader
         title="No Staked Positions"

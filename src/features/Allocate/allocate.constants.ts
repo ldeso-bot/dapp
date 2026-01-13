@@ -65,7 +65,7 @@ export const allocationInfoCards = {
       icon: LockOpenIcon,
       title: 'Flexible: No Lock-in',
       description:
-        "Deallocate any portion at any time. Allocations don't affect your yield—they only guide carbon prices.",
+        "Deallocate any portion at any time. Allocations don't affect your incentives—they only guide carbon prices.",
     },
   ],
 };

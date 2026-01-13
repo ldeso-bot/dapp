@@ -107,7 +107,7 @@ export default function YieldRatesCard(props: Props) {
                 />
                 <YAxis
                   label={{
-                    value: 'Yield',
+                    value: 'Incentives',
                     ...Y_AXIS_LABEL_PROPS,
                   }}
                   tickFormatter={(value) =>
@@ -151,7 +151,7 @@ function YieldChartTooltip({ active, payload }: TooltipProps<number, string>) {
               value: formatDateRelative(item.maturationTimestamp),
             },
             {
-              label: 'Yield',
+              label: 'Incentives',
               value: formatPercentage(item.yieldPercent, { decimals: 0 }),
             },
             {

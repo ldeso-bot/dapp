@@ -53,7 +53,7 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
 
     const result = await handleTransaction(deposit, {
       successTitle: 'Deposit K2',
-      successDescription: `Deposited ${amount} K2. Each deposit becomes unlock-eligible after one full yield period.`,
+      successDescription: `Deposited ${amount} K2. Each deposit becomes unlock-eligible after one full incentives period.`,
       errorDescription:
         'Something went wrong and your deposit was not successful.',
       onSuccess: async () => {

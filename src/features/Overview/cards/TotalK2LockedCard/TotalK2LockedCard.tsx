@@ -19,7 +19,7 @@ export default function TotalK2LockedCard(props: CardProps) {
       buttonHref={`${ROUTES.MY_HOLDINGS}?activeView=k2&action=lock_k2`}
       buttonText="Lock K2"
       title="Total K2 Locked"
-      tooltip="K2 locks earn risky yield and may be unlocked after 24hrs."
+      tooltip="K2 locks earn incentives and may be unlocked after 24hrs."
       tooltipPosition="far"
       primaryValue={formatAmountWithCommas(amount, 0)}
       secondaryValue={formatPriceUSDWithCommas(price * amount, 0)}

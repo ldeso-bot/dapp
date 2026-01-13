@@ -76,7 +76,7 @@ export const LiquidityPositionRewards = ({
             <VariableRewardsItem>
               <VariableRewardsItemTitle
                 title="Protocol Distribution (kVCM)"
-                tooltip="kVCM risk-premium routed by protocol parameters. Accrues per lot and unlocks at maturity."
+                tooltip="kVCM incentives routed by protocol parameters. Accrues per lot and unlocks at maturity."
               />
               <VariableRewardsItemContent>
                 <div className="flex flex-1 flex-col">

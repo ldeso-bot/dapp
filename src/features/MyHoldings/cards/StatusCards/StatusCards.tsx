@@ -18,6 +18,7 @@ export const StatusCard: FC<{
   skeletonClassName?: string;
 }> = (props) => {
   const { children, skeletonClassName } = props;
+
   return (
     <Card
       className="p-4 pt-2 rounded-lg bg-gray-50 border border-gray-300"

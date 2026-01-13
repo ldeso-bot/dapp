@@ -22,7 +22,7 @@ export const K2Onboarding = () => {
   return (
     <OnboardingContainer
       title="K2 Position"
-      description="Lock K2 to earn variable K2 incentives and a share of kVCM yield, and allocate to carbon classes to influence pricing. After 24h you can request an unlock; principal becomes claimable at the daily cutoff."
+      description="Lock K2 to earn variable K2 incentives and a share of kVCM incentives, and allocate to carbon classes to influence pricing. After 24h you can request an unlock; principal becomes claimable at the daily cutoff."
     >
       <NoPositionsHeader
         title="No K2 Position"
@@ -33,7 +33,7 @@ export const K2Onboarding = () => {
         <NoPositionsInfoCard
           title="Variable Rewards"
           icon={<TrendingUpIcon className="w-5 h-5 fill-[#00994a]" />}
-          description="K2 incentives + kVCM yield"
+          description="K2 incentives + kVCM incentives"
         />
         <NoPositionsInfoCard
           title="Unlock After 24h"
