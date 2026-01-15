@@ -37,21 +37,30 @@ export const getProtocolState = async (sdk: Sdk) => {
         console.error('❌ Maturity manager not found');
         return null;
       }
-      return {
+      const protocolStartTimestamp = formatStringToNumber(
+        protocolState.protocolStartTimestamp,
+        0
+      );
+      const maturityPeriod = formatStringToNumber(
+        protocolState.maturityPeriod,
+        0
+      );
+
+      // Compute active maturities based on the protocol start timestamp and maturity period
+      const now = Math.floor(Date.now() / 1000);
+      const firstActiveMaturityId =
+        Math.floor((now - protocolStartTimestamp) / maturityPeriod) + 1;
+      const lastActiveMaturityId = firstActiveMaturityId + (40 - 1);
+
+      const res = {
         ...protocolState,
-        protocolStartTimestamp: formatStringToNumber(
-          protocolState.protocolStartTimestamp,
-          0
-        ),
-        firstActiveMaturityId: formatStringToNumber(
-          protocolState.firstActiveMaturityId,
-          0
-        ),
-        lastActiveMaturityId: formatStringToNumber(
-          protocolState.lastActiveMaturityId,
-          0
-        ),
+        protocolStartTimestamp,
+        maturityPeriod,
+        firstActiveMaturityId,
+        lastActiveMaturityId,
       };
+
+      return res;
     },
     ['maturity-manager'],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }

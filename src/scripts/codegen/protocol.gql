@@ -38,8 +38,7 @@ query getTokenSnapshots($where: TokenSnapshot_filter) {
 query getProtocolState {
   protocolStates(first: 1) {
     protocolStartTimestamp
-    firstActiveMaturityId
-    lastActiveMaturityId
+    maturityPeriod
     systemPauseStatus
     kvcmStakingPauseStatus
     k2StakingPauseStatus

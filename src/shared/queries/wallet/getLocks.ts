@@ -197,7 +197,7 @@ export const getLocks = async (
         syntheticYieldApyPercent = midnightInfo.kvcmApyFor.kvcm;
 
         const claimable = lock.lockActions.reduce((acc, action) => {
-          if (action.type === LockActionType.SHARES_MINTED) {
+          if (action.type === LockActionType.SHARES_UPDATED) {
             const actionAmount = formatStringToNumber(action.amount, 18); // Amount locked
             const actionPps = formatStringToNumber(
               action.syntheticYieldEntryMidnightInfo?.syntheticYieldPps,
