@@ -32,7 +32,7 @@ export default function Input({
             props.className
           )}
           style={{
-            backgroundImage: `url(${iconSrc?.src})`,
+            backgroundImage: iconSrc ? `url(${iconSrc?.src})` : undefined,
             backgroundSize: 'auto 2rem',
             backgroundRepeat: 'no-repeat',
             backgroundPositionY: 'center',

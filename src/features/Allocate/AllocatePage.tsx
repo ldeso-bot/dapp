@@ -2,10 +2,8 @@
 
 import { PageDescription } from '@/shared/components/PageDescription/PageDescription';
 import { PageTitle } from '@/shared/components/PageTitle/PageTitle';
-import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { Suspense } from 'react';
 import { useAccount } from 'wagmi';
-import { useHoldingsData } from '../MyHoldings/hooks/useHoldingsData';
 import { AllocationsInfoCard } from './cards/AllocationsInfoCard/AllocationsInfoCard';
 import K2AllocationsCard from './cards/K2AllocationsCard/K2Allocations';
 import KvcmAllocationsCard from './cards/KVcmAllocationsCard/KVcmAllocationsCard';
@@ -13,9 +11,7 @@ import AllocateModals from './modals/AllocateModals';
 import { AllocationEmptyState } from './shared/AllocationEmptyState';
 
 function AllocatePage() {
-  const { address, isConnected } = useAccount();
-  const { data: holdingsData } = useHoldingsData();
-  const { data: walletData } = useWalletData();
+  const { isConnected } = useAccount();
 
   // @todo - fix - need to show various button states on the onboarding screen
 

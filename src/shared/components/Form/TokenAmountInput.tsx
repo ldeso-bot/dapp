@@ -14,6 +14,7 @@ import {
 import InputWrapper from './layout/InputWrapper';
 
 type Props<T extends FieldValues> = {
+  label?: string;
   tokenIconSrc?: StaticImageData;
   errorMessage?: FieldError;
   inputProps: InputHTMLAttributes<HTMLInputElement>;
@@ -26,6 +27,7 @@ export default function TokenAmountInput<T extends FieldValues>(
   props: Props<T>
 ) {
   const {
+    label,
     inputProps,
     errorMessage,
     tokenIconSrc,
@@ -36,7 +38,7 @@ export default function TokenAmountInput<T extends FieldValues>(
 
   return (
     <InputWrapper
-      label="Amount"
+      label={label ?? 'Amount'}
       error={errorMessage}
       addOnLabel={`Available: ${availableBalance?.toFixed(2) ?? '0.00'}`}
     >

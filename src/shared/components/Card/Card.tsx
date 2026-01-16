@@ -14,6 +14,7 @@ export type CardProps = {
   titleAddOnClose?: React.ReactNode;
   titleAddOnBadge?: React.ReactNode;
   children?: React.ReactNode;
+  variant?: 'default' | 'info';
 };
 
 export default function Card({
@@ -28,11 +29,17 @@ export default function Card({
   titleAddOnClose,
   titleAddOnBadge,
   titleAddOnBadgeClassName,
+  variant = 'default',
 }: CardProps) {
+  const border = variant === 'default' ? 'border-gray-300' : 'border-green-300';
+  const background = variant === 'default' ? 'bg-background' : 'bg-green-50';
+  const text = variant === 'default' ? 'text-void-50' : 'text-green-80';
   return (
     <div
       className={cn(
-        'flex flex-col rounded-lg border-gray-300 border-1 bg-background p-5',
+        'flex flex-col rounded-lg border-gray-300 border-1 p-5',
+        background,
+        border,
         className
       )}
     >
@@ -42,13 +49,14 @@ export default function Card({
             'justify-between': tooltipPosition == 'far',
           })}
         >
-          <div className={cn('text-void-50 text-size-16', titleClassName)}>
+          <div className={cn(text, 'text-size-16', titleClassName)}>
             {title}
           </div>
           {titleAddOnBadge && (
             <div
               className={cn(
-                'text-[1rem] px-2 py-0 rounded-full border border-gray-200 bg-gray-100 text-gray-800',
+                text,
+                'text-[1rem] px-2 py-0 rounded-full border border-gray-200 bg-gray-100',
                 titleAddOnBadgeClassName
               )}
             >
@@ -60,7 +68,7 @@ export default function Card({
         </div>
         {titleAddOnFar}
       </div>
-      <div className="flex flex-col gap-2 h-full">
+      <div className={cn('flex flex-col gap-2 h-full', text)}>
         {children}
         {!children && (
           <Skeleton className={cn('rounded grow-1', skeletonClassName)} />

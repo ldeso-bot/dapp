@@ -1,4 +1,4 @@
-import ERC20 from '@/shared/utils/abis/ERC20.json';
+import ERC20 from '@/shared/utils/abis/ERC20';
 import { useCallback, useState } from 'react';
 import { isNullish } from 'remeda';
 import { Address, isAddress, maxUint256 } from 'viem';
@@ -44,7 +44,7 @@ export const useAllowance = ({
     address,
     abi: ERC20,
     functionName: 'allowance',
-    args: [owner, spender],
+    args: [owner as Address, spender as Address],
     query: {
       staleTime: 0,
     },
@@ -79,7 +79,7 @@ export const useAllowance = ({
           address,
           abi: ERC20,
           functionName: 'approve',
-          args: [spender, amount],
+          args: [spender as Address, amount],
         });
         await publicClient.waitForTransactionReceipt({
           hash,

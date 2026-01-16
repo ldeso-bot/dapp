@@ -9,6 +9,7 @@
   --primary-text-color: #1e1e1e;
   --white: #ffffff;
   --green-10: #e6faeb;
+  --green-20: #d9f5e1;
   --green-40: #00cc33;
   --green-60: #00994a;
   --green-80: #007a1f;
@@ -29,7 +30,9 @@
   --color-background: var(--background);
   --color-secondary: hsl(var(--secondary));
   --color-green-10: var(--green-10);
+  --color-green-20: var(--green-20);
   --color-green-40: var(--green-40);
+  --color-green-60: var(--green-60);
   --color-green-80: var(--green-80);
   --color-red-100: var(--red-100);
   --color-red-600: var(--red-600);

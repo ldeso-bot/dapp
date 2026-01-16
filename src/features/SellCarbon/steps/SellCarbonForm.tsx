@@ -2,17 +2,21 @@
 
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
+import Input from '@/shared/components/Form/Input';
 import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
 import SelectInput from '@/shared/components/Form/SelectInput';
 import TokenAmountInput from '@/shared/components/Form/TokenAmountInput';
+import LinkOpenInNew from '@/shared/components/LinkWithIcon';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
+import { AlertIcon } from '@/shared/components/Svg/AlertIcon';
 import { ROUTES } from '@/shared/constants/route.constants';
-import { useWalletData } from '@/shared/hooks/api/useWalletData';
-import { parseAmount } from '@/shared/utils/string.utils';
-import { useEffect, useMemo } from 'react';
+import { CARBON_SELLERS_HANDBOOK_URL } from '@/shared/constants/urls.constants';
+import { formatStringToNumber } from '@/shared/utils/subgraph.utils';
+import { useEffect } from 'react';
 import { zeroAddress } from 'viem';
-import SellCarbonQuoter from '../components/SellCarbonQuoter';
 import { SlippageSlider } from '../components/SlippageSlider';
+import { useSellCarbonForm } from '../hooks/useSellCarbonForm';
+import { useSellCarbonQuoter } from '../hooks/useSellCarbonQuoter';
 import { SellCarbonFields } from '../sellCarbon.constants';
 
 const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
@@ -23,28 +27,14 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
     next();
   };
 
-  const { data: walletData, isLoading } = useWalletData();
-  const creditBalances = walletData?.creditBalances ?? [];
-
-  const token = watch('token');
-
-  const carbonClass = watch('carbonClass');
-
-  const selectedBalance = creditBalances.find(
-    (b) => b.creditToken.creditTokenId === token
-  );
-
-  const carbonClasses = useMemo(
-    () => selectedBalance?.registeredClasses ?? [],
-    [selectedBalance]
-  );
-
-  const amount = watch('amount');
-
-  /* TODO: Remove this when quoter works */
-  useEffect(() => {
-    form.setValue('amountReceived', Math.random() * 100);
-  }, [token, carbonClass, form]);
+  const {
+    isLoading,
+    creditBalances,
+    carbonClass,
+    selectedBalance,
+    carbonClasses,
+    amountToSellWei,
+  } = useSellCarbonForm(watch);
 
   // Preselect the first carbon class when selecting a token
   useEffect(() => {
@@ -53,10 +43,27 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
     }
   }, [carbonClasses, form]);
 
+  const { data: quoteWei } = useSellCarbonQuoter({
+    carbonClass: carbonClass || '',
+    tokenAddress: selectedBalance?.creditToken.address || '',
+    tokenId: selectedBalance?.creditToken.tokenId || 0,
+    amountToSellWei,
+    maturityId: 0,
+    couponBurnParams: {
+      tonnes: 0,
+      from: zeroAddress,
+    },
+  });
+
+  const kvcmOutQuoteWei = form.watch('kvcmOutQuoteWei');
+  useEffect(() => {
+    form.setValue('kvcmOutQuoteWei', quoteWei);
+  }, [quoteWei, form]);
+
   return (
     <Card
       title="Sell Carbon"
-      className="w-[45rem] rounded-xl border border-gray-200 h-fit"
+      className="w-[50rem] rounded-xl border border-gray-200 h-fit"
       titleClassName="font-semibold text-gray-800 text-size-20 tracking-tight"
       skeletonClassName="h-[56.6rem]"
     >
@@ -66,14 +73,9 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
             <div className="font-base text-gray-500 text-size-14">
               Quotes are not guaranteed due to ever-changing network conditions.
               Slippage may occur.{' '}
-              <a
-                href="#" // TODO: add link
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-green-80 underline"
-              >
-                Learn more
-              </a>
+              <LinkOpenInNew href={CARBON_SELLERS_HANDBOOK_URL} withoutIcon>
+                <span className="text-size-12">Learn more</span>
+              </LinkOpenInNew>
             </div>
           </div>
           <form
@@ -91,6 +93,18 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
                 {...form.register('token')}
                 error={form.formState.errors.token}
               />
+              <div className="flex items-center justify-between text-size-12 ">
+                <div className="flex items-center gap-2">
+                  <AlertIcon className="w-4 h-4" />
+                  <span className="text-gray-600">
+                    No eligible credits detected?
+                  </span>
+                </div>
+                <LinkOpenInNew href={CARBON_SELLERS_HANDBOOK_URL} withoutIcon>
+                  Contact us to whitelist your credit type
+                </LinkOpenInNew>
+              </div>
+
               <SelectInput
                 label="Carbon Class"
                 items={Object.values(carbonClasses).map((carbonClass) => ({
@@ -102,49 +116,49 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
                 error={form.formState.errors.carbonClass}
               />
               <TokenAmountInput
+                label="Amount (Tonnes)"
                 availableBalance={selectedBalance?.balance ?? 0}
-                errorMessage={form.formState.errors.amount}
+                errorMessage={form.formState.errors.amountToSellTonnes}
                 inputProps={{
                   type: 'number',
                   'aria-label': 'Token Input',
                   placeholder: 'Select a token first',
-                  ...form.register('amount'),
+                  ...form.register('amountToSellTonnes'),
                   max: selectedBalance?.balance ?? 0,
                   min: 0,
+                  step: 0.001,
                 }}
-                name="amount"
+                name="amountToSellTonnes"
                 control={form.control}
               />
-              {/* TODO: set maturityId and couponBurnParams */}
-              {selectedBalance && carbonClass && amount && (
-                <SellCarbonQuoter
-                  form={form}
-                  carbonClass={carbonClass}
-                  address={selectedBalance?.creditToken.address}
-                  tokenId={selectedBalance?.creditToken.tokenId}
-                  amount={parseAmount(
-                    amount,
-                    selectedBalance.creditToken.decimals
-                  )}
-                  maturityId={0}
-                  couponBurnParams={{
-                    tonnes: 0,
-                    from: zeroAddress,
-                  }}
-                />
-              )}
+
+              <Input
+                className="h-[4rem] pointer-events-none"
+                label="Receive"
+                readOnly
+                value={
+                  selectedBalance
+                    ? `${formatStringToNumber(kvcmOutQuoteWei, 18)} KVCM`
+                    : 'Select a token first'
+                }
+              />
               <SlippageSlider form={form} />
             </div>
-            <ButtonGroup className="flex-row w-full">
+            <ButtonGroup className="flex-col w-full">
+              <Button
+                colors="secondary"
+                context="flow"
+                type="submit"
+                disabled={!kvcmOutQuoteWei}
+              >
+                Sell Carbon
+              </Button>
               <Button
                 colors="primary"
                 context="flow"
                 href={`${ROUTES.SELL_CARBON}`}
               >
                 Cancel
-              </Button>
-              <Button colors="secondary" context="flow" type="submit">
-                Sell Carbon
               </Button>
             </ButtonGroup>
           </form>

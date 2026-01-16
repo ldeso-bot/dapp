@@ -34,7 +34,7 @@ export const getProtocolState = async (sdk: Sdk) => {
       const protocolStates = await sdk.protocol.getProtocolState();
       const protocolState = protocolStates.protocolStates[0];
       if (!protocolState) {
-        console.error('❌ Maturity manager not found');
+        console.error('❌ Protocol state not found');
         return null;
       }
       const protocolStartTimestamp = formatStringToNumber(
@@ -62,7 +62,7 @@ export const getProtocolState = async (sdk: Sdk) => {
 
       return res;
     },
-    ['maturity-manager'],
+    ['protocol-state'],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
   )();
 };

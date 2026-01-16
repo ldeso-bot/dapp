@@ -14,9 +14,14 @@ export const SlippageSlider = ({ form }: Props) => {
     <div className="flex flex-col gap-2">
       <div className="flex justify-between">
         <label className="text-size-14 font-medium">Slippage Tolerance</label>
-        <div>{Number(slippage) / 100}%</div>
+        <div>{Number(slippage * 100).toFixed(2)}%</div>
       </div>
-      <Slider name="slippage" control={form?.control} />
+      <Slider
+        name="slippage"
+        control={form?.control}
+        max={0.01}
+        step={0.0001}
+      />
     </div>
   );
 };

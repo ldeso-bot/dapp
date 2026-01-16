@@ -21,3 +21,5 @@ export const WALLETCONNECT_PROJECT_ID =
   process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ||
   process.env.WALLETCONNECT_PROJECT_ID ||
   '';
+
+export const DEFAULT_SLIPPAGE = 0.005; // 0.5%

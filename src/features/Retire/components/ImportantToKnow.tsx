@@ -1,7 +1,7 @@
 'use client';
 
+import LinkOpenInNew from '@/shared/components/LinkWithIcon';
 import { HandIcon } from '@/shared/components/Svg/HandIcon';
-import { OpenInNewIcon } from '@/shared/components/Svg/OpenInNewIcon';
 
 export const ImportantToKnow = () => (
   <div className="max-w-7xl mx-auto px-4 pb-20 md:pb-24">
@@ -49,15 +49,9 @@ export const ImportantToKnow = () => (
           </li>
         </ul>
         <div className="mt-8 pt-6 border-t border-[#f0f0f0]/60">
-          <a
-            href="https://carbonmark.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-[#00994a] text-size-16 hover:underline"
-          >
+          <LinkOpenInNew href="https://carbonmark.com">
             Learn more about Carbonmark
-            <OpenInNewIcon className="w-4 h-4" />
-          </a>
+          </LinkOpenInNew>
         </div>
       </div>
     </div>

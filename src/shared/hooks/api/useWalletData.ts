@@ -14,7 +14,7 @@ export function useWalletData() {
       get<WalletData>('/api/wallet-data', {
         walletAddress: address ?? '',
       }),
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 60 * 1000, // 1 minute
     enabled: !!address,
   });
 

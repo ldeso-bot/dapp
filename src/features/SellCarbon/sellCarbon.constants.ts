@@ -17,18 +17,15 @@ export const sellCarbonSchema = z.object({
   token: z.string().min(1, 'Token is required'),
   carbonClass: z.string().min(1, 'Carbon class is required'),
   slippage: z.coerce.number(),
-  amount: z.coerce
-    .number()
-    .gt(0, 'Amount must be a positive integer')
-    .int('Amount must be a positive integer'),
-  amountReceived: z.coerce.number(),
+  amountToSellTonnes: z.coerce.number().gt(0, 'Amount must be positive'),
+  kvcmOutQuoteWei: z.coerce.bigint(),
 });
 
 export type SellCarbonFields = {
   carbonClass: string;
   token: string;
-  amount: number;
-  amountReceived: number;
+  amountToSellTonnes: number;
+  kvcmOutQuoteWei: bigint;
   slippage: number;
 };
 

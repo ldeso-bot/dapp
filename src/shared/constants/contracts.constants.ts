@@ -1,4 +1,4 @@
-import AAMDiamond from '@/shared/utils/abis/AAMDiamond.json';
+import AAMDiamond from '@/shared/utils/abis/AAMDiamond';
 import StakingManagerDiamond from '@/shared/utils/abis/StakingManagerDiamond.json';
 import USDC from '@/shared/utils/abis/USDC.json';
 import USDCTransferWithPermit from '@/shared/utils/abis/USDCTransferWithPermit.json';

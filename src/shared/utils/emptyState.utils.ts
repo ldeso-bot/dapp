@@ -1,10 +1,11 @@
 import { MenuBookIcon } from '@/shared/components/Svg/MenuBookIcon';
 import { ReactNode } from 'react';
 
+type CtaClickHandler = (openConnectModal: () => void) => void;
 export type CtaConfig = {
   text: string;
   icon: React.ComponentType<{ className?: string }>;
-  onClick: () => void;
+  onClick: CtaClickHandler;
   description?: string | ReactNode;
   className?: string;
 };

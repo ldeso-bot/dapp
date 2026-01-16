@@ -12,7 +12,7 @@ export default function CarbonClassCard() {
     <div>
       <Card
         title="Carbon Class Prices"
-        className="w-[36rem] rounded-xl border border-gray-200"
+        className="w-[50rem] rounded-xl border border-gray-200"
         titleClassName="font-semibold text-void-800 text-size-20 tracking-tight"
         skeletonClassName="h-[20rem]"
       >

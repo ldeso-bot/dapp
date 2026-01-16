@@ -1,21 +1,26 @@
 'use client';
 
+import { alertAtom } from '@/features/Alert/alert.atom';
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
 import Dialog from '@/shared/components/Dialog/Dialog';
 import Input from '@/shared/components/Form/Input';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { DEV_MODE } from '@/shared/constants/config.constants';
+import { ROUTES } from '@/shared/constants/route.constants';
 import { CarbonCreditIconImg } from '@/shared/constants/tokens.constants';
-import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useAllowance } from '@/shared/hooks/useAllowance';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { TOKEN_STANDARDS } from '@/shared/models/shared';
-import { formatAddress, parseAmount } from '@/shared/utils/string.utils';
+import { applySlippage } from '@/shared/utils/math.utils';
+import { formatAddress } from '@/shared/utils/string.utils';
+import { formatStringToNumber } from '@/shared/utils/subgraph.utils';
 import { useSetAtom } from 'jotai';
 import { useAccount } from 'wagmi';
+import { useSellCarbon } from '../hooks/useSellCarbon';
+import { useSellCarbonForm } from '../hooks/useSellCarbonForm';
 import { SellCarbonFields } from '../sellCarbon.constants';
-import { sellCarbonDialogAtom, useSellCarbon } from '../sellCarbon.utils';
+import { sellCarbonDialogAtom } from '../sellCarbon.utils';
 
 const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
   previous,
@@ -23,15 +28,18 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
 }) => {
   const { parsedForm, form } = data;
   const setSellCarbonDialogState = useSetAtom(sellCarbonDialogAtom);
+  const setAlert = useSetAtom(alertAtom);
+
+  const {
+    selectedBalance,
+    selectedCarbonClass,
+    amountToSellWei,
+    refetch: refetchWalletData,
+  } = useSellCarbonForm(form.watch);
 
   const onSubmit = async () => {
     setSellCarbonDialogState({ open: false, token: null });
   };
-  const { data: walletData } = useWalletData();
-  const creditBalances = walletData?.creditBalances ?? [];
-  const selectedBalance = creditBalances.find(
-    (b) => b.creditToken.creditTokenId === parsedForm.current?.token
-  );
 
   const { contract } = useContract('AAMDiamond');
 
@@ -39,59 +47,60 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
     useAllowance({
       tokenAddress: selectedBalance?.creditToken.address || '',
       tokenStandard: TOKEN_STANDARDS.ERC20,
-      spender: contract?.address || '',
-      amount: parseAmount(
-        parsedForm.current?.amount,
-        selectedBalance?.creditToken.decimals
-      ),
+      spender: parsedForm.current?.carbonClass || '',
+      amount: amountToSellWei,
     });
 
   const handleSetAllowance = async (amount?: bigint) => {
     const result = await setAllowance(amount);
     if (!result) {
-      form.setError('amount', { message: 'Failed to approve token' });
+      form.setError('root', {
+        message: 'Failed to approve token',
+      });
     }
   };
 
+  const minKvcmOut = applySlippage(
+    parsedForm.current?.kvcmOutQuoteWei ?? 0n,
+    parsedForm.current?.slippage ?? 0
+  );
+
+  const kvcmOutString = `${formatStringToNumber(parsedForm.current?.kvcmOutQuoteWei, 18)} KVCM`;
+
   const { address } = useAccount();
-  const { sellCarbon } = useSellCarbon();
+  const { sellCarbon, isExecuting } = useSellCarbon({
+    carbonClass: parsedForm.current?.carbonClass || '',
+    amount: amountToSellWei,
+    tokenId: selectedBalance?.creditToken.tokenId ?? 0,
+    credit: selectedBalance?.creditToken.address ?? '',
+    maturityId: 0,
+    minKvcmOut,
+    recipient: address ?? '',
+  });
 
   const handleSellCarbon = async () => {
-    if (!parsedForm.current) {
-      form.setError('amount', { message: 'Form data is not valid' });
-      return;
-    }
-    if (!address) {
-      form.setError('amount', { message: 'Wallet address is not available' });
-      return;
-    }
-    if (!selectedBalance) {
-      form.setError('amount', { message: 'Selected balance not found' });
-      return;
-    }
-
-    const amountBigInt = parseAmount(
-      parsedForm.current?.amount,
-      selectedBalance.creditToken.decimals
-    );
-
-    const minKvcmOut =
-      parsedForm.current?.amountReceived *
-      (1 - parsedForm.current?.slippage / 100);
-    const minKvcmOutBigInt = parseAmount(minKvcmOut, 18);
-
-    const result = await sellCarbon({
-      address: parsedForm.current?.token,
-      carbonClass: parsedForm.current?.carbonClass,
-      amount: amountBigInt,
-      tokenId: selectedBalance.creditToken.tokenId,
-      credit: selectedBalance.creditToken.address,
-      maturityId: 0,
-      minKvcmOut: minKvcmOutBigInt,
-      recipient: address,
-    });
-    if (!result) {
-      form.setError('amount', { message: 'Failed to sell carbon' });
+    const result = await sellCarbon();
+    if (result?.error === null) {
+      // Show success message
+      setAlert({
+        title: 'Sale complete',
+        description: `You’ve successfully sold ${parsedForm.current?.amountToSellTonnes} ${selectedBalance?.creditToken.name} into ${selectedCarbonClass?.name} for ${kvcmOutString}! Put your new KVCM tokens to work by purchasing a bond!`,
+        type: 'success',
+        links: [
+          {
+            label: 'Stake KVCM',
+            href: ROUTES.MY_HOLDINGS,
+          },
+        ],
+      });
+      // Reset form
+      form.reset();
+      // Refetch wallet data
+      refetchWalletData();
+      // Go to previous step
+      previous();
+    } else {
+      form.setError('root', { message: 'Failed to sell carbon' });
     }
   };
 
@@ -119,13 +128,13 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
               readOnly
               iconSize="sm"
               iconSrc={CarbonCreditIconImg}
-              value={`${parsedForm.current?.amount} ${selectedBalance?.creditToken.name}`}
+              value={`${parsedForm.current?.amountToSellTonnes} ${selectedBalance?.creditToken.name}`}
             />
             <Input
               label="You are receiving"
               readOnly
               iconSize="sm"
-              value={`${parsedForm.current?.amountReceived}`}
+              value={kvcmOutString}
             />
           </div>
           <div className="flex flex-col gap-3 w-full">
@@ -146,6 +155,7 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
                 context="flow"
                 type="submit"
                 onClick={handleSellCarbon}
+                loading={isExecuting}
               >
                 Sell Carbon
               </Button>
@@ -165,9 +175,9 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
             <Button colors="primary" context="flow" onClick={previous}>
               Cancel
             </Button>
-            {form.formState.errors.amount && (
+            {form.formState.errors.root && (
               <p className="text-red-500 text-size-14">
-                {form.formState.errors.amount.message}
+                {form.formState.errors.root.message}
               </p>
             )}
           </div>
