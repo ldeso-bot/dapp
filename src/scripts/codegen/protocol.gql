@@ -139,3 +139,9 @@ query getLatestMidnightInfo {
     ...MidnightInfoWithPreviousMidnightInfoFragment
   }
 }
+
+query getMidnightInfo($where: MidnightInfo_filter) {
+  midnightInfos(where: $where) {
+    ...MidnightInfoWithPreviousMidnightInfoFragment
+  }
+}

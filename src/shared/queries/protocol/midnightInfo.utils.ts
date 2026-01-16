@@ -246,13 +246,38 @@ export const computeMidnightInfoDiffWithPrevious = (
 };
 
 /**
+ * Maps raw midnight infos to computed diffs keyed by maturityId
+ * @param midnightInfos - The raw midnight infos from the subgraph
+ * @param tokenMetrics - The token metrics for APY calculations
+ * @returns Record of maturityId to ComputedMidnightInfo
+ */
+export const mapMidnightInfosToComputedDiffs = (
+  midnightInfos: MidnightInfo[],
+  tokenMetrics: AllMetrics
+): Record<number, ComputedMidnightInfo> => {
+  if (!midnightInfos || midnightInfos.length === 0) return {};
+
+  const computedMidnightInfos = midnightInfos
+    .map((midnightInfo) =>
+      computeMidnightInfoDiffWithPrevious(midnightInfo, tokenMetrics)
+    )
+    .filter((midnightInfo) => midnightInfo !== undefined);
+
+  // Map by maturityId for faster lookups
+  return mapToObj(computedMidnightInfos, (midnightInfo) => [
+    Number(midnightInfo.maturityId),
+    midnightInfo,
+  ]);
+};
+
+/**
  * Get the latest midnight infos for the active maturities
  * @param sdk
  * @returns
  */
 export const getLatestMidnightInfoDiffs = async (
   sdk: Sdk
-): Promise<Record<string, ComputedMidnightInfo>> => {
+): Promise<Record<number, ComputedMidnightInfo>> => {
   return unstable_cache(
     async () => {
       const [midnightInfos, tokenMetrics] = await Promise.all([
@@ -261,22 +286,17 @@ export const getLatestMidnightInfoDiffs = async (
       ]);
 
       if (!midnightInfos || midnightInfos.length === 0) return {};
-      const midnightIndex = midnightInfos[0].midnightIndex;
-      const mappedMidnightInfos = midnightInfos
-        .filter(
-          (midnightInfo) => midnightInfo.midnightIndex === midnightIndex
-          // Map so it can be serialized
-        )
-        .map((midnightInfo) =>
-          computeMidnightInfoDiffWithPrevious(midnightInfo, tokenMetrics)
-        )
-        .filter((midnightInfo) => midnightInfo !== undefined);
 
-      // Map by maturityId for faster lookups
-      return mapToObj(mappedMidnightInfos, (midnightInfo) => [
-        Number(midnightInfo.maturityId),
-        midnightInfo,
-      ]);
+      // Filter to only include midnight infos for the latest midnight index
+      const midnightIndex = midnightInfos[0].midnightIndex;
+      const filteredMidnightInfos = midnightInfos.filter(
+        (midnightInfo) => midnightInfo.midnightIndex === midnightIndex
+      );
+
+      return mapMidnightInfosToComputedDiffs(
+        filteredMidnightInfos,
+        tokenMetrics
+      );
     },
     ['latest-midnight-infos-for-active-maturities'],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }

@@ -141,7 +141,7 @@ export const getLocks = async (
     const midnightInfo =
       !isMatured || isK2Lock
         ? // Latest midnight info for non matured or K2 locks
-          latestMidnightInfos[lock.maturityId]
+          latestMidnightInfos[Number(lock.maturityId)]
         : // midnightInfo attached to the maturity for matured locks
           lockMaturityMidnightInfo;
 

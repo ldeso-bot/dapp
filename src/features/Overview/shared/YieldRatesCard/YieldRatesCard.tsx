@@ -11,6 +11,7 @@ import {
   Y_AXIS_LABEL_PROPS,
   Y_AXIS_PROPS,
 } from '@/shared/constants/chart.constants';
+import { DEV_MODE } from '@/shared/constants/config.constants';
 import {
   LAUNCH_DATE,
   ONE_DAY,
@@ -83,7 +84,6 @@ export default function YieldRatesCard(props: Props) {
   const yieldRates: YieldRate[] | undefined = data?.map(
     (maturity): YieldRate => ({
       ...maturity,
-
       yieldPercent: maturity[yieldField],
       tokens,
     })
@@ -95,8 +95,8 @@ export default function YieldRatesCard(props: Props) {
         <>
           <div className="flex flex-row justify-between bg-green-10 p-3">
             <div>
-              Resets every <b>90 days</b>. Next reset in{' '}
-              {formatDateRelative(nextMaturityTimestamp)} (on:{' '}
+              Resets every <b>{protocolState.maturityPeriod / ONE_DAY} days</b>.
+              Next reset in {formatDateRelative(nextMaturityTimestamp)} (on:{' '}
               <b>{formatDate(nextMaturityTimestamp)}</b>)
             </div>
             <div>
@@ -153,24 +153,29 @@ function YieldChartTooltip({ active, payload }: TooltipProps<number, string>) {
     const buttonText = `Lock ${tokenInfo.symbol} Now`;
     const buttonHref = `${ROUTES.MY_HOLDINGS}?action=lock_${token}&maturityId=${item.index}`;
 
+    const items = [
+      {
+        label: 'Lock Duration',
+        value: formatDateRelative(item.maturationTimestamp),
+      },
+      {
+        label: 'Incentives',
+        value: formatPercentage(item.yieldPercent, { decimals: 0 }),
+      },
+      {
+        label: 'Maturity Date',
+        value: formatDate(item.maturationTimestamp),
+      },
+    ];
+    if (DEV_MODE) {
+      items.push({
+        label: 'Maturity ID',
+        value: item.maturityId.toString(),
+      });
+    }
     return (
       <ChartTooltip>
-        <ChartTooltipItems
-          items={[
-            {
-              label: 'Lock Duration',
-              value: formatDateRelative(item.maturationTimestamp),
-            },
-            {
-              label: 'Incentives',
-              value: formatPercentage(item.yieldPercent, { decimals: 0 }),
-            },
-            {
-              label: 'Maturity Date',
-              value: formatDate(item.maturationTimestamp),
-            },
-          ]}
-        />
+        <ChartTooltipItems items={items} />
         <Button className="p-3 pointer-events-auto" href={buttonHref}>
           {buttonText}
         </Button>
