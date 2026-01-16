@@ -13,6 +13,7 @@ type Props = CardProps & {
   changePercent?: number;
   buttonHref?: string;
   buttonTarget?: string;
+  buttonOnClick?: () => void;
 };
 
 /** Component for the cards at the top of the Overview page */
@@ -25,25 +26,33 @@ export default function StatCard(props: Props) {
     buttonHref,
     changePercent,
     buttonTarget,
+    buttonOnClick,
   } = props;
   return (
     <Card {...props} tooltipPosition="far" skeletonClassName="h-[7rem]">
-      {!isNullish(value) && !isNullish(changePercent) && (
+      {!isNullish(value) && (
         <div className="flex flex-col gap-3 w-full h-full">
           <div className="flex flex-col gap-1">
             <div className="flex flex-row gap-2 w-full items-center">
               {token.icon(2)}
               <div className="grow-1 text-size-20 font-bold">{value}</div>
-              <div>
-                <ChangePercent value={changePercent} />
-              </div>
+              {!isNullish(changePercent) && (
+                <div>
+                  <ChangePercent value={changePercent} />
+                </div>
+              )}
             </div>
             <div className="flex flex-row gap-2 w-full items-center text-size-12">
               <div className="invisible">{token.icon(2)}</div>
               <div>{secondaryValue}</div>
             </div>
           </div>
-          <Button className="w-full" href={buttonHref} target={buttonTarget}>
+          <Button
+            className="w-full"
+            href={buttonHref}
+            onClick={buttonOnClick}
+            target={buttonTarget}
+          >
             {buttonText}
           </Button>
         </div>

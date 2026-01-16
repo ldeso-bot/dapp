@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
 
   const data = await unstable_cache(
     async (chainId: ChainId) => getProtocolData(chainId),
-    [`protocol-data`],
+    [`protocol-data-${chainId}`],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
   )(chainId);
 

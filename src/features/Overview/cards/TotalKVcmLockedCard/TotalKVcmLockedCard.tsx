@@ -1,7 +1,10 @@
+'use client';
+
 import { CardProps } from '@/shared/components/Card/Card';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
+import { useConnectAndRedirect } from '@/shared/hooks/useConnectAndRedirect';
 import {
   formatAmountWithCommas,
   formatPriceUSDWithCommas,
@@ -10,14 +13,19 @@ import StatCard from '../../shared/StatCard/StatCard';
 
 export default function TotalKVcmLockedCard(props: CardProps) {
   const { data } = useProtocolData();
-  const amount = data?.metrics?.kvcm?.supplyLocked ?? 0;
+
+  const handleButtonClick = useConnectAndRedirect(
+    `${ROUTES.MY_HOLDINGS}?activeView=kvcm&action=lock_kvcm`
+  );
+
   const price = data?.metrics?.kvcm?.valueUSD ?? 0;
+  const amount = data?.metrics?.kvcm?.supplyLocked ?? 0;
 
   return (
     <StatCard
       {...props}
       buttonText="Lock kVCM"
-      buttonHref={`${ROUTES.MY_HOLDINGS}?activeView=kvcm&action=lock_kvcm`}
+      buttonOnClick={handleButtonClick}
       title="Total kVCM Locked"
       tooltip="kVCM locks offer kVCM incentives which are claimable at maturity."
       tooltipPosition="far"
