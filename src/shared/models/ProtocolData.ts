@@ -74,6 +74,13 @@ export type MidnightInfos = {
   maturityApys: Record<MaturityId, ApyMidnightInfo>;
 };
 
+export type ProtocolState = {
+  protocolStartTimestamp: number;
+  maturityPeriod: number;
+  firstActiveMaturityId: number;
+  lastActiveMaturityId: number;
+};
+
 /* Protocol Data */
 export type ProtocolData = {
   chainId: ChainId;
@@ -82,4 +89,5 @@ export type ProtocolData = {
   maturities: Maturity[];
   carbonClasses: CarbonClass[];
   midnightInfos: MidnightInfos;
+  protocolState: ProtocolState;
 };

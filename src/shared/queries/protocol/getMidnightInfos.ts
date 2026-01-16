@@ -6,7 +6,7 @@ import { NumberKeysOf } from '@/shared/utils/typescript.utils';
 import { mapValues, pick, sumBy } from 'remeda';
 import {
   ComputedMidnightInfo,
-  getLatestMidnightInfos,
+  getLatestMidnightInfoDiffs,
   nonCompoundedApr,
 } from './midnightInfo.utils';
 
@@ -28,7 +28,7 @@ export const getMidnightInfos = async (
   }
 
   // Fetch maturityApys
-  const midnightInfos = await getLatestMidnightInfos(sdk);
+  const midnightInfos = await getLatestMidnightInfoDiffs(sdk);
 
   const midnightInfosWithPreviousInfo = Object.values(midnightInfos).filter(
     (midnightInfo) => midnightInfo.oldMidnightInfo !== undefined

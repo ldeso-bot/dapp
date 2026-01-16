@@ -10,7 +10,7 @@ import { GetCreditTokensQuery } from '@generated/gql/types/carbon.types';
 import { Maturity_Filter } from '@generated/gql/types/protocol.types';
 import { unstable_cache } from 'next/cache';
 import { mapToObj } from 'remeda';
-import { getLatestMidnightInfos } from './midnightInfo.utils';
+import { getLatestMidnightInfoDiffs } from './midnightInfo.utils';
 
 export const tokensEligibleForIncentives: Record<YieldType, Token[]> = {
   [YieldType.K2]: [tokens.k2.id, tokens.kvcm.id, tokens['kvcm-k2'].id],
@@ -76,7 +76,7 @@ export const getActiveMaturities = async (sdk: Sdk) => {
     async () => {
       const [protocolState, midnightInfos] = await Promise.all([
         getProtocolState(sdk),
-        getLatestMidnightInfos(sdk),
+        getLatestMidnightInfoDiffs(sdk),
       ]);
       if (!protocolState) return [];
       const maturities = await sdk.protocol.getMaturities({

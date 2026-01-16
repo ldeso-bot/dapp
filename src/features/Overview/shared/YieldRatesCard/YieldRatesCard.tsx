@@ -18,7 +18,8 @@ import {
 } from '@/shared/constants/protocol.constants';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { isToken, Token, tokens } from '@/shared/constants/tokens.constants';
-import { Maturity } from '@/shared/models/ProtocolData';
+import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
+import { Maturity, ProtocolState } from '@/shared/models/ProtocolData';
 import { formatDate, formatPercentage } from '@/shared/utils/string.utils';
 import {
   Line,
@@ -37,12 +38,19 @@ type Props = CardProps & {
   tokens: Token[];
 };
 
-const getDurationFromIndex = (index: number) => {
-  if (index >= 3) {
-    return `${Math.round((index + 1) / 4)}y`;
-  }
-  return `${(index + 1) * 90}d`;
-};
+/**
+ * Approximate pretty duration from index for the given chain
+ * @param chainId
+ * @returns
+ */
+const getDurationFromIndex =
+  (protocolState: ProtocolState) => (index: number) => {
+    const maturityDurationDays = protocolState.maturityPeriod / ONE_DAY;
+    if (index * maturityDurationDays >= 270) {
+      return `${Math.round((index + 1) / 4)}y`;
+    }
+    return `${(index + 1) * maturityDurationDays}d`;
+  };
 
 const formatDateRelative = (timestamp: number) => {
   const duration = Math.max(timestamp - Date.now() / 1000, 0);
@@ -64,6 +72,8 @@ type YieldRate = Maturity & {
 
 export default function YieldRatesCard(props: Props) {
   const { data, yieldField, tokens } = props;
+  const { data: protocolData } = useProtocolData();
+  const protocolState = protocolData?.protocolState;
   const nextMaturityTimestamp =
     data && data.length > 0 ? data[0].maturationTimestamp : 0;
 
@@ -73,6 +83,7 @@ export default function YieldRatesCard(props: Props) {
   const yieldRates: YieldRate[] | undefined = data?.map(
     (maturity): YieldRate => ({
       ...maturity,
+
       yieldPercent: maturity[yieldField],
       tokens,
     })
@@ -80,7 +91,7 @@ export default function YieldRatesCard(props: Props) {
 
   return (
     <Card {...props} skeletonClassName="h-[27.2rem]">
-      {!!yieldRates && (
+      {!!yieldRates && protocolState && (
         <>
           <div className="flex flex-row justify-between bg-green-10 p-3">
             <div>
@@ -101,7 +112,7 @@ export default function YieldRatesCard(props: Props) {
                     value: 'Duration',
                     ...X_AXIS_LABEL_PROPS,
                   }}
-                  tickFormatter={getDurationFromIndex}
+                  tickFormatter={getDurationFromIndex(protocolState)}
                   ticks={[1, 3, 7, 11, 15, 19, 23, 27, 31, 35, 39]}
                   {...X_AXIS_PROPS}
                 />

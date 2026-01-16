@@ -110,7 +110,7 @@ const EMPTY_APY_INFO: ApyInfo = {
  * @param oldRawMidnightInfo - The old midnight info
  * @returns
  */
-export const computeMidnightInfo = (
+export const computeMidnightInfoDiff = (
   midnightInfo: FormattedMidnightInfo,
   oldMidnightInfo: FormattedMidnightInfo | undefined,
   tokenMetrics: AllMetrics
@@ -228,7 +228,7 @@ export const computeMidnightInfo = (
  * Compute the midnight info with it self contain previousMidnightInfoas the old midnight info
  * @param midnightInfo
  */
-export const computeMidnightInfoWithSelf = (
+export const computeMidnightInfoDiffWithPrevious = (
   midnightInfo: MidnightInfo,
   tokenMetrics: AllMetrics
 ) => {
@@ -238,7 +238,7 @@ export const computeMidnightInfoWithSelf = (
     );
     return undefined;
   }
-  return computeMidnightInfo(
+  return computeMidnightInfoDiff(
     formatMidnightInfo(midnightInfo),
     formatMidnightInfo(midnightInfo.previousMidnightInfo),
     tokenMetrics
@@ -250,7 +250,7 @@ export const computeMidnightInfoWithSelf = (
  * @param sdk
  * @returns
  */
-export const getLatestMidnightInfos = async (
+export const getLatestMidnightInfoDiffs = async (
   sdk: Sdk
 ): Promise<Record<string, ComputedMidnightInfo>> => {
   return unstable_cache(
@@ -268,7 +268,7 @@ export const getLatestMidnightInfos = async (
           // Map so it can be serialized
         )
         .map((midnightInfo) =>
-          computeMidnightInfoWithSelf(midnightInfo, tokenMetrics)
+          computeMidnightInfoDiffWithPrevious(midnightInfo, tokenMetrics)
         )
         .filter((midnightInfo) => midnightInfo !== undefined);
 

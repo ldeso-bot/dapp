@@ -16,10 +16,10 @@ import {
 import { filter, isNonNullish } from 'remeda';
 import { getTokenMetrics } from '../protocol/getTokenMetrics';
 import {
-  computeMidnightInfo,
-  computeMidnightInfoWithSelf,
+  computeMidnightInfoDiff,
+  computeMidnightInfoDiffWithPrevious,
   formatMidnightInfo,
-  getLatestMidnightInfos,
+  getLatestMidnightInfoDiffs,
 } from '../protocol/midnightInfo.utils';
 import {
   getProtocolState,
@@ -46,7 +46,7 @@ export const getLocks = async (
           },
         } as Lock_Filter,
       }),
-      getLatestMidnightInfos(sdk),
+      getLatestMidnightInfoDiffs(sdk),
       getProtocolState(sdk),
       getTokenMetrics(chainId),
     ]);
@@ -132,7 +132,7 @@ export const getLocks = async (
 
     const lockMaturityMidnightInfo =
       lock.maturity?.maturityMidnightInfo &&
-      computeMidnightInfoWithSelf(
+      computeMidnightInfoDiffWithPrevious(
         lock.maturity?.maturityMidnightInfo,
         tokenMetrics
       );
@@ -156,7 +156,7 @@ export const getLocks = async (
         k2YieldApyPercent = midnightInfo.k2ApyFor[tokenInfo.id];
         k2Rewards += formatStringToNumber(mintingInfo?.amount, 18);
         if (mintingInfo?.k2YieldEntryMidnightInfo) {
-          const { k2PyFor } = computeMidnightInfo(
+          const { k2PyFor } = computeMidnightInfoDiff(
             midnightInfo,
             formatMidnightInfo(mintingInfo.k2YieldEntryMidnightInfo),
             tokenMetrics
@@ -177,7 +177,7 @@ export const getLocks = async (
         riskyYieldApyPercent = midnightInfo.kvcmApyFor[tokenInfo.id];
         kvcmRewards += formatStringToNumber(mintingInfo?.amount, 18);
         if (mintingInfo?.riskyYieldEntryMidnightInfo) {
-          const { kvcmPyFor } = computeMidnightInfo(
+          const { kvcmPyFor } = computeMidnightInfoDiff(
             midnightInfo,
             formatMidnightInfo(mintingInfo.riskyYieldEntryMidnightInfo),
             tokenMetrics

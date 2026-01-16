@@ -5,16 +5,24 @@ import { getTokenMetrics } from '@/shared/queries/protocol/getTokenMetrics';
 import { getMaturities } from './getActiveMaturities';
 import { getCarbonClasses } from './getCarbonClasses';
 import { getMidnightInfos } from './getMidnightInfos';
+import { getProtocolStateData } from './getProtocolStateData';
 
 export async function getProtocolData(chainId: ChainId): Promise<ProtocolData> {
-  const [metrics, liquidityPools, maturities, carbonClasses, midnightInfos] =
-    await Promise.all([
-      getTokenMetrics(chainId),
-      getLiquidityPools(chainId),
-      getMaturities(chainId),
-      getCarbonClasses(chainId),
-      getMidnightInfos(chainId),
-    ]);
+  const [
+    metrics,
+    liquidityPools,
+    maturities,
+    carbonClasses,
+    midnightInfos,
+    protocolState,
+  ] = await Promise.all([
+    getTokenMetrics(chainId),
+    getLiquidityPools(chainId),
+    getMaturities(chainId),
+    getCarbonClasses(chainId),
+    getMidnightInfos(chainId),
+    getProtocolStateData(chainId),
+  ]);
 
   return {
     chainId,
@@ -23,5 +31,6 @@ export async function getProtocolData(chainId: ChainId): Promise<ProtocolData> {
     carbonClasses,
     maturities,
     midnightInfos,
+    protocolState,
   };
 }
