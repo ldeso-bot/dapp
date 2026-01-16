@@ -1,6 +1,9 @@
 'use client';
 
-import { DEV_MODE } from '@/shared/constants/config.constants';
+import {
+  DEFAULT_TO_TESTNET,
+  DEV_MODE,
+} from '@/shared/constants/config.constants';
 import { formatAddress } from '@/shared/utils/string.utils';
 import { base, baseSepolia } from 'viem/chains';
 import { useAccount, useSwitchChain } from 'wagmi';
@@ -12,10 +15,10 @@ export default function WalletInfo() {
 
   const chainText =
     chain == baseSepolia
-      ? 'Testnet'
+      ? 'Connected to testnet'
       : chain == base
-        ? DEV_MODE
-          ? 'Switch to Sepolia testnet'
+        ? DEV_MODE || DEFAULT_TO_TESTNET
+          ? 'Connected to mainnet'
           : ''
         : 'Unsupported chain. Please switch to Base.';
 
