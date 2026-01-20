@@ -6,14 +6,18 @@ import { isChainId } from '@/shared/utils/typeguards';
 import { QueryClient } from '@tanstack/react-query';
 import {
   type Abi,
+  type Hash,
   type PublicClient,
   type WalletClient,
   createPublicClient,
+  decodeEventLog,
   http,
+  toEventSelector,
   getContract as viemGetContract,
 } from 'viem';
 import { base, baseSepolia } from 'viem/chains';
 import { rpcUrls } from '../constants/rpc.constants';
+import Transfer from './abis/Transfer';
 import { ViemError } from './web3.types';
 
 /**
@@ -85,3 +89,33 @@ const isUserRejection = (error: unknown) =>
     error.message?.toLowerCase().includes('denied') ||
     error.message?.toLowerCase().includes('user rejected') ||
     error.message?.toLowerCase().includes('user denied'));
+
+/**
+ * Fetches and decodes logs from a transaction receipt filtered by event ABI
+ * @param chainId - The chain ID
+ * @param txHash - The transaction hash
+ * @param abiItem - The event ABI item to filter and decode logs
+ * @returns Array of decoded logs matching the event
+ */
+export const getTransactionTransferLogs = async (
+  chainId: ChainId,
+  txHash: Hash
+) => {
+  const publicClient = getPublicClient(chainId);
+  const receipt = await publicClient.getTransactionReceipt({ hash: txHash });
+
+  const eventSelector = toEventSelector(Transfer[0]);
+
+  const filteredLogs = receipt.logs.filter(
+    (log) => log.topics[0] === eventSelector
+  );
+
+  const decodedLogs = filteredLogs.map((log) => {
+    return decodeEventLog({
+      abi: Transfer,
+      data: log.data,
+      topics: log.topics,
+    });
+  });
+  return decodedLogs;
+};

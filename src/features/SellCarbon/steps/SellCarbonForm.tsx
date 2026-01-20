@@ -9,7 +9,6 @@ import TokenAmountInput from '@/shared/components/Form/TokenAmountInput';
 import LinkOpenInNew from '@/shared/components/LinkWithIcon';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { AlertIcon } from '@/shared/components/Svg/AlertIcon';
-import { ROUTES } from '@/shared/constants/route.constants';
 import { CARBON_SELLERS_HANDBOOK_URL } from '@/shared/constants/urls.constants';
 import { formatStringToNumber } from '@/shared/utils/subgraph.utils';
 import { useEffect } from 'react';
@@ -152,13 +151,6 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
                 disabled={!kvcmOutQuoteWei}
               >
                 Sell Carbon
-              </Button>
-              <Button
-                colors="primary"
-                context="flow"
-                href={`${ROUTES.SELL_CARBON}`}
-              >
-                Cancel
               </Button>
             </ButtonGroup>
           </form>

@@ -43,31 +43,33 @@ export default function Card({
         className
       )}
     >
-      <div className="flex flex-row justify-between items-center pb-2">
-        <div
-          className={cn('flex flex-row w-full items-center gap-2 grow-1', {
-            'justify-between': tooltipPosition == 'far',
-          })}
-        >
-          <div className={cn(text, 'text-size-16', titleClassName)}>
-            {title}
-          </div>
-          {titleAddOnBadge && (
-            <div
-              className={cn(
-                text,
-                'text-[1rem] px-2 py-0 rounded-full border border-gray-200 bg-gray-100',
-                titleAddOnBadgeClassName
-              )}
-            >
-              {titleAddOnBadge}
+      {(title || titleAddOnBadge || titleAddOnClose || tooltip) && (
+        <div className="flex flex-row justify-between items-center pb-2">
+          <div
+            className={cn('flex flex-row w-full items-center gap-2 grow-1', {
+              'justify-between': tooltipPosition == 'far',
+            })}
+          >
+            <div className={cn(text, 'text-size-16', titleClassName)}>
+              {title}
             </div>
-          )}
-          {titleAddOnClose}
-          {tooltip && <Tooltip content={tooltip} />}
+            {titleAddOnBadge && (
+              <div
+                className={cn(
+                  text,
+                  'text-[1rem] px-2 py-0 rounded-full border border-gray-200 bg-gray-100',
+                  titleAddOnBadgeClassName
+                )}
+              >
+                {titleAddOnBadge}
+              </div>
+            )}
+            {titleAddOnClose}
+            {tooltip && <Tooltip content={tooltip} />}
+          </div>
+          {titleAddOnFar}
         </div>
-        {titleAddOnFar}
-      </div>
+      )}
       <div className={cn('flex flex-col gap-2 h-full', text)}>
         {children}
         {!children && (

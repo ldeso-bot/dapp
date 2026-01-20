@@ -10,11 +10,13 @@ import { DEV_MODE } from '@/shared/constants/config.constants';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { CarbonCreditIconImg } from '@/shared/constants/tokens.constants';
 import { useAllowance } from '@/shared/hooks/useAllowance';
+import { useChainId } from '@/shared/hooks/web3/useChainId';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { TOKEN_STANDARDS } from '@/shared/models/shared';
 import { applySlippage } from '@/shared/utils/math.utils';
 import { formatAddress } from '@/shared/utils/string.utils';
 import { formatStringToNumber } from '@/shared/utils/subgraph.utils';
+import { getTransactionTransferLogs } from '@/shared/utils/web3.utils';
 import { useSetAtom } from 'jotai';
 import { useAccount } from 'wagmi';
 import { useSellCarbon } from '../hooks/useSellCarbon';
@@ -32,7 +34,6 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
 
   const {
     selectedBalance,
-    selectedCarbonClass,
     amountToSellWei,
     refetch: refetchWalletData,
   } = useSellCarbonForm(form.watch);
@@ -78,13 +79,26 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
     recipient: address ?? '',
   });
 
+  const chainId = useChainId();
+
   const handleSellCarbon = async () => {
     const result = await sellCarbon();
-    if (result?.error === null) {
+    if (result.hash) {
+      // Get the amount of KVCM received
+      let amountKvcmReceived = parsedForm.current?.kvcmOutQuoteWei;
+
+      const logs = await getTransactionTransferLogs(chainId, result.hash);
+
+      for (const log of logs) {
+        if (log.args.to === address) {
+          amountKvcmReceived = log.args.value;
+        }
+      }
+
       // Show success message
       setAlert({
         title: 'Sale complete',
-        description: `You’ve successfully sold ${parsedForm.current?.amountToSellTonnes} ${selectedBalance?.creditToken.name} into ${selectedCarbonClass?.name} for ${kvcmOutString}! Put your new KVCM tokens to work by purchasing a bond!`,
+        description: `You’ve successfully sold ${parsedForm.current?.amountToSellTonnes} ${selectedBalance?.creditToken.name} to Klima Protocol for ${formatStringToNumber(amountKvcmReceived, 18)} KVCM! Stake your new kVCM tokens now to receive more incentives`,
         type: 'success',
         links: [
           {

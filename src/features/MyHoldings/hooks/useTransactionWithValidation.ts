@@ -3,6 +3,7 @@ import { useWaitForTransaction } from '@/shared/hooks/web3/useWaitForTransaction
 import { WalletData } from '@/shared/models/walletData';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
+import { Address } from 'viem';
 
 type ValidationFunction<T = unknown> = (data: T, previousData?: T) => boolean;
 
@@ -10,6 +11,11 @@ type UseTransactionWithValidationParams<T = unknown> = {
   queryKey: string[];
   validate?: ValidationFunction<T>;
   getPreviousData?: () => T | undefined;
+};
+
+export type ExecuteWithValidationResult = {
+  error: string | null;
+  hash: Address | null;
 };
 
 export const useTransactionWithValidation = <T = WalletData>(
@@ -24,7 +30,7 @@ export const useTransactionWithValidation = <T = WalletData>(
   const executeWithValidation = useCallback(
     async (
       executeTransaction: () => Promise<`0x${string}`>
-    ): Promise<{ error: string | null }> => {
+    ): Promise<ExecuteWithValidationResult> => {
       setIsExecuting(true);
       try {
         const previousData = getPreviousData?.();
@@ -52,7 +58,7 @@ export const useTransactionWithValidation = <T = WalletData>(
             );
           }
         }
-        return { error: null };
+        return { error: null, hash: txHash };
       } catch (error) {
         console.error('❌ Transaction error:', error);
         throw error;
