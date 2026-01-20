@@ -212,8 +212,10 @@ const KvcmVariableRewards = () => {
                 onClick={() =>
                   setClaimIncentivesDialogState({
                     open: true,
-                    claimablePrincipal: kvcmData.kvcmClaimableAmount,
-                    totalAccruedRewards: kvcmData.claimableValue,
+                    claimableK2: kvcmData.k2ClaimableAmount,
+                    accruedK2: kvcmData.k2AccruedClaimableAmount,
+                    accruingK2: kvcmData.k2AccruingClaimableAmount,
+                    claimableK2Usd: kvcmData.k2ClaimableValue,
                   })
                 }
                 colors="positive"

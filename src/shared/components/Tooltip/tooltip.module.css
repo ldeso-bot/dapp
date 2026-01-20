@@ -1,6 +1,7 @@
 /* reset */
 
 .TooltipContent {
+  max-width: 35rem;
   border-radius: 0.4rem;
   padding: 1rem 1.5rem;
   font-size: 1.4rem;

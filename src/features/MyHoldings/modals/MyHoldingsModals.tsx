@@ -111,8 +111,10 @@ export const MyHoldingsModals = () => {
     setClaimTokenDialog({ open: false, amount: null, token: null });
     setClaimIncentivesDialog({
       open: false,
-      claimablePrincipal: null,
-      totalAccruedRewards: null,
+      claimableK2: null,
+      accruedK2: null,
+      accruingK2: null,
+      claimableK2Usd: null,
     });
     setDepositK2TokenDialog({ open: false });
 
@@ -149,8 +151,10 @@ export const MyHoldingsModals = () => {
     if (action === 'claim_incentives') {
       setClaimIncentivesDialog({
         open: true,
-        claimablePrincipal: null,
-        totalAccruedRewards: null,
+        claimableK2: null,
+        accruedK2: null,
+        accruingK2: null,
+        claimableK2Usd: null,
       });
     }
 
@@ -202,7 +206,18 @@ export const MyHoldingsModals = () => {
       <Dialog open={claimTokenDialog.open}>
         <ClaimTokenFlow />
       </Dialog>
-      <Dialog open={claimIncentivesDialog.open}>
+      <Dialog
+        open={claimIncentivesDialog.open}
+        onClose={() =>
+          setClaimIncentivesDialog({
+            open: false,
+            claimableK2: null,
+            accruedK2: null,
+            accruingK2: null,
+            claimableK2Usd: null,
+          })
+        }
+      >
         <ClaimIncentivesFlow />
       </Dialog>
       <Dialog open={depositK2TokenDialog.open}>
