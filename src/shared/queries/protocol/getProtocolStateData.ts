@@ -25,6 +25,7 @@ export const getProtocolStateData = async (
     maturityPeriod: protocolState.maturityPeriod,
     firstActiveMaturityId: protocolState.firstActiveMaturityId,
     lastActiveMaturityId: protocolState.lastActiveMaturityId,
+    midnightIndex: protocolState.midnightIndex,
   };
 };
 
@@ -40,5 +41,6 @@ const getMockProtocolState = (): ProtocolState => {
     maturityPeriod,
     firstActiveMaturityId,
     lastActiveMaturityId,
+    midnightIndex: 0,
   };
 };

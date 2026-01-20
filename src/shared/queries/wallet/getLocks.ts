@@ -154,7 +154,7 @@ export const getLocks = async (
       if (isK2YieldEligible) {
         // Total Rewards
         k2YieldApyPercent = midnightInfo.k2ApyFor[tokenInfo.id];
-        k2Rewards += formatStringToNumber(mintingInfo?.amount, 18);
+        k2Rewards += formatStringToNumber(mintingInfo?.k2YieldPending, 18);
         if (mintingInfo?.k2YieldEntryMidnightInfo) {
           const { k2PyFor } = computeMidnightInfoDiff(
             midnightInfo,
@@ -175,7 +175,7 @@ export const getLocks = async (
       if (isRiskyYieldEligible) {
         // Total Rewards
         riskyYieldApyPercent = midnightInfo.kvcmApyFor[tokenInfo.id];
-        kvcmRewards += formatStringToNumber(mintingInfo?.amount, 18);
+        kvcmRewards += formatStringToNumber(mintingInfo?.riskyYieldPending, 18);
         if (mintingInfo?.riskyYieldEntryMidnightInfo) {
           const { kvcmPyFor } = computeMidnightInfoDiff(
             midnightInfo,
@@ -196,22 +196,27 @@ export const getLocks = async (
       if (isSyntheticYieldEligible) {
         syntheticYieldApyPercent = midnightInfo.kvcmApyFor.kvcm;
 
-        const claimable = lock.lockActions.reduce((acc, action) => {
-          if (action.type === LockActionType.SHARES_UPDATED) {
+        const rewards = lock.lockActions.reduce((acc, action) => {
+          if (
+            action.type === LockActionType.SHARES_UPDATED &&
+            action.syntheticYieldEntryMidnightInfo
+          ) {
             const actionAmount = formatStringToNumber(action.amount, 18); // Amount locked
             const actionPps = formatStringToNumber(
-              action.syntheticYieldEntryMidnightInfo?.syntheticYieldPps,
+              action.syntheticYieldEntryMidnightInfo.syntheticYieldPps,
               18
             ); // PPS at the time the lock shares are minted (during next midnight)
             const actionShares = actionAmount * actionPps; // Shares minted
             const currentPps = midnightInfo.syntheticYieldPps; // Pps now (or at the time of maturation)
-            const actionRewards = actionShares * currentPps; // Rewards for the action
+            const actionClaimable = actionShares * currentPps; // Claimable for the action
+            const actionRewards = actionClaimable - actionAmount; // Rewards for the action
+
             return acc + actionRewards;
           }
           return acc;
         }, 0);
 
-        kvcmRewards += claimable - lockedAmount;
+        kvcmRewards += rewards;
         positionAmount += kvcmRewards;
         kvcmClaimableRewards = isClaimable ? kvcmRewards : 0;
       }

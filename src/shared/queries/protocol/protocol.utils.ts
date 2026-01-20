@@ -2,6 +2,7 @@ import {
   PROTOCOL_DATA_CACHE_TIME_SECONDS,
   USE_LOCAL_GRAPH_NODE,
 } from '@/shared/constants/config.constants';
+import { ONE_DAY } from '@/shared/constants/protocol.constants';
 import { Token, tokens } from '@/shared/constants/tokens.constants';
 import { YieldType } from '@/shared/models/ProtocolData';
 import { ApiCreditToken, TOKEN_STANDARDS } from '@/shared/models/shared';
@@ -48,12 +49,16 @@ export const getProtocolState = async (sdk: Sdk) => {
 
       // Compute active maturities based on the protocol start timestamp and maturity period
       const now = Math.floor(Date.now() / 1000);
+      const midnightIndex = Math.floor(
+        (now - protocolStartTimestamp) / ONE_DAY
+      );
       const firstActiveMaturityId =
         Math.floor((now - protocolStartTimestamp) / maturityPeriod) + 1;
       const lastActiveMaturityId = firstActiveMaturityId + (40 - 1);
 
       const res = {
         ...protocolState,
+        midnightIndex,
         protocolStartTimestamp,
         maturityPeriod,
         firstActiveMaturityId,

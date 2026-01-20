@@ -79,6 +79,7 @@ export type ProtocolState = {
   maturityPeriod: number;
   firstActiveMaturityId: number;
   lastActiveMaturityId: number;
+  midnightIndex: number;
 };
 
 /* Protocol Data */
