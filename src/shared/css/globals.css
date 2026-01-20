@@ -61,7 +61,7 @@ body {
 }
 
 [data-placeholder] {
-  color: red;
+  color: var(--void-40);
 }
 
 .bg-overlay-10 {

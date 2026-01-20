@@ -90,10 +90,10 @@ export const formatDate = (date: number): string => {
 };
 
 export const formatAmountWithCommas = (
-  value: number,
+  value?: number,
   digits: number = 2
 ): string => {
-  return value.toFixed(digits).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return value?.toFixed(digits).replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '0';
 };
 
 export const formatAmountWithUnits = (value: number): string => {

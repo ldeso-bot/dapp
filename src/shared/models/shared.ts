@@ -28,9 +28,7 @@ export type CarbonClass = {
   valueUSD: number;
   supplyTonnes: number;
   valueUSDChangePercent24h: number;
-  // TODO: storing the credit tokens instead of references may make responses too big
-  // To be revised when we have time
-  registeredTokens: ApiCreditToken[];
+  registeredTokens: string[];
 };
 export type CouponBurnParams = {
   tonnes: number;

@@ -54,6 +54,12 @@ export const useAllowance = ({
 
   const isAllowed = allowance >= amount;
 
+  /**
+   * Set the allowance for a token
+   * @param amount - The amount to set the allowance to. If not provided, will set infinite allowance
+   * @returns True if the allowance was set successfully, false otherwise
+   * @throws Error if the address is invalid, the wallet client is not found, the public client is not found, or the allowance is not set
+   */
   const setAllowance = useCallback(
     async (amount?: bigint) => {
       if (!address) {

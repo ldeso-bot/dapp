@@ -1,54 +1,78 @@
 'use client';
 
-import Icon from '@/shared/components/Icon/Icon';
 import { cn } from '@/shared/utils/component.utils';
-import { useState } from 'react';
+import {
+  Control,
+  Controller,
+  FieldValues,
+  Path,
+  useWatch,
+} from 'react-hook-form';
+import { usePaymentOption } from '../hooks/usePaymentOption';
 import { paymentOptions } from '../retire.constants';
 
-type Props = {
-  value?: string;
-  onChange?: (value: string) => void;
+type Props<T extends FieldValues> = {
+  name: Path<T>;
+  control: Control<T>;
 };
 
-export const PayWithOptions = (props: Props) => {
-  const [selected, setSelected] = useState(props.value);
+export const PayWithOptions = <T extends FieldValues>(props: Props<T>) => {
+  const { name, control } = props;
+  const value = useWatch({ control, name });
 
-  const handleSelect = (value: string) => {
-    setSelected(value);
-    props.onChange?.(value);
-  };
+  const selectedPaymentOption = usePaymentOption(value);
 
   return (
-    <div className="flex flex-col gap-1">
-      <label className="mb-1 font-medium">Pay With</label>
-      <div className="flex gap-2">
-        {paymentOptions.map((token) => (
-          <label
-            key={token.value}
-            className={cn(
-              'flex items-center flex-1 justify-center border gap-2 px-3 py-2 cursor-pointer rounded transition-colors duration-150',
-              {
-                'bg-white border-void-50': selected !== token.value,
-                'bg-green-10 border-green-40': selected === token.value,
-                'cursor-not-allowed': token.value === 'usdc',
-              }
+    <Controller
+      name={name}
+      control={control}
+      render={({ field }) => {
+        return (
+          <div className="flex flex-col gap-1">
+            <label className="mb-1 font-medium">Pay With</label>
+            <div className="flex gap-2">
+              {paymentOptions.map((option) => (
+                <label
+                  key={option.token.id}
+                  className={cn(
+                    'flex items-center flex-1 justify-center border gap-2 px-3 py-2 cursor-pointer rounded transition-colors duration-150',
+                    {
+                      'bg-white border-void-50':
+                        field.value !== option.token.id,
+                      'bg-green-10 border-green-40':
+                        field.value === option.token.id,
+                      'bg-void-10 border-void-20 opacity-50 cursor-not-allowed':
+                        option.disabled,
+                    }
+                  )}
+                  title={option.tooltip}
+                >
+                  <input
+                    type="radio"
+                    name="payWith"
+                    value={option.token.id}
+                    checked={field.value === option.token.id}
+                    onChange={() => field.onChange(option.token.id)}
+                    className="sr-only cursor-none"
+                    disabled={option.disabled}
+                  />
+                  {option.token.icon(2)}
+                  <span>{option.token.symbol}</span>
+                </label>
+              ))}
+            </div>
+            {selectedPaymentOption && (
+              <div className="flex gap-2">
+                <span className="font-medium">Available Balance:</span>
+                <span>
+                  {selectedPaymentOption.balance?.toFixed(2)}{' '}
+                  {selectedPaymentOption.token.symbol}
+                </span>
+              </div>
             )}
-            title={token.value === 'usdc' ? 'Coming soon' : undefined}
-          >
-            <input
-              type="radio"
-              name="payWith"
-              value={token.value}
-              checked={selected === token.value}
-              onChange={() => handleSelect(token.value)}
-              className="sr-only cursor-none"
-              disabled={token.value === 'usdc'}
-            />
-            <Icon icon={token.icon} size={2} />
-            <span>{token.label}</span>
-          </label>
-        ))}
-      </div>
-    </div>
+          </div>
+        );
+      }}
+    />
   );
 };

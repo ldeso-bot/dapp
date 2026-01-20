@@ -24,3 +24,5 @@ export const mockTokens: ApiCreditToken[] = [
     },
   },
 ];
+
+export const mockTokenIds: string[] = mockTokens.map((t) => t.creditTokenId);

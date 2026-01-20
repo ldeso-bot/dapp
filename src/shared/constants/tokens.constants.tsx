@@ -8,6 +8,7 @@ import USDCIcon from '@/shared/images/usdc.svg';
 import { StaticImageData } from 'next/image';
 import { ReactNode } from 'react';
 import Icon from '../components/Icon/Icon';
+import { ContractName } from './contracts.constants';
 
 export type LpToken = 'kvcm-usdc' | 'kvcm-k2';
 export type AllocationToken = 'k2' | 'kvcm';
@@ -38,6 +39,7 @@ export type TokenInfo = {
   lockDescription: string;
   holdingsTab?: HoldingsTabValue;
   decimals: number;
+  contractName: ContractName;
 };
 
 export const tokens: Record<Token, TokenInfo> = {
@@ -50,6 +52,7 @@ export const tokens: Record<Token, TokenInfo> = {
     description: 'USDC',
     lockDescription: '',
     decimals: 6,
+    contractName: 'USDC',
   },
   k2: {
     id: 'k2',
@@ -61,6 +64,7 @@ export const tokens: Record<Token, TokenInfo> = {
     lockDescription: 'K2 lock',
     holdingsTab: 'k2',
     decimals: 18,
+    contractName: 'K2',
   },
   kvcm: {
     id: 'kvcm',
@@ -72,6 +76,7 @@ export const tokens: Record<Token, TokenInfo> = {
     lockDescription: 'kVCM lock',
     holdingsTab: 'kvcm',
     decimals: 18,
+    contractName: 'KVCM',
   },
   'kvcm-usdc': {
     id: 'kvcm-usdc',
@@ -85,6 +90,7 @@ export const tokens: Record<Token, TokenInfo> = {
     lockDescription: 'LP stake',
     holdingsTab: 'liquidity',
     decimals: AERODROME_LIQUIDITY_DECIMALS,
+    contractName: 'Null',
   },
   'kvcm-k2': {
     id: 'kvcm-k2',
@@ -98,6 +104,7 @@ export const tokens: Record<Token, TokenInfo> = {
     lockDescription: 'LP stake',
     holdingsTab: 'liquidity',
     decimals: AERODROME_LIQUIDITY_DECIMALS,
+    contractName: 'Null',
   },
 } as const;
 

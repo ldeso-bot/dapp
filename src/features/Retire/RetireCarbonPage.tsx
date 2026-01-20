@@ -20,10 +20,11 @@ export default function RetirePage() {
   const form = useForm<RetireCarbonFields>({
     resolver: zodResolver(schema),
     defaultValues: {
-      paymentMethod: '',
-      amount: 0,
+      paymentMethod: 'kvcm',
+      amountTonnes: 0,
       carbonClass: '',
       carbonCredit: '',
+      priceQuotedWei: BigInt(0),
     },
   });
 
@@ -43,7 +44,7 @@ export default function RetirePage() {
               retirements.
             </PageDescription>
           </div>
-          <div className="flex gap-4 space-between mx-auto max-w-7xl">
+          <div className="flex gap-4 space-between mx-auto">
             <Steps
               components={[RetireCarbonForm, RetireCarbonConfirm]}
               data={{ form, schema, parsedForm }}

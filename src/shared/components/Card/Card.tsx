@@ -4,7 +4,7 @@ import { Tooltip } from '../Tooltip/Tooltip';
 
 export type CardProps = {
   className?: string;
-  title?: string;
+  title?: React.ReactNode;
   tooltip?: string;
   tooltipPosition?: 'close' | 'far';
   titleClassName?: string;

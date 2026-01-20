@@ -3,27 +3,34 @@ import { CarbonCreditsIcon } from '@/shared/components/Svg/CarbonCreditsIcon';
 import { DocIcon } from '@/shared/components/Svg/DocIcon';
 import { GlobeIcon } from '@/shared/components/Svg/GlobeIcon';
 import { KvcmIcon } from '@/shared/components/Svg/KvcmIcon';
-import { tokens } from '@/shared/constants/tokens.constants';
+import { TokenInfo, tokens } from '@/shared/constants/tokens.constants';
 import { createFlowItem, type StatItem } from '@/shared/utils/emptyState.utils';
 import { z } from 'zod';
 
 export type RetireCarbonFields = {
   carbonClass: string;
   carbonCredit: string;
-  amount: number;
+  amountTonnes: number;
   paymentMethod: string;
+  priceQuotedWei: bigint;
 };
 
-export const paymentOptions = [
+type PaymentOption = {
+  token: TokenInfo;
+  disabled: boolean;
+  tooltip: string;
+};
+
+export const paymentOptions: PaymentOption[] = [
   {
-    icon: tokens.kvcm.iconSrc,
-    label: 'KVCM',
-    value: 'kvcm',
+    token: tokens.kvcm,
+    tooltip: 'Pay with kVCM',
+    disabled: false,
   },
   {
-    icon: tokens.usdc.iconSrc,
-    label: 'USDC',
-    value: 'usdc',
+    token: tokens.usdc,
+    tooltip: 'Coming soon',
+    disabled: true,
   },
 ];
 
@@ -31,10 +38,8 @@ export const retireCarbonSchema = z.object({
   carbonClass: z.string(),
   carbonCredit: z.string(),
   paymentMethod: z.string(),
-  amount: z.coerce
-    .number()
-    .gt(0, 'Amount must be a positive integer')
-    .int('Amount must be a positive integer'),
+  amountTonnes: z.coerce.number().gt(0, 'Amount must be a positive'),
+  priceQuotedWei: z.coerce.bigint(),
 });
 
 export const retireCarbonFlowItems = [

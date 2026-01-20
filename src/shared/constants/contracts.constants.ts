@@ -1,4 +1,5 @@
 import AAMDiamond from '@/shared/utils/abis/AAMDiamond';
+import RetirementAggregator from '@/shared/utils/abis/RetirementAggregator';
 import StakingManagerDiamond from '@/shared/utils/abis/StakingManagerDiamond.json';
 import USDC from '@/shared/utils/abis/USDC.json';
 import USDCTransferWithPermit from '@/shared/utils/abis/USDCTransferWithPermit.json';
@@ -51,6 +52,16 @@ const contracts = {
   AERO: {
     [base.id]: '0x940181a94A35A4569E4529A3CDfB74e38FD98631',
     [baseSepolia.id]: '0x00000000000000000000000000000000000000000', // No testnet address yet
+    abi: USDC,
+  },
+  RetirementAggregator: {
+    [base.id]: '0xda0a793d7c32ab80bcdab7f8c725c96db22464f4',
+    [baseSepolia.id]: '0xc0309c29162f699a3445a7a9aeb0acbe568f5fe0',
+    abi: RetirementAggregator,
+  },
+  Null: {
+    [base.id]: '0x0000000000000000000000000000000000000000',
+    [baseSepolia.id]: '0x0000000000000000000000000000000000000000',
     abi: USDC,
   },
 } satisfies Record<string, contractInfo>;

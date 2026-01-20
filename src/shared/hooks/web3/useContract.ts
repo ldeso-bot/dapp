@@ -4,6 +4,7 @@ import contracts, {
 import { isChainId } from '@/shared/utils/typeguards';
 import { getContract } from '@/shared/utils/web3.utils';
 import { useAccount } from 'wagmi';
+import { useChainId } from './useChainId';
 import { useGetWalletClient } from './useGetWalletClient';
 
 export const useContract = (contractName: ContractName) => {
@@ -22,15 +23,12 @@ export const useContract = (contractName: ContractName) => {
  * @returns
  */
 export const useContractInfo = (contractName: ContractName) => {
-  const { chain } = useAccount();
+  const chainId = useChainId();
 
-  if (!isChainId(chain?.id)) {
-    return null;
-  }
   const contractInfo = contracts[contractName];
 
   return {
-    address: contractInfo[chain.id],
+    address: contractInfo[chainId],
     abi: contractInfo.abi,
   };
 };

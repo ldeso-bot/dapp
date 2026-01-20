@@ -8,6 +8,17 @@ pnpm run codegen
 pnpm run dev
 ```
 
+## Development Mode
+
+Set `NEXT_PUBLIC_DEV_MODE=true` to enable development-only features:
+
+- **Unapprove button**: In the Sell Carbon confirmation step, shows an "Unapprove" button that allows resetting token allowances to 0 for testing purposes
+- **Testnet switch prompt**: When connected to Base mainnet, displays a "Switch to Sepolia testnet" prompt to help developers quickly switch to the testnet
+
+```bash
+NEXT_PUBLIC_DEV_MODE=true pnpm run dev
+```
+
 ## Development patterns
 
 ### Description of the directories

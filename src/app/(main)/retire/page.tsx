@@ -1,5 +1,5 @@
-import RetirePage from "@/features/Retire/RetirePage";
+import RetireCarbonPage from '@/features/Retire/RetireCarbonPage';
 
 export default function Page() {
-  return <RetirePage />;
+  return <RetireCarbonPage />;
 }

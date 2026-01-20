@@ -5,7 +5,7 @@ import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
 import { CreditBalance_Filter } from '@generated/gql/types/carbon.types';
 import { filter, isNonNullish } from 'remeda';
 import { getCarbonClasses } from '../protocol/getCarbonClasses';
-import { mockTokens } from '../protocol/mocks';
+import { mockTokenIds, mockTokens } from '../protocol/mocks';
 import { mapToApiCreditToken } from '../protocol/protocol.utils';
 
 export const getCreditBalances = async (
@@ -37,9 +37,7 @@ export const getCreditBalances = async (
         balance: formatStringToNumber(balance.balance, 18),
         creditToken,
         registeredClasses: carbonClasses.filter((c) =>
-          c.registeredTokens.some(
-            (t) => t.creditTokenId === balance.credit.creditTokenId
-          )
+          c.registeredTokens.some((t) => t === balance.credit.creditTokenId)
         ),
       };
     }
@@ -65,7 +63,7 @@ const getMockCreditBalances = (): CreditBalance[] => {
           supplyTonnes: 1000,
           valueUSDChangePercent24h: 0.01,
           carbonClassId: '0x1234567890123456789012345678901234567890',
-          registeredTokens: mockTokens,
+          registeredTokens: mockTokenIds,
         },
       ],
     },

@@ -9,11 +9,10 @@ import {
   TokenSnapshot_Filter,
 } from '@generated/gql/types/protocol.types';
 import { filter, isNonNullish, mapToObj } from 'remeda';
-import { mockTokens } from './mocks';
+import { mockTokenIds } from './mocks';
 import {
   getCreditsTokenMap,
   getHoursSinceEpoch24HoursAgo,
-  mapToApiCreditToken,
 } from './protocol.utils';
 
 export const getCarbonClasses = async (
@@ -78,9 +77,7 @@ export const getCarbonClasses = async (
     const carbonClassInfo = getCarbonClassInfo(chainId, carbonClassId);
 
     const registeredTokens = filter(
-      c.registeredCredits.map((r) =>
-        mapToApiCreditToken(tokensMap[r.creditTokenId])
-      ),
+      c.registeredCredits.map((r) => r.creditTokenId),
       isNonNullish
     );
 
@@ -105,7 +102,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 12.04,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.01,
-      registeredTokens: mockTokens,
+      registeredTokens: mockTokenIds,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567891',
@@ -114,7 +111,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 3.99,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.01,
-      registeredTokens: mockTokens,
+      registeredTokens: mockTokenIds,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567892',
@@ -123,7 +120,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 1.02,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.01,
-      registeredTokens: mockTokens,
+      registeredTokens: mockTokenIds,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567893',
@@ -132,7 +129,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 36.97,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.01,
-      registeredTokens: mockTokens,
+      registeredTokens: mockTokenIds,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567894',
@@ -141,7 +138,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 12.04,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.01,
-      registeredTokens: mockTokens,
+      registeredTokens: mockTokenIds,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567895',
@@ -150,7 +147,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 3.99,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.01,
-      registeredTokens: mockTokens,
+      registeredTokens: mockTokenIds,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567896',
@@ -159,7 +156,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 1.02,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.04,
-      registeredTokens: mockTokens,
+      registeredTokens: mockTokenIds,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567897',
@@ -168,7 +165,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 12.04,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.01,
-      registeredTokens: mockTokens,
+      registeredTokens: mockTokenIds,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567898',
@@ -177,7 +174,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 3.99,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.01,
-      registeredTokens: mockTokens,
+      registeredTokens: mockTokenIds,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567899',
@@ -186,7 +183,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 12.04,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.03,
-      registeredTokens: mockTokens,
+      registeredTokens: mockTokenIds,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567900',
@@ -195,7 +192,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 3.99,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: -0.01,
-      registeredTokens: mockTokens,
+      registeredTokens: mockTokenIds,
     },
     {
       carbonClassId: '0x1234567890123456789012345678901234567901',
@@ -204,7 +201,7 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       valueUSD: 1.02,
       supplyTonnes: 1000,
       valueUSDChangePercent24h: 0.1,
-      registeredTokens: mockTokens,
+      registeredTokens: mockTokenIds,
     },
   ];
 };

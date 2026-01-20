@@ -1,7 +1,7 @@
-import { FieldError } from 'react-hook-form';
+import { FieldError, GlobalError } from 'react-hook-form';
 
 type Props = {
-  error?: FieldError;
+  error?: FieldError | GlobalError;
 };
 
 export default function InputError({ error }: Props) {
