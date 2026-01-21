@@ -1,5 +1,6 @@
 'use client';
 
+import { useHasPreviouslyConnected } from '@/shared/hooks/useHasPreviouslyConnected';
 import { useAccount } from 'wagmi';
 import { BalancesCard } from '../../cards/BalancesCard/BalancesCard';
 import { PortfolioDistributionCard } from '../../cards/PortfolioDistribution/PortfolioDistribution';
@@ -9,9 +10,11 @@ import { OverviewEmptyState } from './OverviewEmptyState';
 
 export const OverviewView = () => {
   const account = useAccount();
+  const { hasPreviouslyConnected } = useHasPreviouslyConnected();
+  
   return (
     <>
-      {!account.isConnected ? (
+      {!account.isConnected && !hasPreviouslyConnected ? (
         <OverviewEmptyState />
       ) : (
         <div className="flex flex-col gap-4">

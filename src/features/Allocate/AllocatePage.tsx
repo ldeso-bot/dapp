@@ -2,6 +2,7 @@
 
 import { PageDescription } from '@/shared/components/PageDescription/PageDescription';
 import { PageTitle } from '@/shared/components/PageTitle/PageTitle';
+import { useHasPreviouslyConnected } from '@/shared/hooks/useHasPreviouslyConnected';
 import { Suspense } from 'react';
 import { useAccount } from 'wagmi';
 import { AllocationsInfoCard } from './cards/AllocationsInfoCard/AllocationsInfoCard';
@@ -12,6 +13,7 @@ import { AllocationEmptyState } from './shared/AllocationEmptyState';
 
 function AllocatePage() {
   const { isConnected } = useAccount();
+  const { hasPreviouslyConnected } = useHasPreviouslyConnected();
 
   // @todo - fix - need to show various button states on the onboarding screen
 
@@ -22,7 +24,7 @@ function AllocatePage() {
   //       (holdingsData?.kvcm?.lockedAmount === 0 &&
   //         holdingsData?.k2?.lockedAmount === 0)));
 
-  const displayOnboarding = !isConnected;
+  const displayOnboarding = !isConnected && !hasPreviouslyConnected;
 
   return (
     <Suspense>
@@ -35,9 +37,9 @@ function AllocatePage() {
             <PageDescription>
               Allocations are your portfolio carbon-class preferences. They
               determine which credits the protocol buys/retires and at what
-              intensity. Allocations adjust pricing by class. kVCM turns pricing
-              on and increases pricing power. K2 increases how much early buying
-              pressure the system can apply.
+              intensity. Allocations adjust pricing by class. kVCM turns
+              pricing on and increases pricing power. K2 increases how much
+              early buying pressure the system can apply.
             </PageDescription>
             <AllocationsInfoCard />
             <KvcmAllocationsCard className="solo-card" />

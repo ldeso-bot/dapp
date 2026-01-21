@@ -14,6 +14,7 @@ import {
 import { InfoCard } from '@/features/MyHoldings/shared/InfoCard';
 import { RecentActivity } from '@/features/MyHoldings/shared/RecentActivity';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
+import { useHasPreviouslyConnected } from '@/shared/hooks/useHasPreviouslyConnected';
 import {
   formatAmountWithCommas,
   formatCurrentTime,
@@ -31,10 +32,11 @@ import { K2Onboarding } from './K2Onboarding';
 
 export const K2View = () => {
   const account = useAccount();
+  const { hasPreviouslyConnected } = useHasPreviouslyConnected();
   const setDepositK2TokenDialog = useSetAtom(depositK2TokenDialogAtom);
   return (
     <>
-      {!account.isConnected ? (
+      {!account.isConnected && !hasPreviouslyConnected ? (
         <K2Onboarding />
       ) : (
         <>

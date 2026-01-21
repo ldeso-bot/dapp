@@ -17,6 +17,7 @@ import { RecentActivity } from '@/features/MyHoldings/shared/RecentActivity';
 import Button from '@/shared/components/Button/Button';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
+import { useHasPreviouslyConnected } from '@/shared/hooks/useHasPreviouslyConnected';
 import { useNextMaturity } from '@/shared/hooks/useNextMaturity';
 import {
   formatAmountWithCommas,
@@ -39,11 +40,12 @@ import { KvcmOnboarding } from './KvcmOnboarding';
 
 export const KvcmView = () => {
   const account = useAccount();
+  const { hasPreviouslyConnected } = useHasPreviouslyConnected();
   const setLockTokenDialogState = useSetAtom(lockTokenDialogAtom);
 
   return (
     <>
-      {!account.isConnected ? (
+      {!account.isConnected && !hasPreviouslyConnected ? (
         <KvcmOnboarding />
       ) : (
         <>

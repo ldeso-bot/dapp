@@ -7,7 +7,7 @@ import {
   TabsTrigger,
 } from '@/shared/components/Tabs/Tabs';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useMemo } from 'react';
+import { useMemo, useTransition } from 'react';
 import { HoldingsTabValue, SUPPORTED_TABS } from '../constants/tab.constants';
 import { K2View } from '../views/K2View/K2View';
 import { KvcmView } from '../views/KVCMView/KvcmView';
@@ -19,6 +19,7 @@ const tabClassName = 'py-4 px-3 text-size-14 font-medium rounded-full';
 export const MyHoldingsTabs = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [, startTransition] = useTransition();
 
   const currentTab = useMemo((): HoldingsTabValue => {
     const activeView = searchParams.get('activeView');
@@ -28,9 +29,11 @@ export const MyHoldingsTabs = () => {
   }, [searchParams]);
 
   const handleTabChange = (value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('activeView', value);
-    router.push(`?${params.toString()}`, { scroll: false });
+    startTransition(() => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('activeView', value);
+      router.push(`?${params.toString()}`, { scroll: false });
+    });
   };
 
   return (

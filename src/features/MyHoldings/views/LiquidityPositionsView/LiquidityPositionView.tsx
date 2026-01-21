@@ -1,5 +1,6 @@
 'use client';
 
+import { useHasPreviouslyConnected } from '@/shared/hooks/useHasPreviouslyConnected';
 import { useAccount } from 'wagmi';
 import { InfoCard } from '../../shared/InfoCard';
 import { LiquidityPositionCard } from './LiquidityPositionCard';
@@ -7,9 +8,11 @@ import { LiquidityPositionOnboarding } from './LiquidityPositionOnboarding';
 
 export const LiquidityPositionsView = () => {
   const account = useAccount();
+  const { hasPreviouslyConnected } = useHasPreviouslyConnected();
+  
   return (
     <>
-      {!account.isConnected ? (
+      {!account.isConnected && !hasPreviouslyConnected ? (
         <LiquidityPositionOnboarding />
       ) : (
         <div className="flex flex-col gap-4">

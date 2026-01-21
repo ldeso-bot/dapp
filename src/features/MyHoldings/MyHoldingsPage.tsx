@@ -5,10 +5,12 @@ import { MyHoldingsModals } from './modals/MyHoldingsModals';
 import { MyHoldingsTabs } from './shared/MyHoldingsTabs';
 
 const MyHoldingsPage = () => (
-  <Suspense>
+  <>
     <MyHoldingsModals />
-    <MyHoldingsTabs />
-  </Suspense>
+    <Suspense fallback={<div className="h-[50vh]" />}>
+      <MyHoldingsTabs />
+    </Suspense>
+  </>
 );
 
 export default MyHoldingsPage;

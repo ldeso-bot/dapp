@@ -1,5 +1,6 @@
 'use client';
 
+import { useWalletConnectionCookie } from '@/shared/hooks/useWalletConnectionCookie';
 import logoutIcon from '@/shared/images/logout.svg';
 import { ConnectButton as RainbowConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useDisconnect } from 'wagmi';
@@ -13,10 +14,16 @@ type Props = {
 export default function ConnectButton({ className }: Props) {
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
+  const { clearWalletCookie } = useWalletConnectionCookie(address);
+
+  const handleLogout = () => {
+    disconnect();
+    clearWalletCookie();
+  };
 
   if (address) {
     return (
-      <Button onClick={() => disconnect()} className={className}>
+      <Button onClick={handleLogout} className={className}>
         <Icon icon={logoutIcon} alt={'Logout'} size={1.6} />
         Logout
       </Button>
