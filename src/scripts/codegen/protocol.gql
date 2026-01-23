@@ -150,7 +150,9 @@ query getAccountBalances($where: AccountBalance_filter) {
 }
 
 query getLatestMidnightInfo {
-  midnightInfos(orderBy: midnightIndex, orderDirection: desc, first: 41) {
+  midnightInfos(orderBy: midnightIndex, orderDirection: desc, first: 41, where: {
+    keeperUpdated: true
+  }) {
     ...MidnightInfoWithPreviousMidnightInfoFragment
   }
 }

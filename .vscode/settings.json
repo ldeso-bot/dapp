@@ -14,5 +14,8 @@
   "eslint.workingDirectories": ["."],
   "[xml]": {
     "editor.defaultFormatter": "redhat.vscode-xml"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

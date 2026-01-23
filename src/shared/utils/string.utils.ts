@@ -91,24 +91,31 @@ export const formatDate = (date: number): string => {
 
 export const formatAmountWithCommas = (
   value?: number,
-  digits?: number
+  digits?: number | 'auto'
 ): string => {
   if (!value) {
     return '0.00';
   }
   const absValue = Math.abs(value ?? 0);
 
-  // Auto detect number of digits to show (3 non zero values)
+  // 2 digits by default
   if (isNullish(digits)) {
+    digits = 2;
+  }
+
+  // Auto detect number of digits to show (3 non zero values)
+  if (digits === 'auto') {
     const decimalPlaces = Math.ceil(Math.abs(Math.log10(absValue)));
     digits = decimalPlaces + 2;
   }
   const fixedValue = value.toFixed(digits);
 
-  // Add commas if value is greater than 1 to make it pretty
-  return value > 1
-    ? fixedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-    : fixedValue;
+  // Add commas to the integer part if value is greater than 1 to make it pretty
+  if (value <= 1) return fixedValue;
+
+  const [integerPart, decimalPart] = fixedValue.split('.');
+  const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger;
 };
 
 export const formatAmountWithUnits = (value: number): string => {

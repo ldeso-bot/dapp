@@ -58,6 +58,7 @@ export const formatMidnightInfo = (
     midnightIndex: Number(midnightInfo.midnightIndex),
     maturityId: Number(midnightInfo.maturityId),
     lastUpdated: Number(midnightInfo.lastUpdated),
+    keeperUpdated: midnightInfo.keeperUpdated,
 
     k2YieldAccumulatorForK2: formatStringToNumber(
       midnightInfo.k2YieldAccumulatorForK2,

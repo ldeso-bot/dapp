@@ -83,6 +83,7 @@ const K2Overview = () => {
                       open: true,
                       amount: k2Data.k2ClaimableAmount,
                       token: 'k2',
+                      lockId: null,
                     })
                   }
                   className="cursor-pointer mt-3 text-size-14 text-gray-900 hover:text-gray-700 underline underline-offset-2 font-medium"

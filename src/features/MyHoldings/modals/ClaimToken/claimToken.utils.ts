@@ -10,4 +10,5 @@ export const claimTokenDialogAtom = atom({
   open: false,
   token: null as LockableToken | null,
   amount: 0 as number | null,
+  lockId: null as number | null,
 });

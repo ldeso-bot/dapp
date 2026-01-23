@@ -6,6 +6,7 @@ import {
 } from '@/shared/components/Accordion/Accordion';
 import Button from '@/shared/components/Button/Button';
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
+import { DEV_MODE, USE_LOCAL_RPC } from '@/shared/constants/config.constants';
 import { AllocationToken, Token } from '@/shared/constants/tokens.constants';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { cn } from '@/shared/utils/component.utils';
@@ -18,6 +19,7 @@ import {
 import { getTokenSymbol } from '@/shared/utils/token.utils';
 import { useSetAtom } from 'jotai';
 import { type FC } from 'react';
+import { claimKvcmLockRewardsDialogAtom } from '../modals/ClaimKvcmLockRewards/claimKvcmLockRewards.utils';
 import { claimTokenDialogAtom } from '../modals/ClaimToken/claimToken.utils';
 import { depositK2TokenDialogAtom } from '../modals/DepositK2Token/depositK2Token.utils';
 import { topupLockDialogAtom } from '../modals/TopupLock/topupLock.utils';
@@ -37,6 +39,9 @@ export const TokenLots: FC<TokenLotsProps> = ({
   const setTopupLockDialog = useSetAtom(topupLockDialogAtom);
   const setDepositK2TokenDialog = useSetAtom(depositK2TokenDialogAtom);
   const setClaimTokenDialog = useSetAtom(claimTokenDialogAtom);
+  const setClaimKvcmLockRewardsDialog = useSetAtom(
+    claimKvcmLockRewardsDialogAtom
+  );
 
   const locks =
     data?.locks
@@ -84,11 +89,15 @@ export const TokenLots: FC<TokenLotsProps> = ({
             {locks.map((lock) => {
               const isMatured = lock.status === 'matured';
               const isMaturing = lock.status === 'active';
+              const title = DEV_MODE
+                ? `Contract ID: ${lock.contractLockId}\nMaturity ID: ${lock.maturityId}`
+                : '';
 
               return (
                 <div
                   className="flex items-center justify-between gap-2 border border-gray-300 rounded-lg px-4 py-3"
                   key={lock.id + lock.token}
+                  title={title}
                 >
                   <div className="flex items-center justify-start gap-2">
                     <div className="text-size-16 text-gray-900 font-medium">
@@ -165,15 +174,23 @@ export const TokenLots: FC<TokenLotsProps> = ({
                     )}
                     <Button
                       colors="positive"
-                      disabled={isMaturing}
+                      disabled={isMaturing && !USE_LOCAL_RPC}
                       className="text-size-12"
-                      onClick={() =>
-                        setClaimTokenDialog({
-                          open: true,
-                          amount: lock.lockedAmount,
-                          token: lock.token,
-                        })
-                      }
+                      onClick={() => {
+                        if (lock.token === 'kvcm') {
+                          setClaimKvcmLockRewardsDialog({
+                            open: true,
+                            lockId: lock.contractLockId,
+                          });
+                        } else {
+                          setClaimTokenDialog({
+                            open: true,
+                            amount: lock.lockedAmount,
+                            token: lock.token,
+                            lockId: lock.contractLockId,
+                          });
+                        }
+                      }}
                     >
                       Claim
                     </Button>

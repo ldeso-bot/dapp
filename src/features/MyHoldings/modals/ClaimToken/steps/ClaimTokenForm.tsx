@@ -1,5 +1,6 @@
 'use client';
 
+import { useClaimKvcmLockRewards } from '@/features/MyHoldings/modals/ClaimKvcmLockRewards/hooks/useClaimKvcmLockRewards';
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
 import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
@@ -10,14 +11,25 @@ import { getTokenSymbol } from '@/shared/utils/token.utils';
 import { useAtom } from 'jotai';
 import { claimTokenDialogAtom, ClaimTokenFields } from '../claimToken.utils';
 
-const ClaimTokenForm: FormFlowStep<ClaimTokenFields> = ({ next, data }) => {
+const ClaimTokenForm: FormFlowStep<ClaimTokenFields> = ({ data }) => {
   const { form } = data;
   const { handleSubmit } = form;
   const [claimTokenDialog, setClaimTokenDialog] = useAtom(claimTokenDialogAtom);
+  const { claimToken, isSubmitting } = useClaimKvcmLockRewards();
 
   // Wrapping next into handleSubmit to ensure the form is valid before going to the validation step
-  const onSubmit = () => {
-    next();
+  const onSubmit = async () => {
+    if (!claimTokenDialog.lockId) return;
+
+    const { success } = await claimToken(claimTokenDialog.lockId);
+    if (success) {
+      setClaimTokenDialog({
+        open: false,
+        token: null,
+        amount: null,
+        lockId: null,
+      });
+    }
   };
 
   if (!claimTokenDialog.token || !claimTokenDialog.amount) return null;
@@ -32,14 +44,25 @@ const ClaimTokenForm: FormFlowStep<ClaimTokenFields> = ({ next, data }) => {
       </p>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <ButtonGroup>
-          <Button colors="secondary" context="flow" type="submit">
-            Approve
+          <Button
+            colors="secondary"
+            context="flow"
+            type="submit"
+            loading={isSubmitting}
+          >
+            Claim
           </Button>
           <Button
             colors="primary"
             context="flow"
+            disabled={isSubmitting}
             onClick={() =>
-              setClaimTokenDialog({ open: false, token: null, amount: null })
+              setClaimTokenDialog({
+                open: false,
+                token: null,
+                amount: null,
+                lockId: null,
+              })
             }
           >
             Cancel

@@ -131,7 +131,7 @@ export const getLocks = async (
     ].includes(tokenInfo.id);
 
     const lockMaturityMidnightInfo =
-      lock.maturity?.maturityMidnightInfo &&
+      lock.maturity?.maturityMidnightInfo?.keeperUpdated &&
       computeMidnightInfoDiffWithPrevious(
         lock.maturity?.maturityMidnightInfo,
         tokenMetrics
@@ -199,7 +199,7 @@ export const getLocks = async (
         const rewards = lock.lockActions.reduce((acc, action) => {
           if (
             action.type === LockActionType.SHARES_UPDATED &&
-            action.syntheticYieldEntryMidnightInfo
+            action.syntheticYieldEntryMidnightInfo?.keeperUpdated
           ) {
             const actionAmount = formatStringToNumber(action.amount, 18); // Amount locked
             const actionPps = formatStringToNumber(
