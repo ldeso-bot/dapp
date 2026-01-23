@@ -1,27 +1,21 @@
 'use client';
 
-import { Maturity } from '@/shared/models/ProtocolData';
-import { formatLockDuration } from './DurationStepper';
+import {
+  useIncentivesBreakdown,
+  UseIncentivesBreakdownParams,
+} from '@/features/MyHoldings/hooks/useIncentivesBreakdown';
 
-type Props = {
-  amount: number;
-  duration: number;
-  selectedMaturity: Maturity;
-};
-
-export const YieldBreakdownCard = ({
+export const IncentivesBreakdownCard = ({
   amount,
   duration,
-  selectedMaturity,
-}: Props) => {
-  // todo - replace with actual calculations
-  const baseYieldFormatted = (
-    selectedMaturity.syntheticYieldZeroCouponYieldCurve * 100
-  ).toFixed(2);
-  const incentivesYieldFormatted = (
-    selectedMaturity.riskyYieldZeroCouponYieldCurve ?? 0 * amount
-  ).toFixed(2);
-  const lockDuration = formatLockDuration(Number(duration));
+  fullMaturity,
+}: UseIncentivesBreakdownParams) => {
+  const { baseYieldFormatted, incentivesYieldFormatted, lockDuration } =
+    useIncentivesBreakdown({
+      amount,
+      duration,
+      fullMaturity,
+    });
 
   return (
     <>

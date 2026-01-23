@@ -3,7 +3,7 @@
 import { DurationSelector } from '@/features/MyHoldings/shared/DurationSelector';
 import { DurationSlider } from '@/features/MyHoldings/shared/DurationSlider';
 import { DurationStepper } from '@/features/MyHoldings/shared/DurationStepper';
-import { YieldBreakdownCard } from '@/features/MyHoldings/shared/YieldBreakdownCard';
+import { IncentivesBreakdownCard } from '@/features/MyHoldings/shared/YieldBreakdownCard';
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
 import { DialogHeader } from '@/shared/components/Dialog/DialogHeader';
@@ -163,10 +163,10 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
                 </p>
               </div>
               {fullMaturity && duration !== undefined && (
-                <YieldBreakdownCard
+                <IncentivesBreakdownCard
                   duration={duration}
                   amount={watch('amount')}
-                  selectedMaturity={fullMaturity}
+                  fullMaturity={fullMaturity}
                 />
               )}
             </>
