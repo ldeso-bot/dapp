@@ -5,15 +5,8 @@ import { GlobeIcon } from '@/shared/components/Svg/GlobeIcon';
 import { KvcmIcon } from '@/shared/components/Svg/KvcmIcon';
 import { TokenInfo, tokens } from '@/shared/constants/tokens.constants';
 import { createFlowItem, type StatItem } from '@/shared/utils/emptyState.utils';
+import { isAddress } from 'viem';
 import { z } from 'zod';
-
-export type RetireCarbonFields = {
-  carbonClass: string;
-  carbonCredit: string;
-  amountTonnes: number;
-  paymentMethod: string;
-  priceQuotedWei: bigint;
-};
 
 type PaymentOption = {
   token: TokenInfo;
@@ -40,7 +33,21 @@ export const retireCarbonSchema = z.object({
   paymentMethod: z.string(),
   amountTonnes: z.coerce.number().gt(0, 'Amount must be a positive'),
   priceQuotedWei: z.coerce.bigint(),
+  beneficiaryName: z.string().min(1, 'Beneficiary name is required'),
+  beneficiaryAddress: z
+    .string()
+    .optional()
+    .refine(
+      (val) => !val || isAddress(val),
+      'Beneficiary address must be a valid Ethereum address'
+    ),
+  retirementMessage: z.string().min(1, 'Retirement message is required'),
+  country: z.string().optional(),
+  consumptionPeriodStart: z.string().optional(),
+  consumptionPeriodEnd: z.string().optional(),
 });
+
+export type RetireCarbonFields = z.infer<typeof retireCarbonSchema>;
 
 export const retireCarbonFlowItems = [
   createFlowItem(KvcmIcon, 'Your kVCM', 'kVCM tokens in your wallet.', 0),

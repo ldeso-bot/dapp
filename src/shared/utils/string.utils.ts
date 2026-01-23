@@ -91,9 +91,24 @@ export const formatDate = (date: number): string => {
 
 export const formatAmountWithCommas = (
   value?: number,
-  digits: number = 2
+  digits?: number
 ): string => {
-  return value?.toFixed(digits).replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '0';
+  if (!value) {
+    return '0.00';
+  }
+  const absValue = Math.abs(value ?? 0);
+
+  // Auto detect number of digits to show (3 non zero values)
+  if (isNullish(digits)) {
+    const decimalPlaces = Math.ceil(Math.abs(Math.log10(absValue)));
+    digits = decimalPlaces + 2;
+  }
+  const fixedValue = value.toFixed(digits);
+
+  // Add commas if value is greater than 1 to make it pretty
+  return value > 1
+    ? fixedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    : fixedValue;
 };
 
 export const formatAmountWithUnits = (value: number): string => {
@@ -102,7 +117,7 @@ export const formatAmountWithUnits = (value: number): string => {
 
 export const formatPriceUSDWithCommas = (
   value: number,
-  digits: number = 2
+  digits?: number
 ): string => {
   return `$${formatAmountWithCommas(value, digits)}`;
 };
@@ -113,4 +128,15 @@ export const parseAmount = (value?: number, decimals?: number): bigint => {
     return 0n;
   }
   return parseUnits(String(value), decimals);
+};
+
+/**
+ * Converts a date string (YYYY-MM-DD) to a Unix timestamp in seconds
+ */
+export const dateStringToTimestamp = (dateString?: string): number => {
+  if (!dateString) {
+    return 0;
+  }
+  const date = new Date(dateString);
+  return Math.floor(date.getTime() / 1000);
 };

@@ -1,5 +1,5 @@
 import { DEFAULT_SLIPPAGE } from '@/shared/constants/config.constants';
-import { useCreditTokens } from '@/shared/hooks/api/useCreditTokens';
+import { useCarbonClassRegisteredCreditTokens } from '@/shared/hooks/api/useCreditTokens';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useContractInfo } from '@/shared/hooks/web3/useContract';
@@ -46,9 +46,8 @@ export const useRetireCarbonForm = (
   const priceQuotedWei = watch('priceQuotedWei');
 
   // Fetch credit registered for the selected carbon class
-  const { data: carbonCredits } = useCreditTokens(
-    selectedCarbonClass?.registeredTokens ?? []
-  );
+  const { data: carbonCredits } =
+    useCarbonClassRegisteredCreditTokens(selectedCarbonClass);
 
   const selectedCarbonCredit = useMemo(
     () =>
@@ -90,11 +89,14 @@ export const useRetireCarbonForm = (
     selectedPaymentOption.token.decimals
   );
 
+  // Check if selected credit symbol starts with PURO
+  const isConsumptionInfoRequiredCredit =
+    selectedCarbonCredit?.symbol?.startsWith('PURO') ||
+    selectedCarbonCredit?.symbol?.startsWith('KLIM');
+
   return {
     carbonClasses,
     carbonCredits,
-    selectedCarbonCreditId,
-    selectedCarbonClassId,
     selectedCarbonClass,
     selectedCarbonCredit,
     selectedPaymentOption,
@@ -106,6 +108,7 @@ export const useRetireCarbonForm = (
     priceQuoted,
     amountWei,
     maxInputTokenInWei,
+    isConsumptionInfoRequiredCredit,
     refetch,
   };
 };

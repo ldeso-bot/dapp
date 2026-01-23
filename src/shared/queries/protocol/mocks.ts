@@ -16,7 +16,7 @@ export const mockTokens: ApiCreditToken[] = [
     creditTokenId: '0x1234567890123456789012345678901234567901',
     tokenId: 0,
     address: '0x1234567890123456789012345678901234567901',
-    name: 'Credit Token 1',
+    symbol: 'CMARK-0-2025',
     decimals: 18,
     standard: TOKEN_STANDARDS.ERC20,
     project: {

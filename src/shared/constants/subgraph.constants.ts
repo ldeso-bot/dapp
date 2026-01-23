@@ -21,7 +21,7 @@ let subgraphHeaders: Record<string, string> = {
 };
 
 if (USE_LOCAL_GRAPH_NODE) {
-  console.warn('Using local graph node');
+  console.warn('🚧 Using local graph node');
   subgraphs = {
     [base.id]: {
       carbon: 'http://localhost:8000/subgraphs/name/carbon',

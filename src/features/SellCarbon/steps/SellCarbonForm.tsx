@@ -85,7 +85,7 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
               <SelectInput
                 label="Token"
                 items={Object.values(creditBalances).map((balance) => ({
-                  label: balance.creditToken.name,
+                  label: balance.creditToken.symbol,
                   value: balance.creditToken.creditTokenId,
                 }))}
                 defaultValue={form.getValues('token')}

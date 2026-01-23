@@ -12,6 +12,8 @@ export const IS_DEVELOPMENT =
 export const PROTOCOL_DATA_CACHE_TIME_SECONDS = IS_DEVELOPMENT ? 1 : 60;
 export const WALLET_DATA_CACHE_TIME_SECONDS = 1;
 
+export const USE_LOCAL_RPC = process.env.NEXT_PUBLIC_USE_LOCAL_RPC === 'true';
+
 export const DEV_MODE = process.env.NEXT_PUBLIC_DEV_MODE === 'true';
 
 export const DEFAULT_TO_TESTNET =

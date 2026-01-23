@@ -7,7 +7,7 @@ import Button from '../Button/Button';
 import { ArrowForwardIcon } from '../Svg/ArrowForwardIcon';
 
 export const EmptyStateButton = ({ cta }: { cta: CtaConfig }) => {
-  const CtaIcon = cta.icon;
+  const { icon: Icon, text, description, className, onClick, href } = cta;
   return (
     <>
       <div className="transition-all duration-200">
@@ -16,23 +16,25 @@ export const EmptyStateButton = ({ cta }: { cta: CtaConfig }) => {
             if (!mounted) return null;
             return (
               <Button
-                onClick={() => cta.onClick(openConnectModal)}
+                onClick={() => onClick?.(openConnectModal)}
                 className={cn(
                   'h-14 px-6 gap-3 hover:scale-105 transition-transform bg-foreground text-white',
-                  cta.className
+                  className
                 )}
+                href={href}
+                target="_blank"
               >
-                <CtaIcon className="w-5 h-5" />
-                <span className="text-size-16">{cta.text}</span>
+                <Icon className="w-5 h-5" />
+                <span className="text-size-16">{text}</span>
                 <ArrowForwardIcon className="w-4 h-4" />
               </Button>
             );
           }}
         </RainbowConnectButton.Custom>
       </div>
-      {cta.description && (
+      {description && (
         <p className="text-size-14 text-gray-600 text-center">
-          {cta.description}
+          {description}
         </p>
       )}
     </>

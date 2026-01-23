@@ -8,6 +8,8 @@ import { useCallback } from 'react';
 import { isAddress } from 'viem';
 import { useAccount } from 'wagmi';
 
+import RetirementAggregatorAbi from '@/shared/utils/abis/RetirementAggregator';
+
 type RetireCarbonParams = {
   creditTokenAddress: string;
   creditTokenId: number;
@@ -16,10 +18,18 @@ type RetireCarbonParams = {
   inputTokenAddress: string;
   inputTokenIdentifier: Token;
   maxInputTokenIn: bigint;
+  beneficiaryName: string;
+  beneficiaryAddress?: string;
+  retirementMessage: string;
+  consumptionPeriodStart?: number;
+  consumptionPeriodEnd?: number;
+  countryCode?: string;
 };
 
 export const useRetireCarbon = (params: RetireCarbonParams) => {
-  const { contract } = useContract('RetirementAggregator');
+  const { contract } = useContract<typeof RetirementAggregatorAbi>(
+    'RetirementAggregator'
+  );
   const { chain, address: walletAddress } = useAccount();
 
   const queryClient = useQueryClient();
@@ -85,34 +95,50 @@ export const useRetireCarbon = (params: RetireCarbonParams) => {
         return exitWithErrorMessage('Invalid input token address');
       }
 
-      const details = [
-        walletAddress, // retiringAddress
-        '', // retiringEntityString
-        walletAddress, // beneficiaryAddress
-        '', // beneficiaryString
-        '', // retirementMessage
-        '', // beneficiaryLocation
-        '', // consumptionCountryCode
-        BigInt(0), // consumptionPeriodStart
-        BigInt(0), // consumptionPeriodEnd
-      ] as const;
+      let beneficiaryAddress = walletAddress;
+
+      if (params.beneficiaryAddress) {
+        if (!isAddress(params.beneficiaryAddress)) {
+          return exitWithErrorMessage('Invalid beneficiary address');
+        }
+        beneficiaryAddress = params.beneficiaryAddress;
+      }
+
+      const details = {
+        retiringAddress: walletAddress, // retiringAddress
+        retiringEntityString: '', // retiringEntityString
+        beneficiaryAddress: beneficiaryAddress, // beneficiaryAddress
+        beneficiaryString: params.beneficiaryName, // beneficiaryString
+        retirementMessage: params.retirementMessage, // retirementMessage
+        beneficiaryLocation: params.countryCode || '', // beneficiaryLocation
+        consumptionCountryCode: params.countryCode || '', // consumptionCountryCode
+        consumptionPeriodStart: params.consumptionPeriodStart
+          ? BigInt(params.consumptionPeriodStart)
+          : BigInt(0), // consumptionPeriodStart
+        consumptionPeriodEnd: params.consumptionPeriodEnd
+          ? BigInt(params.consumptionPeriodEnd)
+          : BigInt(0), // consumptionPeriodEnd
+      } as const;
 
       // Prepare retire params
       const retireParams = [
-        params.creditTokenAddress as `0x${string}`, // creditToken
+        params.creditTokenAddress, // creditToken
         BigInt(params.creditTokenId), // tokenId
         BigInt(0), // batchId
         params.amount, // amount
-        params.inputTokenAddress as `0x${string}`, // inputTokenAddress
-        params.carbonClassId as `0x${string}`, // carbonClass
+        params.inputTokenAddress, // inputTokenAddress
+        params.carbonClassId, // carbonClass
         params.maxInputTokenIn, // maxInputTokenIn
         BigInt(0), // couponTonnes
         details, // details
       ] as const;
 
+      console.log('retireParams', retireParams);
+
       // Call the contract
       const transaction = () =>
         contract.write.retireCreditViaKlima(retireParams, {
+          account: walletAddress,
           chain,
         });
 

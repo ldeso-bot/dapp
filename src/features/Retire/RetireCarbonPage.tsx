@@ -4,18 +4,20 @@ import CarbonClassCard from '@/shared/components/CarbonClassCard/CarbonClassCard
 import { PageDescription } from '@/shared/components/PageDescription/PageDescription';
 import { PageTitle } from '@/shared/components/PageTitle/PageTitle';
 import Steps from '@/shared/components/Steps/Steps';
+import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useParsedForm } from '@/shared/hooks/web3/useParsedForm';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useAccount } from 'wagmi';
 import { RetireCarbonEmptyState } from './components/RetireCarbonEmptyState';
 import { RetireCarbonFields, retireCarbonSchema } from './retire.constants';
 import RetireCarbonConfirm from './steps/RetireCarbonConfirm';
 import RetireCarbonForm from './steps/RetireCarbonForm';
 
 export default function RetirePage() {
-  const account = useAccount();
+  const { data: walletData } = useWalletData();
   const schema = retireCarbonSchema;
+
+  const showEmptyState = (walletData?.balances.kvcm ?? 0) == 0;
 
   const form = useForm<RetireCarbonFields>({
     resolver: zodResolver(schema),
@@ -25,6 +27,9 @@ export default function RetirePage() {
       carbonClass: '',
       carbonCredit: '',
       priceQuotedWei: BigInt(0),
+      beneficiaryName: '',
+      beneficiaryAddress: '',
+      retirementMessage: '',
     },
   });
 
@@ -32,7 +37,7 @@ export default function RetirePage() {
 
   return (
     <>
-      {!account.isConnected ? (
+      {showEmptyState ? (
         <RetireCarbonEmptyState />
       ) : (
         <div className="flex flex-col gap-8">

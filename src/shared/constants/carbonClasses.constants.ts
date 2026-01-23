@@ -53,7 +53,11 @@ export const getCarbonClassInfo = (chainId: ChainId, carbonClassId: string) => {
   } else if (chainId === baseSepolia.id) {
     return isBaseSepoliaCarbonClassId(carbonClassId)
       ? BASE_SEPOLIA_CARBON_CLASSES_INFO_MAP[carbonClassId]
-      : null;
+      : // Auto mock testnet carbon classes
+        {
+          name: `Test Carbonclass ${carbonClassId.substring(2, 5)}`,
+          category: 'Test Category',
+        };
   }
   return null;
 };

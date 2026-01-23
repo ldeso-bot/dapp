@@ -12,13 +12,14 @@ export type ApiCreditToken = {
   creditTokenId: string;
   tokenId: number;
   address: string;
-  name: string;
+  symbol: string;
   decimals: number;
   standard: TokenStandard;
   project: {
     name: string;
   };
 };
+
 
 /** Carbon Class */
 export type CarbonClass = {
@@ -28,7 +29,10 @@ export type CarbonClass = {
   valueUSD: number;
   supplyTonnes: number;
   valueUSDChangePercent24h: number;
-  registeredTokens: string[];
+  registeredTokens: {
+    creditTokenId: string;
+    amount: number;
+  }[];
 };
 export type CouponBurnParams = {
   tonnes: number;

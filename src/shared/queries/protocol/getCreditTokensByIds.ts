@@ -36,10 +36,16 @@ export const getCreditTokensByIds = async (
     } as CreditToken_Filter,
   });
 
-  // Map to ApiCreditToken format and filter out nulls
-  const tokens = response.creditTokens
-    .map(mapToApiCreditToken)
+  const tokens = creditTokenIds
+    .map((creditTokenId) => {
+      const token = response.creditTokens.find(
+        (t) => t.creditTokenId === creditTokenId
+      );
+
+      return mapToApiCreditToken(sdk, creditTokenId, token);
+    })
     .filter(isNonNullish);
+  // Map to ApiCreditToken format and filter out nulls
 
   return tokens;
 };

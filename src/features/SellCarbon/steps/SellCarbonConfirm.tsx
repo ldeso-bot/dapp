@@ -98,7 +98,7 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
       // Show success message
       setAlert({
         title: 'Sale complete',
-        description: `You’ve successfully sold ${parsedForm.current?.amountToSellTonnes} ${selectedBalance?.creditToken.name} to Klima Protocol for ${formatStringToNumber(amountKvcmReceived, 18)} KVCM! Stake your new kVCM tokens now to receive more incentives`,
+        description: `You’ve successfully sold ${parsedForm.current?.amountToSellTonnes} ${selectedBalance?.creditToken.symbol} to Klima Protocol for ${formatStringToNumber(amountKvcmReceived, 18)} KVCM! Stake your new kVCM tokens now to receive more incentives`,
         type: 'success',
         links: [
           {
@@ -142,7 +142,7 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
               readOnly
               iconSize="sm"
               iconSrc={CarbonCreditIconImg}
-              value={`${parsedForm.current?.amountToSellTonnes} ${selectedBalance?.creditToken.name}`}
+              value={`${parsedForm.current?.amountToSellTonnes} ${selectedBalance?.creditToken.symbol}`}
             />
             <Input
               label="You are receiving"

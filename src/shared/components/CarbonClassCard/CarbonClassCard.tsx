@@ -3,11 +3,11 @@
 import Card from '@/shared/components/Card/Card';
 import ChangePercent from '@/shared/components/ChangePercent/ChangePercent';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
+import { formatPriceUSDWithCommas } from '@/shared/utils/string.utils';
 import clsx from 'clsx';
 
 export default function CarbonClassCard() {
   const { data, isLoading } = useProtocolData();
-  const formatPrice = (price: number) => `$${price.toFixed(2)}`;
   return (
     <div>
       <Card
@@ -30,7 +30,7 @@ export default function CarbonClassCard() {
                     {/* todo - move out to a shared price badge component??? */}
                     <div className="flex items-center gap-4">
                       <div className="text-size-14 text-void-80">
-                        {formatPrice(item.valueUSD)}
+                        {formatPriceUSDWithCommas(item.valueUSD)}
                       </div>
                       <div
                         className={clsx(

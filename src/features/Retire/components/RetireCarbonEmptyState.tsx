@@ -2,26 +2,32 @@
 
 import { ImportantToKnow } from '@/features/Retire/components/ImportantToKnow';
 import { EmptyState } from '@/shared/components/EmptyState/EmptyState';
-import { useEmptyStateButton } from '@/shared/hooks/useEmptyStateButton';
+import { DollarIcon } from '@/shared/components/Svg/DollarIcon';
+import { WalletIcon } from '@/shared/components/Svg/WalletIcon';
+import { BUY_KVCM_URL } from '@/shared/constants/urls.constants';
+import { CtaConfig } from '@/shared/utils/emptyState.utils';
+import { useAccount } from 'wagmi';
 import {
   retireCarbonFlowItems,
   retireCarbonInfoCards,
   retireCarbonStats,
 } from '../retire.constants';
 
-type Props = {
-  onStartSelling?: () => void;
-};
-
-export const RetireCarbonEmptyState = ({ onStartSelling }: Props) => {
-  const emptyStateButtonConfig = useEmptyStateButton({
-    onStartAction: onStartSelling,
-    disconnectedDescription:
-      'You choose the credits and set the beneficiary details.',
-    noLocksDescription:
-      'Lock kVCM or K2 tokens in positions before you can allocate.',
-    hasLocksActionText: 'Start Selling',
-  });
+export const RetireCarbonEmptyState = () => {
+  
+  const { address } = useAccount();
+  
+  const emptyStateButtonConfig: CtaConfig = !address ? {
+    text: 'Connect Wallet to Start',
+    icon: WalletIcon,
+    description: 'You choose the credits and set the beneficiary details.',
+    onClick: (openConnectModal) => openConnectModal(),
+  } : {
+    text: 'Get kVCM',
+    icon: DollarIcon,
+    description: 'Acquire kVCM tokens to offset emissions and retire credits.',
+    href:BUY_KVCM_URL
+  };
 
   return (
     <EmptyState

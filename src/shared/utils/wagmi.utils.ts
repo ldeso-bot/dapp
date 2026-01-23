@@ -9,7 +9,10 @@ import {
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 import { http } from 'wagmi';
-import { WALLETCONNECT_PROJECT_ID } from '../constants/config.constants';
+import {
+  USE_LOCAL_RPC,
+  WALLETCONNECT_PROJECT_ID,
+} from '../constants/config.constants';
 
 export const createWagmiConfig = () => {
   if (!WALLETCONNECT_PROJECT_ID) {
@@ -39,6 +42,10 @@ export const createWagmiConfig = () => {
     },
   ];
 
+  if (USE_LOCAL_RPC) {
+    console.warn('🚧 Using local RPC');
+  }
+
   return getDefaultConfig({
     chains,
     wallets,
@@ -46,7 +53,14 @@ export const createWagmiConfig = () => {
     appName: 'Klima v2 dApp',
     projectId: WALLETCONNECT_PROJECT_ID,
     transports: Object.fromEntries(
-      chains.map((chain) => [chain.id, http(chain.rpcUrls.default.http[0])])
+      chains.map((chain) => [
+        chain.id,
+        http(
+          USE_LOCAL_RPC
+            ? 'http://localhost:8545'
+            : chain.rpcUrls.default.http[0]
+        ),
+      ])
     ) as Record<(typeof chains)[number]['id'], ReturnType<typeof http>>,
   });
 };

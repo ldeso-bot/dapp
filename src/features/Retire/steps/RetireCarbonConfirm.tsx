@@ -13,6 +13,7 @@ import { useAllowance } from '@/shared/hooks/useAllowance';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { TOKEN_STANDARDS } from '@/shared/models/shared';
 import {
+  dateStringToTimestamp,
   formatAddress,
   formatAmountWithCommas,
 } from '@/shared/utils/string.utils';
@@ -70,6 +71,16 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
     inputTokenAddress: inputTokenInfo?.address ?? '',
     inputTokenIdentifier: selectedPaymentOption.token.id,
     maxInputTokenIn: maxInputTokenInWei,
+    beneficiaryName: parsedForm.current?.beneficiaryName ?? '',
+    beneficiaryAddress: parsedForm.current?.beneficiaryAddress,
+    retirementMessage: parsedForm.current?.retirementMessage ?? '',
+    consumptionPeriodStart: dateStringToTimestamp(
+      parsedForm.current?.consumptionPeriodStart
+    ),
+    consumptionPeriodEnd: dateStringToTimestamp(
+      parsedForm.current?.consumptionPeriodEnd
+    ),
+    countryCode: parsedForm.current?.country,
   });
 
   const handleRetireCarbon = async () => {
@@ -78,7 +89,7 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
       // Show success message
       setAlert({
         title: 'Retirement complete',
-        description: `You've successfully retired ${parsedForm.current?.amountTonnes} ${selectedCarbonCredit?.name} tonnes! Your carbon credits have been permanently retired and you've received verifiable proof of your climate action.`,
+        description: `You've successfully retired ${parsedForm.current?.amountTonnes} ${selectedCarbonCredit?.symbol} tonnes! Your carbon credits have been permanently retired and you've received verifiable proof of your climate action.`,
         type: 'success',
         links: [
           {
@@ -129,7 +140,7 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
               readOnly
               iconSize="sm"
               iconSrc={CarbonCreditIconImg}
-              value={`${formatAmountWithCommas(parsedForm.current?.amountTonnes)} ${selectedCarbonCredit?.name} Tonnes`}
+              value={`${formatAmountWithCommas(parsedForm.current?.amountTonnes)} ${selectedCarbonCredit?.symbol} Tonnes`}
             />
           </div>
           <div className="flex flex-col gap-3 w-full">

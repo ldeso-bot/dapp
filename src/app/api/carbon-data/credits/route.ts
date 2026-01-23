@@ -32,7 +32,6 @@ export async function GET(request: NextRequest) {
       { status: 400 }
     );
   }
-
   const data = await unstable_cache(
     async (chainId: ChainId, creditTokenIds: string[]) =>
       getCreditTokensByIds(chainId, creditTokenIds),

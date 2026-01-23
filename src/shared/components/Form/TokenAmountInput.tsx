@@ -11,6 +11,7 @@ import {
   FieldValues,
   Path,
 } from 'react-hook-form';
+import { isNonNullish } from 'remeda';
 import InputWrapper from './layout/InputWrapper';
 
 type Props<T extends FieldValues> = {
@@ -41,7 +42,7 @@ export default function TokenAmountInput<T extends FieldValues>(
       label={label ?? 'Amount'}
       error={errorMessage}
       addOnLabel={
-        availableBalance
+        isNonNullish(availableBalance)
           ? `Available: ${availableBalance.toFixed(2) ?? '0.00'}`
           : undefined
       }

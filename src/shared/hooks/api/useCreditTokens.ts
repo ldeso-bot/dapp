@@ -1,5 +1,6 @@
-import { ApiCreditToken } from '@/shared/models/shared';
+import { ApiCreditToken, CarbonClass } from '@/shared/models/shared';
 import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { useApi } from './useApi';
 import { useRefetchOnChainChange } from './useRefetchOnChainChange';
 
@@ -8,7 +9,7 @@ import { useRefetchOnChainChange } from './useRefetchOnChainChange';
  * @param creditTokenIds - Array of credit token IDs to fetch
  * @returns React Query result with ApiCreditToken[]
  */
-export function useCreditTokens(creditTokenIds: string[]) {
+function useCreditTokens(creditTokenIds: string[]) {
   const { get } = useApi();
 
   const q = useQuery({
@@ -25,3 +26,37 @@ export function useCreditTokens(creditTokenIds: string[]) {
 
   return q;
 }
+
+type RegisteredCreditToken = ApiCreditToken & {
+  amount: number;
+};
+/**
+ * Hook to fetch information about carbon class registered tokens by their IDs
+ * @param carbonClass - Carbon class
+ * @returns React Query result with RegisteredCreditToken[]
+ */
+export const useCarbonClassRegisteredCreditTokens = (
+  carbonClass?: CarbonClass
+) => {
+  const { data, ...rest } = useCreditTokens(
+    carbonClass?.registeredTokens.map((t) => t.creditTokenId) ?? []
+  );
+
+  const registeredCreditTokens = useMemo(() => {
+    if (!carbonClass) {
+      return;
+    }
+    return data?.map((t) => {
+      const registeredToken = carbonClass.registeredTokens.find(
+        (r) => r.creditTokenId === t.creditTokenId
+      );
+
+      return {
+        ...t,
+        amount: registeredToken?.amount ?? 0,
+      } satisfies RegisteredCreditToken;
+    });
+  }, [data, carbonClass]);
+
+  return { data: registeredCreditTokens, ...rest };
+};

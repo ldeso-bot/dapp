@@ -20,6 +20,7 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   items: SelectInputItem[];
   error?: FieldError;
   defaultValue?: string | number;
+  mandatory?: boolean;
 };
 
 export default function SelectInput({
@@ -27,6 +28,7 @@ export default function SelectInput({
   items,
   defaultValue,
   error,
+  mandatory,
   ...props
 }: Props) {
   const onValueChange = (value: string) => {
@@ -43,7 +45,7 @@ export default function SelectInput({
   const stringDefaultValue = defaultValue ? String(defaultValue) : undefined;
 
   return (
-    <InputWrapper label={label} error={error}>
+    <InputWrapper label={label} error={error} mandatory={mandatory}>
       <Select
         value={stringValue}
         disabled={props.disabled ?? props.readOnly}

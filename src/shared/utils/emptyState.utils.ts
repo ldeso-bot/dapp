@@ -5,10 +5,11 @@ type CtaClickHandler = (openConnectModal: () => void) => void;
 export type CtaConfig = {
   text: string;
   icon: React.ComponentType<{ className?: string }>;
-  onClick: CtaClickHandler;
+  onClick?: CtaClickHandler;
   description?: string | ReactNode;
   className?: string;
-};
+  href?: string;
+} ;
 
 export type FlowItemProps = {
   icon: React.ComponentType<{ className?: string }>;

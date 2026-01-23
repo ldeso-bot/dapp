@@ -17,7 +17,7 @@ const useRetirementQuote = (
   const { form, amount } = params;
   const {
     selectedCarbonCredit,
-    selectedCarbonClassId,
+    selectedCarbonClass,
     inputTokenInfo,
     retirementContractInfo,
   } = useRetireCarbonForm(form.watch);
@@ -28,19 +28,22 @@ const useRetirementQuote = (
       BigInt(selectedCarbonCredit?.tokenId ?? 0), // tokenId
       amount, // amount
       inputTokenInfo.address as `0x${string}`, // inputTokenAddress
-      selectedCarbonClassId as `0x${string}`, // carbonClass
+      selectedCarbonClass?.carbonClassId as `0x${string}`, // carbonClass
       BigInt(0), // couponTonnes
     ] as const;
-  }, [selectedCarbonCredit, selectedCarbonClassId, inputTokenInfo, amount]);
+  }, [selectedCarbonCredit, selectedCarbonClass, inputTokenInfo, amount]);
 
-  console.log('args', args);
   const res = useReadContract({
     address: retirementContractInfo?.address as `0x${string}` | undefined,
     abi: RetirementAggregator,
     functionName: 'quoteRetireCreditViaKlima',
     args,
     query: {
-      enabled: !!args && !!retirementContractInfo?.address,
+      enabled:
+        !!args &&
+        !!retirementContractInfo &&
+        !!selectedCarbonCredit &&
+        !!inputTokenInfo,
       staleTime: 0,
     },
   });
@@ -56,8 +59,11 @@ const useRetirementQuote = (
       setPriceQuotedWei(BigInt(0));
       return;
     }
-    console.log('res.data', res);
-    const quoteWei = res.data;
+    if (res.data.length < 2) {
+      console.error('Invalid quote data', res.data);
+      return;
+    }
+    const quoteWei = res.data[1];
     setPriceQuotedWei(quoteWei);
   }, [res, amount]);
 
@@ -89,7 +95,7 @@ export const useRetireCarbonQuoter = ({
   });
   const priceQuotedForOneTonWei = useRetirementQuote({
     form,
-    amount: BigInt(1),
+    amount: parseAmount(1, selectedCarbonCredit?.decimals),
   });
 
   return {

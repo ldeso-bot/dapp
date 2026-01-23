@@ -6,8 +6,11 @@ import { isChainId } from '@/shared/utils/typeguards';
 import { QueryClient } from '@tanstack/react-query';
 import {
   type Abi,
-  type Hash,
+  Address,
+  Client,
+  Hash,
   type PublicClient,
+  Transport,
   type WalletClient,
   createPublicClient,
   decodeEventLog,
@@ -47,16 +50,16 @@ export const queryClient = new QueryClient({
   },
 });
 
-export function getContract(
+export function getContract<T extends Abi>(
   chainId: ChainId,
   name: ContractName,
   client: PublicClient | WalletClient
 ) {
   const contractInfo = contracts[name];
 
-  return viemGetContract({
+  return viemGetContract<Transport, Address, T, Client>({
     address: contractInfo[chainId],
-    abi: contractInfo.abi as Abi,
+    abi: contractInfo.abi as unknown as T, // TODO: fix type resolution
     client,
   });
 }

@@ -9,6 +9,12 @@ query getCarbonClasses($where: CarbonClass_filter) {
     registeredCredits(first: 1000) {
       creditTokenId
     }
+    liquidities {
+      credit {
+        creditTokenId
+      }
+      amount
+    }
   }
 }
 

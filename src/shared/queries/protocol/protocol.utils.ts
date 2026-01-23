@@ -11,6 +11,7 @@ import { GetCreditTokensQuery } from '@generated/gql/types/carbon.types';
 import { Maturity_Filter } from '@generated/gql/types/protocol.types';
 import { unstable_cache } from 'next/cache';
 import { mapToObj } from 'remeda';
+import { base } from 'viem/chains';
 import { getLatestMidnightInfoDiffs } from './midnightInfo.utils';
 
 export const tokensEligibleForIncentives: Record<YieldType, Token[]> = {
@@ -144,21 +145,55 @@ export const getCreditsTokenMap = async (sdk: Sdk) => {
   )();
 };
 
+/**
+ * Maps a credit token to an ApiCreditToken. Mocks Credits on testnet if they are not found in the subgraph.
+ * @param sdk
+ * @param creditTokenId
+ * @param token
+ * @returns
+ */
 export const mapToApiCreditToken = (
+  sdk: Sdk,
+  creditTokenId: string,
   token?: GetCreditTokensQuery['creditTokens'][number]
 ): ApiCreditToken | null => {
-  if (!token) return null;
+  if (!token) {
+    if (sdk.chain == base.id) return null;
+    const address = creditTokenId.split('-').at(1);
+    if (!address) return null;
+    // Mock testnet credit
+    const id = address.substring(2, 5);
+    const name = `Test Credit ${id}`;
+    // Sneak in a PURO credit for testing the retirement form
+    const registry = id == '2d4' ? 'PURO' : 'TEST';
+    const symbol = `${registry}-0-${id}`;
+    // On, testnet, we mock the credits if they are not found in the subgraph
+    return {
+      creditTokenId: creditTokenId,
+      tokenId: 0,
+      address,
+      symbol,
+      decimals: 18,
+      standard: TOKEN_STANDARDS.ERC20,
+      project: {
+        name,
+      },
+    } satisfies ApiCreditToken;
+  }
 
+  const projectSymbol = `${token.registry.id}-${token.registryProjectId}`;
+  const creditSymbol = `${projectSymbol}-${token.vintage}`;
+  const projectName = token.project.metadata?.name ?? projectSymbol;
   return {
     creditTokenId: token.creditTokenId,
     tokenId: token.tokenId,
     address: token.tokenAddress,
-    name: token.project.metadata?.name ?? token.creditTokenId,
+    symbol: creditSymbol,
     decimals: token.decimals,
     // TODO: use token.standard when available
     standard: TOKEN_STANDARDS.ERC20,
     project: {
-      name: token.project?.metadata?.name ?? token.creditTokenId,
+      name: projectName,
     },
   };
 };

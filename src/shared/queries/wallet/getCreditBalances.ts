@@ -29,7 +29,11 @@ export const getCreditBalances = async (
 
   const balances = creditBalances.creditBalances.map(
     (balance): CreditBalance | null => {
-      const creditToken = mapToApiCreditToken(balance.credit);
+      const creditToken = mapToApiCreditToken(
+        sdk,
+        balance.credit.creditTokenId,
+        balance.credit
+      );
       if (!creditToken) {
         return null;
       }
@@ -37,7 +41,9 @@ export const getCreditBalances = async (
         balance: formatStringToNumber(balance.balance, 18),
         creditToken,
         registeredClasses: carbonClasses.filter((c) =>
-          c.registeredTokens.some((t) => t === balance.credit.creditTokenId)
+          c.registeredTokens.some(
+            (t) => t.creditTokenId === balance.credit.creditTokenId
+          )
         ),
       };
     }
@@ -63,7 +69,10 @@ const getMockCreditBalances = (): CreditBalance[] => {
           supplyTonnes: 1000,
           valueUSDChangePercent24h: 0.01,
           carbonClassId: '0x1234567890123456789012345678901234567890',
-          registeredTokens: mockTokenIds,
+          registeredTokens: mockTokenIds.map((id) => ({
+            creditTokenId: id,
+            amount: 0,
+          })),
         },
       ],
     },
