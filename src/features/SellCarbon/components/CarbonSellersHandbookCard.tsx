@@ -3,6 +3,7 @@
 import Card from '@/shared/components/Card/Card';
 import LinkOpenInNew from '@/shared/components/LinkWithIcon';
 import { MenuBookIcon } from '@/shared/components/Svg/MenuBookIcon';
+import { OpenInNewIcon } from '@/shared/components/Svg/OpenInNewIcon';
 import { CARBON_SELLERS_HANDBOOK_URL } from '@/shared/constants/urls.constants';
 
 export const CarbonSellersHandbookCard = () => {
@@ -29,7 +30,7 @@ export const CarbonSellersHandbookCard = () => {
               </span>
             </span>
           </span>
-          <LinkOpenInNew href={CARBON_SELLERS_HANDBOOK_URL} />
+          <OpenInNewIcon className="w-4 h-4 text-green-80" />
         </div>
       </Card>
     </LinkOpenInNew>

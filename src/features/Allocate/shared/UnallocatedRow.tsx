@@ -28,7 +28,7 @@ export const UnallocatedRow: FC<UnallocatedRowProps> = ({
 
   const unallocatedPercent = useMemo(() => {
     if (totalAmount === 0) return 0;
-    return amount / totalAmount;
+    return Math.min(1, Math.max(0, amount / totalAmount));
   }, [amount, totalAmount]);
 
   const usdValue = useMemo(() => {
@@ -46,7 +46,7 @@ export const UnallocatedRow: FC<UnallocatedRowProps> = ({
   return (
     <TableRow className="border-0 bg-gray-50/30 cursor-pointer hover:bg-gray-50/60 transition-colors">
       <TableCell className="text-left border-0">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-0.5">
           <div className="flex items-center gap-2">
             <svg
               className="w-4 h-4 text-void-50"

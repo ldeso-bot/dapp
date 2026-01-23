@@ -79,6 +79,7 @@ query getAllocations($where: Allocation_filter) {
     }
     carbonClass {
       id
+      carbonClassId
       priceUsdcPerTon {
         priceUsdc
       }
@@ -87,6 +88,14 @@ query getAllocations($where: Allocation_filter) {
       ...TokenFragment
     }
     amount
+    lock {
+      id
+      contractLockId
+      maturityId
+      maturity {
+        timestamp
+      }
+    }
   }
 }
 

@@ -48,15 +48,24 @@ export const getAllocations = async (
         return 'High' as const;
       };
 
-      const carbonClassId = allocation.carbonClass.id.toLowerCase();
+      const carbonClassId = allocation.carbonClass.carbonClassId.toLowerCase();      
       const carbonClassInfo = getCarbonClassInfo(chainId, carbonClassId);
       const category = carbonClassInfo?.category ?? 'Other';
+      const contractLockId = allocation.lock?.contractLockId
+        ? formatStringToNumber(allocation.lock.contractLockId, 0)
+        : undefined;
+      const maturityId = allocation.lock?.maturityId
+        ? formatStringToNumber(allocation.lock.maturityId, 0)
+        : undefined;
+      const lockedUntil = allocation.lock?.maturity?.timestamp
+        ? formatStringToNumber(allocation.lock.maturity.timestamp, 0)
+        : undefined;
 
       return {
         priceUSD,
         category,
         id: allocation.id,
-        carbonClass: allocation.carbonClass.id,
+        carbonClass: carbonClassId,
         priceEffect: getPriceEffect(priceUSD),
         amount: formatStringToNumber(allocation.amount, 18),
         holder: allocation.account.id,
@@ -70,6 +79,9 @@ export const getAllocations = async (
           name: tokenInfo.id,
           address: allocation.token.address,
         },
+        contractLockId,
+        maturityId,
+        lockedUntil,
       };
     }
   );

@@ -9,10 +9,20 @@ import {
   TableHeader,
   TableRow,
 } from '@/shared/components/Table/table';
+import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import ArrowDown from '@/shared/images/arrow_down.svg';
 import { Allocation } from '@/shared/models/walletData';
+import {
+  getAllocationsByCarbonClass,
+  getTotalAllocatedForCarbonClass,
+} from '@/shared/utils/allocationLock.utils';
 import { cn } from '@/shared/utils/component.utils';
-import { FC, useState } from 'react';
+import {
+  formatAmountWithCommas,
+  formatPriceUSDWithCommas,
+  formatTimestamp,
+} from '@/shared/utils/string.utils';
+import { FC, useMemo, useState } from 'react';
 import { AllocationAmount } from './AllocationAmount';
 import { AllocationCategory } from './AllocationCategory';
 import { AllocationClass } from './AllocationClass';
@@ -41,6 +51,11 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
     totalAmount !== undefined;
 
   const isK2 = tokenInfo.id === 'k2';
+
+  const groupedAllocations = useMemo(() => {
+    if (!data) return new Map<string, Allocation[]>();
+    return getAllocationsByCarbonClass(data);
+  }, [data]);
 
   return (
     <Table className={cn('w-full mt-6', className)}>
@@ -83,13 +98,27 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
         </TableRow>
       </TableHeader>
       <TableBody borders="between">
-        {data?.map((allocation) => (
-          <AllocationTableRow
-            key={allocation.id}
-            allocation={allocation}
-            {...props}
-          />
-        ))}
+        {Array.from(groupedAllocations.entries()).map(
+          ([carbonClass, allocations]: [string, Allocation[]]) => {
+            const totalAmount = getTotalAllocatedForCarbonClass(allocations);
+            const firstAllocation = allocations[0];
+            return (
+              <CarbonClassGroup
+                key={carbonClass}
+                {...props}
+                carbonClass={carbonClass}
+                allocations={allocations}
+                totalAmount={totalAmount}
+                allocationPercent={
+                  props.totalAmount && props.totalAmount > 0
+                    ? Math.min(1, Math.max(0, totalAmount / props.totalAmount))
+                    : 0
+                }
+                firstAllocation={firstAllocation}
+              />
+            );
+          }
+        )}
         {showUnallocatedRow && (
           <UnallocatedRow
             amount={unallocatedAmount}
@@ -110,6 +139,308 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
   );
 };
 
+type CarbonClassGroupProps = AllocationsCardProps & {
+  carbonClass: string;
+  allocations: Allocation[];
+  totalAmount: number;
+  allocationPercent: number;
+  firstAllocation: Allocation;
+};
+
+const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
+  const {
+    carbonClass,
+    allocations,
+    totalAmount,
+    allocationPercent,
+    firstAllocation,
+    tokenInfo,
+  } = props;
+  const [isExpanded, setIsExpanded] = useState(true);
+  const isK2 = tokenInfo.id === 'k2';
+  const isKvcm = tokenInfo.id === 'kvcm';
+  const { data: protocolData } = useProtocolData();
+
+  const usdValue = useMemo(() => {
+    if (!isKvcm && !isK2) return 0;
+    const tokenPrice = isK2
+      ? protocolData?.metrics.k2.valueUSD || 0
+      : protocolData?.metrics.kvcm.valueUSD || 0;
+    return totalAmount * tokenPrice;
+  }, [totalAmount, isK2, isKvcm, protocolData]);
+
+  const allocationsByLock = useMemo(() => {
+    const map = new Map<number | undefined, Allocation[]>();
+    allocations.forEach((allocation) => {
+      const lockId = allocation.contractLockId;
+      const existing = map.get(lockId) ?? [];
+      map.set(lockId, [...existing, allocation]);
+    });
+    return map;
+  }, [allocations]);
+
+  const hasLocks = allocations.some((a) => a.contractLockId !== undefined);
+  const shouldShowGrouped = allocations.length > 1 || (isKvcm && hasLocks);
+
+  if (!allocations || allocations.length === 0) {
+    return null;
+  }
+
+  return (
+    <>
+      {shouldShowGrouped && (
+        <TableRow>
+          <TableCell className="text-left border-0">
+            <div className="flex flex-col gap-0.5">
+              <AllocationClass {...props} allocation={firstAllocation} />
+              <AllocationCategory {...props} allocation={firstAllocation} />
+              <Progress progressPercent={allocationPercent} />
+            </div>
+          </TableCell>
+          <TableCell className="text-right border-0">
+            <div className="flex flex-col items-end">
+              <div className="font-medium text-gray-900 tabular-nums">
+                {formatAmountWithCommas(totalAmount)}{' '}
+                <span className="text-void-50 text-size-12">
+                  {tokenInfo.symbol}
+                </span>
+              </div>
+              {(isKvcm || isK2) && (
+                <div className="text-size-12 text-void-50 tabular-nums">
+                  ≈ {formatPriceUSDWithCommas(usdValue)}
+                </div>
+              )}
+            </div>
+          </TableCell>
+          {!isK2 && (
+            <TableCell className="text-center border-0">
+              <span className="text-size-12 text-void-50">—</span>
+            </TableCell>
+          )}
+          <TableCell className="text-left border-0">
+            <div className="flex justify-center">
+              <span className="text-size-12 text-void-50">—</span>
+            </div>
+          </TableCell>
+          <TableCell className="border-0">
+            {/* Edit button removed from main row */}
+          </TableCell>
+          <TableCell
+            className="border-0 justify-end cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsExpanded(!isExpanded);
+            }}
+          >
+            <Icon
+              className={cn(
+                'transition-transform',
+                isExpanded ? 'rotate-180' : 'rotate-270'
+              )}
+              icon={ArrowDown}
+              size={2.2}
+            />
+          </TableCell>
+        </TableRow>
+      )}
+      {shouldShowGrouped &&
+        isExpanded &&
+        isKvcm &&
+        Array.from(allocationsByLock.entries())
+          .filter(([lockId]) => lockId !== undefined)
+          .map(([lockId, lockAllocations]) => {
+            const lockTotal = lockAllocations.reduce(
+              (sum, a) => sum + a.amount,
+              0
+            );
+            const lockAllocation = lockAllocations[0];
+            const lockDate = lockAllocation.lockedUntil
+              ? formatTimestamp(lockAllocation.lockedUntil * 1000)
+              : null;
+
+            // Calculate USD value for this lock's total
+            const lockUsdValue = (() => {
+              const tokenPrice = isKvcm
+                ? protocolData?.metrics.kvcm.valueUSD || 0
+                : protocolData?.metrics.k2.valueUSD || 0;
+              return lockTotal * tokenPrice;
+            })();
+
+            return (
+              <LockSubRow
+                key={`${carbonClass}-${lockId}`}
+                lockDate={lockDate}
+                lockTotal={lockTotal}
+                lockUsdValue={lockUsdValue}
+                lockAllocations={lockAllocations}
+                lockAllocation={lockAllocation}
+                isK2={isK2}
+                {...props}
+              />
+            );
+          })}
+      {shouldShowGrouped &&
+        isExpanded &&
+        isKvcm &&
+        hasLocks &&
+        (() => {
+          const allocationsWithoutLocks = allocations.filter(
+            (a) => a.contractLockId === undefined
+          );
+          if (allocationsWithoutLocks.length === 0) return null;
+
+          const totalWithoutLocks = allocationsWithoutLocks.reduce(
+            (sum, a) => sum + a.amount,
+            0
+          );
+
+          return (
+            <TableRow className="bg-white">
+              <TableCell className="text-left border-0 pl-16">
+                <div className="flex flex-col gap-1">
+                  <span className="text-size-14 text-gray-600">No Lock</span>
+                </div>
+              </TableCell>
+              <TableCell className="text-right border-0">
+                <span className="text-size-14 text-gray-600">
+                  {formatAmountWithCommas(totalWithoutLocks)} {tokenInfo.symbol}
+                </span>
+              </TableCell>
+              {!isK2 && <TableCell className="text-center border-0" />}
+              <TableCell className="text-left border-0" />
+              <TableCell className="border-0">
+                <div className="flex justify-end gap-2">
+                  {allocationsWithoutLocks.map((allocation) => (
+                    <AllocationEditButton
+                      key={allocation.id}
+                      {...props}
+                      allocation={allocation}
+                    />
+                  ))}
+                </div>
+              </TableCell>
+              <TableCell className="border-0" />
+            </TableRow>
+          );
+        })()}
+      {shouldShowGrouped &&
+        !isKvcm &&
+        allocations.map((allocation) => (
+          <AllocationTableRow
+            key={allocation.id}
+            allocation={allocation}
+            {...props}
+          />
+        ))}
+      {!shouldShowGrouped &&
+        allocations.length > 0 &&
+        allocations.map((allocation) => (
+          <AllocationTableRow
+            key={allocation.id}
+            allocation={allocation}
+            {...props}
+          />
+        ))}
+    </>
+  );
+};
+
+type LockSubRowProps = AllocationsCardProps & {
+  lockDate: string | null;
+  lockTotal: number;
+  lockUsdValue: number;
+  lockAllocations: Allocation[];
+  lockAllocation: Allocation;
+  isK2: boolean;
+  tokenInfo: AllocationsCardProps['tokenInfo'];
+};
+
+const LockSubRow: FC<LockSubRowProps> = (props) => {
+  const {
+    lockDate,
+    lockTotal,
+    lockUsdValue,
+    lockAllocations,
+    lockAllocation,
+    isK2,
+    tokenInfo,
+    totalAmount,
+  } = props;
+  const [isHovered, setIsHovered] = useState(false);
+  const isKvcm = tokenInfo.id === 'kvcm';
+
+  const lockPercent =
+    totalAmount && totalAmount > 0
+      ? Math.min(1, Math.max(0, lockTotal / totalAmount))
+      : 0;
+
+  return (
+    <TableRow
+      key={`lock-${lockAllocation.contractLockId}`}
+      className="bg-white"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <TableCell className="text-left border-0">
+        <div className="flex items-center gap-[25px]">
+          <span className="text-gray-400 text-size-16 flex-shrink-0 flex items-center justify-center h-full">
+            ↳
+          </span>
+          <div className="flex flex-col gap-1 flex-1">
+            <span className="text-size-14 text-gray-600">
+              {lockDate ? `Lock: ${lockDate}` : 'Lock'}
+            </span>
+            <Progress progressPercent={lockPercent} />
+          </div>
+        </div>
+      </TableCell>
+      <TableCell className="text-right border-0">
+        <div className="flex flex-col items-end">
+          <div className="font-medium text-gray-900 tabular-nums">
+            {formatAmountWithCommas(lockTotal)}{' '}
+            <span className="text-void-50 text-size-12">
+              {tokenInfo.symbol}
+            </span>
+          </div>
+          {(isKvcm || isK2) && (
+            <span className="text-size-12 text-void-50 tabular-nums">
+              ≈ {formatPriceUSDWithCommas(lockUsdValue)}
+            </span>
+          )}
+        </div>
+      </TableCell>
+      {!isK2 && (
+        <TableCell className="text-center border-0">
+          <div className="flex justify-center">
+            <AllocationPriceEffect {...props} allocation={lockAllocation} />
+          </div>
+        </TableCell>
+      )}
+      <TableCell className="text-left border-0">
+        <div className="flex justify-center">
+          <AllocationPrice {...props} allocation={lockAllocation} />
+        </div>
+      </TableCell>
+      <TableCell className="border-0">
+        <div className="flex justify-end">
+          {isHovered && lockAllocations.length > 0 && (
+            <div className="flex gap-2">
+              {lockAllocations.map((allocation) => (
+                <AllocationEditButton
+                  key={allocation.id}
+                  {...props}
+                  allocation={allocation}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </TableCell>
+      <TableCell className="border-0" />
+    </TableRow>
+  );
+};
+
 const AllocationTableRow = (
   props: AllocationsCardProps & { allocation: Allocation }
 ) => {
@@ -118,7 +449,9 @@ const AllocationTableRow = (
   const isK2 = tokenInfo.id === 'k2';
 
   const allocationPercent =
-    totalAmount && totalAmount > 0 ? allocation.amount / totalAmount : 0;
+    totalAmount && totalAmount > 0
+      ? Math.min(1, Math.max(0, allocation.amount / totalAmount))
+      : 0;
 
   return (
     <>

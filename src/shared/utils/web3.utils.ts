@@ -85,14 +85,6 @@ export const handleWeb3Error = (error: unknown) => {
   };
 };
 
-const isUserRejection = (error: unknown) =>
-  isViemError(error) &&
-  error instanceof Error &&
-  (error.message?.toLowerCase().includes('rejected') ||
-    error.message?.toLowerCase().includes('denied') ||
-    error.message?.toLowerCase().includes('user rejected') ||
-    error.message?.toLowerCase().includes('user denied'));
-
 /**
  * Fetches and decodes logs from a transaction receipt filtered by event ABI
  * @param chainId - The chain ID

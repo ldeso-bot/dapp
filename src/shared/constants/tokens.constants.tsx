@@ -116,7 +116,7 @@ export const lpTokens = {
   'kvcm-k2': tokens['kvcm-k2'],
 } as const;
 
-export const allocationTokens = {
+const allocationTokens = {
   kvcm: tokens.kvcm,
   k2: tokens.k2,
 } as const;

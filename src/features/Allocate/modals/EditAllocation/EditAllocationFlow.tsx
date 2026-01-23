@@ -10,35 +10,33 @@ import {
   EditAllocationFields,
   editAllocationDialogAtom,
 } from './editAllocation.utils';
-import EditAllocationConfirm from './steps/EditAllocationConfirm';
 import EditAllocationForm from './steps/EditAllocationForm';
 
 export default function EditAllocationFlow() {
   const editAllocationDialog = useAtomValue(editAllocationDialogAtom);
 
-  // Form and schema are deffined at the flow level
   const schema = z.object({
     carbonClass: z.string(),
     allocationId: z.string(),
     amount: z.coerce
       .number()
-      .gt(0, 'Amount must be a positive integer')
-      .int('Amount must be a positive integer'),
+      .gte(0, 'Amount must be 0 or greater')
+      .int('Amount must be an integer'),
   });
   const form = useForm<EditAllocationFields>({
     resolver: zodResolver(schema),
+    mode: 'onTouched',
     defaultValues: {
       carbonClass: editAllocationDialog.allocation?.carbonClass,
       allocationId: editAllocationDialog.allocation?.id,
       amount: editAllocationDialog.allocation?.amount ?? 0,
     },
   });
-  const parsedForm = useParsedForm(form, schema);
 
-  // Form is passed to each step (we could pass schema too)
+  const parsedForm = useParsedForm(form, schema);
   return (
     <Steps
-      components={[EditAllocationForm, EditAllocationConfirm]}
+      components={[EditAllocationForm]}
       data={{ form, schema, parsedForm }}
     />
   );

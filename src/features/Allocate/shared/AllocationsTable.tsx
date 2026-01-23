@@ -9,8 +9,9 @@ import { AllocationsTableMobile } from './AllocationsTableMobile';
 import { CategoryFilter } from './CategoryFilter';
 
 export const AllocationsTable: FC<AllocationsCardProps> = (props) => {
-  const { className, data, showCategoryFilter = false } = props;
+  const { className, data, tokenInfo, showCategoryFilter = false } = props;
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const isKvcm = tokenInfo.id === 'kvcm';
 
   const categories = useMemo(() => {
     if (!showCategoryFilter) return [];
@@ -56,6 +57,15 @@ export const AllocationsTable: FC<AllocationsCardProps> = (props) => {
       skeletonClassName="h-50"
       className={cn('rounded-lg border-gray-300 !shadow-none', className)}
     >
+      <p className="text-size-14 text-gray-600 mt-1">
+        {isKvcm
+          ? `Allocate kVCM to carbon classes to direct which credits the protocol
+          buys and holds in the portfolio, and at what intensity. Higher
+          allocations increase your share of flows in that class and influence
+          its indicative price.`
+          : `Allocate K2 to carbon classes to increase the system’s capacity to buy and retire those credits without moving the price. K2 does not represent direct ownership of carbon; it shapes how much activity the system can support at a given price.`}
+      </p>
+
       <div className="pt-2">
         {showCategoryFilter && categories.length > 0 && (
           <CategoryFilter

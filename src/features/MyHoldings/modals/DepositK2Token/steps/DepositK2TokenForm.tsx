@@ -14,6 +14,7 @@ import { useTransactionHandler } from '@/shared/hooks/useTransactionHandler';
 import { delay } from '@/shared/utils/date.utils';
 import { formatAmountWithCommas } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
+import { useEffect } from 'react';
 import { parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 import {
@@ -43,6 +44,19 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
     ? parseUnits(String(amount), tokenInfo.decimals)
     : 0n;
 
+  useEffect(() => {
+    if (amount && amount > 0 && tokenBalance > 0) {
+      if (amount > tokenBalance) {
+        setError('amount', {
+          type: 'manual',
+          message: `Amount exceeds available balance.`,
+        });
+      } else {
+        clearErrors('amount');
+      }
+    }
+  }, [amount, tokenBalance, setError, clearErrors, tokenInfo.symbol]);
+
   const { deposit } = useDepositK2Token({
     amount: amountWei,
   });
@@ -50,6 +64,14 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
   const onSubmit = async () => {
     if (!isConnected) return;
     clearErrors('root');
+
+    if (amount && amount > tokenBalance) {
+      setError('root', {
+        type: 'manual',
+        message: `Cannot deposit more than available balance.`,
+      });
+      return;
+    }
 
     const result = await handleTransaction(deposit, {
       successTitle: 'Deposit K2',
@@ -126,7 +148,7 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
             colors="secondary"
             context="flow"
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !isValidAmount || !!(amount && amount > tokenBalance)}
           >
             {isSubmitting ? 'Depositing...' : 'Confirm Deposit'}
           </Button>

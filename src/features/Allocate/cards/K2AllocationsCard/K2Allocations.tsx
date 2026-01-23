@@ -36,6 +36,7 @@ export default function K2AllocationsCard(props: CardProps) {
       titleAddOnFar={
         <Button
           colors="secondary"
+          className="w-fit h-[3.2rem]"
           href={`${ROUTES.ALLOCATE}?action=new_allocation_k2`}
         >
           <Icon icon={Plus} size={1.6} /> New Allocation

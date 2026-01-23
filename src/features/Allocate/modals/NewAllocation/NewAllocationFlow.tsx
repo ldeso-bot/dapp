@@ -11,35 +11,48 @@ import {
   newAllocationDialogAtom,
   NewAllocationFields,
 } from './newAllocation.utils';
-import NewAllocationConfirm from './steps/NewAllocationConfirm';
 import NewAllocationForm from './steps/NewAllocationForm';
 
 export default function NewAllocationFlow() {
   const newAllocationDialog = useAtomValue(newAllocationDialogAtom);
 
-  // Form and schema are deffined at the flow level
-  const schema = z.object({
-    token: z.string(),
-    amount: z.coerce
-      .number()
-      .gt(0, 'Amount must be a positive integer')
-      .int('Amount must be a positive integer'),
-    carbonClass: z.string().min(1, 'Carbon class is required'),
-  });
+  const schema = z
+    .object({
+      token: z.string(),
+      amount: z.coerce
+        .number()
+        .gt(0, 'Amount must be a positive integer')
+        .int('Amount must be a positive integer'),
+      carbonClass: z.string().min(1, 'Carbon class is required'),
+      contractLockId: z.coerce.number().optional(),
+    })
+    .refine(
+      (data) => {
+        // For kVCM, contractLockId is required
+        if (data.token === 'kvcm') {
+          return data.contractLockId !== undefined && data.contractLockId > 0;
+        }
+        return true;
+      },
+      {
+        message: 'Please select a lock',
+        path: ['contractLockId'],
+      }
+    );
   const form = useForm<NewAllocationFields>({
     resolver: zodResolver(schema),
+    mode: 'onTouched',
     defaultValues: {
       token: newAllocationDialog.token ?? DEFAULT_ALLOCATION_TOKEN,
       amount: 0,
       carbonClass: '',
     },
   });
-  const parsedForm = useParsedForm(form, schema);
 
-  // Form is passed to each step (we could pass schema too)
+  const parsedForm = useParsedForm(form, schema);
   return (
     <Steps
-      components={[NewAllocationForm, NewAllocationConfirm]}
+      components={[NewAllocationForm]}
       data={{ form, schema, parsedForm }}
     />
   );

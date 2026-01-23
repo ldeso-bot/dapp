@@ -12,7 +12,14 @@ export default function KvcmAllocationsCard(props: CardProps) {
   const { data } = useWalletData();
   const { data: allocationData } = useAllocationData();
 
-  const totalKvcm = data?.balances?.kvcm || 0;
+  // Calculate total allocatable kVCM (unlocked + locked)
+  const unlockedKvcm = data?.balances?.kvcm || 0;
+  const lockedKvcm =
+    data?.locks
+      ?.filter((lock) => lock.token === 'kvcm')
+      .reduce((sum, lock) => sum + lock.lockedAmount, 0) || 0;
+  const totalKvcm = unlockedKvcm + lockedKvcm;
+
   const allocations = allocationData?.kvcm.allocations || [];
   const unallocatedKvcm = allocationData?.kvcm.unallocated || 0;
 
@@ -36,6 +43,7 @@ export default function KvcmAllocationsCard(props: CardProps) {
       titleAddOnFar={
         <Button
           colors="secondary"
+          className="w-fit h-[3.2rem]"
           href={`${ROUTES.ALLOCATE}?action=new_allocation_kvcm`}
         >
           <Icon icon={Plus} size={1.6} /> New Allocation

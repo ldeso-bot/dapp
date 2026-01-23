@@ -1,6 +1,6 @@
 'use client';
 
-import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
+import { useCarbonClass } from '@/features/Allocate/hooks/useCarbonClass';
 import { formatPriceUSD, formatUTCTime } from '@/shared/utils/string.utils';
 import { type FC, useMemo } from 'react';
 import { AllocationPriceEffect } from './AllocationPriceEffect';
@@ -8,18 +8,14 @@ import { AllocationsTableItemProps } from './AllocationsTable.types';
 
 export const AllocationPrice: FC<AllocationsTableItemProps> = (props) => {
   const { allocation, tokenInfo } = props;
-  const { data: protocolData } = useProtocolData();
+  const carbonClass = useCarbonClass(allocation);
 
   const isKvcm = tokenInfo.id === 'kvcm';
-
+  
   const priceDisplay = useMemo(() => {
     if (!isKvcm) {
       return <AllocationPriceEffect {...props} />;
     }
-
-    const carbonClass = protocolData?.carbonClasses?.find(
-      (cc) => cc.name === allocation.carbonClass
-    );
 
     const hasPrice = allocation.priceUSD > 0;
     const hasInventory = carbonClass ? carbonClass.supplyTonnes > 0 : false;
@@ -40,7 +36,7 @@ export const AllocationPrice: FC<AllocationsTableItemProps> = (props) => {
         </div>
       </div>
     );
-  }, [allocation, protocolData, isKvcm, props]);
+  }, [allocation, carbonClass, isKvcm, props]);
 
   return priceDisplay;
 };

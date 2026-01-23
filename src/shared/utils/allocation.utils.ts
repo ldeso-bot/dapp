@@ -39,3 +39,12 @@ export const computeTokenAllocationStats = (
     highestInfluence,
   };
 };
+
+export const computeMaxAllocationForPosition = (params: {
+  balance: number;
+  totalAllocated: number;
+  currentAllocationAmount: number;
+}) => {
+  const { balance, totalAllocated, currentAllocationAmount } = params;
+  return Math.max(0, balance - (totalAllocated - currentAllocationAmount));
+};

@@ -5,6 +5,7 @@ export type NewAllocationFields = {
   token: string;
   amount: number;
   carbonClass: string;
+  contractLockId?: number;
 };
 
 export const newAllocationDialogAtom = atom({

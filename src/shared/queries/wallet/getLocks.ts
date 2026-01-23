@@ -235,6 +235,7 @@ export const getLocks = async (
 
     return {
       id: lock.id,
+      contractLockId: formatStringToNumber(lock.contractLockId, 0),
       lockedAmount,
       lockedValueUSD,
       positionAmount,
@@ -303,6 +304,7 @@ const getMockLocks = (): Locks => {
   return [
     {
       id: '1',
+      contractLockId: 1,
       maturityId: 1,
       lockedAmount: 1000,
       lockedValueUSD: 3000,
@@ -332,6 +334,7 @@ const getMockLocks = (): Locks => {
     },
     {
       id: '2',
+      contractLockId: 2,
       maturityId: 2,
       lockedAmount: 12.25,
       lockedValueUSD: 36.75,

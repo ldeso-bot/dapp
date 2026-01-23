@@ -12,6 +12,8 @@ export type EarningStatus = 'earning' | 'paused';
 
 export type Lock = {
   id: string;
+  /** Contract lock ID (used in contract calls) */
+  contractLockId: number;
   /** Amount locked */
   lockedAmount: number;
   /** Value of the locked tokens in USD */
@@ -75,6 +77,9 @@ export type Allocation = {
     name: AllocatableToken;
     address: Address;
   };
+  contractLockId?: number;
+  maturityId?: number;
+  lockedUntil?: number;
 };
 export type Allocations = Allocation[];
 

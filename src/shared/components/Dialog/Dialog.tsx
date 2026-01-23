@@ -31,6 +31,7 @@ export default function Dialog(props: Props) {
             className
           )}
           aria-describedby="Dialog"
+          onEscapeKeyDown={() => onClose?.()}
           onInteractOutside={() => closeOnOutsideClick && onClose?.()}
         >
           <DialogPrimitive.Title>
