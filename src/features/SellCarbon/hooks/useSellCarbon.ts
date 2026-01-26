@@ -1,11 +1,8 @@
-import {
-  ExecuteWithValidationResult,
-  useTransactionWithValidation,
-} from '@/features/MyHoldings/hooks/useTransactionWithValidation';
+import { ExecuteWithValidationResult } from '@/features/MyHoldings/hooks/useTransactionWithValidation';
+import { useTransactionAndWaitForWalletUpdate } from '@/shared/hooks/useTransactionAndWaitForWalletUpdate';
 import { useContract } from '@/shared/hooks/web3/useContract';
-import { CreditBalance, WalletData } from '@/shared/models/walletData';
+import { WalletData } from '@/shared/models/walletData';
 import { handleWeb3Error } from '@/shared/utils/web3.utils';
-import { useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { isAddress, zeroAddress } from 'viem';
 import { useAccount } from 'wagmi';
@@ -29,35 +26,14 @@ export const useSellCarbon = (params: SellCarbonParams) => {
 
   const { chain } = useAccount();
 
-  const queryClient = useQueryClient();
-  const { address: userAddress } = useAccount();
-  const queryKey = [`wallet-data-${userAddress}`];
-
   const { executeWithValidation, isExecuting } =
-    useTransactionWithValidation<WalletData>({
-      queryKey,
-      validate: (walletData, previousData) => {
-        if (!walletData?.balances) return false;
-        const findBalance = (balances: CreditBalance[]) => {
-          return balances?.find(
-            (balance) =>
-              balance.creditToken.address === params.credit &&
-              balance.creditToken.tokenId === params.tokenId
-          );
-        };
-        const currentBalance = findBalance(walletData?.creditBalances);
-        const previousBalance = findBalance(previousData?.creditBalances ?? []);
-
-        if (
-          currentBalance &&
-          previousBalance &&
-          currentBalance?.balance !== previousBalance?.balance
-        ) {
-          return true;
-        }
-        return false;
-      },
-      getPreviousData: () => queryClient.getQueryData<WalletData>(queryKey),
+    useTransactionAndWaitForWalletUpdate({
+      valueFetcher: (walletData: WalletData) =>
+        walletData?.creditBalances.find(
+          (balance) =>
+            balance.creditToken.address === params.credit &&
+            balance.creditToken.tokenId === params.tokenId
+        )?.balance ?? 0,
     });
 
   const sellCarbon =

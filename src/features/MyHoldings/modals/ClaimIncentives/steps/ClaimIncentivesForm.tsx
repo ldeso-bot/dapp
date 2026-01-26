@@ -1,11 +1,11 @@
 'use client';
 
 import { alertAtom } from '@/features/Alert/alert.atom';
-import { useTransactionWithValidation } from '@/features/MyHoldings/hooks/useTransactionWithValidation';
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
 import { DialogHeader } from '@/shared/components/Dialog/DialogHeader';
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
+import { useTransactionAndWaitForWalletUpdate } from '@/shared/hooks/useTransactionAndWaitForWalletUpdate';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { WalletData } from '@/shared/models/walletData';
 import {
@@ -29,8 +29,8 @@ export default function ClaimIncentivesForm() {
   const claimableK2Usd = dialog.claimableK2Usd ?? 0;
 
   const { executeWithValidation, isExecuting } =
-    useTransactionWithValidation<WalletData>({
-      queryKey: [`wallet-data-${address}`],
+    useTransactionAndWaitForWalletUpdate({
+      valueFetcher: (walletData: WalletData) => walletData?.balances?.k2,
     });
 
   const close = () =>

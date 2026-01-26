@@ -10,7 +10,6 @@ type ValidationFunction<T = unknown> = (data: T, previousData?: T) => boolean;
 type UseTransactionWithValidationParams<T = unknown> = {
   queryKey: string[];
   validate?: ValidationFunction<T>;
-  getPreviousData?: () => T | undefined;
 };
 
 export type ExecuteWithValidationResult = {
@@ -24,7 +23,7 @@ export const useTransactionWithValidation = <T = WalletData>(
   const queryClient = useQueryClient();
   const { refetchWithRetry } = useRefetchWithRetry();
   const { waitForTransaction } = useWaitForTransaction();
-  const { queryKey, validate, getPreviousData } = props;
+  const { queryKey, validate } = props;
   const [isExecuting, setIsExecuting] = useState(false);
 
   const executeWithValidation = useCallback(
@@ -33,7 +32,7 @@ export const useTransactionWithValidation = <T = WalletData>(
     ): Promise<ExecuteWithValidationResult> => {
       setIsExecuting(true);
       try {
-        const previousData = getPreviousData?.();
+        const previousData = queryClient.getQueryData<T>(queryKey);
         const txHash = await executeTransaction();
 
         if (!txHash) {
@@ -66,14 +65,7 @@ export const useTransactionWithValidation = <T = WalletData>(
         setIsExecuting(false);
       }
     },
-    [
-      queryKey,
-      validate,
-      getPreviousData,
-      waitForTransaction,
-      queryClient,
-      refetchWithRetry,
-    ]
+    [queryKey, validate, waitForTransaction, queryClient, refetchWithRetry]
   );
 
   return { executeWithValidation, isExecuting };

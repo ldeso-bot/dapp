@@ -19,6 +19,13 @@ export const createWagmiConfig = () => {
     console.warn('WALLETCONNECT_PROJECT_ID is not set.');
   }
 
+  const walletsList = [
+    injectedWallet,
+    ...(typeof indexedDB !== 'undefined' && WALLETCONNECT_PROJECT_ID
+      ? [metaMaskWallet, walletConnectWallet]
+      : []),
+  ];
+
   const wallets = [
     {
       groupName: 'Recommended',
@@ -26,19 +33,7 @@ export const createWagmiConfig = () => {
     },
     {
       groupName: 'Other wallets',
-
-      wallets: [
-        // only create connectors on client-side to avoid SSR issues
-        // see https://github.com/rainbow-me/rainbowkit/issues/2476
-        ...(typeof indexedDB !== 'undefined'
-          ? [
-              metaMaskWallet,
-              // Only include WalletConnect if projectId is set
-              ...(WALLETCONNECT_PROJECT_ID ? [walletConnectWallet] : []),
-            ]
-          : []),
-        injectedWallet,
-      ],
+      wallets: walletsList,
     },
   ];
 

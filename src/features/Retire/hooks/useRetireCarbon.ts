@@ -1,9 +1,8 @@
-import { useTransactionWithValidation } from '@/features/MyHoldings/hooks/useTransactionWithValidation';
+import { useTransactionAndWaitForWalletUpdate } from '@/shared/hooks/useTransactionAndWaitForWalletUpdate';
 import { Token } from '@/shared/constants/tokens.constants';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { WalletData } from '@/shared/models/walletData';
 import { handleWeb3Error } from '@/shared/utils/web3.utils';
-import { useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { isAddress } from 'viem';
 import { useAccount } from 'wagmi';
@@ -32,30 +31,10 @@ export const useRetireCarbon = (params: RetireCarbonParams) => {
   );
   const { chain, address: walletAddress } = useAccount();
 
-  const queryClient = useQueryClient();
-  const queryKey = [`wallet-data-${walletAddress}`];
-
   const { executeWithValidation, isExecuting } =
-    useTransactionWithValidation<WalletData>({
-      queryKey,
-      validate: (walletData, previousData) => {
-        // Validate that the transaction affected the wallet data
-        if (!walletData?.balances) return false;
-        // Check if payment token balance changed (payment token spent)
-        const currentBalance =
-          walletData?.balances?.[params.inputTokenIdentifier];
-        const previousBalance =
-          previousData?.balances?.[params.inputTokenIdentifier];
-        if (
-          currentBalance !== undefined &&
-          previousBalance !== undefined &&
-          currentBalance !== previousBalance
-        ) {
-          return true;
-        }
-        return false;
-      },
-      getPreviousData: () => queryClient.getQueryData<WalletData>(queryKey),
+    useTransactionAndWaitForWalletUpdate({
+      valueFetcher: (walletData: WalletData) =>
+        walletData?.balances?.[params.inputTokenIdentifier],
     });
 
   const retireCarbon = useCallback(async () => {

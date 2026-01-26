@@ -3,7 +3,6 @@ import { useTransactionWithValidation } from '@/features/MyHoldings/hooks/useTra
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { WalletData } from '@/shared/models/walletData';
 import { handleWeb3Error } from '@/shared/utils/web3.utils';
-import { useQueryClient } from '@tanstack/react-query';
 import { atom } from 'jotai';
 import { useCallback } from 'react';
 import { useAccount } from 'wagmi';
@@ -15,7 +14,6 @@ export type DepositK2TokenFields = {
 export const depositK2TokenDialogAtom = atom({ open: false });
 
 export const useDepositK2Token = (params: { amount: bigint }) => {
-  const queryClient = useQueryClient();
   const { amount } = params;
   const { address: userAddress, chain } = useAccount();
 
@@ -51,7 +49,6 @@ export const useDepositK2Token = (params: { amount: bigint }) => {
       }
       return false;
     },
-    getPreviousData: () => queryClient.getQueryData<WalletData>(queryKey),
   });
 
   const deposit = useCallback(async () => {

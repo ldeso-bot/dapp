@@ -4,7 +4,6 @@ import { AllocatableToken } from '@/shared/constants/tokens.constants';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { WalletData } from '@/shared/models/walletData';
 import { handleWeb3Error } from '@/shared/utils/web3.utils';
-import { useQueryClient } from '@tanstack/react-query';
 import { atom } from 'jotai';
 import { useCallback } from 'react';
 import { useAccount } from 'wagmi';
@@ -27,7 +26,6 @@ export const useLockToken = (params: {
   amount: bigint;
   maturityId?: number;
 }) => {
-  const queryClient = useQueryClient();
   const { token, amount, maturityId } = params;
   const { address: userAddress, chain } = useAccount();
 
@@ -69,7 +67,6 @@ export const useLockToken = (params: {
       }
       return false;
     },
-    getPreviousData: () => queryClient.getQueryData<WalletData>(queryKey),
   });
 
   const lock = useCallback(async () => {

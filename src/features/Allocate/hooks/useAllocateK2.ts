@@ -1,8 +1,7 @@
-import { useTransactionWithValidation } from '@/features/MyHoldings/hooks/useTransactionWithValidation';
+import { useTransactionAndWaitForWalletUpdate } from '@/shared/hooks/useTransactionAndWaitForWalletUpdate';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { WalletData } from '@/shared/models/walletData';
 import { handleWeb3Error } from '@/shared/utils/web3.utils';
-import { useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { isAddress } from 'viem';
 import { useAccount } from 'wagmi';
@@ -18,29 +17,13 @@ type DeallocateK2Params = {
 };
 
 export const useAllocateK2 = () => {
-  const queryClient = useQueryClient();
   const { contract } = useContract('StakingManagerDiamond');
-  const { chain, address: userAddress } = useAccount();
-  const queryKey = [`wallet-data-${userAddress}`];
+  const { chain } = useAccount();
 
-  const { executeWithValidation } = useTransactionWithValidation<WalletData>({
-    queryKey,
-    validate: (walletData, previousData) => {
-      if (!walletData?.allocations) return false;
-
-      const currentTotal = walletData.allocations.reduce(
-        (sum, alloc) => sum + alloc.amount,
-        0
-      );
-      const previousTotal =
-        previousData?.allocations.reduce(
-          (sum, alloc) => sum + alloc.amount,
-          0
-        ) ?? 0;
-
-      return currentTotal !== previousTotal;
-    },
-    getPreviousData: () => queryClient.getQueryData<WalletData>(queryKey),
+  const { executeWithValidation } = useTransactionAndWaitForWalletUpdate({
+    valueFetcher: (walletData: WalletData) =>
+      walletData?.allocations?.reduce((sum, alloc) => sum + alloc.amount, 0) ??
+      0,
   });
 
   const allocate = useCallback(
