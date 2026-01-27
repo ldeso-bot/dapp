@@ -11,13 +11,11 @@ export default function K2PriceCard(props: CardProps) {
   return (
     <StatCard
       {...props}
-      buttonText="Buy K2"
+      buttonText="Trade K2"
       buttonHref={BUY_K2_URL}
       buttonTarget="_blank"
       title="K2 Price"
-      tooltip="K2 is the governance token for the KlimaDAO. It is used to vote on proposals and make decisions for the protocol."
       primaryValue={price}
-      changePercent={data?.metrics.k2.valueUSDChangePercent24h}
       token={tokens.k2}
     />
   );

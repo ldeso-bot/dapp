@@ -122,8 +122,8 @@ export const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({
             </p>
             <div className="w-full h-[1px] bg-void-20 my-2" />
             <p>
-              Rewards (kVCM, K2) accrue until maturity and are claimable at
-              maturity.
+              Incentives (kVCM and/or K2) accrue until the end of the chosen
+              duration and then become claimable.
             </p>
           </div>
           {formState.errors.root && (

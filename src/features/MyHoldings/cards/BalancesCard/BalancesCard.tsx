@@ -14,10 +14,7 @@ import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
 import { Token } from '@/shared/constants/tokens.constants';
 import { useTokenBalances } from '@/shared/hooks/useTokenBalances';
 import { cn } from '@/shared/utils/component.utils';
-import {
-  formatAmountWithCommas,
-  formatPriceUSDWithCommas,
-} from '@/shared/utils/string.utils';
+import { formatAmountWithCommas } from '@/shared/utils/string.utils';
 import {
   getTokenIcon,
   getTokenImage,
@@ -41,7 +38,7 @@ export const BalancesCard = (props: CardProps) => {
             <div className="text-size-18 font-medium">Balances</div>
             <Tooltip
               className="max-w-[35rem] text-size-12 p-3"
-              content="Your wallet and deployed balances across all positions. Wallet shows tokens available to deploy; Deployed shows tokens currently locked or staked."
+              content="Balances across all protocol activities. Wallet shows unallocated assets."
             />
           </div>
           <Table>
@@ -91,9 +88,6 @@ export const BalancesCard = (props: CardProps) => {
                           ({getTokenSymbol(balance.token as Token)})
                         </small>
                       </div>
-                      <div className="text-size-12 text-void-60">
-                        {formatPriceUSDWithCommas(balance.usdValue)}
-                      </div>
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
@@ -105,9 +99,6 @@ export const BalancesCard = (props: CardProps) => {
                         <small className="text-size-12 text-void-60">
                           ({getTokenSymbol(balance.token as Token)})
                         </small>
-                      </div>
-                      <div className="text-size-12 text-void-60">
-                        {formatPriceUSDWithCommas(balance.deployedUsdValue)}
                       </div>
                     </div>
                   </TableCell>

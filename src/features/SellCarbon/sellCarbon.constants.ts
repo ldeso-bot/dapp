@@ -38,15 +38,20 @@ export const sellCarbonFlowItems = [
   ),
   createFlowItem(
     SwapHorizontalIcon,
-    'Sell to Protocol',
+    'Supply to Protocol',
     'Choose class and amount.',
     1
   ),
-  createFlowItem(KvcmIcon, 'Receive kVCM', 'Instant kVCM at market price.', 2),
+  createFlowItem(
+    KvcmIcon,
+    'Receive kVCM',
+    'Instant exchange for your carbon credits',
+    2
+  ),
 ];
 
 export const sellCarbonInfoCards = {
-  title: 'Why Sell with Klima?',
+  title: 'Why Supply to Klima Protocol?',
   description:
     'Convert your carbon credits into kVCM with instant liquidity and transparent pricing.',
   cards: [
@@ -54,19 +59,19 @@ export const sellCarbonInfoCards = {
       icon: CarbonCreditsIcon,
       title: 'Carbon Classes',
       description:
-        'Sell into curated carbon credit baskets. Each class represents specific credit types like Biochar, Avoided Deforestation, or Ocean Alkalinity Enhancement.',
+        'Supply into curated carbon credit baskets. Each class represents specific credit types like Biochar, Avoided Deforestation, or Ocean Alkalinity Enhancement.',
     },
     {
       icon: FairPricingIcon,
       title: 'Fair Pricing',
       description:
-        'Prices reflect real market demand. Rates are transparent and publicly visible before you sell.',
+        'Prices reflect real market demand. Rates are transparent and publicly visible before you supply your credits to Klima Protocol.',
     },
     {
       icon: InstantLiquidityIcon,
       title: 'Instant Liquidity',
       description:
-        'Exchange your carbon credits directly with the protocol. No order books, no waiting - receive kVCM immediately.',
+        'Exchange your carbon credits directly with the protocol. No order books, no waiting. Receive kVCM immediately.',
     },
   ],
 };
@@ -75,7 +80,7 @@ export const sellCarbonStats: StatItem[] = [
   {
     value: 'Instant',
     label:
-      'No order books, no waiting - sell directly and receive kVCM immediately.',
+      'No order books, no waiting. Supply directly and receive kVCM immediately.',
   },
   {
     value: 'Transparent',
@@ -90,6 +95,6 @@ export const sellCarbonStats: StatItem[] = [
 export const sellCarbonDocsCallout: DocsCalloutProps = {
   title: 'Learn About Carbon Classes & Governance',
   description:
-    'Explore documentation on carbon class whitelisting, stakeholder governance, and how pricing is determined across the Klima ecosystem.',
+    'Explore documentation on carbon class whitelisting, stakeholder governance, and how pricing is determined across the Klima Protocol ecosystem.',
   ...DEFAULT_DOCS_CALLOUT,
 };

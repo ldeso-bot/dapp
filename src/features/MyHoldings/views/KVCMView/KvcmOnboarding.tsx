@@ -22,12 +22,12 @@ export const KvcmOnboarding = () => {
   return (
     <OnboardingContainer
       title="kVCM Locks"
-      description="Lock kVCM for a fixed term to earn rewards (accrues daily, pays at maturity). Locked kVCM can also be allocated to carbon classes to influence protocol pricing. Incentives (K2) accrue on locked kVCM and are claimable anytime."
+      description="Lock kVCM for a fixed term to receive incentives when the term ends. Locked kVCM can also be allocated to carbon classes to influence protocol pricing. Incentives (K2) accrue on locked kVCM and are claimable anytime."
     >
       <NoPositionsHeader
         title="No Active Locks"
         icon={<LockIcon className="w-10 h-10 fill-[#00994a]" />}
-        description="Create your first kVCM lock to earn rewards and participate in carbon class allocation."
+        description="Create your first kVCM lock to participate in carbon class allocation and receive incentives."
       />
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:w-2xl w-full mx-auto my-4">
         <NoPositionsInfoCard
@@ -36,9 +36,9 @@ export const KvcmOnboarding = () => {
           description="Choose your lock duration"
         />
         <NoPositionsInfoCard
-          title="Dual Rewards"
+          title="Dual incentives"
           icon={<TrendingUpIcon className="w-5 h-5 fill-[#00994a]" />}
-          description="Base Accrual + K2 incentives"
+          description="kVCM + K2 incentives"
         />
         <NoPositionsInfoCard
           title="Allocate to Carbon"

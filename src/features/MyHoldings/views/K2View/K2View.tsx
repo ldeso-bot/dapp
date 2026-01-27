@@ -19,7 +19,6 @@ import {
   formatAmountWithCommas,
   formatCurrentTime,
   formatPercentage,
-  formatPriceUSDWithCommas,
 } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
 import { useAccount } from 'wagmi';
@@ -41,11 +40,11 @@ export const K2View = () => {
       ) : (
         <>
           <InfoCard
-            title="K2 Position"
+            title="K2 Activities"
             tooltipId="k2-position"
             buttonLabel="Deposit"
             onButtonClick={() => setDepositK2TokenDialog({ open: true })}
-            description="Lock K2 to earn variable K2 incentives and a share of kVCM incentives. After 24h you can request an unlock; principal becomes claimable at the daily cutoff. You can also allocate in-position K2 to carbon classes."
+            description="Lock K2 to become eligible for variable K2 incentives and a share of kVCM incentives. After 24 hours, you can request an unlock. Your locked tokens become claimable at the daily cutoff. You can also allocate locked K2 tokens to carbon classes."
             content={<K2Overview />}
           />
           <K2VariableRewards />
@@ -71,9 +70,6 @@ const K2Overview = () => {
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
                   {formatAmountWithCommas(k2Data.k2AccruedClaimableAmount)} K2
-                </div>
-                <div className="text-size-14 text-gray-500 tabular-nums">
-                  {formatPriceUSDWithCommas(k2Data.k2AccruedClaimableValue)}
                 </div>
               </div>
               {k2Data.k2ClaimableValue > 0 && (
@@ -102,9 +98,6 @@ const K2Overview = () => {
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
                   {formatAmountWithCommas(k2Data.k2AccruingClaimableAmount)} K2
                 </div>
-                <div className="text-size-14 text-gray-500 tabular-nums">
-                  {formatPriceUSDWithCommas(k2Data.k2AccruingClaimableValue)}
-                </div>
               </div>
             </>
           )}
@@ -112,13 +105,10 @@ const K2Overview = () => {
         <StatusCard>
           {k2Data && (
             <>
-              <StatusCardTitle badge="gray">In Position</StatusCardTitle>
+              <StatusCardTitle badge="gray">Tokens locked</StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
                   {formatAmountWithCommas(k2Data.lockedAmount)} K2
-                </div>
-                <div className="text-size-14 text-gray-500 tabular-nums">
-                  {formatPriceUSDWithCommas(k2Data.lockedValue)}
                 </div>
               </div>
             </>
@@ -132,11 +122,11 @@ const K2Overview = () => {
             <HoldingTotalPosition
               symbol="K2"
               totalPosition={k2Data.positionAmount}
-              tooltip="Total principal (units): sum of Claimable + Pending + In position (principal only)."
+              tooltip="Sum of Claimable + Pending + Tokens Locked."
             />
             <HoldingEstimatedValue
               estimatedValue={k2Data.positionValue}
-              tooltip="Total value (fiat, incl. accrued est.): principal + accrued rewards converted at the current reference price (estimate)."
+              tooltip="Estimate of the USD equivalent value of your K2 tokens plus incentives according to current market conditions."
             />
           </>
         )}
@@ -156,16 +146,15 @@ const K2VariableRewards = () => {
           <VariableRewardsHeader
             title="Variable Rewards"
             timestamp={`As of ${formatCurrentTime()}`}
-            description="Incentives (K2) earned by your time-locked K2. K2 amounts are variable and may change, including to 0. Claim anytime; doesn't change Base Accrual or your lock terms."
+            description="K2 incentives received from your locked K2 tokens. These incentives depend on protocol parameters, are variable, non-guaranteed, and may be zero."
           />
           <VariableRewardsItem>
             <VariableRewardsItemTitle
               title="Incentives (K2)"
-              tooltip="Incentives (K2) earned by your time-locked K2. K2 amounts are variable and may change, including to 0. Claim anytime; doesn't change Base Accrual or your lock terms."
               aprValue={formatPercentage(
                 protocolData.midnightInfos.k2ApyForK2 ?? 0
               )}
-              aprTooltip="The annual percentage rate of the variable rewards."
+              aprTooltip="The annual percentage rate of the variable rewards. This is an estimate, is not guaranteed, can change, and may be zero."
             />
             <VariableRewardsItemContent>
               <div className="flex flex-1 flex-col">
@@ -173,13 +162,8 @@ const K2VariableRewards = () => {
                   {formatAmountWithCommas(k2Data.k2ClaimableAmount)} K2
                 </span>
                 <span className="text-size-12 text-gray-500">
-                  {formatPriceUSDWithCommas(k2Data.k2ClaimableValue)}
-                </span>
-                <span className="text-size-12 text-gray-500">
                   Accrued to date:{' '}
-                  {formatAmountWithCommas(k2Data.k2AccruedClaimableAmount)} K2 •
-                  Accruing:{' '}
-                  {formatAmountWithCommas(k2Data.k2AccruingClaimableAmount)} K2
+                  {formatAmountWithCommas(k2Data.k2AccruedClaimableAmount)} K2
                 </span>
               </div>
             </VariableRewardsItemContent>
@@ -187,7 +171,7 @@ const K2VariableRewards = () => {
           <VariableRewardsItem>
             <VariableRewardsItemTitle
               title="Protocol Distribution (kVCM)"
-              tooltip="kVCM rewards earned by your time-locked K2. kVCM amounts are variable and may change, including to 0. Claim anytime; doesn't change Base Accrual or your lock terms."
+              tooltip="kVCM incentives received by your locked K2 tokens. These incentives depend on protocol parameters, are variable, non-guaranteed, and may be zero."
             />
             <VariableRewardsItemContent>
               <div className="flex flex-1 flex-col">
@@ -195,22 +179,14 @@ const K2VariableRewards = () => {
                   {formatAmountWithCommas(k2Data.kvcmClaimableAmount)} kVCM
                 </span>
                 <span className="text-size-12 text-gray-500">
-                  {formatPriceUSDWithCommas(k2Data.kvcmClaimableValue)}
-                </span>
-                <span className="text-size-12 text-gray-500">
                   Accrued to date:{' '}
-                  {formatAmountWithCommas(k2Data.kvcmAccruedClaimableAmount)}{' '}
-                  kVCM • Accruing:{' '}
-                  {formatAmountWithCommas(k2Data.kvcmAccruingClaimableAmount)}{' '}
-                  kVCM
+                  {formatAmountWithCommas(
+                    k2Data.kvcmAccruedClaimableAmount
+                  )}{' '}
                 </span>
               </div>
             </VariableRewardsItemContent>
           </VariableRewardsItem>
-          <div className="text-size-12 text-gray-500 mt-3">
-            Variable rewards come from protocol schedules; allocations may
-            change or be 0.
-          </div>
         </>
       )}
     </VariableRewardsCard>

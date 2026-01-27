@@ -14,17 +14,15 @@ export const HoldingEstimatedValue: FC<Props> = (props) => {
   return (
     <div className="flex justify-between gap-4">
       <div className="flex items-center gap-2">
-        <div className="font-semibold">Estimated value:</div>
         {tooltip && (
           <Tooltip
             content={tooltip}
             className="max-w-[30rem] text-size-12 p-3"
           />
         )}
+        <div>Estimated USD value:</div>
       </div>
-      <div className="font-semibold">
-        {formatPriceUSDWithCommas(Number(estimatedValue))}
-      </div>
+      <div>{formatPriceUSDWithCommas(Number(estimatedValue))}</div>
     </div>
   );
 };

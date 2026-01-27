@@ -24,7 +24,7 @@ export const allocationFlowItems = [
   createFlowItem(
     BalanceIcon,
     'Influence Prices',
-    'Your allocations shape carbon class prices.',
+    'Your allocations shape carbon class execution rates.',
     2
   ),
 ];
@@ -47,25 +47,25 @@ export const allocationStats: StatItem[] = [
 export const allocationInfoCards = {
   title: 'Why Allocate?',
   description:
-    'Allocate your locked tokens to influence carbon class prices and support market health.',
+    'Allocate your locked tokens to influence carbon class execution rates and support market health.',
   cards: [
     {
       icon: TrendingUpIcon,
       title: 'kVCM: Set the Price',
       description:
-        'When you allocate kVCM tokens to a carbon class, you increase the price-per-tonne for both buyers and sellers of that class.',
+        'When you allocate kVCM tokens to a carbon class, you increase the price-per-tonne for both buyers and suppliers of that class.',
     },
     {
       icon: SwapHorizontalIcon,
       title: 'K2: Reduce the Spread',
       description:
-        'Allocating K2 narrows the buy-sell spread for that class, making it easier to trade.',
+        'Allocating K2 to carbon classes narrows the spread for that class, making it easier to trade.',
     },
     {
       icon: LockOpenIcon,
       title: 'Flexible: No Lock-in',
       description:
-        "Deallocate any portion at any time. Allocations don't affect your incentives—they only guide carbon prices.",
+        "Deallocate any portion at any time. Allocations don't affect your incentives—they only guide carbon execution rates.",
     },
   ],
 };
@@ -73,6 +73,6 @@ export const allocationInfoCards = {
 export const allocationDocsCallout: DocsCalloutProps = {
   title: 'Learn About Governance and How Prices Are Set',
   description:
-    'Carbon class prices reflect the collective allocations of kVCM holders. K2 allocations further refine pricing by narrowing spreads. All allocations are recorded on-chain.',
+    'Carbon class execution rates reflect the collective allocations of kVCM holders. K2 allocations further refine this by narrowing spreads. All allocations are recorded on-chain.',
   ...DEFAULT_DOCS_CALLOUT,
 };

@@ -13,6 +13,7 @@ export type AllocationsCardProps = CardProps & {
   onSort?: (key: keyof Allocation) => void;
   unallocatedAmount?: number;
   totalAmount?: number;
+  lockWarning?: string;
 };
 
 export type AllocationsTableItemProps = Omit<AllocationsCardProps, 'data'> & {

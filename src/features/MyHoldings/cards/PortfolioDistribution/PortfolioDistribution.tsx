@@ -5,7 +5,6 @@ import Card, { CardProps } from '@/shared/components/Card/Card';
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
 import { cn } from '@/shared/utils/component.utils';
 import { calculatePercentage } from '@/shared/utils/math.utils';
-import { formatPriceUSDWithCommas } from '@/shared/utils/string.utils';
 import { useTabNavigation } from '../../hooks/useTabNavigation';
 
 export const PortfolioDistributionCard = (props: CardProps) => {
@@ -31,7 +30,7 @@ export const PortfolioDistributionCard = (props: CardProps) => {
             },
             {
               type: 'k2',
-              label: 'K2 Position',
+              label: 'K2 Locks',
               value: holdingsData.k2.lockedValue || 0,
               percentage: calculatePercentage(
                 holdingsData.k2.lockedValue,
@@ -75,12 +74,10 @@ export const PortfolioDistributionCard = (props: CardProps) => {
         <>
           <div className="flex flex-col pb-1">
             <div className="flex gap-2 items-center pb-1">
-              <div className="text-size-18 font-medium">
-                Portfolio Distribution
-              </div>
+              <div className="text-size-18 font-medium">Activity Overview</div>
               <Tooltip
                 className="max-w-[35rem] text-size-12 p-3"
-                content="Share of your portfolio by position type (deployed positions + claimable amounts). Does not include idle tokens on external DEXs unless staked in the protocol."
+                content="Overview of token allocations within the Klima protocol interface. Excludes assets held externally."
               />
             </div>
             {formattedData && (
@@ -129,7 +126,6 @@ export const PortfolioDistributionCard = (props: CardProps) => {
                           </div>
                         </div>
                         <div className="text-size-14 text-muted-foreground tabular-nums">
-                          <div>{formatPriceUSDWithCommas(segment.value)}</div>
                           <div>{segment.percentage.toFixed(1)}%</div>
                         </div>
                       </div>

@@ -41,7 +41,7 @@ export const LiquidityPositionRewards = ({
           <VariableRewardsHeader
             title="Variable Rewards"
             timestamp={formatCurrentTime()}
-            description="Incentives (K2) earned by your time-locked kVCM. K2 amounts are variable and may change, including to 0. Claim anytime; doesn't change Base Accrual or your lock terms."
+            description="Incentives received from your locked liquidity tokens. These incentives depend on protocol parameters, are variable, non-guaranteed, and may be zero."
           />
           {tokenData.k2ClaimableAmount > 0 && (
             <VariableRewardsItem>
@@ -49,7 +49,7 @@ export const LiquidityPositionRewards = ({
                 title="Incentives (K2)"
                 tooltip="Programmatic K2 incentives. Accrues per lot and unlocks at maturity."
                 aprValue={k2Apr}
-                aprTooltip="The annual percentage rate of the variable rewards."
+                aprTooltip="The annual percentage rate of the variable rewards. This is an estimate, is not guaranteed, can change, and may be zero."
               />
               <VariableRewardsItemContent>
                 <div className="flex flex-1 flex-col">

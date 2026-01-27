@@ -18,20 +18,19 @@ export const PORTFOLIO_EARNING_STATUS_MAP: Record<
   StatusInfo
 > = {
   'all-earning': {
-    statusLabel: 'All earning',
+    statusLabel: 'All active',
     statusColor: 'green',
-    tooltip: 'All your positions are actively earning rewards.',
+    tooltip: 'All your positions are active.',
   },
   'some-paused': {
-    statusLabel: 'Some paused',
+    statusLabel: 'Some active',
     statusColor: 'yellow',
-    tooltip:
-      'One or more positions not accruing (matured, unlocked, or schedule paused).',
+    tooltip: 'One or more positions are not active',
   },
   'not-earning': {
-    statusLabel: 'Not earning',
+    statusLabel: 'Not active',
     statusColor: 'gray',
-    tooltip: 'No positions are earning rewards.',
+    tooltip: 'No positions active.',
   },
   'no-positions': {
     statusLabel: 'No positions',

@@ -14,7 +14,7 @@ import { OnboardingContainer } from '../../shared/OnboardingContainer';
 export const K2Onboarding = () => {
   const emptyStateButtonConfig = useEmptyStateButton({
     onStartAction: () => {},
-    disconnectedDescription: 'View and manage your K2 position.',
+    disconnectedDescription: 'View and manage your K2 locks.',
     noLocksDescription: 'Acquire K2 tokens to start earning rewards.',
     hasLocksActionText: 'Deposit K2',
   });
@@ -22,7 +22,7 @@ export const K2Onboarding = () => {
   return (
     <OnboardingContainer
       title="K2 Position"
-      description="Lock K2 to earn variable K2 incentives and a share of kVCM incentives, and allocate to carbon classes to influence pricing. After 24h you can request an unlock; principal becomes claimable at the daily cutoff."
+      description="Lock K2 and allocate your tokens to influence carbon class execution rates. Participation is incentivized via variable kVCM and K2 rewards. Unlock your tokens after 24 hours."
     >
       <NoPositionsHeader
         title="No K2 Position"
@@ -43,7 +43,7 @@ export const K2Onboarding = () => {
         <NoPositionsInfoCard
           title="Allocate to Carbon"
           icon={<AllocateIcon className="w-5 h-5 fill-[#00994a]" />}
-          description="Shape carbon class pricing"
+          description="Shape carbon class execution rates."
         />
       </div>
       <div className="mb-2">

@@ -26,7 +26,7 @@ export const ImportantToKnow = () => (
           <li className="text-[#00994a] pl-2">
             <span className="text-2xl text-gray-600">
               <strong className="text-2xl text-gray-800">Certificate:</strong>{' '}
-              The certificate provides blockchain transaction hash proof that
+              The certificate provides a blockchain transaction hash proof that
               the credit was permanently consumed and can never be transferred
               or resold.
             </span>

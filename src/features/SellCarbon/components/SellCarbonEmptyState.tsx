@@ -21,12 +21,12 @@ export const SellCarbonEmptyState = () => {
     <EmptyState
       title={
         <>
-          Sell Carbon.
+          Supply Carbon.
           <br />
           Receive kVCM.
         </>
       }
-      description="Exchange your carbon credits for kVCM at transparent, market-driven prices."
+      description="Supply your carbon credits to Klima Protocol in exchange for kVCM tokens at market-driven prices."
       flowItems={sellCarbonFlowItems}
       cta={emptyStateButtonConfig}
       stats={sellCarbonStats}

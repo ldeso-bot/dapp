@@ -11,7 +11,7 @@ import { AllocationsTableMobile } from './AllocationsTableMobile';
 import { CategoryFilter } from './CategoryFilter';
 
 export const AllocationsTable: FC<AllocationsCardProps> = (props) => {
-  const { className, data, tokenInfo, showCategoryFilter = false } = props;
+  const { className, data, tokenInfo, showCategoryFilter = false, lockWarning } = props;
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const isKvcm = tokenInfo.id === 'kvcm';
 
@@ -96,6 +96,11 @@ export const AllocationsTable: FC<AllocationsCardProps> = (props) => {
           data={sortedData}
           className="lg:hidden"
         />
+        {!!lockWarning && (
+          <div className="px-6 pb-4 pt-3 text-size-14 font-semibold text-void-60">
+            ⚠️ {lockWarning}
+          </div>
+        )}
       </div>
     </Card>
   );

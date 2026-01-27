@@ -17,10 +17,8 @@ export default function KVcmPriceCard(props: CardProps) {
       title="kVCM Price"
       buttonHref={BUY_KVCM_URL}
       buttonTarget="_blank"
-      tooltip="You can lock kVCM and K2 tokens to earn rewards. Locked tokens can be allocated to a carbon class to influence its price."
-      buttonText="Buy kVCM"
+      buttonText="Trade kVCM"
       primaryValue={price}
-      changePercent={data?.metrics.kvcm.valueUSDChangePercent24h}
       token={tokens.usdc}
     />
   );

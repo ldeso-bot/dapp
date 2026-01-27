@@ -23,7 +23,6 @@ import {
   formatAmountWithCommas,
   formatCurrentTime,
   formatPercentage,
-  formatPriceUSDWithCommas,
   formatTimestamp,
 } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
@@ -53,7 +52,7 @@ export const KvcmView = () => {
             title="kVCM Locks"
             buttonLabel="Lock"
             tooltipId="kvcm-locks"
-            description="Lock kVCM for a fixed term to earn Base Accrual (accrues daily; pays at maturity — no early unlock). Incentives (K2) accrue on locked kVCM and are claimable anytime."
+            description="Lock kVCM for a fixed duration to receive variable kVCM incentives when the term ends, and variable K2 incentives at any time. Locked kVCM can also be allocated to carbon classes to influence protocol pricing."
             onButtonClick={() =>
               setLockTokenDialogState({ open: true, token: 'kvcm' })
             }
@@ -83,13 +82,10 @@ const KvcmOverview = () => {
         <StatusCard skeletonClassName="h-[13.5rem]">
           {kvcmData && (
             <>
-              <StatusCardTitle badge="green">Matured</StatusCardTitle>
+              <StatusCardTitle badge="green">Ready to unlock</StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
                   {formatAmountWithCommas(kvcmData.kvcmClaimableAmount)} kVCM
-                </div>
-                <div className="text-size-14 text-gray-500 tabular-nums">
-                  {formatPriceUSDWithCommas(kvcmData.kvcmClaimableValue)}
                 </div>
               </div>
               {kvcmData.kvcmClaimableValue > 0 && (
@@ -106,7 +102,7 @@ const KvcmOverview = () => {
         <StatusCard>
           {kvcmData && (
             <>
-              <StatusCardTitle badge="yellow">Next Maturity</StatusCardTitle>
+              <StatusCardTitle badge="yellow">Unlockable on</StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900">
                   {formatTimestamp(nextMaturityDate * 1000)}
@@ -121,13 +117,10 @@ const KvcmOverview = () => {
         <StatusCard>
           {kvcmData && (
             <>
-              <StatusCardTitle badge="gray">Principal Locked</StatusCardTitle>
+              <StatusCardTitle badge="gray">Tokens locked</StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
                   {formatAmountWithCommas(kvcmData.lockedAmount)} kVCM
-                </div>
-                <div className="text-size-14 text-gray-500 tabular-nums">
-                  {formatPriceUSDWithCommas(kvcmData.lockedValue)}
                 </div>
                 <div className="text-size-14 text-gray-500 mt-2 space-y-0.5">
                   <div>
@@ -154,11 +147,11 @@ const KvcmOverview = () => {
             <HoldingTotalPosition
               symbol="kVCM"
               totalPosition={kvcmData.positionAmount}
-              tooltip="Total kVCM principal currently locked across all positions."
+              tooltip="Amount of kVCM tokens you have locked."
             />
             <HoldingEstimatedValue
               estimatedValue={kvcmData.positionValue}
-              tooltip="Total value of your kVCM position including estimated accrued base accrual."
+              tooltip="Estimate of the USD equivalent value of your kVCM tokens according to current market conditions."
             />
           </>
         )}
@@ -184,16 +177,15 @@ const KvcmVariableRewards = () => {
           <VariableRewardsHeader
             title="Variable Rewards"
             timestamp={`As of ${formatCurrentTime()}`}
-            description="Incentives (K2) earned by your time-locked kVCM. K2 amounts are variable and may change, including to 0. Claim anytime; doesn't change Base Accrual or your lock terms."
+            description="K2 incentives received from your time-locked kVCM tokens. These incentives depend on protocol parameters, are variable, non-guaranteed, and may be zero."
           />
           <VariableRewardsItem>
             <VariableRewardsItemTitle
               title="Incentives (K2)"
-              tooltip="Incentives (K2) earned by your time-locked kVCM. K2 amounts are variable and may change, including to 0. Claim anytime; doesn't change Base Accrual or your lock terms."
               aprValue={formatPercentage(
                 protocolData.midnightInfos.k2ApyForKVCM ?? 0
               )}
-              aprTooltip="The annual percentage rate of the variable rewards."
+              aprTooltip="The annual percentage rate of the variable rewards. This is an estimate, is not guaranteed, can change, and may be zero."
             />
             <VariableRewardsItemContent>
               <div className="flex flex-1 flex-col">
@@ -201,13 +193,10 @@ const KvcmVariableRewards = () => {
                   {formatAmountWithCommas(kvcmData.k2ClaimableAmount)} K2
                 </span>
                 <span className="text-size-12 text-gray-500">
-                  {formatPriceUSDWithCommas(kvcmData.k2ClaimableValue)}
-                </span>
-                <span className="text-size-12 text-gray-500">
                   Accrued to date:{' '}
-                  {formatAmountWithCommas(kvcmData.k2AccruingClaimableAmount)}{' '}
-                  K2 • Accruing:{' '}
-                  {formatAmountWithCommas(kvcmData.k2AccruedClaimableAmount)} K2
+                  {formatAmountWithCommas(
+                    kvcmData.k2AccruingClaimableAmount
+                  )}{' '}
                 </span>
               </div>
               <Button
@@ -227,10 +216,6 @@ const KvcmVariableRewards = () => {
               </Button>
             </VariableRewardsItemContent>
           </VariableRewardsItem>
-          <div className="text-size-12 text-gray-500 mt-3">
-            Variable rewards come from protocol schedules; allocations may
-            change or be 0.
-          </div>
         </>
       )}
     </VariableRewardsCard>

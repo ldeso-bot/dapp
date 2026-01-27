@@ -15,17 +15,17 @@ export default function LiquidityPoolsCard(props: CardProps) {
     <Card
       {...props}
       title="Liquidity Pools"
-      tooltip="A liquidity pool is a pair of tokens in a smart contract, facilitating decentralized trading and providing liquidity for users to swap tokens on decentralized exchanges. Learn more"
+      tooltip="A liquidity pool is a pair of tokens in a smart contract, facilitating decentralized trading and providing liquidity for users to swap tokens on decentralized exchanges."
       skeletonClassName="h-[17.8rem]"
       className="rounded-xl"
     >
       {data && (
         <>
-          <ChartFact label="Market value" value={formatPriceUSD(marketValue)} />
+          <ChartFact label="TVL" value={formatPriceUSD(marketValue)} />
           <div>
-            You can use Aerodrome to deposit liquidity into a pool and use those
-            LPs for this transaction, allowing you to earn even higher rewards.
-            Learn more.
+            Users may opt to provide liquidity to support Klima’s infrastructure
+            and facilitate carbon execution. Doing so may make participants
+            eligible for programmatic protocol incentives.
           </div>
 
           <Table>

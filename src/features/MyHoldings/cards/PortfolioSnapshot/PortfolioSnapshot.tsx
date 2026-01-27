@@ -83,9 +83,7 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
             <div className="flex items-center gap-2 mb-2 sm:mb-3 md:mb-2">
               <div className="flex items-center gap-2">
                 {/* <WalletCards className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" /> */}
-                <div className="text-size-18 font-medium">
-                  Portfolio Snapshot
-                </div>
+                <div className="text-size-18 font-medium">Holdings</div>
               </div>
             </div>
             <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-start lg:justify-between lg:gap-4">
@@ -110,11 +108,11 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                 <div>
                   <div className="flex items-center gap-1.5 mb-1">
                     <span className="text-size-12 font-medium text-gray-500 uppercase tracking-wide">
-                      Net deployed
+                      Active
                     </span>
                     <Tooltip
                       className="max-w-[30rem] text-size-12 p-3"
-                      content="Principal deployed across all positions, excluding claimable amounts."
+                      content="Total amount currently allocated to protocol participation, including voting and liquidity."
                     />
                   </div>
                   <div className="text-[2.4rem] leading-[2.8rem] font-bold tabular-nums">

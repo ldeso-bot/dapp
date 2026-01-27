@@ -114,7 +114,7 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
       // Go to previous step
       previous();
     } else {
-      form.setError('root', { message: 'Failed to sell carbon' });
+      form.setError('root', { message: 'Failed to supply carbon' });
     }
   };
 
@@ -171,7 +171,7 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
                 onClick={handleSellCarbon}
                 loading={isExecuting}
               >
-                Sell Carbon
+                Supply Carbon
               </Button>
             )}
             {/* This button can be safely removed*/}

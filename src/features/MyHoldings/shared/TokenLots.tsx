@@ -13,7 +13,6 @@ import { cn } from '@/shared/utils/component.utils';
 import {
   formatAmountWithCommas,
   formatPercentage,
-  formatPriceUSDWithCommas,
   formatTimestamp,
 } from '@/shared/utils/string.utils';
 import { getTokenSymbol } from '@/shared/utils/token.utils';
@@ -70,14 +69,14 @@ export const TokenLots: FC<TokenLotsProps> = ({
               content={
                 <div className="space-y-2">
                   <div>
-                    <strong>Top up:</strong> Add principal to a lock without
-                    changing its maturity date. New principal starts accruing
-                    immediately.
+                    <strong>Top up:</strong> Add tokens to a lock without
+                    changing its duration. Newly added tokens are eligible for
+                    variable incentives immediately.
                   </div>
                   <div>
-                    <strong>Claim:</strong> Available only at maturity. Claims
-                    principal plus Base Accrual from matured locks. No early
-                    unlock.
+                    <strong>Claim:</strong> Available only when tokens unlock at
+                    the end of their lock duration. Claims locked tokens plus
+                    any received incentives. Cannot be claimed early.
                   </div>
                 </div>
               }
@@ -106,10 +105,6 @@ export const TokenLots: FC<TokenLotsProps> = ({
                     </div>
                     <span className="text-gray-400">•</span>
                     <div className="text-size-14 text-gray-500 font-[400]">
-                      {formatPriceUSDWithCommas(lock.lockedValueUSD)}
-                    </div>
-                    <span className="text-gray-400">•</span>
-                    <div className="text-size-14 text-gray-500 font-[400]">
                       {formatTimestamp(lock.lockedUntil * 1000)}
                     </div>
                     <span className="text-gray-400">•</span>
@@ -122,14 +117,13 @@ export const TokenLots: FC<TokenLotsProps> = ({
                         }
                       )}
                     >
-                      {isMatured ? 'Matured' : 'Maturing'}
+                      {isMatured ? 'Ready to unlock' : 'Locked'}
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <div className="w-px border-gray-400 border-r h-[1.8rem]" />
                     <div className="flex gap-1 text-gray-500">
-                      <div>Base APY</div>
+                      <div>Current incentive rate</div>
                       <div>
                         {formatPercentage(
                           token === 'kvcm'
@@ -169,7 +163,7 @@ export const TokenLots: FC<TokenLotsProps> = ({
                           }
                         }}
                       >
-                        Topup
+                        Top up
                       </Button>
                     )}
                     <Button

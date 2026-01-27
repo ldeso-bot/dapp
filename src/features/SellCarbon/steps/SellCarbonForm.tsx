@@ -61,7 +61,7 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
 
   return (
     <Card
-      title="Sell Carbon"
+      title="Supply Carbon"
       className="w-[50rem] rounded-xl border border-gray-200 h-fit"
       titleClassName="font-semibold text-gray-800 text-size-20 tracking-tight"
       skeletonClassName="h-[56.6rem]"
@@ -150,7 +150,7 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
                 type="submit"
                 disabled={!kvcmOutQuoteWei}
               >
-                Sell Carbon
+                Supply Carbon
               </Button>
             </ButtonGroup>
           </form>

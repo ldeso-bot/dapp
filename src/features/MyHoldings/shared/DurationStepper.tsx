@@ -57,7 +57,7 @@ export const DurationStepper = <T extends DurationFormFields>({
 
   return (
     <>
-      <label className="text-size-14 font-medium">Custom Maturity</label>
+      <label className="text-size-14 font-medium">Custom Duration</label>
       <Controller
         name={name}
         control={control}
@@ -68,7 +68,7 @@ export const DurationStepper = <T extends DurationFormFields>({
             return (
               <div className="flex items-center justify-center space-x-4 p-4 bg-[#EFEFEF] rounded-lg">
                 <div className="flex-1 text-center text-size-14 text-void-40">
-                  No maturities available
+                  No durations available
                 </div>
               </div>
             );

@@ -7,7 +7,7 @@ type InfoCardProps = {
   title?: string;
   tooltipId?: InfoCardTooltipKey;
   description: string;
-  buttonLabel?: string;
+  buttonLabel?: React.ReactNode;
   onButtonClick?: () => void;
   content: React.ReactNode;
 };

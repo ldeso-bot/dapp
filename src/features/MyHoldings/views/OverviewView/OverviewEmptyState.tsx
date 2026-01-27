@@ -26,12 +26,12 @@ export const OverviewEmptyState = ({ onStartSelling }: Props) => {
     <EmptyState
       title={
         <>
-          Deploy Capital.
+          Use Capital.
           <br />
           Drive Climate Impact.
         </>
       }
-      description="Lock kVCM and K2 into Klima strategies that earn rewards and support carbon markets."
+      description="Lock kVCM and K2 into incentivized Klima strategies to support carbon markets."
       flowItems={overviewFlowItems}
       cta={emptyStateButtonConfig}
       stats={overviewCarbonStats}

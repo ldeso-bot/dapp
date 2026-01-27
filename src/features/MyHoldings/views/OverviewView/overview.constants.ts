@@ -40,7 +40,7 @@ export const overviewCarbonStats: StatItem[] = [
   },
   {
     value: 'Flexible',
-    label: 'Multiple maturity dates and lock types.',
+    label: 'Variable duration locks and lock types.',
   },
   {
     value: 'Impactful',
@@ -50,16 +50,16 @@ export const overviewCarbonStats: StatItem[] = [
 
 export const overviewInfoCards = {
   title: 'How It Works',
-  description: 'Three ways to deploy kVCM and K2 inside Klima.',
+  description: 'Three ways to use kVCM and K2 inside Klima.',
   showSteps: true,
   cards: [
     {
       icon: BadgeIcon,
       title: 'Lock kVCM',
       description:
-        'Lock kVCM into fixed-term positions to earn rewards and allocate to carbon classes you want to support.',
+        'Use kVCM in fixed-term locks, receive incentives and allocate to carbon classes you want to support.',
       cta: {
-        text: 'Explore Lock kVCM',
+        text: 'Learn more',
         activeView: 'kvcm',
       },
     },
@@ -67,9 +67,9 @@ export const overviewInfoCards = {
       icon: DocIcon,
       title: 'Deposit K2',
       description:
-        'Deposit K2 to earn variable rewards and allocate to carbon classes to shape protocol pricing.',
+        'Deposit K2 to allocate your tokens to carbon classes and receive incentives.',
       cta: {
-        text: 'Explore Deposit K2',
+        text: 'Learn more',
         activeView: 'k2',
       },
     },
@@ -77,9 +77,9 @@ export const overviewInfoCards = {
       icon: CarbonCreditsIcon,
       title: 'Stake Liquidity',
       description:
-        'Stake liquidity tokens into Klima liquidity pools to support trading and earn rewards.',
+        'Stake liquidity tokens into Klima liquidity pools to support trading receive incentives.',
       cta: {
-        text: 'Explore Stake Liquidity',
+        text: 'Learn more',
         activeView: 'liquidity',
       },
     },

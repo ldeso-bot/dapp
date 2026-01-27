@@ -53,7 +53,6 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
     totalAmount !== undefined;
 
   const isK2 = tokenInfo.id === 'k2';
-  const isKvcm = tokenInfo.id === 'kvcm';
 
   const groupedAllocations = useMemo(() => {
     if (!data) return new Map<string, Allocation[]>();
@@ -84,7 +83,7 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
               sortKey="priceEffect"
               sortConfig={sortConfig}
               onSort={onSort}
-              label="Price effect"
+              label="Estimated impact"
               className="text-center justify-center"
               infoIcon="How strong your kVCM allocation contributes to the protocol's buying pressure in this class. Higher price effect means the system is more willing to bid up the price to acquire this carbon."
             />

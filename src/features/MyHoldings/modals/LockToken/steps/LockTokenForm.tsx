@@ -153,13 +153,13 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
               </div>
               <div className="text-size-12 text-void-40">
                 <p>
-                  Duration between maturities is 90 days. Choose from supported
-                  dates.
+                  Select a custom duration. Each step represents an increase or
+                  decrease of 90 days.
                 </p>
                 <div className="w-full h-[1px] bg-void-20 my-2" />
                 <p>
-                  Rewards (kVCM base, optional K2 incentives) accrue until
-                  maturity and are claimable at maturity.
+                  Incentives (kVCM and/or K2) accrue until the end of the chosen
+                  duration and then become claimable.
                 </p>
               </div>
               {fullMaturity && duration !== undefined && (
@@ -178,7 +178,7 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
             />
           )}
           {isMaturityWithin3Days ? (
-            <RootError errorMessage="Time to maturity reset is in less than 3 days. Pay attention to short maturity dates; rewards may be minimal. Consider choosing a later maturity." />
+            <RootError errorMessage="Locking kVCM is an irreversible protocol action for coordination and parameter signalling. Incentives are variable, non-guaranteed, and may be zero. Locking should not be used for short-term positioning or yield optimisation." />
           ) : isMaturityWithin30Days ? (
             <RootError
               variant="warning"

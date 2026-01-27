@@ -35,11 +35,9 @@ function AllocatePage() {
           <div className="flex flex-col gap-4 grow-1">
             <PageTitle>Allocations</PageTitle>
             <PageDescription>
-              Allocations are your portfolio carbon-class preferences. They
-              determine which credits the protocol buys/retires and at what
-              intensity. Allocations adjust pricing by class. kVCM turns
-              pricing on and increases pricing power. K2 increases how much
-              early buying pressure the system can apply.
+              Allocations are your carbon-class preferences. Allocating tokens
+              towards carbon classes may influence the execution parameters of
+              carbon across the ecosystem.
             </PageDescription>
             <AllocationsInfoCard />
             <KvcmAllocationsCard className="solo-card" />

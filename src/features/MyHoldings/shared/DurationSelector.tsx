@@ -84,14 +84,14 @@ export const DurationSelector = <T extends DurationFormFields>({
   return (
     <div className="flex flex-col gap-2 mt-2">
       <div className="flex items-center gap-2">
-        <label className="text-size-16 font-medium">Maturity</label>
+        <label className="text-size-16 font-medium">Duration</label>
         <Tooltip
           className="max-w-[30rem] text-size-12 p-3"
-          content="Maturity is a fixed date. Remaining time shrinks daily until the roll, then dates roll forward."
+          content="Duration is a fixed date. Remaining time shrinks daily until the roll, then dates roll forward."
         />
       </div>
       <p className="text-size-12 text-void-40">
-        Duration between maturities is 90 days. Choose from supported dates.
+        Select one of the following presets or choose a custom duration below.
         Next roll over in{' '}
         <span className="font-bold text-gray-900">{daysUntilReset} days</span> (
         {nextResetDate.toLocaleDateString('en-US', {

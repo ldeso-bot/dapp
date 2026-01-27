@@ -30,7 +30,6 @@ export default function K2AllocationsCard(props: CardProps) {
       }
       titleAddOnBadge="Price Strength"
       titleClassName="text-size-18 font-medium"
-      tooltip="Rebalancing kVCM never unlocks your position early. Maturity dates stay unchanged."
       data={allocations}
       unallocatedAmount={unallocatedK2}
       totalAmount={totalK2}
@@ -49,6 +48,7 @@ export default function K2AllocationsCard(props: CardProps) {
           <Icon icon={Plus} size={1.6} /> New Allocation
         </Button>
       }
+      lockWarning="Locked allocations cannot be modified until unlock date."
     />
   );
 }

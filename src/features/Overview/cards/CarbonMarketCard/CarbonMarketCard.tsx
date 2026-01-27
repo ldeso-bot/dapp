@@ -14,7 +14,7 @@ export default function CarbonMarketCard(props: CardProps) {
     <Card
       {...props}
       title="Carbon Market"
-      tooltip="There should be a tooltip here"
+      tooltip="Execution rates are indicative only and may change at the time of execution due to protocol conditions. Any USD references are illustrative and provided for convenience."
       className="rounded-xl"
     >
       {carbonClasses && (
@@ -23,7 +23,7 @@ export default function CarbonMarketCard(props: CardProps) {
           <div className="flex flex-row text-size-12 text-void-60 text-center">
             <div className="w-full grow-1">Price</div>
             <div className="w-[20rem]"></div>
-            <div className="w-full grow-1">Capacity</div>
+            <div className="w-full grow-1">Available Supply (tCO₂e)</div>
           </div>
           {/* Charts */}
           <div className="flex flex-row">

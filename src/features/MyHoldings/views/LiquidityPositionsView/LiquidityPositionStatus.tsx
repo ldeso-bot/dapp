@@ -12,7 +12,6 @@ import { useSetAtom } from 'jotai';
 import { useState } from 'react';
 import { useHoldingsData } from '../../hooks/useHoldingsData';
 import { stakeLpTokenDialogAtom } from '../../modals/StakeLpToken/stakeLpToken.utils';
-import { HoldingEstimatedValue } from '../../shared/HoldingEstimatedValue';
 
 interface LiquidityPositionStatusProps {
   token: LpToken;
@@ -51,9 +50,9 @@ export const LiquidityPositionStatus = ({
             <>
               <StatusCardTitle
                 badge="green"
-                tooltip="LP lots that reached maturity and can be unstaked. Rewards are claimable."
+                tooltip="Liquidity lots which reached their terms' end and can be unstaked. Incentives are claimable."
               >
-                Matured
+                Claimable
               </StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
@@ -65,7 +64,7 @@ export const LiquidityPositionStatus = ({
                       {tokenSymbol} • {tokenData.maturedLocks.length} lots
                     </>
                   ) : (
-                    'No matured lots'
+                    'No claimable lots'
                   )}
                 </div>
               </div>
@@ -85,9 +84,9 @@ export const LiquidityPositionStatus = ({
             <>
               <StatusCardTitle
                 badge="yellow"
-                tooltip="LP lots that are still locked and accruing rewards. Cannot be unstaked until maturity."
+                tooltip="Locked lots which are accruing incentives. Cannot be unstaked early."
               >
-                Maturing
+                Locked Liquidity
               </StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900">
@@ -108,7 +107,7 @@ export const LiquidityPositionStatus = ({
             <>
               <StatusCardTitle
                 badge="blue"
-                tooltip="LP tokens deposited on the DEX but not staked in Klima. Not earning protocol rewards."
+                tooltip="LP tokens deposited on Aerodrome but not staked in Klima Protocol and not accruing protocol incentives."
               >
                 On Dex
               </StatusCardTitle>
@@ -130,14 +129,7 @@ export const LiquidityPositionStatus = ({
           )}
         </StatusCard>
       </div>
-      <div className="flex flex-col gap-2 my-4 mx-auto max-w-[60%]">
-        {tokenData && (
-          <HoldingEstimatedValue
-            estimatedValue={tokenData.positionValue}
-            tooltip="Total value of your LP position including estimated accrued rewards."
-          />
-        )}
-      </div>
+      <div className="flex flex-col gap-2 my-4 mx-auto max-w-[60%]"></div>
       {tokenData && tokenData.locks.length > 0 && (
         <TokenLots
           isOpen={tokenLotsOpen}

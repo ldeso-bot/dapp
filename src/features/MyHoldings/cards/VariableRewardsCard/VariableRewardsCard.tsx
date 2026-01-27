@@ -23,7 +23,7 @@ type HeaderProps = {
 
 type ItemTitleProps = {
   title: string;
-  tooltip: React.ReactNode | string;
+  tooltip?: React.ReactNode | string;
   aprValue?: string | null;
   aprTooltip?: React.ReactNode | string;
 };

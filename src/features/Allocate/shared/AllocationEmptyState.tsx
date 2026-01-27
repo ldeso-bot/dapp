@@ -31,7 +31,7 @@ export const AllocationEmptyState = ({ onStartAllocating }: Props) => {
           Prices.
         </>
       }
-      description="Allocate your locked kVCM and K2 to influence carbon class prices and protocol purchase behavior."
+      description="Allocate your locked kVCM and K2 to influence carbon class execution rates and protocol purchase behavior."
       flowItems={allocationFlowItems}
       cta={emptyStateButtonConfig}
       stats={allocationStats}

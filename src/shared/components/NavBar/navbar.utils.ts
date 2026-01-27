@@ -21,17 +21,17 @@ export const navItems: NavItem[] = [
   },
   {
     icon: myHoldingsIcon,
-    label: 'My Holdings',
+    label: 'My Activities',
     href: ROUTES.MY_HOLDINGS,
   },
   {
     icon: burnCarbonIcon,
-    label: 'Retire',
+    label: 'Retire Carbon',
     href: ROUTES.RETIRE,
   },
   {
     icon: sellCarbonIcon,
-    label: 'Sell',
+    label: 'Supply Carbon',
     href: ROUTES.SELL_CARBON,
   },
   {

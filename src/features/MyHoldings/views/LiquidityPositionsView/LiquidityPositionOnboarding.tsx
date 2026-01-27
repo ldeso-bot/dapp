@@ -21,24 +21,24 @@ export const LiquidityPositionOnboarding = () => {
 
   return (
     <OnboardingContainer
-      title="Liquidity Positions"
-      description="Deposit liquidity to earn trading fees. Stake your LP in Klima for a fixed term to earn an additional share of kVCM incentives, plus K2 incentives. Unstake when your term ends."
+      title="Liquidity Pools"
+      description="Deposit liquidity to benefit from trading fees. Stake your liquidity in Klima Protocol for a fixed duration to become eligible for a variable share of kVCM incentives and K2 incentives. Unstake once your chosen term ends."
     >
       <NoPositionsHeader
         title="No Staked Positions"
         icon={<WaterDropIcon className="w-10 h-10 fill-[#00994a]" />}
-        description="Stake liquidity tokens to earn protocol rewards."
+        description="Deposit liquidity tokens to become eligible for protocol incentives."
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:w-2xl w-full mx-auto my-4">
         <NoPositionsInfoCard
           title="Dual Rewards"
           icon={<TrendingUpIcon className="w-5 h-5 fill-[#00994a]" />}
-          description="DEX fees + kVCM & K2 rewards"
+          description="DEX fees + variable kVCM & K2 incentives"
         />
         <NoPositionsInfoCard
           title="Fixed Terms"
           icon={<CalendarIcon className="w-5 h-5 fill-[#00994a]" />}
-          description="Choose your maturity date"
+          description="Choose your own deposit duration"
         />
       </div>
       <div className="flex flex-col gap-0.5 mx-auto mb-4">

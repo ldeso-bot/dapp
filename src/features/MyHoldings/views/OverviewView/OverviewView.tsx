@@ -18,10 +18,10 @@ export const OverviewView = () => {
         <OverviewEmptyState />
       ) : (
         <div className="flex flex-col gap-4">
-          <PortfolioSnapshot className="solo-card" />
           <PositionsCard className="solo-card" />
           <PortfolioDistributionCard className="solo-card" />
           <BalancesCard className="solo-card" />
+          <PortfolioSnapshot className="solo-card" />
         </div>
       )}
     </>

@@ -27,17 +27,20 @@ export const PositionStatusCard: FC<Props> = (props) => {
         <StatusCardTitle>{title}</StatusCardTitle>
         <div className="flex flex-col gap-5">
           <div className="space-y-1">
-            <div className="text-size-12 text-gray-500">Total Value</div>
-            <div className="text-[2.2rem] font-bold text-gray-900 tabular-nums">
-              {formatPriceUSDWithCommas(totalValue)}
-            </div>
-          </div>
-          <div className="space-y-1">
             <div className="text-size-12 text-gray-500">Units</div>
-            <div className="text-size-14 text-gray-900 tabular-nums">
+            <div className="text-[2.2rem] font-bold text-gray-900 tabular-nums">
               {units}
             </div>
           </div>
+          <div className="space-y-1">
+            <div className="text-size-12 text-gray-500">
+              Estimated value in USD
+            </div>
+            <div className="text-size-14 text-gray-900 tabular-nums">
+              {formatPriceUSDWithCommas(totalValue)}
+            </div>
+          </div>
+
           {actionBadges.length > 0 && (
             <div className="space-y-1">
               <div className="text-size-12 text-gray-500">Actions</div>

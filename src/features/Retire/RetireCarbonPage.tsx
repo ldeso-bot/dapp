@@ -45,8 +45,16 @@ export default function RetirePage() {
             <PageTitle>Retire Carbon</PageTitle>
             <PageDescription>
               Purchase a carbon offset and receive a receipt with proof of
-              retirement instantly. Powered by Carbonmark, our partner in carbon
-              retirements.
+              retirement instantly. Powered by{' '}
+              <a
+                href="https://carbonmark.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-primary-600 hover:underline"
+              >
+                Carbonmark
+              </a>
+              , our partner in carbon retirements.
             </PageDescription>
           </div>
           <div className="flex gap-4 space-between mx-auto">
