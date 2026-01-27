@@ -19,17 +19,30 @@ export const getAllocations = async (
     return getMockAllocations();
   }
 
-  // Fetch allocations
-  const allocations = await sdk.protocol.getAllocations({
-    where: {
-      account_: {
-        id: walletAddress,
-      },
-    } as Allocation_Filter,
+  const [userAllocations, allAllocations] = await Promise.all([
+    sdk.protocol.getAllocations({
+      where: {
+        account_: {
+          id: walletAddress,
+        },
+      } as Allocation_Filter,
+    }),
+    sdk.protocol.getAllocations({
+      where: {} as Allocation_Filter,
+    }),
+  ]);
+
+  // Calculate total allocation per carbon class and token for sharePercent calculation
+  const totalsByClass = new Map<string, number>();
+  (allAllocations?.allocations ?? []).forEach((allocation) => {
+    const tokenAddress = allocation.token.address.toLowerCase();
+    const carbonClassId = allocation.carbonClass.carbonClassId.toLowerCase();
+    const key = `${tokenAddress}-${carbonClassId}`;
+    const amount = formatStringToNumber(allocation.amount, 18);
+    totalsByClass.set(key, (totalsByClass.get(key) || 0) + amount);
   });
 
-  // Map allocations
-  const mappedAllocations = (allocations?.allocations ?? []).map(
+  const mappedAllocations = (userAllocations?.allocations ?? []).map(
     (allocation): Allocation | null => {
       const tokenInfo = tokenInfoFromSubgraphSymbol(allocation.token.symbol);
       if (!tokenInfo || !isAllocatableToken(tokenInfo.id)) {
@@ -48,6 +61,8 @@ export const getAllocations = async (
         return 'High' as const;
       };
 
+      const userAmount = formatStringToNumber(allocation.amount, 18);
+      const tokenAddress = allocation.token.address.toLowerCase();
       const carbonClassId = allocation.carbonClass.carbonClassId.toLowerCase();      
       const carbonClassInfo = getCarbonClassInfo(chainId, carbonClassId);
       const category = carbonClassInfo?.category ?? 'Other';
@@ -61,31 +76,32 @@ export const getAllocations = async (
         ? formatStringToNumber(allocation.lock.maturity.timestamp, 0)
         : undefined;
 
+      const key = `${tokenAddress}-${carbonClassId}`;
+      const totalClassAllocation = totalsByClass.get(key) || 0;
+
+      const sharePercent =
+        totalClassAllocation > 0 ? userAmount / totalClassAllocation : 0;
+
       return {
         priceUSD,
         category,
+        sharePercent,
+        contractLockId,
+        maturityId,
+        lockedUntil,
         id: allocation.id,
         carbonClass: carbonClassId,
         priceEffect: getPriceEffect(priceUSD),
-        amount: formatStringToNumber(allocation.amount, 18),
+        amount: userAmount,
         holder: allocation.account.id,
-        sharePercent: Number(
-          allocation.token.totalAmountAllocated
-            ? BigInt(allocation.amount) /
-                BigInt(allocation.token.totalAmountAllocated)
-            : 0
-        ),
         token: {
           name: tokenInfo.id,
           address: allocation.token.address,
         },
-        contractLockId,
-        maturityId,
-        lockedUntil,
+
       };
     }
   );
-
   // Cull and return allocations
   return filter(mappedAllocations, isNonNullish);
 };

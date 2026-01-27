@@ -1,3 +1,4 @@
+import { useAllocationData } from '@/features/Allocate/hooks/useAllocationData';
 import Icon from '@/shared/components/Icon/Icon';
 import { Progress } from '@/shared/components/Progress/Progress';
 import { SortableHeader } from '@/shared/components/Table/SortableHeader';
@@ -11,6 +12,7 @@ import {
 } from '@/shared/components/Table/table';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import ArrowDown from '@/shared/images/arrow_down.svg';
+import LockIcon from '@/shared/images/lock_icon.svg';
 import { Allocation } from '@/shared/models/walletData';
 import {
   getAllocationsByCarbonClass,
@@ -51,6 +53,7 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
     totalAmount !== undefined;
 
   const isK2 = tokenInfo.id === 'k2';
+  const isKvcm = tokenInfo.id === 'kvcm';
 
   const groupedAllocations = useMemo(() => {
     if (!data) return new Map<string, Allocation[]>();
@@ -67,6 +70,7 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
             onSort={onSort}
             label="Carbon class"
             className="text-left"
+            infoIcon={`Bar shows the share of your total ${tokenInfo.symbol} in this class. Rows (including Unallocated) sum to 100%.`}
           />
           <SortableHeader
             sortKey="amount"
@@ -82,15 +86,15 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
               onSort={onSort}
               label="Price effect"
               className="text-center justify-center"
+              infoIcon="How strong your kVCM allocation contributes to the protocol's buying pressure in this class. Higher price effect means the system is more willing to bid up the price to acquire this carbon."
             />
           )}
           <SortableHeader
             sortKey="priceUSD"
             sortConfig={sortConfig}
             onSort={onSort}
-            label={
-              tokenInfo.id === 'kvcm' ? `Indicative price` : `Capacity effect`
-            }
+            label={!isK2 ? `Indicative price` : `Capacity effect`}
+            infoIcon={!isK2 ? "Informational estimate of the price per tonne the protocol is currently targeting for this carbon class, based on portfolio state and allocations. Not a guarantee and may change as markets and allocations update." : "How much your K2 helps the system maintain the target price for this carbon class. Higher capacity means more volume can be bought or retired before the price needs to move."}
             className="text-center justify-center"
           />
           <TableHead className="min-w-[14rem]">&nbsp;</TableHead>
@@ -156,10 +160,13 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
     firstAllocation,
     tokenInfo,
   } = props;
-  const [isExpanded, setIsExpanded] = useState(true);
   const isK2 = tokenInfo.id === 'k2';
   const isKvcm = tokenInfo.id === 'kvcm';
   const { data: protocolData } = useProtocolData();
+  const { data: allocationData } = useAllocationData();
+  
+  const hasLocks = allocations.some((a) => a.contractLockId !== undefined);
+  const [isExpanded, setIsExpanded] = useState(!hasLocks);
 
   const usdValue = useMemo(() => {
     if (!isKvcm && !isK2) return 0;
@@ -178,8 +185,6 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
     });
     return map;
   }, [allocations]);
-
-  const hasLocks = allocations.some((a) => a.contractLockId !== undefined);
   const shouldShowGrouped = allocations.length > 1 || (isKvcm && hasLocks);
 
   if (!allocations || allocations.length === 0) {
@@ -191,10 +196,28 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
       {shouldShowGrouped && (
         <TableRow>
           <TableCell className="text-left border-0">
-            <div className="flex flex-col gap-0.5">
-              <AllocationClass {...props} allocation={firstAllocation} />
-              <AllocationCategory {...props} allocation={firstAllocation} />
-              <Progress progressPercent={allocationPercent} />
+            <div className="flex items-center gap-2">
+              <div
+                className="cursor-pointer flex-shrink-0"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsExpanded(!isExpanded);
+                }}
+              >
+                <Icon
+                  size={2.2}
+                  icon={ArrowDown}
+                  className={cn(
+                    'transition-transform',
+                    isExpanded ? 'rotate-0' : '-rotate-90'
+                  )}
+                />
+              </div>
+              <div className="flex flex-col gap-0.5 flex-1">
+                <AllocationClass {...props} allocation={firstAllocation} />
+                <AllocationCategory {...props} allocation={firstAllocation} />
+                <Progress progressPercent={allocationPercent} />
+              </div>
             </div>
           </TableCell>
           <TableCell className="text-right border-0">
@@ -214,33 +237,20 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
           </TableCell>
           {!isK2 && (
             <TableCell className="text-center border-0">
-              <span className="text-size-12 text-void-50">—</span>
+              <div className="flex justify-center">
+                <AllocationPriceEffect {...props} allocation={firstAllocation} />
+              </div>
             </TableCell>
           )}
           <TableCell className="text-left border-0">
             <div className="flex justify-center">
-              <span className="text-size-12 text-void-50">—</span>
+              <AllocationPrice {...props} allocation={firstAllocation} />
             </div>
           </TableCell>
           <TableCell className="border-0">
             {/* Edit button removed from main row */}
           </TableCell>
-          <TableCell
-            className="border-0 justify-end cursor-pointer"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsExpanded(!isExpanded);
-            }}
-          >
-            <Icon
-              className={cn(
-                'transition-transform',
-                isExpanded ? 'rotate-180' : 'rotate-270'
-              )}
-              icon={ArrowDown}
-              size={2.2}
-            />
-          </TableCell>
+          <TableCell className="border-0" />
         </TableRow>
       )}
       {shouldShowGrouped &&
@@ -266,6 +276,9 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
               return lockTotal * tokenPrice;
             })();
 
+            const availableAmount =
+              allocationData?.kvcm.availableKvcm.get(Number(lockId)) ?? 0;
+
             return (
               <LockSubRow
                 key={`${carbonClass}-${lockId}`}
@@ -275,6 +288,7 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
                 lockAllocations={lockAllocations}
                 lockAllocation={lockAllocation}
                 isK2={isK2}
+                availableAmount={availableAmount}
                 {...props}
               />
             );
@@ -306,8 +320,16 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
                   {formatAmountWithCommas(totalWithoutLocks)} {tokenInfo.symbol}
                 </span>
               </TableCell>
-              {!isK2 && <TableCell className="text-center border-0" />}
-              <TableCell className="text-left border-0" />
+              {!isK2 && (
+                <TableCell className="text-center border-0">
+                  <span className="text-size-12 text-void-50">—</span>
+                </TableCell>
+              )}
+              <TableCell className="text-left border-0">
+                <div className="flex justify-center">
+                  <span className="text-size-12 text-void-50">—</span>
+                </div>
+              </TableCell>
               <TableCell className="border-0">
                 <div className="flex justify-end gap-2">
                   {allocationsWithoutLocks.map((allocation) => (
@@ -353,6 +375,7 @@ type LockSubRowProps = AllocationsCardProps & {
   lockAllocation: Allocation;
   isK2: boolean;
   tokenInfo: AllocationsCardProps['tokenInfo'];
+  availableAmount: number;
 };
 
 const LockSubRow: FC<LockSubRowProps> = (props) => {
@@ -365,6 +388,7 @@ const LockSubRow: FC<LockSubRowProps> = (props) => {
     isK2,
     tokenInfo,
     totalAmount,
+    availableAmount,
   } = props;
   const [isHovered, setIsHovered] = useState(false);
   const isKvcm = tokenInfo.id === 'kvcm';
@@ -377,19 +401,26 @@ const LockSubRow: FC<LockSubRowProps> = (props) => {
   return (
     <TableRow
       key={`lock-${lockAllocation.contractLockId}`}
-      className="bg-white"
+      className="bg-white border-b border-gray-200/30"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <TableCell className="text-left border-0">
-        <div className="flex items-center gap-[25px]">
-          <span className="text-gray-400 text-size-16 flex-shrink-0 flex items-center justify-center h-full">
-            ↳
-          </span>
-          <div className="flex flex-col gap-1 flex-1">
-            <span className="text-size-14 text-gray-600">
-              {lockDate ? `Lock: ${lockDate}` : 'Lock'}
-            </span>
+        <div className="flex items-start pl-[25px] gap-[10px]">
+          <Icon
+            size={2.4}
+            icon={LockIcon}
+            className="text-gray-400 flex-shrink-0 mt-1.5"
+          />
+          <div className="flex flex-col gap-0.5 flex-1">
+            <div className="flex flex-col gap-0 flex-1">
+              <span className="text-size-14 text-gray-600 font-medium">
+                {lockDate ? `Lock: ${lockDate}` : 'Lock'}
+              </span>
+              <span className="text-size-12 text-gray-500 font-normal">
+                {formatAmountWithCommas(availableAmount)} {tokenInfo.symbol} available
+              </span>
+            </div>
             <Progress progressPercent={lockPercent} />
           </div>
         </div>
@@ -411,14 +442,12 @@ const LockSubRow: FC<LockSubRowProps> = (props) => {
       </TableCell>
       {!isK2 && (
         <TableCell className="text-center border-0">
-          <div className="flex justify-center">
-            <AllocationPriceEffect {...props} allocation={lockAllocation} />
-          </div>
+          <span className="text-size-12 text-void-50">—</span>
         </TableCell>
       )}
       <TableCell className="text-left border-0">
         <div className="flex justify-center">
-          <AllocationPrice {...props} allocation={lockAllocation} />
+          <span className="text-size-12 text-void-50">—</span>
         </div>
       </TableCell>
       <TableCell className="border-0">

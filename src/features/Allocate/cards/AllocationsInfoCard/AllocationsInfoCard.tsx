@@ -14,15 +14,18 @@ export const AllocationsInfoCard = () => {
     <div className="text-card-foreground flex flex-col gap-6 rounded-xl p-5 py-8 bg-white border border-gray-300">
       <div className="space-y-3">
         <div className="flex flex-wrap items-center justify-around gap-3">
-          <div className="flex flex-col gap-1">
-            <div className="text-[2.4rem] font-bold tabular-nums">
+          <div className="flex flex-col gap-2">
+            <div className="text-[2.8rem] font-bold tabular-nums">
               {formatAmountWithCommas(stats?.totalAllocated || 0, 2)}
             </div>
             <div className="flex items-center justify-center gap-1.5">
               <span className="text-size-12 text-gray-500">
                 Total allocated
               </span>
-              <Tooltip content="Total amount of tokens allocated across all carbon classes" />
+              <Tooltip 
+                iconSize={1.4}
+                content="Total amount of your locked kVCM and deposited K2 currently allocated to carbon classes. Unallocated tokens remain in your position but don't influence protocol decisions." 
+              />
             </div>
           </div>
           <Divider />

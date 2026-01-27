@@ -15,7 +15,7 @@ export const CategoryFilter: FC<Props> = (props) => {
   const { categories, selectedCategory, onCategoryChange, className } = props;
 
   return (
-    <div className={cn('flex flex-wrap gap-2 mb-4', className)}>
+    <div className={cn('flex flex-wrap gap-2', className)}>
       <CategoryFilterButton
         label="All"
         isActive={selectedCategory === null}

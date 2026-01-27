@@ -1,10 +1,12 @@
 'use client';
 
 import Button from '@/shared/components/Button/Button';
+import Icon from '@/shared/components/Icon/Icon';
 import { Progress } from '@/shared/components/Progress/Progress';
 import { TableCell, TableRow } from '@/shared/components/Table/table';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
+import CirclePlus from '@/shared/images/circle_plus.svg';
 import {
   formatAmountWithCommas,
   formatPriceUSDWithCommas,
@@ -47,24 +49,13 @@ export const UnallocatedRow: FC<UnallocatedRowProps> = ({
     <TableRow className="border-0 bg-gray-50/30 cursor-pointer hover:bg-gray-50/60 transition-colors">
       <TableCell className="text-left border-0">
         <div className="flex flex-col gap-0.5">
-          <div className="flex items-center gap-2">
-            <svg
-              className="w-4 h-4 text-void-50"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={1.5}
-            >
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                fill="none"
-              />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h8" />
-            </svg>
-            <div className="font-medium text-gray-700 text-size-16">
+          <div className="flex items-center gap-2.5">
+            <Icon
+              size={2}
+              icon={CirclePlus}
+              className="text-void-50"
+            />
+            <div className="font-semibold text-size-16">
               Unallocated
             </div>
           </div>

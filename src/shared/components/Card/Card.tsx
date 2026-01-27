@@ -3,6 +3,7 @@ import Skeleton from '../Skeleton/Skeleton';
 import { Tooltip } from '../Tooltip/Tooltip';
 
 export type CardProps = {
+  id?: string;
   className?: string;
   title?: React.ReactNode;
   tooltip?: string;
@@ -30,12 +31,14 @@ export default function Card({
   titleAddOnBadge,
   titleAddOnBadgeClassName,
   variant = 'default',
+  id,
 }: CardProps) {
   const border = variant === 'default' ? 'border-gray-300' : 'border-green-300';
   const background = variant === 'default' ? 'bg-background' : 'bg-green-50';
   const text = variant === 'default' ? 'text-void-50' : 'text-green-80';
   return (
     <div
+      id={id}
       className={cn(
         'flex flex-col rounded-lg border-gray-300 border-1 p-5',
         background,

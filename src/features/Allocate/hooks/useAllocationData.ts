@@ -106,12 +106,15 @@ export const useAllocationData = (): UseQueryResult<
           unallocatedUSD: unallocatedKvcmUSD,
           classes: kvcmStats.classes,
           allocatedPercent: kvcmAllocatedPercent,
-          highestInfluence: kvcmStats.highestInfluence
-            ? {
-                category: kvcmStats.highestInfluence.category,
-                sharePercent: kvcmStats.highestInfluence.sharePercent,
-              }
-            : null,
+          highestInfluence:
+            kvcmStats.highestInfluence &&
+            kvcmStats.highestInfluence.category &&
+            kvcmStats.highestInfluence.sharePercent > 0
+              ? {
+                  category: kvcmStats.highestInfluence.category,
+                  sharePercent: kvcmStats.highestInfluence.sharePercent,
+                }
+              : null,
         },
         k2: {
           allocations: k2Stats.allocations,
@@ -121,12 +124,15 @@ export const useAllocationData = (): UseQueryResult<
           unallocatedUSD: unallocatedK2USD,
           classes: k2Stats.classes,
           allocatedPercent: k2AllocatedPercent,
-          highestInfluence: k2Stats.highestInfluence
-            ? {
-                category: k2Stats.highestInfluence.category,
-                sharePercent: k2Stats.highestInfluence.sharePercent,
-              }
-            : null,
+          highestInfluence:
+            k2Stats.highestInfluence &&
+            k2Stats.highestInfluence.category &&
+            k2Stats.highestInfluence.sharePercent > 0
+              ? {
+                  category: k2Stats.highestInfluence.category,
+                  sharePercent: k2Stats.highestInfluence.sharePercent,
+                }
+              : null,
         },
       };
     },

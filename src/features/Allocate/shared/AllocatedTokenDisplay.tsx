@@ -4,6 +4,7 @@ import { Progress } from '@/shared/components/Progress/Progress';
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
 import { formatPercentage } from '@/shared/utils/string.utils';
 import { type FC } from 'react';
+import { scrollToAllocationsTable } from '../allocate.utils';
 
 type HighestInfluence = {
   category: string;
@@ -18,7 +19,6 @@ type Props = {
 
 export const AllocatedTokenDisplay: FC<Props> = (props) => {
   const { tokenName, allocatedPercent, highestInfluence } = props;
-
   return (
     <div>
       <div className="cursor-pointer hover:bg-gray-50/50 transition-colors p-2 rounded-lg -m-2">
@@ -33,15 +33,16 @@ export const AllocatedTokenDisplay: FC<Props> = (props) => {
           progressPercent={allocatedPercent}
         />
       </div>
-      {highestInfluence && (
-        <div className="flex items-center justify-center gap-1 mt-1.5 cursor-pointer hover:underline">
+      {highestInfluence && highestInfluence.category && highestInfluence.sharePercent > 0 && (
+        <div
+          onClick={() => scrollToAllocationsTable(tokenName)}
+          className="flex items-center justify-center gap-1 mt-1.5 cursor-pointer hover:underline"
+        >
           <span className="text-size-12 text-gray-500">
             Highest influence: {highestInfluence.category} ·{' '}
             {(highestInfluence.sharePercent * 100).toFixed(1)}%
           </span>
-          <Tooltip
-            content={`${highestInfluence.category} has the highest allocation share for ${tokenName}`}
-          />
+          <Tooltip content="Your share of this class's total allocation. Click to view." />
         </div>
       )}
     </div>

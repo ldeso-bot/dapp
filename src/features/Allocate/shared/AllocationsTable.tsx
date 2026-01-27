@@ -1,5 +1,7 @@
 import Card from '@/shared/components/Card/Card';
+import Icon from '@/shared/components/Icon/Icon';
 import { useSortableData } from '@/shared/hooks/useSortableData';
+import filterIcon from '@/shared/images/filter.svg';
 import { Allocation } from '@/shared/models/walletData';
 import { cn } from '@/shared/utils/component.utils';
 import { type FC, useMemo, useState } from 'react';
@@ -68,11 +70,19 @@ export const AllocationsTable: FC<AllocationsCardProps> = (props) => {
 
       <div className="pt-2">
         {showCategoryFilter && categories.length > 0 && (
-          <CategoryFilter
-            categories={categories}
-            selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
-          />
+          <div className="flex items-center gap-2 mb-4">
+            <Icon
+              size={1.8}
+              alt="Filter"
+              icon={filterIcon}
+              className="text-gray-400"
+            />
+            <CategoryFilter
+              categories={categories}
+              selectedCategory={selectedCategory}
+              onCategoryChange={setSelectedCategory}
+            />
+          </div>
         )}
         <AllocationsTableDesktop
           {...props}

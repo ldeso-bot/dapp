@@ -5,6 +5,7 @@ import Icon from '@/shared/components/Icon/Icon';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
+import k2Icon from '@/shared/images/k2.svg';
 import Plus from '@/shared/images/plus.svg';
 import { AllocationsTable } from '../../shared/AllocationsTable';
 
@@ -19,8 +20,14 @@ export default function K2AllocationsCard(props: CardProps) {
   return (
     <AllocationsTable
       {...props}
+      id="k2-allocations"
       showCategoryFilter
-      title="K2 Allocations"
+      title={
+        <div className="flex items-center gap-2">
+          <Icon icon={k2Icon} alt="K2" size={2.4} />
+          <span>K2 Allocations</span>
+        </div>
+      }
       titleAddOnBadge="Price Strength"
       titleClassName="text-size-18 font-medium"
       tooltip="Rebalancing kVCM never unlocks your position early. Maturity dates stay unchanged."

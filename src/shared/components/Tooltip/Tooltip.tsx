@@ -7,16 +7,17 @@ import styles from './tooltip.module.css';
 type Props = {
   trigger?: React.ReactNode;
   content?: React.ReactNode;
+  iconSize?: number;
   className?: string;
 };
 
-export const Tooltip = ({ trigger, content, className }: Props) => {
+export const Tooltip = ({ trigger, content, iconSize = 1.6, className }: Props) => {
   if (!content) {
     return trigger;
   }
 
   if (!trigger) {
-    trigger = <Icon icon={helpIcon} alt={'Help'} size={1.6} />;
+    trigger = <Icon icon={helpIcon} alt={'Help'} size={iconSize} />;
   }
 
   return (

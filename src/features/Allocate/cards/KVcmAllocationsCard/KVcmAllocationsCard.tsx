@@ -5,6 +5,7 @@ import Icon from '@/shared/components/Icon/Icon';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
+import kvcmIcon from '@/shared/images/kvcm.svg';
 import Plus from '@/shared/images/plus.svg';
 import { AllocationsTable } from '../../shared/AllocationsTable';
 
@@ -26,8 +27,14 @@ export default function KvcmAllocationsCard(props: CardProps) {
   return (
     <AllocationsTable
       {...props}
+      id="kvcm-allocations"
       showCategoryFilter
-      title="kVCM Allocations"
+      title={
+        <div className="flex items-center gap-2">
+          <Icon icon={kvcmIcon} alt="kVCM" size={2.4} />
+          <span>kVCM Allocations</span>
+        </div>
+      }
       titleAddOnBadge="Price Lever"
       titleClassName="text-size-18 font-medium"
       tooltip="Rebalancing kVCM never unlocks your position early. Maturity dates stay unchanged."

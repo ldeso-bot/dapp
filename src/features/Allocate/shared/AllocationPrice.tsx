@@ -30,7 +30,7 @@ export const AllocationPrice: FC<AllocationsTableItemProps> = (props) => {
 
     return (
       <div className="flex flex-col">
-        <div className="font-bold">{formatPriceUSD(allocation.priceUSD)}</div>
+        <div className="font-medium text-gray-900 text-size-14">{formatPriceUSD(allocation.priceUSD)}</div>
         <div className="text-size-12 text-void-50">
           updated {formatUTCTime()}
         </div>

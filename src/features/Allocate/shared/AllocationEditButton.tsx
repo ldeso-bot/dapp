@@ -8,7 +8,7 @@ export const AllocationEditButton: FC<AllocationsTableItemProps> = (props) => {
   const { allocation } = props;
   return (
     <Button className="w-fit" href={`?action=edit_allocation_${allocation.id}`}>
-      Edit Allocation
+      Edit
     </Button>
   );
 };

@@ -1,5 +1,8 @@
 'use client';
 
+import Icon from '@/shared/components/Icon/Icon';
+import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
+import helpIcon from '@/shared/images/help.svg';
 import { SortConfig } from '@/shared/hooks/useSortableData';
 import { cn } from '@/shared/utils/component.utils';
 import { TableHead } from './table';
@@ -10,10 +13,11 @@ type SortableHeaderProps<TData> = {
   onSort?: (key: keyof TData) => void;
   label: string;
   className?: string;
+  infoIcon?: string;
 };
 
 export const SortableHeader = <TData,>(props: SortableHeaderProps<TData>) => {
-  const { sortKey, sortConfig, onSort, label, className } = props;
+  const { sortKey, sortConfig, onSort, label, className, infoIcon } = props;
   const isActive = sortConfig?.key === sortKey;
   const direction = isActive ? sortConfig?.direction : null;
 
@@ -51,6 +55,21 @@ export const SortableHeader = <TData,>(props: SortableHeaderProps<TData>) => {
             ▼
           </span>
         </div>
+        {infoIcon && (
+          <div onClick={(e) => e.stopPropagation()}>
+            <Tooltip
+              trigger={
+                <Icon
+                  icon={helpIcon}
+                  alt="Info"
+                  size={1.6}
+                  className="text-gray-400"
+                />
+              }
+              content={infoIcon}
+            />
+          </div>
+        )}
       </div>
     </TableHead>
   );
