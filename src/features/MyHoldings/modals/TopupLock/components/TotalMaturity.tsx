@@ -1,5 +1,6 @@
 'use client';
 
+import { formatAmountWithCommas } from '@/shared/utils/string.utils';
 import { type FC } from 'react';
 
 type TotalMaturityProps = {
@@ -10,6 +11,7 @@ type TotalMaturityProps = {
 
 export const TotalMaturity: FC<TotalMaturityProps> = (props) => {
   const { currentLockAmount, totalAccruingRewards, tokenSymbol } = props;
+  const total = currentLockAmount + totalAccruingRewards;
 
   return (
     <div className="rounded-lg py-3 px-4 bg-gray-50 border border-gray-200">
@@ -19,11 +21,11 @@ export const TotalMaturity: FC<TotalMaturityProps> = (props) => {
             Your total at maturity (this lock)
           </div>
           <p className="text-size-12 text-gray-500">
-            Existing (projected) ~ {currentLockAmount} + Top-up base ~{' '}
-            {totalAccruingRewards}
+            Existing (projected) ~ {formatAmountWithCommas(currentLockAmount, 0)}{' '}
+            + Top-up base ~ {formatAmountWithCommas(totalAccruingRewards, 0)}
           </p>
           <p className="text-size-20 font-semibold text-gray-800">
-            ~ {currentLockAmount + totalAccruingRewards} {tokenSymbol}
+            ~ {formatAmountWithCommas(total, 0)} {tokenSymbol}
           </p>
         </div>
       </div>

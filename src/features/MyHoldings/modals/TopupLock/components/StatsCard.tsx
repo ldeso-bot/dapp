@@ -1,7 +1,11 @@
 'use client';
 
 import { formatDurationFromTimestamp } from '@/shared/utils/date.utils';
-import { formatPercentage, formatTimestamp } from '@/shared/utils/string.utils';
+import {
+  formatAmountWithCommas,
+  formatPercentage,
+  formatTimestamp,
+} from '@/shared/utils/string.utils';
 import { type FC } from 'react';
 
 type StatsCardProps = {
@@ -53,13 +57,14 @@ export const StatsCard: FC<StatsCardProps> = (props) => {
           Current lock
         </div>
         <p className="text-size-16 font-medium text-gray-800">
-          {currentLockAmount}{' '}
+          {formatAmountWithCommas(currentLockAmount, 0)}{' '}
           <span className="text-gray-600 text-size-14 font-normal">
             {tokenSymbol}
           </span>{' '}
           <span className="text-gray-400 text-size-14 font-normal">•</span>{' '}
           <span className="text-gray-600 text-size-14 font-normal">
-            {totalAccruingRewards} {tokenSymbol} accruing
+            {formatAmountWithCommas(totalAccruingRewards, 0)} {tokenSymbol}{' '}
+            accruing
           </span>
         </p>
       </div>

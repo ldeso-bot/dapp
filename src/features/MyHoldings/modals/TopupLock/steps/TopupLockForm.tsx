@@ -56,6 +56,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
   const maturityDate = topupLockDialogState.maturityDate ?? null;
   const baseApy = topupLockDialogState.baseApy ?? 0;
 
+  const topUpAmount = Number(amount) || 0;
   const isValidAmount = !!(amount && amount > 0);
   const availableBalance = Number(walletData?.balances?.[typedToken] ?? 0);
 
@@ -137,9 +138,9 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
           <TotalMaturity
             tokenSymbol={tokenSymbol}
             currentLockAmount={currentLockAmount}
-            totalAccruingRewards={totalAccruingRewards}
+            totalAccruingRewards={topUpAmount}
           />
-          <K2Incentives k2Incentives={totalAccruingRewards} />
+          <K2Incentives k2Incentives={topUpAmount} />
         </div>
         {formState.errors.root && (
           <RootError
