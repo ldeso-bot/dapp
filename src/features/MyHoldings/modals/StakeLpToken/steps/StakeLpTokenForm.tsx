@@ -116,10 +116,6 @@ export const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({
             <DurationSlider name="duration" control={form.control} />
           </div>
           <div className="text-size-12 text-void-40">
-            <p>
-              Duration between maturities is 90 days. Choose from 40 supported
-              dates.
-            </p>
             <div className="w-full h-[1px] bg-void-20 my-2" />
             <p>
               Incentives (kVCM and/or K2) accrue until the end of the chosen

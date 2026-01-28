@@ -503,5 +503,532 @@ const abi = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
+  { inputs: [], name: 'BurnMoreK2SharesThanMinted', type: 'error' },
+  { inputs: [], name: 'BurnMoreRYSharesThanMinted', type: 'error' },
+  {
+    inputs: [{ internalType: 'address', name: 'user', type: 'address' }],
+    name: 'K2StakersPositionsOverflow',
+    type: 'error',
+  },
+  { inputs: [], name: 'NotRewardManagerStateUpdater', type: 'error' },
+  {
+    inputs: [
+      { internalType: 'uint8', name: 'bits', type: 'uint8' },
+      { internalType: 'uint256', name: 'value', type: 'uint256' },
+    ],
+    name: 'SafeCastOverflowedUintDowncast',
+    type: 'error',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'token', type: 'address' }],
+    name: 'SafeERC20FailedOperation',
+    type: 'error',
+  },
+  { inputs: [], name: 'SystemPaused', type: 'error' },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+    ],
+    name: 'K2StakersK2RewardsTransferred',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'midnightIndex',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'pendingYield',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'sharesBurned',
+        type: 'uint256',
+      },
+    ],
+    name: 'K2StakersK2YSharesBurned',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'midnightIndex',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'pendingYield',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'sharesMinted',
+        type: 'uint256',
+      },
+    ],
+    name: 'K2StakersK2YSharesMinted',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+    ],
+    name: 'K2StakersRYRewardsTransferred',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'midnightIndex',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'pendingYield',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'sharesBurned',
+        type: 'uint256',
+      },
+    ],
+    name: 'K2StakersRYSharesBurned',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'midnightIndex',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'pendingYield',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'sharesMinted',
+        type: 'uint256',
+      },
+    ],
+    name: 'K2StakersRYSharesMinted',
+    type: 'event',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'user', type: 'address' },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+    ],
+    name: 'burnSharesForK2Staker',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'user', type: 'address' }],
+    name: 'claimK2StakersRewards',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'user', type: 'address' }],
+    name: 'getK2StakersK2YieldPosition',
+    outputs: [
+      {
+        components: [
+          { internalType: 'uint256', name: 'shares', type: 'uint256' },
+          { internalType: 'uint256', name: 'pendingYield', type: 'uint256' },
+          {
+            internalType: 'uint256',
+            name: 'claimableYield',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct RewardManagerStorage.K2StakerPositionView',
+        name: 'position',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'user', type: 'address' }],
+    name: 'getK2StakersRYPosition',
+    outputs: [
+      {
+        components: [
+          { internalType: 'uint256', name: 'shares', type: 'uint256' },
+          { internalType: 'uint256', name: 'pendingYield', type: 'uint256' },
+          {
+            internalType: 'uint256',
+            name: 'claimableYield',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct RewardManagerStorage.K2StakerPositionView',
+        name: 'position',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'user', type: 'address' },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+    ],
+    name: 'mintSharesForK2Staker',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'maturityId', type: 'uint256' }],
+    name: 'InvalidMaturityId',
+    type: 'error',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'lpToken', type: 'address' },
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' },
+    ],
+    name: 'LPRYieldQueueOverflow',
+    type: 'error',
+  },
+  { inputs: [], name: 'NotRewardManagerStateUpdater', type: 'error' },
+  {
+    inputs: [{ internalType: 'address', name: 'token', type: 'address' }],
+    name: 'SafeERC20FailedOperation',
+    type: 'error',
+  },
+  { inputs: [], name: 'SharesToBurnGTSystem', type: 'error' },
+  { inputs: [], name: 'SystemPaused', type: 'error' },
+  { inputs: [], name: 'ZeroAddress', type: 'error' },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'lpToken',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'maturityId',
+        type: 'uint256',
+      },
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+    ],
+    name: 'LPK2YieldTransferred',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'lpToken',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'maturityId',
+        type: 'uint256',
+      },
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+    ],
+    name: 'LPRYieldTransferred',
+    type: 'event',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'lpToken', type: 'address' },
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' },
+    ],
+    name: 'burnSharesFromLP',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'lpToken', type: 'address' },
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+    ],
+    name: 'claimLPRewards',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'lpToken', type: 'address' },
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+    ],
+    name: 'getGlobalLPK2Rewards',
+    outputs: [
+      {
+        components: [
+          { internalType: 'uint256', name: 'totalRewards', type: 'uint256' },
+          { internalType: 'uint256', name: 'totalShares', type: 'uint256' },
+          {
+            internalType: 'uint256',
+            name: 'globalAccumulator',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'lastKeeperUpdate',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct RewardManagerStorage.GlobalRewardsState',
+        name: 'global',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'lpToken', type: 'address' },
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+    ],
+    name: 'getGlobalLPRewards',
+    outputs: [
+      {
+        components: [
+          { internalType: 'uint256', name: 'totalRewards', type: 'uint256' },
+          { internalType: 'uint256', name: 'totalShares', type: 'uint256' },
+          {
+            internalType: 'uint256',
+            name: 'globalAccumulator',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'lastKeeperUpdate',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct RewardManagerStorage.GlobalRewardsState',
+        name: 'global',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'lpToken', type: 'address' },
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+    ],
+    name: 'getLpStakersRYDetails',
+    outputs: [
+      {
+        components: [
+          { internalType: 'uint256', name: 'totalRewards', type: 'uint256' },
+          { internalType: 'uint256', name: 'totalShares', type: 'uint256' },
+          {
+            internalType: 'uint256',
+            name: 'globalAccumulator',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'lastKeeperUpdate',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct RewardManagerStorage.GlobalRewardsState',
+        name: '',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'lpToken', type: 'address' },
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' },
+    ],
+    name: 'getUnclaimedK2YRewards',
+    outputs: [{ internalType: 'uint256', name: 'rewards', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'lpToken', type: 'address' },
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' },
+    ],
+    name: 'getUnclaimedRYRewards',
+    outputs: [{ internalType: 'uint256', name: 'rewards', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'lpToken', type: 'address' },
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' },
+    ],
+    name: 'getUserLPK2Position',
+    outputs: [
+      {
+        components: [
+          { internalType: 'uint256', name: 'shares', type: 'uint256' },
+          { internalType: 'uint256', name: 'pendingYield', type: 'uint256' },
+          {
+            internalType: 'uint64',
+            name: 'lastSettlementMidnightIndex',
+            type: 'uint64',
+          },
+        ],
+        internalType: 'struct RewardManagerStorage.LPRewardsPositionView',
+        name: 'position',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'lpToken', type: 'address' },
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' },
+    ],
+    name: 'getUserLPRYPosition',
+    outputs: [
+      {
+        components: [
+          { internalType: 'uint256', name: 'shares', type: 'uint256' },
+          { internalType: 'uint256', name: 'pendingYield', type: 'uint256' },
+          {
+            internalType: 'uint64',
+            name: 'lastSettlementMidnightIndex',
+            type: 'uint64',
+          },
+        ],
+        internalType: 'struct RewardManagerStorage.LPRewardsPositionView',
+        name: 'position',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'lpToken', type: 'address' },
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' },
+      { internalType: 'uint256', name: 'capital', type: 'uint256' },
+    ],
+    name: 'mintShareToLP',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
 ] as const;
 export default abi;

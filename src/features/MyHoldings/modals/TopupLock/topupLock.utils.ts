@@ -1,4 +1,4 @@
-import { AllocationToken } from '@/shared/constants/tokens.constants';
+import { LockableToken } from '@/shared/constants/tokens.constants';
 import { atom } from 'jotai';
 
 export type TopupLockFields = {
@@ -14,7 +14,7 @@ export type TopupLockFields = {
 
 const topupLockDialogState = {
   open: false,
-  token: null as AllocationToken | null,
+  token: null as LockableToken | null,
   tokenSymbol: null as string | null,
   currentLockAmount: 0 as number | null,
   totalAccruingRewards: 0 as number | null,

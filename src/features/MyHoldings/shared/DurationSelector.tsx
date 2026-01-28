@@ -19,12 +19,14 @@ import { useMemo } from 'react';
 import { Controller } from 'react-hook-form';
 import { DurationFormFields } from './DurationStepper';
 
-const PRESET_DURATIONS = [
-  { days: 90, description: 'Shortest' }, // 3 months
-  { days: 365, description: 'Short' }, // 1 year
-  { days: 1095, description: 'Medium' }, // 3 years
-  { days: 3650, description: 'Longest' }, // 10 years
-] as const;
+const getPresetDurations = (daysBetweenMaturities: number) => {
+  return [
+    { days: daysBetweenMaturities, description: 'Shortest' },
+    { days: daysBetweenMaturities * 4, description: 'Short' },
+    { days: daysBetweenMaturities * 12, description: 'Medium' },
+    { days: daysBetweenMaturities * 40, description: 'Longest' },
+  ] as const;
+};
 
 // @todo - replace with actual data...
 const getNextResetInfo = () => {
@@ -43,6 +45,11 @@ export const DurationSelector = <T extends DurationFormFields>({
   const currentTimestamp = useCurrentTimestamp();
   const { data: protocolData } = useProtocolData();
   const { nextResetDate, daysUntilReset } = getNextResetInfo();
+
+  const daysBetweenMaturities =
+    (protocolData?.protocolState?.maturityPeriod ?? 0) / ONE_DAY;
+
+  const PRESET_DURATIONS = getPresetDurations(daysBetweenMaturities);
 
   const presetDurations = useMemo(() => {
     const maturities = protocolData?.maturities ?? [];

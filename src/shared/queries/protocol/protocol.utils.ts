@@ -98,7 +98,7 @@ export const getActiveMaturities = async (sdk: Sdk) => {
           ? midnightInfo.kvcmApyFor.kvcm
           : 0;
         const riskyYieldZeroCouponYieldCurve = midnightInfo
-          ? midnightInfo.kvcmPyFor['kvcm-k2']
+          ? midnightInfo.kvcmApyFor['kvcm-k2']
           : 0;
         return {
           ...maturity,

@@ -5,24 +5,12 @@ import {
   StatusCard,
   StatusCardTitle,
 } from '@/features/MyHoldings/cards/StatusCards/StatusCards';
-import {
-  VariableRewardsCard,
-  VariableRewardsHeader,
-  VariableRewardsItem,
-  VariableRewardsItemContent,
-  VariableRewardsItemTitle,
-} from '@/features/MyHoldings/cards/VariableRewardsCard/VariableRewardsCard';
 import { InfoCard } from '@/features/MyHoldings/shared/InfoCard';
-import { RecentActivity } from '@/features/MyHoldings/shared/RecentActivity';
-import Button from '@/shared/components/Button/Button';
 import { ROUTES } from '@/shared/constants/route.constants';
-import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useHasPreviouslyConnected } from '@/shared/hooks/useHasPreviouslyConnected';
 import { useNextMaturity } from '@/shared/hooks/useNextMaturity';
 import {
   formatAmountWithCommas,
-  formatCurrentTime,
-  formatPercentage,
   formatTimestamp,
 } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
@@ -30,7 +18,6 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useAccount } from 'wagmi';
 import { useTokenHoldingsData } from '../../hooks/useHoldingsData';
-import { claimIncentivesDialogAtom } from '../../modals/ClaimIncentives/claimIncentives.utils';
 import { lockTokenDialogAtom } from '../../modals/LockToken/lockToken.utils';
 import { HoldingEstimatedValue } from '../../shared/HoldingEstimatedValue';
 import { HoldingTotalPosition } from '../../shared/HoldingTotalPosition';
@@ -58,8 +45,6 @@ export const KvcmView = () => {
             }
             content={<KvcmOverview />}
           />
-          <KvcmVariableRewards />
-          <RecentActivity />
         </>
       )}
     </>
@@ -162,62 +147,5 @@ const KvcmOverview = () => {
         token="kvcm"
       />
     </>
-  );
-};
-
-const KvcmVariableRewards = () => {
-  const setClaimIncentivesDialogState = useSetAtom(claimIncentivesDialogAtom);
-  const { data: kvcmData } = useTokenHoldingsData('kvcm');
-  const { data: protocolData } = useProtocolData();
-
-  return (
-    <VariableRewardsCard>
-      {kvcmData && protocolData && (
-        <>
-          <VariableRewardsHeader
-            title="Variable Rewards"
-            timestamp={`As of ${formatCurrentTime()}`}
-            description="K2 incentives received from your time-locked kVCM tokens. These incentives depend on protocol parameters, are variable, non-guaranteed, and may be zero."
-          />
-          <VariableRewardsItem>
-            <VariableRewardsItemTitle
-              title="Incentives (K2)"
-              aprValue={formatPercentage(
-                protocolData.midnightInfos.k2ApyForKVCM ?? 0
-              )}
-              aprTooltip="The annual percentage rate of the variable rewards. This is an estimate, is not guaranteed, can change, and may be zero."
-            />
-            <VariableRewardsItemContent>
-              <div className="flex flex-1 flex-col">
-                <span className="text-gray-900 font-medium">
-                  {formatAmountWithCommas(kvcmData.k2ClaimableAmount)} K2
-                </span>
-                <span className="text-size-12 text-gray-500">
-                  Accrued to date:{' '}
-                  {formatAmountWithCommas(
-                    kvcmData.k2AccruingClaimableAmount
-                  )}{' '}
-                </span>
-              </div>
-              <Button
-                onClick={() =>
-                  setClaimIncentivesDialogState({
-                    open: true,
-                    claimableK2: kvcmData.k2ClaimableAmount,
-                    accruedK2: kvcmData.k2AccruedClaimableAmount,
-                    accruingK2: kvcmData.k2AccruingClaimableAmount,
-                    claimableK2Usd: kvcmData.k2ClaimableValue,
-                  })
-                }
-                colors="positive"
-                className="text-size-12"
-              >
-                Claim Incentives
-              </Button>
-            </VariableRewardsItemContent>
-          </VariableRewardsItem>
-        </>
-      )}
-    </VariableRewardsCard>
   );
 };

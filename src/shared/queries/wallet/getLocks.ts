@@ -206,7 +206,7 @@ export const getLocks = async (
               action.syntheticYieldEntryMidnightInfo.syntheticYieldPps,
               18
             ); // PPS at the time the lock shares are minted (during next midnight)
-            const actionShares = actionAmount * actionPps; // Shares minted
+            const actionShares = actionAmount / actionPps; // Shares minted
             const currentPps = midnightInfo.syntheticYieldPps; // Pps now (or at the time of maturation)
             const actionClaimable = actionShares * currentPps; // Claimable for the action
             const actionRewards = actionClaimable - actionAmount; // Rewards for the action

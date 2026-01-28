@@ -6,6 +6,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/shared/components/Tabs/Tabs';
+import { DEV_MODE } from '@/shared/constants/config.constants';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useMemo, useTransition } from 'react';
 import { HoldingsTabValue, SUPPORTED_TABS } from '../constants/tab.constants';
@@ -13,6 +14,7 @@ import { K2View } from '../views/K2View/K2View';
 import { KvcmView } from '../views/KVCMView/KvcmView';
 import { LiquidityPositionsView } from '../views/LiquidityPositionsView/LiquidityPositionView';
 import { OverviewView } from '../views/OverviewView/OverviewView';
+import { TestView } from '../views/TestView/TestView';
 
 const tabClassName = 'py-4 px-3 text-size-14 font-medium rounded-full';
 
@@ -51,6 +53,11 @@ export const MyHoldingsTabs = () => {
         <TabsTrigger className={tabClassName} value="liquidity">
           Liquidity
         </TabsTrigger>
+        {DEV_MODE && (
+          <TabsTrigger className={tabClassName} value="test">
+            Test
+          </TabsTrigger>
+        )}
       </TabsList>
       <TabsContent value="overview">
         <OverviewView />
@@ -63,6 +70,9 @@ export const MyHoldingsTabs = () => {
       </TabsContent>
       <TabsContent value="liquidity">
         <LiquidityPositionsView />
+      </TabsContent>
+      <TabsContent value="test">
+        <TestView />
       </TabsContent>
     </Tabs>
   );
