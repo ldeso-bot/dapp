@@ -16,7 +16,7 @@ export default function K2PriceCard(props: CardProps) {
       buttonTarget="_blank"
       title="K2 Price"
       primaryValue={price}
-      token={tokens.k2}
+      token={tokens.usdc}
     />
   );
 }
