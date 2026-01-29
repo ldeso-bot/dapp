@@ -44,14 +44,13 @@ export async function GET(request: NextRequest, { params }: Params) {
         ...(maturityId !== undefined && { maturityId: maturityId.toString() }),
       } as MidnightInfo_Filter;
 
-      const [midnightInfosResponse, tokenMetrics] = await Promise.all([
+      const [midnightInfosResponse] = await Promise.all([
         sdk.protocol.getMidnightInfo({ where }),
         getTokenMetrics(chainId),
       ]);
 
       return mapMidnightInfosToComputedDiffs(
-        midnightInfosResponse.midnightInfos,
-        tokenMetrics
+        midnightInfosResponse.midnightInfos
       );
     },
     [`midnight-info-${chainId}-${midnightIndex}-${maturityId ?? 'all'}`],

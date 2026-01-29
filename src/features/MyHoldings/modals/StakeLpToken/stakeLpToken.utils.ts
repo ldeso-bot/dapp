@@ -10,7 +10,6 @@ import { useContract } from '@/shared/hooks/web3/useContract';
 import { WalletData } from '@/shared/models/walletData';
 import { getAerodromePoolByIndex } from '@/shared/utils/aerodrome.utils';
 import { handleWeb3Error } from '@/shared/utils/web3.utils';
-import { useQueryClient } from '@tanstack/react-query';
 import { atom } from 'jotai';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Address } from 'viem';
@@ -35,7 +34,6 @@ export const useStakeLpToken = (params: {
   maturityId: number;
   lpTokenAddress?: Address;
 }) => {
-  const queryClient = useQueryClient();
   const { token, amount, maturityId, lpTokenAddress } = params;
   const { data: protocolData } = useProtocolData();
   const { address: userAddress, chain } = useAccount();

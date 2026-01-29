@@ -41,7 +41,7 @@ export default function CarbonClassCard() {
                               item.valueUSDChangePercent24h === 0,
                             'text-green-80 bg-green-10':
                               item.valueUSDChangePercent24h > 0,
-                            'text-red-600 bg-red-100':
+                            'text-red-60 bg-red-10':
                               item.valueUSDChangePercent24h < 0,
                           }
                         )}

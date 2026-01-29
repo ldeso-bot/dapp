@@ -5,12 +5,8 @@ import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useAtom } from 'jotai';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-import ClaimIncentivesFlow from './ClaimIncentives/ClaimIncentives';
-import { claimIncentivesDialogAtom } from './ClaimIncentives/claimIncentives.utils';
-import { claimKvcmLockRewardsDialogAtom } from './ClaimKvcmLockRewards/claimKvcmLockRewards.utils';
-import ClaimKvcmLockRewardsDialog from './ClaimKvcmLockRewards/ClaimKvcmLockRewardsForm';
-import ClaimTokenFlow from './ClaimToken/ClaimToken';
-import { claimTokenDialogAtom } from './ClaimToken/claimToken.utils';
+import { claimMaturedLockRewardsDialogAtom } from './ClaimMaturedLockRewards/claimKvcmLockRewards.utils';
+import ClaimMaturedLockRewardsDialog from './ClaimMaturedLockRewards/ClaimMaturedLockRewardsDialog';
 import { depositK2TokenDialogAtom } from './DepositK2Token/depositK2Token.utils';
 import DepositK2TokenFlow from './DepositK2Token/DepositK2TokenFlow';
 import { lockTokenDialogAtom } from './LockToken/lockToken.utils';
@@ -46,16 +42,11 @@ export const MyHoldingsModals = () => {
     unlockTokenDialogAtom
   );
   const [topupLockDialog, setTopupLockDialog] = useAtom(topupLockDialogAtom);
-  const [claimTokenDialog, setClaimTokenDialog] = useAtom(claimTokenDialogAtom);
-  const [claimIncentivesDialog, setClaimIncentivesDialog] = useAtom(
-    claimIncentivesDialogAtom
-  );
   const [depositK2TokenDialog, setDepositK2TokenDialog] = useAtom(
     depositK2TokenDialogAtom
   );
-  const [claimKvcmLockRewardsDialog, setClaimKvcmLockRewardsDialog] = useAtom(
-    claimKvcmLockRewardsDialogAtom
-  );
+  const [claimMaturedLockRewardsDialog, setClaimMaturedLockRewardsDialog] =
+    useAtom(claimMaturedLockRewardsDialogAtom);
 
   useEffect(() => {
     const hasOpenDialog =
@@ -64,9 +55,7 @@ export const MyHoldingsModals = () => {
       unstakeLpTokenDialog.open ||
       unlockTokenDialog.open ||
       topupLockDialog.open ||
-      claimTokenDialog.open ||
-      claimIncentivesDialog.open ||
-      claimKvcmLockRewardsDialog.open;
+      claimMaturedLockRewardsDialog.open;
 
     const shouldRemoveActionParam =
       !hasOpenDialog &&
@@ -89,9 +78,7 @@ export const MyHoldingsModals = () => {
     unstakeLpTokenDialog.open,
     unlockTokenDialog.open,
     topupLockDialog.open,
-    claimTokenDialog.open,
-    claimIncentivesDialog.open,
-    claimKvcmLockRewardsDialog.open,
+    claimMaturedLockRewardsDialog.open,
     searchParams,
     router,
     pathname,
@@ -115,20 +102,11 @@ export const MyHoldingsModals = () => {
       maturityDate: null,
       tokenSymbol: null,
     });
-    setClaimTokenDialog({
+    setClaimMaturedLockRewardsDialog({
       open: false,
-      amount: null,
-      token: null,
       lockId: null,
+      token: null,
     });
-    setClaimIncentivesDialog({
-      open: false,
-      claimableK2: null,
-      accruedK2: null,
-      accruingK2: null,
-      claimableK2Usd: null,
-    });
-    setClaimKvcmLockRewardsDialog({ open: false, lockId: null });
     setDepositK2TokenDialog({ open: false });
 
     if (action === null) return;
@@ -158,21 +136,11 @@ export const MyHoldingsModals = () => {
         tokenSymbol: null,
       });
     }
-    if (action === 'claim_token') {
-      setClaimTokenDialog({
+    if (action === 'claim_matured_lock') {
+      setClaimMaturedLockRewardsDialog({
         open: true,
-        amount: null,
-        token: null,
         lockId: null,
-      });
-    }
-    if (action === 'claim_incentives') {
-      setClaimIncentivesDialog({
-        open: true,
-        claimableK2: null,
-        accruedK2: null,
-        accruingK2: null,
-        claimableK2Usd: null,
+        token: null,
       });
     }
 
@@ -192,10 +160,8 @@ export const MyHoldingsModals = () => {
     setUnstakeLpTokenDialog,
     setUnlockTokenDialog,
     setTopupLockDialog,
-    setClaimTokenDialog,
-    setClaimIncentivesDialog,
     setDepositK2TokenDialog,
-    setClaimKvcmLockRewardsDialog,
+    setClaimMaturedLockRewardsDialog,
     data?.locks,
   ]);
 
@@ -222,25 +188,8 @@ export const MyHoldingsModals = () => {
       >
         <TopupLockFlow />
       </Dialog>
-      <Dialog open={claimTokenDialog.open}>
-        <ClaimTokenFlow />
-      </Dialog>
-      <Dialog open={claimKvcmLockRewardsDialog.open}>
-        <ClaimKvcmLockRewardsDialog />
-      </Dialog>
-      <Dialog
-        open={claimIncentivesDialog.open}
-        onClose={() =>
-          setClaimIncentivesDialog({
-            open: false,
-            claimableK2: null,
-            accruedK2: null,
-            accruingK2: null,
-            claimableK2Usd: null,
-          })
-        }
-      >
-        <ClaimIncentivesFlow />
+      <Dialog open={claimMaturedLockRewardsDialog.open}>
+        <ClaimMaturedLockRewardsDialog />
       </Dialog>
       <Dialog open={depositK2TokenDialog.open}>
         <DepositK2TokenFlow />

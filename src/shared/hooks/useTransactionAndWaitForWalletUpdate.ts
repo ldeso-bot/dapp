@@ -3,7 +3,7 @@ import { useAccount } from 'wagmi';
 import { WalletData } from '../models/walletData';
 
 type UseTransactionAndWaitForWalletUpdateParams = {
-  valueFetcher: (walletData: WalletData) => number;
+  valueFetcher: (walletData: WalletData) => number | string;
 };
 
 export const useTransactionAndWaitForWalletUpdate = ({

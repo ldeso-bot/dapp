@@ -2,7 +2,10 @@ import { ExecuteWithValidationResult } from '@/features/MyHoldings/hooks/useTran
 import { useTransactionAndWaitForWalletUpdate } from '@/shared/hooks/useTransactionAndWaitForWalletUpdate';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { WalletData } from '@/shared/models/walletData';
-import { handleWeb3Error } from '@/shared/utils/web3.utils';
+import {
+  exitWithErrorMessage,
+  handleWeb3Error,
+} from '@/shared/utils/web3.utils';
 import { useCallback } from 'react';
 import { isAddress, zeroAddress } from 'viem';
 import { useAccount } from 'wagmi';
@@ -39,13 +42,6 @@ export const useSellCarbon = (params: SellCarbonParams) => {
   const sellCarbon =
     useCallback(async (): Promise<ExecuteWithValidationResult> => {
       try {
-        const exitWithErrorMessage = (message: string) => {
-          console.error(message);
-          return {
-            error: message,
-            hash: null,
-          };
-        };
         if (!contract) {
           return exitWithErrorMessage('Contract is not ready');
         }

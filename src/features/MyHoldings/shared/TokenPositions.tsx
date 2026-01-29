@@ -20,8 +20,7 @@ import {
 import { getTokenSymbol } from '@/shared/utils/token.utils';
 import { useSetAtom } from 'jotai';
 import { type FC } from 'react';
-import { claimKvcmLockRewardsDialogAtom } from '../modals/ClaimKvcmLockRewards/claimKvcmLockRewards.utils';
-import { claimTokenDialogAtom } from '../modals/ClaimToken/claimToken.utils';
+import { claimMaturedLockRewardsDialogAtom } from '../modals/ClaimMaturedLockRewards/claimKvcmLockRewards.utils';
 import { depositK2TokenDialogAtom } from '../modals/DepositK2Token/depositK2Token.utils';
 import { topupLockDialogAtom } from '../modals/TopupLock/topupLock.utils';
 
@@ -99,10 +98,11 @@ type LotCardProps = {
 const LotCard: FC<LotCardProps> = ({ lock }) => {
   const setTopupLockDialog = useSetAtom(topupLockDialogAtom);
   const setDepositK2TokenDialog = useSetAtom(depositK2TokenDialogAtom);
-  const setClaimTokenDialog = useSetAtom(claimTokenDialogAtom);
-  const setClaimKvcmLockRewardsDialog = useSetAtom(
-    claimKvcmLockRewardsDialogAtom
+  const setClaimMaturedLockRewardsDialog = useSetAtom(
+    claimMaturedLockRewardsDialogAtom
   );
+
+  if (lock.status === 'claimed') return null;
 
   const isMatured = lock.status === 'matured';
   const isMaturing = lock.status === 'active';
@@ -124,7 +124,7 @@ const LotCard: FC<LotCardProps> = ({ lock }) => {
   return (
     <div title={title}>
       {/* Status and Date */}
-      <div className="flex items-center gap-2 px-2 py-2 border-void-20 border-x-1 border-t-1 rounded-t-xl">
+      <div className="flex items-center gap-2 px-2 py-2 border-void-20 border-x-1 border-t-1 rounded-t-xl bg-void-10">
         <div
           className={cn(
             'flex flex-row gap-1 px-2 py-1 rounded-3xl font-bold',
@@ -227,16 +227,10 @@ const LotCard: FC<LotCardProps> = ({ lock }) => {
             })}
             onClick={() => {
               if (lock.token === 'kvcm') {
-                setClaimKvcmLockRewardsDialog({
+                setClaimMaturedLockRewardsDialog({
                   open: true,
-                  lockId: lock.contractLockId,
-                });
-              } else {
-                setClaimTokenDialog({
-                  open: true,
-                  amount: lock.lockedAmount,
+                  lockId: lock.id,
                   token: lock.token,
-                  lockId: lock.contractLockId,
                 });
               }
             }}

@@ -1030,5 +1030,149 @@ const abi = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
+  {
+    inputs: [{ internalType: 'uint256', name: 'maturityId', type: 'uint256' }],
+    name: 'InvalidMaturityId',
+    type: 'error',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' },
+    ],
+    name: 'KVCMK2YQueueOverflow',
+    type: 'error',
+  },
+  { inputs: [], name: 'NotRewardManagerStateUpdater', type: 'error' },
+  {
+    inputs: [{ internalType: 'address', name: 'token', type: 'address' }],
+    name: 'SafeERC20FailedOperation',
+    type: 'error',
+  },
+  { inputs: [], name: 'SharesToBurnGTSystem', type: 'error' },
+  { inputs: [], name: 'SystemPaused', type: 'error' },
+  { inputs: [], name: 'ZeroAddress', type: 'error' },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'maturityId',
+        type: 'uint256',
+      },
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+    ],
+    name: 'KVCMK2YieldTransferred',
+    type: 'event',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' },
+    ],
+    name: 'burnSharesForKVCMStaker',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' },
+      { internalType: 'address', name: 'to', type: 'address' },
+    ],
+    name: 'burnSharesForKVCMStaker',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'maturityId', type: 'uint256' }],
+    name: 'claimKVCMK2Rewards',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'maturityId', type: 'uint256' }],
+    name: 'getKVCMK2YieldGlobalState',
+    outputs: [
+      {
+        components: [
+          { internalType: 'uint256', name: 'totalRewards', type: 'uint256' },
+          { internalType: 'uint256', name: 'totalShares', type: 'uint256' },
+          {
+            internalType: 'uint256',
+            name: 'globalAccumulator',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'lastKeeperUpdate',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct RewardManagerStorage.GlobalRewardsState',
+        name: 'global',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' },
+    ],
+    name: 'getKVCMK2YieldPosition',
+    outputs: [
+      {
+        components: [
+          { internalType: 'uint256', name: 'shares', type: 'uint256' },
+          { internalType: 'uint256', name: 'pendingYield', type: 'uint256' },
+          {
+            internalType: 'uint64',
+            name: 'lastSettlementMidnightIndex',
+            type: 'uint64',
+          },
+        ],
+        internalType:
+          'struct RewardManagerStorage.KVCMStakersK2RewardsPositionView',
+        name: 'position',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' },
+    ],
+    name: 'getUnclaimedKVCMK2Rewards',
+    outputs: [{ internalType: 'uint256', name: 'rewards', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+    ],
+    name: 'mintSharesForKVCMStaker',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
 ] as const;
 export default abi;

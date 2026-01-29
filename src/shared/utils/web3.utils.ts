@@ -4,6 +4,7 @@ import contracts, {
 import { ChainId } from '@/shared/constants/networks.constants';
 import { isChainId } from '@/shared/utils/typeguards';
 import { QueryClient } from '@tanstack/react-query';
+import { filter, isNonNullish } from 'remeda';
 import {
   type Abi,
   Address,
@@ -105,12 +106,28 @@ export const getTransactionTransferLogs = async (
     (log) => log.topics[0] === eventSelector
   );
 
-  const decodedLogs = filteredLogs.map((log) => {
-    return decodeEventLog({
-      abi: Transfer,
-      data: log.data,
-      topics: log.topics,
-    });
-  });
+  const decodedLogs = filter(
+    filteredLogs.map((log) => {
+      try {
+        return decodeEventLog({
+          abi: Transfer,
+          data: log.data,
+          topics: log.topics,
+        });
+      } catch (error) {
+        console.error('Error decoding log:', error);
+        return null;
+      }
+    }),
+    isNonNullish
+  );
   return decodedLogs;
+};
+
+export const exitWithErrorMessage = (message: string) => {
+  console.error(message);
+  return {
+    error: message,
+    hash: null,
+  };
 };

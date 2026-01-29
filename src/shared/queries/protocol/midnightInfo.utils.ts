@@ -1,9 +1,10 @@
 import { PROTOCOL_DATA_CACHE_TIME_SECONDS } from '@/shared/constants/config.constants';
 import { DAYS_IN_YEAR } from '@/shared/constants/protocol.constants';
+import { Token } from '@/shared/constants/tokens.constants';
 import {
-  AllMetrics,
   ApyInfo,
   ApyMidnightInfo,
+  YieldType,
 } from '@/shared/models/ProtocolData';
 import { formatStringToNumber, Sdk } from '@/shared/utils/subgraph.utils';
 import { GetLatestMidnightInfoQuery } from '@generated/gql/types/protocol.types';
@@ -111,10 +112,9 @@ const EMPTY_APY_INFO: ApyInfo = {
  * @param oldRawMidnightInfo - The old midnight info
  * @returns
  */
-export const computeMidnightInfoDiff = (
+const computeMidnightInfoDiff = (
   midnightInfo: FormattedMidnightInfo,
-  oldMidnightInfo: FormattedMidnightInfo | undefined,
-  tokenMetrics: AllMetrics
+  oldMidnightInfo: FormattedMidnightInfo | undefined
 ) => {
   // Yearly Percentage yield
   const k2ApyFor = { ...EMPTY_APY_INFO };
@@ -131,37 +131,32 @@ export const computeMidnightInfoDiff = (
     k2ApyFor.k2 = nonCompoundedApr(
       midnightInfo.k2YieldAccumulatorForK2,
       oldMidnightInfo.k2YieldAccumulatorForK2,
-      daysBetweenMidnights,
-      tokenMetrics.k2.supply
+      daysBetweenMidnights
     );
 
     k2ApyFor['kvcm-k2'] = nonCompoundedApr(
       midnightInfo.k2YieldAccumulatorForKVCM_K2_LP,
       oldMidnightInfo.k2YieldAccumulatorForKVCM_K2_LP,
-      daysBetweenMidnights,
-      tokenMetrics['kvcm-k2'].supply
+      daysBetweenMidnights
     );
 
     k2ApyFor.kvcm = nonCompoundedApr(
       midnightInfo.k2YieldAccumulatorForKVCM,
       oldMidnightInfo.k2YieldAccumulatorForKVCM,
-      daysBetweenMidnights,
-      tokenMetrics.kvcm.supply
+      daysBetweenMidnights
     );
 
     // KVCM
     kvcmApyFor['kvcm-k2'] = nonCompoundedApr(
       midnightInfo.riskyYieldAccumulatorForKVCM_K2_LP,
       oldMidnightInfo.riskyYieldAccumulatorForKVCM_K2_LP,
-      daysBetweenMidnights,
-      tokenMetrics['kvcm-k2'].supply
+      daysBetweenMidnights
     );
 
     kvcmApyFor['kvcm-usdc'] = nonCompoundedApr(
       midnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP,
       oldMidnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP,
-      daysBetweenMidnights,
-      tokenMetrics['kvcm-usdc'].supply
+      daysBetweenMidnights
     );
 
     kvcmApyFor.kvcm = compoundedApr(
@@ -174,39 +169,33 @@ export const computeMidnightInfoDiff = (
     // K2
     k2PyFor.k2 = percentageIncrease(
       midnightInfo.k2YieldAccumulatorForK2,
-      oldMidnightInfo.k2YieldAccumulatorForK2,
-      tokenMetrics.k2.supply
+      oldMidnightInfo.k2YieldAccumulatorForK2
     );
 
     k2PyFor['kvcm-k2'] = percentageIncrease(
       midnightInfo.k2YieldAccumulatorForKVCM_K2_LP,
-      oldMidnightInfo.k2YieldAccumulatorForKVCM_K2_LP,
-      tokenMetrics['kvcm-k2'].supply
+      oldMidnightInfo.k2YieldAccumulatorForKVCM_K2_LP
     );
 
     k2PyFor.kvcm = percentageIncrease(
       midnightInfo.k2YieldAccumulatorForKVCM,
-      oldMidnightInfo.k2YieldAccumulatorForKVCM,
-      tokenMetrics.kvcm.supply
+      oldMidnightInfo.k2YieldAccumulatorForKVCM
     );
 
     // KVCM
     kvcmPyFor.k2 = percentageIncrease(
       midnightInfo.riskyYieldAccumulatorForK2,
-      oldMidnightInfo.riskyYieldAccumulatorForK2,
-      tokenMetrics.k2.supply
+      oldMidnightInfo.riskyYieldAccumulatorForK2
     );
 
     kvcmPyFor['kvcm-k2'] = percentageIncrease(
       midnightInfo.riskyYieldAccumulatorForKVCM_K2_LP,
-      oldMidnightInfo.riskyYieldAccumulatorForKVCM_K2_LP,
-      tokenMetrics['kvcm-k2'].supply
+      oldMidnightInfo.riskyYieldAccumulatorForKVCM_K2_LP
     );
 
     kvcmPyFor['kvcm-usdc'] = percentageIncrease(
       midnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP,
-      oldMidnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP,
-      tokenMetrics['kvcm-usdc'].supply
+      oldMidnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP
     );
 
     kvcmPyFor.kvcm = percentageIncrease(
@@ -230,8 +219,7 @@ export const computeMidnightInfoDiff = (
  * @param midnightInfo
  */
 export const computeMidnightInfoDiffWithPrevious = (
-  midnightInfo: MidnightInfo,
-  tokenMetrics: AllMetrics
+  midnightInfo: MidnightInfo
 ) => {
   if (!midnightInfo.previousMidnightInfo) {
     console.warn(
@@ -241,8 +229,7 @@ export const computeMidnightInfoDiffWithPrevious = (
   }
   return computeMidnightInfoDiff(
     formatMidnightInfo(midnightInfo),
-    formatMidnightInfo(midnightInfo.previousMidnightInfo),
-    tokenMetrics
+    formatMidnightInfo(midnightInfo.previousMidnightInfo)
   );
 };
 
@@ -253,15 +240,12 @@ export const computeMidnightInfoDiffWithPrevious = (
  * @returns Record of maturityId to ComputedMidnightInfo
  */
 export const mapMidnightInfosToComputedDiffs = (
-  midnightInfos: MidnightInfo[],
-  tokenMetrics: AllMetrics
+  midnightInfos: MidnightInfo[]
 ): Record<number, ComputedMidnightInfo> => {
   if (!midnightInfos || midnightInfos.length === 0) return {};
 
   const computedMidnightInfos = midnightInfos
-    .map((midnightInfo) =>
-      computeMidnightInfoDiffWithPrevious(midnightInfo, tokenMetrics)
-    )
+    .map((midnightInfo) => computeMidnightInfoDiffWithPrevious(midnightInfo))
     .filter((midnightInfo) => midnightInfo !== undefined);
 
   // Map by maturityId for faster lookups
@@ -281,7 +265,7 @@ export const getLatestMidnightInfoDiffs = async (
 ): Promise<Record<number, ComputedMidnightInfo>> => {
   return unstable_cache(
     async () => {
-      const [midnightInfos, tokenMetrics] = await Promise.all([
+      const [midnightInfos] = await Promise.all([
         (await sdk.protocol.getLatestMidnightInfo()).midnightInfos,
         getTokenMetrics(sdk.chain),
       ]);
@@ -294,12 +278,40 @@ export const getLatestMidnightInfoDiffs = async (
         (midnightInfo) => midnightInfo.midnightIndex === midnightIndex
       );
 
-      return mapMidnightInfosToComputedDiffs(
-        filteredMidnightInfos,
-        tokenMetrics
-      );
+      return mapMidnightInfosToComputedDiffs(filteredMidnightInfos);
     },
     ['latest-midnight-infos-for-active-maturities'],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
   )();
+};
+
+export const getComputedMidnightInfoAccumulator = (
+  midnightInfo: FormattedMidnightInfo,
+  type: YieldType,
+  token: Token
+) => {
+  let rawAccumulator = 0;
+  if (type === YieldType.K2) {
+    rawAccumulator =
+      token === 'k2'
+        ? midnightInfo.riskyYieldAccumulatorForK2
+        : token === 'kvcm-k2'
+          ? midnightInfo.riskyYieldAccumulatorForKVCM_K2_LP
+          : token === 'kvcm-usdc'
+            ? midnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP
+            : 0;
+  } else if (type === YieldType.RISKY) {
+    rawAccumulator =
+      token === 'k2'
+        ? midnightInfo.riskyYieldAccumulatorForK2
+        : token === 'kvcm-k2'
+          ? midnightInfo.riskyYieldAccumulatorForKVCM_K2_LP
+          : token === 'kvcm-usdc'
+            ? midnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP
+            : 0;
+  } else {
+    console.error(`Yeld type does not have an accumulator: ${type}`);
+  }
+
+  return rawAccumulator;
 };

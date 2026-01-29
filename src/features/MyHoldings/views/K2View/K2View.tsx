@@ -11,8 +11,13 @@ import {
   VariableRewardsItemContent,
   VariableRewardsItemTitle,
 } from '@/features/MyHoldings/cards/VariableRewardsCard/VariableRewardsCard';
+import { useTokenHoldingsData } from '@/features/MyHoldings/hooks/useHoldingsData';
+import { depositK2TokenDialogAtom } from '@/features/MyHoldings/modals/DepositK2Token/depositK2Token.utils';
+import { HoldingEstimatedValue } from '@/features/MyHoldings/shared/HoldingEstimatedValue';
+import { HoldingTotalPosition } from '@/features/MyHoldings/shared/HoldingTotalPosition';
 import { InfoCard } from '@/features/MyHoldings/shared/InfoCard';
 import { RecentActivity } from '@/features/MyHoldings/shared/RecentActivity';
+import { K2Onboarding } from '@/features/MyHoldings/views/K2View/K2Onboarding';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useHasPreviouslyConnected } from '@/shared/hooks/useHasPreviouslyConnected';
 import {
@@ -22,12 +27,7 @@ import {
 } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
 import { useAccount } from 'wagmi';
-import { useTokenHoldingsData } from '../../hooks/useHoldingsData';
-import { claimTokenDialogAtom } from '../../modals/ClaimToken/claimToken.utils';
-import { depositK2TokenDialogAtom } from '../../modals/DepositK2Token/depositK2Token.utils';
-import { HoldingEstimatedValue } from '../../shared/HoldingEstimatedValue';
-import { HoldingTotalPosition } from '../../shared/HoldingTotalPosition';
-import { K2Onboarding } from './K2Onboarding';
+import { claimMaturedLockRewardsDialogAtom } from '../../modals/ClaimMaturedLockRewards/claimKvcmLockRewards.utils';
 
 export const K2View = () => {
   const account = useAccount();
@@ -58,7 +58,8 @@ export const K2View = () => {
 const K2Overview = () => {
   const { data: k2Data } = useTokenHoldingsData('k2');
   const { data: protocolData } = useProtocolData();
-  const setClaimTokenDialog = useSetAtom(claimTokenDialogAtom);
+  // TODO: Change when K2 rewards claiming are implemented
+  const setClaimK2RewardsDialog = useSetAtom(claimMaturedLockRewardsDialogAtom);
 
   return (
     <>
@@ -75,9 +76,8 @@ const K2Overview = () => {
               {k2Data.k2ClaimableValue > 0 && (
                 <button
                   onClick={() =>
-                    setClaimTokenDialog({
+                    setClaimK2RewardsDialog({
                       open: true,
-                      amount: k2Data.k2ClaimableAmount,
                       token: 'k2',
                       lockId: null,
                     })

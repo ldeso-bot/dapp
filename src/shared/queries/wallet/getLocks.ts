@@ -16,9 +16,9 @@ import {
 import { filter, isNonNullish } from 'remeda';
 import { getTokenMetrics } from '../protocol/getTokenMetrics';
 import {
-  computeMidnightInfoDiff,
   computeMidnightInfoDiffWithPrevious,
   formatMidnightInfo,
+  getComputedMidnightInfoAccumulator,
   getLatestMidnightInfoDiffs,
 } from '../protocol/midnightInfo.utils';
 import {
@@ -132,10 +132,7 @@ export const getLocks = async (
 
     const lockMaturityMidnightInfo =
       lock.maturity?.maturityMidnightInfo?.keeperUpdated &&
-      computeMidnightInfoDiffWithPrevious(
-        lock.maturity?.maturityMidnightInfo,
-        tokenMetrics
-      );
+      computeMidnightInfoDiffWithPrevious(lock.maturity?.maturityMidnightInfo);
 
     // Midnight info relevant to compute yields for this lock
     const midnightInfo =
@@ -153,18 +150,32 @@ export const getLocks = async (
       // K2 yield
       if (isK2YieldEligible) {
         // Total Rewards
+        const accumulatorNow = getComputedMidnightInfoAccumulator(
+          midnightInfo,
+          YieldType.K2,
+          tokenInfo.id
+        );
+
+        k2Rewards = lock.lockActions.reduce((acc, action) => {
+          if (
+            action.type === LockActionType.SHARES_UPDATED &&
+            action.k2YieldEntryMidnightInfo?.keeperUpdated
+          ) {
+            const actionShares = formatStringToNumber(action.amount, 18); // Amount locked
+            const actionAccumulator = getComputedMidnightInfoAccumulator(
+              formatMidnightInfo(action.k2YieldEntryMidnightInfo),
+              YieldType.K2,
+              tokenInfo.id
+            );
+            const actionRewards =
+              actionShares * (accumulatorNow - actionAccumulator); // Rewards for the action
+
+            return acc + actionRewards;
+          }
+          return acc;
+        }, 0);
+
         k2YieldApyPercent = midnightInfo.k2ApyFor[tokenInfo.id];
-        k2Rewards += formatStringToNumber(mintingInfo?.k2YieldPending, 18);
-        if (mintingInfo?.k2YieldEntryMidnightInfo) {
-          const { k2PyFor } = computeMidnightInfoDiff(
-            midnightInfo,
-            formatMidnightInfo(mintingInfo.k2YieldEntryMidnightInfo),
-            tokenMetrics
-          );
-          k2Rewards +=
-            k2PyFor[tokenInfo.id] *
-            formatStringToNumber(mintingInfo.k2YieldShares, 18);
-        }
         // Claimable rewards
         if (isClaimable) {
           k2ClaimableRewards =
@@ -174,18 +185,31 @@ export const getLocks = async (
       // Risky yield
       if (isRiskyYieldEligible) {
         // Total Rewards
+        const accumulatorNow = getComputedMidnightInfoAccumulator(
+          midnightInfo,
+          YieldType.RISKY,
+          tokenInfo.id
+        );
+        kvcmRewards = lock.lockActions.reduce((acc, action) => {
+          if (
+            action.type === LockActionType.SHARES_UPDATED &&
+            action.riskyYieldEntryMidnightInfo?.keeperUpdated
+          ) {
+            const actionShares = formatStringToNumber(action.amount, 18); // Amount locked
+            const actionAccumulator = getComputedMidnightInfoAccumulator(
+              formatMidnightInfo(action.riskyYieldEntryMidnightInfo),
+              YieldType.RISKY,
+              tokenInfo.id
+            );
+            const actionRewards =
+              actionShares * (accumulatorNow - actionAccumulator); // Rewards for the action
+
+            return acc + actionRewards;
+          }
+          return acc;
+        }, 0);
+
         riskyYieldApyPercent = midnightInfo.kvcmApyFor[tokenInfo.id];
-        kvcmRewards += formatStringToNumber(mintingInfo?.riskyYieldPending, 18);
-        if (mintingInfo?.riskyYieldEntryMidnightInfo) {
-          const { kvcmPyFor } = computeMidnightInfoDiff(
-            midnightInfo,
-            formatMidnightInfo(mintingInfo.riskyYieldEntryMidnightInfo),
-            tokenMetrics
-          );
-          kvcmRewards +=
-            kvcmPyFor[tokenInfo.id] *
-            formatStringToNumber(mintingInfo.riskyYieldShares, 18);
-        }
         // Claimable rewards
         if (isClaimable) {
           kvcmClaimableRewards =
@@ -195,6 +219,7 @@ export const getLocks = async (
       // Synthetic yield
       if (isSyntheticYieldEligible) {
         syntheticYieldApyPercent = midnightInfo.kvcmApyFor.kvcm;
+        const currentPps = midnightInfo.syntheticYieldPps; // Pps now (or at the time of maturation)
 
         const rewards = lock.lockActions.reduce((acc, action) => {
           if (
@@ -207,7 +232,6 @@ export const getLocks = async (
               18
             ); // PPS at the time the lock shares are minted (during next midnight)
             const actionShares = actionAmount / actionPps; // Shares minted
-            const currentPps = midnightInfo.syntheticYieldPps; // Pps now (or at the time of maturation)
             const actionClaimable = actionShares * currentPps; // Claimable for the action
             const actionRewards = actionClaimable - actionAmount; // Rewards for the action
 
@@ -231,7 +255,7 @@ export const getLocks = async (
     );
 
     const status =
-      positionAmount <= 0 ? 'claimed' : isMatured ? 'matured' : 'active';
+      lock.status === 'UNLOCKED' ? 'claimed' : isMatured ? 'matured' : 'active';
 
     return {
       id: lock.id,

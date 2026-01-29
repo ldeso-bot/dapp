@@ -104,6 +104,7 @@ query getLocks($where: Lock_filter) {
     id
     contractLockId
     type
+    status
     amount
     maturityId
     maturity {
@@ -150,9 +151,12 @@ query getAccountBalances($where: AccountBalance_filter) {
 }
 
 query getLatestMidnightInfo {
-  midnightInfos(orderBy: midnightIndex, orderDirection: desc, first: 41, where: {
-    keeperUpdated: true
-  }) {
+  midnightInfos(
+    orderBy: midnightIndex
+    orderDirection: desc
+    first: 41
+    where: { keeperUpdated: true }
+  ) {
     ...MidnightInfoWithPreviousMidnightInfoFragment
   }
 }

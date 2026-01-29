@@ -2,9 +2,6 @@ import { YAxisProps } from 'recharts';
 import { BaseAxisProps } from 'recharts/types/util/types';
 
 const void30 = '#999';
-const void60 = '#464646';
-const green60 = '#00c52d';
-const black = '#000';
 
 export const BAR_PROPS = {
   fill: void30,
@@ -12,7 +9,6 @@ export const BAR_PROPS = {
   maxBarSize: 16,
 };
 
-type TextAnchor = 'end' | 'start';
 const AXIS_PROPS: BaseAxisProps = {
   tick: {
     fontSize: 12,
