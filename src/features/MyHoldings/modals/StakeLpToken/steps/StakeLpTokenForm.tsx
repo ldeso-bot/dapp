@@ -20,15 +20,17 @@ import {
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useTransactionHandler } from '@/shared/hooks/useTransactionHandler';
-import { isMaturityWithinDays } from '@/shared/utils/date.utils';
+import { delay, isMaturityWithinDays } from '@/shared/utils/date.utils';
 import { findClosestMaturityByDays } from '@/shared/utils/protocol.utils';
 import { formatAmountWithCommas } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
 import { useEffect } from 'react';
+import { Address, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 import {
   stakeLpTokenDialogAtom,
   StakeLpTokenFields,
+  useStakeLpToken,
 } from '../stakeLpToken.utils';
 
 export const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({
@@ -40,9 +42,9 @@ export const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({
   const { data: protocolData } = useProtocolData();
 
   const setStakeLpTokenDialogState = useSetAtom(stakeLpTokenDialogAtom);
-  const { isSubmitting } = useTransactionHandler();
+  const { handleTransaction, isSubmitting } = useTransactionHandler();
 
-  const { handleSubmit, formState, watch } = form;
+  const { handleSubmit, formState, watch, setError, clearErrors } = form;
 
   const token = watch('token');
   const amount = watch('amount');
@@ -53,7 +55,6 @@ export const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({
   const tokenInfo = tokens[typedToken];
   const tokenBalance = walletData?.balances?.[typedToken] ?? 0;
 
-  const isValidAmount = !!(amount && amount > 0);
   const lpTokenDisplayName = lpTokens[typedToken]?.symbol || typedToken;
 
   const maturity = findClosestMaturityByDays(
@@ -62,6 +63,7 @@ export const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({
   );
 
   const maturityDate = maturity?.maturationTimestamp;
+  const isValidAmount = !!(amount && amount > 0 && maturityId);
   const isMaturityWithin3Days =
     isValidAmount && isMaturityWithinDays(maturityDate, 3);
   const isMaturityWithin30Days =
@@ -74,10 +76,48 @@ export const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({
     }
   }, [duration, maturity, form]);
 
-  // @todo - wire up...
+  const amountWei = isValidAmount
+    ? parseUnits(String(amount), tokenInfo.decimals)
+    : 0n;
+
+  const lpTokenAddress = protocolData?.metrics?.[typedToken]?.address as
+    | Address
+    | undefined;
+
+  const { stake } = useStakeLpToken({
+    token: typedToken,
+    amount: amountWei,
+    maturityId: maturityId ?? 1,
+    lpTokenAddress,
+  });
+
   const onSubmit = async () => {
     if (!isConnected) return;
-    console.log('onSubmit', { token, amount, duration, maturityId });
+    clearErrors('root');
+
+    if (!maturityId) {
+      setError('root', {
+        type: 'manual',
+        message: 'Please select a maturity date',
+      });
+      return;
+    }
+
+    const result = await handleTransaction(stake, {
+      successTitle: 'Stake LP Successful',
+      successDescription: `You've successfully staked ${formatAmountWithCommas(Number(amount) || 0)} ${lpTokenDisplayName} LP! You can manage your positions in the "My Holdings" dashboard.`,
+      errorDescription:
+        'Something went wrong and your stake was not successful.',
+      onSuccess: async () => {
+        await delay(300);
+        setStakeLpTokenDialogState({ open: false, token: null });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      },
+    });
+
+    if (result.error) {
+      setError('root', { type: 'manual', message: result.error });
+    }
   };
 
   return (
@@ -153,7 +193,7 @@ export const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({
             colors="secondary"
             context="flow"
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !isValidAmount}
           >
             {isSubmitting ? 'Staking...' : 'Stake'}
           </Button>

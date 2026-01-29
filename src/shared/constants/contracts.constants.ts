@@ -1,6 +1,6 @@
 import AAMDiamond from '@/shared/utils/abis/AAMDiamond';
 import RetirementAggregator from '@/shared/utils/abis/RetirementAggregator';
-import StakingManagerDiamond from '@/shared/utils/abis/StakingManagerDiamond.json';
+import StakingManagerDiamond from '@/shared/utils/abis/StakingManagerDiamond';
 import USDC from '@/shared/utils/abis/USDC.json';
 import USDCTransferWithPermit from '@/shared/utils/abis/USDCTransferWithPermit.json';
 import VelodromeSugar from '@/shared/utils/abis/VelodromeSugar.json';

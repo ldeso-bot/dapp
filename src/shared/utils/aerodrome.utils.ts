@@ -106,7 +106,7 @@ export const getKlimaProtocolPools = async (): Promise<KlimaProtocolPools> => {
 };
 
 /** Returns a pool by index from the Velodrome Sugar contract */
-const getAerodromePoolByIndex = async (
+export const getAerodromePoolByIndex = async (
   index: number
 ): Promise<Pool | undefined> => {
   const chainId = base.id;
