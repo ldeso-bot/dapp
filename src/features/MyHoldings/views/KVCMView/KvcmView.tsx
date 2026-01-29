@@ -21,7 +21,7 @@ import { useTokenHoldingsData } from '../../hooks/useHoldingsData';
 import { lockTokenDialogAtom } from '../../modals/LockToken/lockToken.utils';
 import { HoldingEstimatedValue } from '../../shared/HoldingEstimatedValue';
 import { HoldingTotalPosition } from '../../shared/HoldingTotalPosition';
-import { TokenLots } from '../../shared/TokenLots';
+import { TokenPositions } from '../../shared/TokenPositions';
 import { KvcmOnboarding } from './KvcmOnboarding';
 
 export const KvcmView = () => {
@@ -141,10 +141,11 @@ const KvcmOverview = () => {
           </>
         )}
       </div>
-      <TokenLots
+      <TokenPositions
         isOpen={tokenLocksOpen}
         onOpenChange={setTokenLocksOpen}
         token="kvcm"
+        accordionLabel="locks"
       />
     </>
   );

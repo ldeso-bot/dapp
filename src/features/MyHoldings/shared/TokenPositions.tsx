@@ -25,16 +25,18 @@ import { claimTokenDialogAtom } from '../modals/ClaimToken/claimToken.utils';
 import { depositK2TokenDialogAtom } from '../modals/DepositK2Token/depositK2Token.utils';
 import { topupLockDialogAtom } from '../modals/TopupLock/topupLock.utils';
 
-type TokenLotsProps = {
+type TokenPositionsProps = {
   isOpen?: boolean;
   token: Token;
   onOpenChange?: (isOpen: boolean) => void;
+  accordionLabel?: 'lots' | 'locks';
 };
 
-export const TokenLots: FC<TokenLotsProps> = ({
+export const TokenPositions: FC<TokenPositionsProps> = ({
   isOpen,
   onOpenChange,
   token,
+  accordionLabel = 'lots',
 }) => {
   const { data } = useWalletData();
 
@@ -43,9 +45,9 @@ export const TokenLots: FC<TokenLotsProps> = ({
       ?.filter((lock) => lock.token === token)
       .sort((a, b) => a.lockedUntil - b.lockedUntil) ?? [];
 
-  const numberOfLots = locks.length;
+  const count = locks.length;
 
-  if (!numberOfLots) return null;
+  if (!count) return null;
 
   return (
     <Accordion
@@ -58,7 +60,7 @@ export const TokenLots: FC<TokenLotsProps> = ({
         <AccordionTrigger className="hover:no-underline border-t border-gray-100 flex items-center justify-start rounded-none gap-1">
           <div className="flex items-center gap-2">
             <div className="text-size-14 text-gray-900 font-[400]">
-              View lots ({numberOfLots})
+              View {accordionLabel} ({count})
             </div>
             <Tooltip
               className="max-w-[30rem] text-size-12 p-3"

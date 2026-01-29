@@ -2,7 +2,7 @@ import {
   StatusCard,
   StatusCardTitle,
 } from '@/features/MyHoldings/cards/StatusCards/StatusCards';
-import { TokenLots } from '@/features/MyHoldings/shared/TokenLots';
+import { TokenPositions } from '@/features/MyHoldings/shared/TokenPositions';
 import Button from '@/shared/components/Button/Button';
 import { LpToken } from '@/shared/constants/tokens.constants';
 import { formatDurationFromTimestamp } from '@/shared/utils/date.utils';
@@ -131,7 +131,7 @@ export const LiquidityPositionStatus = ({
       </div>
       <div className="flex flex-col gap-2 my-4 mx-auto max-w-[60%]"></div>
       {tokenData && tokenData.locks.length > 0 && (
-        <TokenLots
+        <TokenPositions
           isOpen={tokenLotsOpen}
           onOpenChange={setTokenLotsOpen}
           token={token}
