@@ -6,7 +6,7 @@ import { TokenPositions } from '@/features/MyHoldings/shared/TokenPositions';
 import Button from '@/shared/components/Button/Button';
 import { LpToken } from '@/shared/constants/tokens.constants';
 import { formatDurationFromTimestamp } from '@/shared/utils/date.utils';
-import { formatPriceUSDWithCommas } from '@/shared/utils/string.utils';
+import { formatAmountWithCommas } from '@/shared/utils/string.utils';
 import { getTokenSymbol } from '@/shared/utils/token.utils';
 import { useSetAtom } from 'jotai';
 import { useState } from 'react';
@@ -56,7 +56,7 @@ export const LiquidityPositionStatus = ({
               </StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
-                  {formatPriceUSDWithCommas(tokenData.accruedClaimableValue)}
+                  {formatAmountWithCommas(tokenData.accruedClaimableValue)}
                 </div>
                 <div className="text-size-14 text-gray-500 tabular-nums">
                   {tokenData.maturedLocks.length > 0 ? (
@@ -90,7 +90,7 @@ export const LiquidityPositionStatus = ({
               </StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900">
-                  {formatPriceUSDWithCommas(tokenData.accruingClaimableValue)}
+                  {formatAmountWithCommas(tokenData.lockedAmount)}
                 </div>
                 {earliestUnlockTimestamp && (
                   <div className="text-size-14 text-gray-500">
@@ -113,7 +113,7 @@ export const LiquidityPositionStatus = ({
               </StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
-                  {formatPriceUSDWithCommas(tokenData.balanceValue)}
+                  {formatAmountWithCommas(tokenData.balanceValue)}
                 </div>
                 <div className="text-size-14 text-gray-500 tabular-nums">
                   {tokenSymbol}
