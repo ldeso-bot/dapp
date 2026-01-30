@@ -21,7 +21,7 @@ export const StatusCard: FC<{
 
   return (
     <Card
-      className="p-4 pt-2 rounded-lg bg-gray-50 border border-gray-300"
+      className="p-4 pt-4 rounded-lg bg-gray-50 border border-gray-300"
       skeletonClassName={skeletonClassName}
     >
       {children && <div className="flex flex-col gap-2">{children}</div>}

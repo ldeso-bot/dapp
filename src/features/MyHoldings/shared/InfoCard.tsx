@@ -32,7 +32,11 @@ export const InfoCard: FC<InfoCardProps> = (props) => {
               </div>
             )}
             {buttonLabel && (
-              <Button onClick={onButtonClick ? onButtonClick : undefined}>
+              <Button
+                colors="secondary"
+                className="h-[3.2rem] px-3 !pl-2 py-2 flex items-center gap-1"
+                onClick={onButtonClick ? onButtonClick : undefined}
+              >
                 {buttonLabel}
               </Button>
             )}

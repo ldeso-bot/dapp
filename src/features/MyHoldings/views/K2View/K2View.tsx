@@ -18,8 +18,10 @@ import { HoldingTotalPosition } from '@/features/MyHoldings/shared/HoldingTotalP
 import { InfoCard } from '@/features/MyHoldings/shared/InfoCard';
 import { RecentActivity } from '@/features/MyHoldings/shared/RecentActivity';
 import { K2Onboarding } from '@/features/MyHoldings/views/K2View/K2Onboarding';
+import Icon from '@/shared/components/Icon/Icon';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useHasPreviouslyConnected } from '@/shared/hooks/useHasPreviouslyConnected';
+import Plus from '@/shared/images/plus.svg';
 import {
   formatAmountWithCommas,
   formatCurrentTime,
@@ -42,7 +44,11 @@ export const K2View = () => {
           <InfoCard
             title="K2 Activities"
             tooltipId="k2-position"
-            buttonLabel="Deposit"
+            buttonLabel={
+              <>
+                <Icon icon={Plus} size={1.6} /> Deposit
+              </>
+            }
             onButtonClick={() => setDepositK2TokenDialog({ open: true })}
             description="Lock K2 to become eligible for variable K2 incentives and a share of kVCM incentives. After 24 hours, you can request an unlock. Your locked tokens become claimable at the daily cutoff. You can also allocate locked K2 tokens to carbon classes."
             content={<K2Overview />}

@@ -6,9 +6,11 @@ import {
   StatusCardTitle,
 } from '@/features/MyHoldings/cards/StatusCards/StatusCards';
 import { InfoCard } from '@/features/MyHoldings/shared/InfoCard';
+import Icon from '@/shared/components/Icon/Icon';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { useHasPreviouslyConnected } from '@/shared/hooks/useHasPreviouslyConnected';
 import { useNextMaturity } from '@/shared/hooks/useNextMaturity';
+import Plus from '@/shared/images/plus.svg';
 import {
   formatAmountWithCommas,
   formatTimestamp,
@@ -37,7 +39,11 @@ export const KvcmView = () => {
         <>
           <InfoCard
             title="kVCM Locks"
-            buttonLabel="Lock"
+            buttonLabel={
+              <>
+                <Icon icon={Plus} size={1.6} /> Lock
+              </>
+            }
             tooltipId="kvcm-locks"
             description="Lock kVCM for a fixed duration to receive variable kVCM incentives when the term ends, and variable K2 incentives at any time. Locked kVCM can also be allocated to carbon classes to influence protocol pricing."
             onButtonClick={() =>

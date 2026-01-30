@@ -35,7 +35,7 @@ export default function Card({
 }: CardProps) {
   const border = variant === 'default' ? 'border-gray-300' : 'border-green-300';
   const background = variant === 'default' ? 'bg-background' : 'bg-green-50';
-  const text = variant === 'default' ? 'text-void-50' : 'text-green-80';
+  const text = variant === 'default' ? 'text-void-80' : 'text-green-80';
   return (
     <div
       id={id}

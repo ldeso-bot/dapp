@@ -120,7 +120,7 @@ export const LiquidityPositionStatus = ({
                 </div>
               </div>
               <Button
-                className="mt-3 h-[3.8rem]"
+                className="mt-3 h-[3.6rem]"
                 onClick={handleOpenStakeDialog}
               >
                 Stake in Klima
