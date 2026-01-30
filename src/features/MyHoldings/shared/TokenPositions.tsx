@@ -226,7 +226,11 @@ const LotCard: FC<LotCardProps> = ({ lock }) => {
                 isMaturing && !USE_LOCAL_RPC,
             })}
             onClick={() => {
-              if (lock.token === 'kvcm') {
+              if (
+                lock.token === 'kvcm' ||
+                lock.token === 'kvcm-k2' ||
+                lock.token === 'kvcm-usdc'
+              ) {
                 setClaimMaturedLockRewardsDialog({
                   open: true,
                   lockId: lock.id,

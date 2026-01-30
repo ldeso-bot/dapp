@@ -3,6 +3,7 @@
 import { useAtomValue } from 'jotai';
 import { claimMaturedLockRewardsDialogAtom } from './claimKvcmLockRewards.utils';
 import ClaimKvcmLockRewardsForm from './ClaimKvcmLockRewardsForm';
+import ClaimLpLockRewardsForm from './ClaimLpLockRewardsForm';
 
 const ClaimMaturedLockRewardsDialog = () => {
   const { lockId, token } = useAtomValue(claimMaturedLockRewardsDialogAtom);
@@ -12,7 +13,7 @@ const ClaimMaturedLockRewardsDialog = () => {
   return token === 'kvcm' ? (
     <ClaimKvcmLockRewardsForm lockId={lockId} />
   ) : (
-    <>Not implemented</>
+    <ClaimLpLockRewardsForm lockId={lockId} />
   );
 };
 
