@@ -10,6 +10,7 @@ type Props = {
   className?: string;
   onClose?: () => void;
   closeOnOutsideClick?: boolean;
+  preventEscapeKeyDown?: boolean;
 };
 
 export default function Dialog(props: Props) {
@@ -19,6 +20,7 @@ export default function Dialog(props: Props) {
     className,
     onClose,
     closeOnOutsideClick = true,
+    preventEscapeKeyDown = false,
   } = props;
 
   return (
@@ -31,7 +33,9 @@ export default function Dialog(props: Props) {
             className
           )}
           aria-describedby="Dialog"
-          onEscapeKeyDown={() => onClose?.()}
+          onEscapeKeyDown={() =>
+            preventEscapeKeyDown ? undefined : onClose?.()
+          }
           onInteractOutside={() => closeOnOutsideClick && onClose?.()}
         >
           <DialogPrimitive.Title>

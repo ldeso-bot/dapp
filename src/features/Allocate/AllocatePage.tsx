@@ -32,7 +32,7 @@ function AllocatePage() {
       {displayOnboarding && <AllocationEmptyState />}
       {!displayOnboarding && (
         <div className="flex flex-col gap-4 lg:flex-row-reverse">
-          <div className="flex flex-col gap-4 grow-1">
+          <div className="flex flex-col gap-2 grow-1">
             <PageTitle>Allocations</PageTitle>
             <PageDescription>
               Allocations are your carbon-class preferences. Allocating tokens

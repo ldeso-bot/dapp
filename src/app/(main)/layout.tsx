@@ -1,11 +1,12 @@
 import Alert from '@/features/Alert/Alert';
+import { DisclaimerModal } from '@/shared/components/Disclaimer/Disclaimer';
 import Footer from '@/shared/components/Footer/Footer';
 import DesktopNavBar from '@/shared/components/NavBar/DesktopNavBar';
 import MobileNavBar from '@/shared/components/NavBar/MobileNavBar';
+import { WALLET_CONNECTION_HISTORY_COOKIE } from '@/shared/constants/storage.constants';
 import { WalletConnectionHistoryProvider } from '@/shared/contexts/WalletCookieContext';
 import '@/shared/css/globals.css';
 import { canaryTokenTrackingScript } from '@/shared/utils/canary-token.utils';
-import { WALLET_CONNECTION_HISTORY_COOKIE } from '@/shared/utils/cookie.utils';
 import { isProduction } from '@/shared/utils/environment.utils';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';
@@ -39,6 +40,7 @@ export default async function RootLayout({
         )}
       </Head>
       <body className={inter.className}>
+        <DisclaimerModal />
         <Providers>
           <WalletConnectionHistoryProvider
             hasPreviouslyConnected={hasPreviouslyConnected}

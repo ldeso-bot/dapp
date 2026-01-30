@@ -1,7 +1,8 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { ONE_YEAR } from '../constants/protocol.constants';
-import { deleteCookie, setCookie, WALLET_CONNECTION_HISTORY_COOKIE } from '../utils/cookie.utils';
+import { WALLET_CONNECTION_HISTORY_COOKIE } from '../constants/storage.constants';
+import { deleteCookie, setCookie } from '../utils/cookie.utils';
 
 export const useWalletConnectionCookie = (address: string | undefined) => {
   const router = useRouter();
@@ -20,5 +21,4 @@ export const useWalletConnectionCookie = (address: string | undefined) => {
   };
 
   return { clearWalletCookie };
-}
-
+};

@@ -1,5 +1,3 @@
-export const WALLET_CONNECTION_HISTORY_COOKIE = 'has_connected';
-
 type CookieOptions = {
   path?: string;
   maxAge?: number;
@@ -13,12 +11,7 @@ export const setCookie = (
   options: CookieOptions = {}
 ) => {
   if (typeof document === 'undefined') return;
-  const {
-    path = '/',
-    maxAge,
-    sameSite = 'Lax',
-    secure = false,
-  } = options;
+  const { path = '/', maxAge, sameSite = 'Lax', secure = false } = options;
 
   let cookieString = `${name}=${value}; Path=${path}; SameSite=${sameSite}`;
 
@@ -30,10 +23,9 @@ export const setCookie = (
     cookieString += '; Secure';
   }
   document.cookie = cookieString;
-}
+};
 
 export const deleteCookie = (name: string, path: string = '/') => {
   if (typeof document === 'undefined') return;
   document.cookie = `${name}=; Path=${path}; Max-Age=0; SameSite=Lax`;
-}
-
+};
