@@ -115,6 +115,7 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
                 error={formState.errors.amount}
               />
               <Button
+                type="button"
                 colors="secondary"
                 className="rounded-xl min-h-[4rem]"
                 onClick={() => form.setValue('amount', Number(tokenBalance))}
@@ -148,7 +149,11 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
             colors="secondary"
             context="flow"
             type="submit"
-            disabled={isSubmitting || !isValidAmount || !!(amount && amount > tokenBalance)}
+            disabled={
+              isSubmitting ||
+              !isValidAmount ||
+              !!(amount && amount > tokenBalance)
+            }
           >
             {isSubmitting ? 'Depositing...' : 'Confirm Deposit'}
           </Button>
