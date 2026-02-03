@@ -55,7 +55,8 @@ export const MyHoldingsModals = () => {
       unstakeLpTokenDialog.open ||
       unlockTokenDialog.open ||
       topupLockDialog.open ||
-      claimMaturedLockRewardsDialog.open;
+      claimMaturedLockRewardsDialog.open || 
+      depositK2TokenDialog.open;
 
     const shouldRemoveActionParam =
       !hasOpenDialog &&
@@ -79,6 +80,7 @@ export const MyHoldingsModals = () => {
     unlockTokenDialog.open,
     topupLockDialog.open,
     claimMaturedLockRewardsDialog.open,
+    depositK2TokenDialog.open,
     searchParams,
     router,
     pathname,
