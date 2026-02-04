@@ -21,7 +21,7 @@ export const LiquidityPositionsView = () => {
             tooltipId="liquidity-positions"
             description="Deposit liquidity to become eligible for trading fees. Stake your liquidity in Klima Protocol for a fixed duration to receive an additional variable share of kVCM incentives and K2 incentives. Unstake when your term ends."
             content={
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 pb-5">
                 <LiquidityPositionCard token="kvcm-usdc" />
                 <LiquidityPositionCard token="kvcm-k2" />
               </div>
