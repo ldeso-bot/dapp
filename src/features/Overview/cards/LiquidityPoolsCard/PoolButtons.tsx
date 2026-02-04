@@ -20,7 +20,7 @@ export default function PoolButtons({ poolInfo }: Props) {
       <Button href={depositLiquidityUrl} target="_blank">
         Deposit Liquidity
       </Button>
-      <Button href={`${ROUTES.MY_HOLDINGS}?action=lock_${poolInfo.token}`}>
+      <Button href={`${ROUTES.MY_ACTIVITIES}?action=lock_${poolInfo.token}`}>
         Stake Liquidity
       </Button>
     </>

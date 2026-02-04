@@ -1,4 +1,4 @@
-import { HoldingsTabValue } from '@/features/MyHoldings/constants/tab.constants';
+import { ActivitiesTabValue } from '@/features/MyActivities/constants/tab.constants';
 import CarbonCreditIconImg from '@/shared/images/carbon-credit-token.svg';
 import KlimaXIcon from '@/shared/images/k2.svg';
 import KVcmK2LPIcon from '@/shared/images/kvcm-k2.svg';
@@ -37,7 +37,7 @@ export type TokenInfo = {
   iconSrc: StaticImageData;
   description: string;
   lockDescription: string;
-  holdingsTab?: HoldingsTabValue;
+  activitiesTab?: ActivitiesTabValue;
   decimals: number;
   contractName: ContractName;
 };
@@ -62,7 +62,7 @@ export const tokens: Record<Token, TokenInfo> = {
     subgraphSymbol: 'K2',
     description: 'K2 Token',
     lockDescription: 'K2 lock',
-    holdingsTab: 'k2',
+    activitiesTab: 'k2',
     decimals: 18,
     contractName: 'K2',
   },
@@ -74,7 +74,7 @@ export const tokens: Record<Token, TokenInfo> = {
     subgraphSymbol: 'KVCM',
     description: 'KVCM Token',
     lockDescription: 'kVCM lock',
-    holdingsTab: 'kvcm',
+    activitiesTab: 'kvcm',
     decimals: 18,
     contractName: 'KVCM',
   },
@@ -88,7 +88,7 @@ export const tokens: Record<Token, TokenInfo> = {
     subgraphSymbol: 'KVCM_USDC_LP',
     description: 'KVCM/USDC Liquidity Pool',
     lockDescription: 'LP stake',
-    holdingsTab: 'liquidity',
+    activitiesTab: 'liquidity',
     decimals: AERODROME_LIQUIDITY_DECIMALS,
     contractName: 'Null',
   },
@@ -102,7 +102,7 @@ export const tokens: Record<Token, TokenInfo> = {
     iconSrc: KVcmK2LPIcon,
     description: 'KVCM/K2 Liquidity Pool',
     lockDescription: 'LP stake',
-    holdingsTab: 'liquidity',
+    activitiesTab: 'liquidity',
     decimals: AERODROME_LIQUIDITY_DECIMALS,
     contractName: 'Null',
   },

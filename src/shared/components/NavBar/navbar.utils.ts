@@ -22,7 +22,7 @@ export const navItems: NavItem[] = [
   {
     icon: myHoldingsIcon,
     label: 'My Activities',
-    href: ROUTES.MY_HOLDINGS,
+    href: ROUTES.MY_ACTIVITIES,
   },
   {
     icon: burnCarbonIcon,

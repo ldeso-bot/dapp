@@ -1,4 +1,4 @@
-import { useHoldingsData } from '@/features/MyHoldings/hooks/useHoldingsData';
+import { useHoldingsData } from '@/features/MyActivities/hooks/useHoldingsData';
 import { isLpToken } from '@/shared/constants/tokens.constants';
 import { useWalletData } from './api/useWalletData';
 

@@ -93,8 +93,8 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
         type: 'success',
         links: [
           {
-            label: 'View My Holdings',
-            href: ROUTES.MY_HOLDINGS,
+            label: 'View My Activities',
+            href: ROUTES.MY_ACTIVITIES,
           },
         ],
       });

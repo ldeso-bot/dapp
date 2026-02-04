@@ -103,7 +103,7 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
         links: [
           {
             label: 'Stake KVCM',
-            href: ROUTES.MY_HOLDINGS,
+            href: ROUTES.MY_ACTIVITIES,
           },
         ],
       });

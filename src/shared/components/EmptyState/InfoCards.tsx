@@ -47,7 +47,7 @@ export const InfoCards = (props: InfoCardsProps) => {
                 </p>
                 {card?.cta && (
                   <Link
-                    href={`${ROUTES.MY_HOLDINGS}?activeView=${card?.cta?.activeView ?? 'overview'}`}
+                    href={`${ROUTES.MY_ACTIVITIES}?activeView=${card?.cta?.activeView ?? 'overview'}`}
                     className="mt-4 h-10 px-6 gap-3 hover:scale-105 transition-transform bg-gray-50 border-none flex gap-2 items-center justify-center"
                   >
                     <span className="text-size-14 font-medium">

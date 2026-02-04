@@ -1,4 +1,4 @@
-import { useTransactionWithValidation } from '@/features/MyHoldings/hooks/useTransactionWithValidation';
+import { useTransactionWithValidation } from '@/features/MyActivities/hooks/useTransactionWithValidation';
 import { useAccount } from 'wagmi';
 import { WalletData } from '../models/walletData';
 

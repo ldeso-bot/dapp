@@ -15,7 +15,7 @@ export default function TotalKVcmLockedCard(props: CardProps) {
   const { data } = useProtocolData();
 
   const handleButtonClick = useConnectAndRedirect(
-    `${ROUTES.MY_HOLDINGS}?activeView=kvcm&action=lock_kvcm`
+    `${ROUTES.MY_ACTIVITIES}?activeView=kvcm&action=lock_kvcm`
   );
 
   const price = data?.metrics?.kvcm?.valueUSD ?? 0;
