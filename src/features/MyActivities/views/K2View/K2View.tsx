@@ -1,5 +1,6 @@
 'use client';
 
+import { useAllocationData } from '@/features/Allocate/hooks/useAllocationData';
 import {
   StatusCard,
   StatusCardTitle,
@@ -19,7 +20,9 @@ import { HoldingTotalPosition } from '@/features/MyActivities/shared/HoldingTota
 import { InfoCard } from '@/features/MyActivities/shared/InfoCard';
 import { RecentActivity } from '@/features/MyActivities/shared/RecentActivity';
 import { K2Onboarding } from '@/features/MyActivities/views/K2View/K2Onboarding';
+import Button from '@/shared/components/Button/Button';
 import Icon from '@/shared/components/Icon/Icon';
+import { ROUTES } from '@/shared/constants/route.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useHasPreviouslyConnected } from '@/shared/hooks/useHasPreviouslyConnected';
 import Plus from '@/shared/images/plus.svg';
@@ -27,9 +30,12 @@ import {
   formatAmountWithCommas,
   formatCurrentTime,
   formatPercentage,
+  formatPriceUSDWithCommas,
 } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
+import Link from 'next/link';
 import { useAccount } from 'wagmi';
+import { unlockK2TokenDialogAtom } from '../../modals/UnlockK2Token/unlockK2Token.utils';
 
 export const K2View = () => {
   const account = useAccount();
@@ -64,36 +70,44 @@ export const K2View = () => {
 const K2Overview = () => {
   const { data: k2Data } = useTokenHoldingsData('k2');
   const { data: protocolData } = useProtocolData();
-  // TODO: Change when K2 rewards claiming are implemented
+  const { data: allocationData } = useAllocationData();
+  const allocated = allocationData?.k2.allocated ?? 0;
+  const unallocated = allocationData?.k2.unallocated ?? 0;
+
+  // Todo: change this
   const setClaimK2RewardsDialog = useSetAtom(claimMaturedLockRewardsDialogAtom);
+  const setUnlockK2TokenDialogAtom = useSetAtom(unlockK2TokenDialogAtom);
+  const lock = k2Data?.locks.find((lock) => lock.token === 'k2') ?? null;
 
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <StatusCard skeletonClassName="h-[13.5rem]">
           {k2Data && protocolData?.midnightInfos && (
-            <>
-              <StatusCardTitle badge="green">Claimable</StatusCardTitle>
-              <div className="space-y-1">
-                <div className="text-size-18 font-bold text-gray-900 tabular-nums">
-                  {formatAmountWithCommas(k2Data.k2AccruedClaimableAmount)} K2
+            <div className="flex flex-col justify-between h-full">
+              <div>
+                <StatusCardTitle badge="green">Claimable</StatusCardTitle>
+                <div className="space-y-1">
+                  <div className="text-size-18 font-bold text-gray-900 tabular-nums">
+                    {formatAmountWithCommas(k2Data.k2AccruedClaimableAmount)} K2
+                  </div>
                 </div>
               </div>
-              {k2Data.k2ClaimableValue > 0 && (
-                <button
+              {lock?.isClaimable && (
+                <Button
                   onClick={() =>
                     setClaimK2RewardsDialog({
                       open: true,
-                      token: 'k2',
-                      lockId: null,
+                      lock,
                     })
                   }
-                  className="cursor-pointer mt-3 text-size-14 text-gray-900 hover:text-gray-700 underline underline-offset-2 font-medium"
+                  colors="positive"
+                  className="mt-3 text-size-14"
                 >
-                  Claim locks
-                </button>
+                  Claim principal (+ rewards)
+                </Button>
               )}
-            </>
+            </div>
           )}
         </StatusCard>
         <StatusCard>
@@ -113,9 +127,38 @@ const K2Overview = () => {
             <>
               <StatusCardTitle badge="gray">Tokens locked</StatusCardTitle>
               <div className="space-y-1">
-                <div className="text-size-18 font-bold text-gray-900 tabular-nums">
-                  {formatAmountWithCommas(k2Data.lockedAmount)} K2
+                <div className="flex flex-col items-center space-between">
+                  <span className="text-size-18 font-bold text-gray-900 w-full">
+                    {formatAmountWithCommas(k2Data.lockedAmount)} K2
+                  </span>
+                  <span className="text-size-16 text-void-80 w-full">
+                    {formatPriceUSDWithCommas(k2Data.lockedValue)}
+                  </span>
+                  <div className="text-size-14 text-gray-500 mt-2 space-y-0.5 w-full">
+                    <div>
+                      <Link
+                        href={ROUTES.ALLOCATE}
+                        className="underline text-gray-900 hover:text-gray-700"
+                      >
+                        Allocated to carbon classes:
+                      </Link>{' '}
+                      {formatAmountWithCommas(allocated)} K2
+                    </div>
+                    <div>
+                      Unallocated: {formatAmountWithCommas(unallocated)} K2
+                    </div>
+                  </div>
                 </div>
+                {lock?.canRequestUnlock && (
+                  <Button
+                    onClick={() =>
+                      setUnlockK2TokenDialogAtom({ open: true, lock: lock })
+                    }
+                    className="w-full"
+                  >
+                    Request unlock
+                  </Button>
+                )}
               </div>
             </>
           )}

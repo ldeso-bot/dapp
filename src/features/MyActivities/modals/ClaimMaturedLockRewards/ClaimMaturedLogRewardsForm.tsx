@@ -45,8 +45,7 @@ const ClaimMaturedLogRewardsForm = ({
       if (result.hash) {
         setClaimMaturedLockRewardsDialog({
           open: false,
-          lockId: null,
-          token: null,
+          lock: null,
         });
         setAlert({
           title: 'Success',
@@ -125,8 +124,7 @@ const ClaimMaturedLogRewardsForm = ({
                 onClick={() =>
                   setClaimMaturedLockRewardsDialog({
                     open: false,
-                    lockId: null,
-                    token: null,
+                    lock: null,
                   })
                 }
               >

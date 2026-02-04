@@ -120,11 +120,7 @@ query getLocks($where: Lock_filter) {
       ...TokenFragment
     }
 
-    lockActions {
-      ...LockActionFragment
-    }
-
-    lastSharesMintingAction {
+    lockActions(orderBy: timestamp, orderDirection: asc, first: 1000) {
       ...LockActionFragment
     }
 
@@ -133,8 +129,15 @@ query getLocks($where: Lock_filter) {
 
     syntheticYieldClaimed
 
-    k2YieldClaimableAmount
-    riskyYieldClaimableAmount
+    requestUnlockTimestamp
+    k2SharesAtUnlockRequest
+    k2SharesAtClaimed
+    k2WindowStartMidnightInfo {
+      ...MidnightInfoFragment
+    }
+    k2WindowEndMidnightInfo {
+      ...MidnightInfoFragment
+    }
   }
 }
 

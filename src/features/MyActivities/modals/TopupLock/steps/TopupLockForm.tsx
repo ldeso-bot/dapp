@@ -1,6 +1,5 @@
 'use client';
 
-import { useLockToken } from '@/features/MyActivities/modals/LockToken/lockToken.utils';
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
 import { DialogHeader } from '@/shared/components/Dialog/DialogHeader';
@@ -23,6 +22,7 @@ import { formatAmountWithCommas } from '@/shared/utils/string.utils';
 import { useAtom } from 'jotai';
 import { parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
+import { useLockToken } from '../../LockToken/lockToken.utils';
 import { K2Incentives } from '../components/K2Incentives';
 import { StatsCard } from '../components/StatsCard';
 import { TotalMaturity } from '../components/TotalMaturity';
@@ -56,7 +56,6 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
   const maturityDate = topupLockDialogState.maturityDate ?? null;
   const baseApy = topupLockDialogState.baseApy ?? 0;
 
-  const topUpAmount = Number(amount) || 0;
   const isValidAmount = !!(amount && amount > 0);
   const availableBalance = Number(walletData?.balances?.[typedToken] ?? 0);
 
@@ -138,9 +137,9 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
           <TotalMaturity
             tokenSymbol={tokenSymbol}
             currentLockAmount={currentLockAmount}
-            totalAccruingRewards={topUpAmount}
+            totalAccruingRewards={totalAccruingRewards}
           />
-          <K2Incentives k2Incentives={topUpAmount} />
+          <K2Incentives k2Incentives={totalAccruingRewards} />
         </div>
         {formState.errors.root && (
           <RootError

@@ -1,18 +1,16 @@
 import { PROTOCOL_DATA_CACHE_TIME_SECONDS } from '@/shared/constants/config.constants';
 import { DAYS_IN_YEAR } from '@/shared/constants/protocol.constants';
 import { Token } from '@/shared/constants/tokens.constants';
+import { SDKMidnightInfo } from '@/shared/models/generated';
 import {
   ApyInfo,
   ApyMidnightInfo,
   YieldType,
 } from '@/shared/models/ProtocolData';
 import { formatStringToNumber, Sdk } from '@/shared/utils/subgraph.utils';
-import { GetLatestMidnightInfoQuery } from '@generated/gql/types/protocol.types';
 import { unstable_cache } from 'next/cache';
 import { mapToObj } from 'remeda';
 import { getTokenMetrics } from './getTokenMetrics';
-
-type MidnightInfo = GetLatestMidnightInfoQuery['midnightInfos'][number];
 
 const percentageIncrease = (
   newValue: number,
@@ -53,7 +51,9 @@ const compoundedApr = (
  * @returns
  */
 export const formatMidnightInfo = (
-  midnightInfo: MidnightInfo | NonNullable<MidnightInfo['previousMidnightInfo']>
+  midnightInfo:
+    | SDKMidnightInfo
+    | NonNullable<SDKMidnightInfo['previousMidnightInfo']>
 ) => {
   return {
     midnightIndex: Number(midnightInfo.midnightIndex),
@@ -94,7 +94,7 @@ export const formatMidnightInfo = (
   };
 };
 
-type FormattedMidnightInfo = ReturnType<typeof formatMidnightInfo>;
+export type FormattedMidnightInfo = ReturnType<typeof formatMidnightInfo>;
 
 export type ComputedMidnightInfo = FormattedMidnightInfo &
   ApyMidnightInfo & { oldMidnightInfo: FormattedMidnightInfo | undefined };
@@ -219,7 +219,7 @@ const computeMidnightInfoDiff = (
  * @param midnightInfo
  */
 export const computeMidnightInfoDiffWithPrevious = (
-  midnightInfo: MidnightInfo
+  midnightInfo: SDKMidnightInfo
 ) => {
   if (!midnightInfo.previousMidnightInfo) {
     console.warn(
@@ -240,7 +240,7 @@ export const computeMidnightInfoDiffWithPrevious = (
  * @returns Record of maturityId to ComputedMidnightInfo
  */
 export const mapMidnightInfosToComputedDiffs = (
-  midnightInfos: MidnightInfo[]
+  midnightInfos: SDKMidnightInfo[]
 ): Record<number, ComputedMidnightInfo> => {
   if (!midnightInfos || midnightInfos.length === 0) return {};
 
@@ -285,7 +285,7 @@ export const getLatestMidnightInfoDiffs = async (
   )();
 };
 
-export const getComputedMidnightInfoAccumulator = (
+export const getFormattedMidnightInfoAccumulator = (
   midnightInfo: FormattedMidnightInfo,
   type: YieldType,
   token: Token

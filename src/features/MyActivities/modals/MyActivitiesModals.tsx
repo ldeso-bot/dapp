@@ -18,10 +18,8 @@ import {
   resetTopupLockDialog,
   topupLockDialogAtom,
 } from './TopupLock/topupLock.utils';
-import { unlockTokenDialogAtom } from './UnlockToken/unlockToken.utils';
-import UnlockTokenFlow from './UnlockToken/UnlockTokenFlow';
-import { unstakeLpTokenDialogAtom } from './UnstakeLpToken/unstakeLpToken.utils';
-import UnstakeLpTokenFlow from './UnstakeLpToken/UnstakeLpTokenFlow';
+import { unlockK2TokenDialogAtom } from './UnlockK2Token/unlockK2Token.utils';
+import UnlockK2TokenFlow from './UnlockK2Token/UnlockK2TokenFlow';
 
 export const MyActivitiesModals = () => {
   const router = useRouter();
@@ -35,11 +33,8 @@ export const MyActivitiesModals = () => {
   const [stakeLpTokenDialog, setStakeLpTokenDialog] = useAtom(
     stakeLpTokenDialogAtom
   );
-  const [unstakeLpTokenDialog, setUnstakeLpTokenDialog] = useAtom(
-    unstakeLpTokenDialogAtom
-  );
-  const [unlockTokenDialog, setUnlockTokenDialog] = useAtom(
-    unlockTokenDialogAtom
+  const [unlockK2TokenDialog, setUnlockK2TokenDialog] = useAtom(
+    unlockK2TokenDialogAtom
   );
   const [topupLockDialog, setTopupLockDialog] = useAtom(topupLockDialogAtom);
   const [depositK2TokenDialog, setDepositK2TokenDialog] = useAtom(
@@ -52,10 +47,9 @@ export const MyActivitiesModals = () => {
     const hasOpenDialog =
       lockTokenDialog.open ||
       stakeLpTokenDialog.open ||
-      unstakeLpTokenDialog.open ||
-      unlockTokenDialog.open ||
+      unlockK2TokenDialog.open ||
       topupLockDialog.open ||
-      claimMaturedLockRewardsDialog.open || 
+      claimMaturedLockRewardsDialog.open ||
       depositK2TokenDialog.open;
 
     const shouldRemoveActionParam =
@@ -76,8 +70,7 @@ export const MyActivitiesModals = () => {
   }, [
     lockTokenDialog.open,
     stakeLpTokenDialog.open,
-    unstakeLpTokenDialog.open,
-    unlockTokenDialog.open,
+    unlockK2TokenDialog.open,
     topupLockDialog.open,
     claimMaturedLockRewardsDialog.open,
     depositK2TokenDialog.open,
@@ -92,8 +85,7 @@ export const MyActivitiesModals = () => {
     /* Close dialogs if navigation to /my_holdings with empty action parameter */
     setStakeLpTokenDialog({ open: false, token: null });
     setLockTokenDialog({ open: false, token: null });
-    setUnstakeLpTokenDialog({ open: false, lock: null });
-    setUnlockTokenDialog({ open: false, lock: null });
+    setUnlockK2TokenDialog({ open: false, lock: null });
     setTopupLockDialog({
       open: false,
       token: null,
@@ -106,8 +98,7 @@ export const MyActivitiesModals = () => {
     });
     setClaimMaturedLockRewardsDialog({
       open: false,
-      lockId: null,
-      token: null,
+      lock: null,
     });
     setDepositK2TokenDialog({ open: false });
 
@@ -141,29 +132,32 @@ export const MyActivitiesModals = () => {
     if (action === 'claim_matured_lock') {
       setClaimMaturedLockRewardsDialog({
         open: true,
-        lockId: null,
-        token: null,
+        lock: null,
       });
     }
 
     if (action.startsWith('unlock_token_')) {
       const id = action.split('_')[2];
       const lock = data?.locks.find((lock) => lock.id === id) ?? null;
-      if (lock && (lock.token === 'kvcm' || lock.token === 'k2')) {
-        setUnlockTokenDialog({ open: true, lock });
-      } else if (lock && lock.token === 'kvcm-usdc') {
-        setUnstakeLpTokenDialog({ open: true, lock });
+      if (lock) {
+        if (lock.token === 'k2') {
+          setUnlockK2TokenDialog({ open: true, lock });
+        } else {
+          setClaimMaturedLockRewardsDialog({
+            open: true,
+            lock,
+          });
+        }
       }
     }
   }, [
     searchParams,
     setLockTokenDialog,
     setStakeLpTokenDialog,
-    setUnstakeLpTokenDialog,
-    setUnlockTokenDialog,
+    setUnlockK2TokenDialog,
+    setClaimMaturedLockRewardsDialog,
     setTopupLockDialog,
     setDepositK2TokenDialog,
-    setClaimMaturedLockRewardsDialog,
     data?.locks,
   ]);
 
@@ -178,11 +172,8 @@ export const MyActivitiesModals = () => {
       <Dialog open={stakeLpTokenDialog.open}>
         <StakeLpTokenFlow />
       </Dialog>
-      <Dialog open={unstakeLpTokenDialog.open}>
-        <UnstakeLpTokenFlow />
-      </Dialog>
-      <Dialog open={unlockTokenDialog.open}>
-        <UnlockTokenFlow />
+      <Dialog open={unlockK2TokenDialog.open}>
+        <UnlockK2TokenFlow />
       </Dialog>
       <Dialog
         open={topupLockDialog.open}

@@ -9,7 +9,7 @@ import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
 import { DEV_MODE, USE_LOCAL_RPC } from '@/shared/constants/config.constants';
 import { Token } from '@/shared/constants/tokens.constants';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
-import { WalletData } from '@/shared/models/walletData';
+import { Lock } from '@/shared/models/walletData';
 import { cn } from '@/shared/utils/component.utils';
 import {
   formatAmountWithCommas,
@@ -93,7 +93,7 @@ export const TokenPositions: FC<TokenPositionsProps> = ({
 };
 
 type PositionCardProps = {
-  lock: WalletData['locks'][number];
+  lock: Lock;
 };
 
 const PositionCard: FC<PositionCardProps> = ({ lock }) => {
@@ -234,8 +234,7 @@ const PositionCard: FC<PositionCardProps> = ({ lock }) => {
               ) {
                 setClaimMaturedLockRewardsDialog({
                   open: true,
-                  lockId: lock.id,
-                  token: lock.token,
+                  lock,
                 });
               }
             }}

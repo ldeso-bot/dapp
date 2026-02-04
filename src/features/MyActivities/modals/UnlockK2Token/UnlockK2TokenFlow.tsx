@@ -5,32 +5,26 @@ import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useParsedForm } from '@/shared/hooks/web3/useParsedForm';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z, ZodBoolean, ZodRecord, ZodString } from 'zod';
-import UnlockTokenConfirm from './steps/UnlockTokenConfirm';
-import UnlockTokenForm from './steps/UnlockTokenForm';
-import { UnlockTokenFields } from './unlockToken.utils';
+import { z, ZodNumber } from 'zod';
+import UnlockK2TokenConfirm from './steps/UnlockK2TokenConfirm';
+import UnlockK2TokenForm from './steps/UnlockK2TokenForm';
+import { UnlockTokenFields } from './unlockK2Token.utils';
 
-export default function UnlockTokenFlow() {
+export default function UnlockK2TokenFlow() {
   const { data } = useWalletData();
+  const lock = data?.locks.find((lock) => lock.token === 'k2') ?? null;
 
   // Form and schema are defined at the flow level
   const schemaObj: {
-    proportional: ZodBoolean;
-    options: ZodRecord<ZodString, ZodBoolean>;
+    amount: ZodNumber;
   } = {
-    proportional: z.coerce.boolean(),
-    options: z.record(z.string(), z.boolean()),
+    amount: z.coerce.number(),
   };
   const defaultValues: {
-    options: Record<string, boolean>;
-    proportional: boolean;
+    amount: number;
   } = {
-    proportional: true,
-    options: {},
+    amount: lock?.lockedAmount ?? 0,
   };
-  data?.allocations.forEach((allocation) => {
-    defaultValues.options[allocation.id] = false;
-  });
 
   const schema = z.object(schemaObj);
 
@@ -44,7 +38,7 @@ export default function UnlockTokenFlow() {
   // Form is passed to each step
   return (
     <Steps
-      components={[UnlockTokenForm, UnlockTokenConfirm]}
+      components={[UnlockK2TokenForm, UnlockK2TokenConfirm]}
       data={{ form, schema, parsedForm }}
     />
   );

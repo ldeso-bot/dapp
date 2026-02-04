@@ -1,10 +1,9 @@
 'use client';
 
-import { useLock } from '@/shared/hooks/api/useLock';
 import { useTransactionAndWaitForWalletUpdate } from '@/shared/hooks/useTransactionAndWaitForWalletUpdate';
 import { useChainId } from '@/shared/hooks/web3/useChainId';
 import { useContract, useContractInfo } from '@/shared/hooks/web3/useContract';
-import { WalletData } from '@/shared/models/walletData';
+import { Lock, WalletData } from '@/shared/models/walletData';
 import RewardManagerDiamond from '@/shared/utils/abis/RewardManagerDiamond';
 import { formatStringToNumber } from '@/shared/utils/subgraph.utils';
 import { exitWithErrorMessage } from '@/shared/utils/web3.utils';
@@ -15,15 +14,15 @@ import { ExecuteWithValidationResult } from '../../hooks/useTransactionWithValid
 import ClaimMaturedLogRewardsForm from './ClaimMaturedLogRewardsForm';
 
 type Props = {
-  lockId: string;
+  lock: Lock;
 };
-const ClaimKvcmLockRewardsForm = ({ lockId }: Props) => {
+const ClaimKvcmLockRewardsForm = ({ lock }: Props) => {
+  const lockId = lock.id;
   const rewardManagerContractInfo = useContractInfo('RewardManagerDiamond');
   const { contract: stakingManagerContract } = useContract(
     'StakingManagerDiamond'
   );
   const chainId = useChainId();
-  const { data: lock } = useLock(lockId);
 
   // Kvcm amount
   const kvcmAmountArgs = useMemo(() => {
@@ -36,7 +35,7 @@ const ClaimKvcmLockRewardsForm = ({ lockId }: Props) => {
     functionName: 'getKvcmLockYield',
     args: kvcmAmountArgs,
     query: {
-      enabled: !!lockId && !!rewardManagerContractInfo.address,
+      enabled: !!lock && !!rewardManagerContractInfo.address,
     },
   });
 

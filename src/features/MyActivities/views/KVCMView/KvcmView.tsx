@@ -13,6 +13,7 @@ import { useNextMaturity } from '@/shared/hooks/useNextMaturity';
 import Plus from '@/shared/images/plus.svg';
 import {
   formatAmountWithCommas,
+  formatPriceUSDWithCommas,
   formatTimestamp,
 } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
@@ -113,6 +114,9 @@ const KvcmOverview = () => {
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
                   {formatAmountWithCommas(kvcmData.lockedAmount)} kVCM
                 </div>
+                <span className="text-size-16 text-void-80 w-full">
+                  {formatPriceUSDWithCommas(kvcmData.lockedValue)}
+                </span>
                 <div className="text-size-14 text-gray-500 mt-2 space-y-0.5">
                   <div>
                     <Link

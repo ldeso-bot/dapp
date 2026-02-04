@@ -4,6 +4,7 @@ import {
 } from '@/shared/constants/config.constants';
 import { ONE_DAY } from '@/shared/constants/protocol.constants';
 import { Token, tokens } from '@/shared/constants/tokens.constants';
+import { SDKCreditToken } from '@/shared/models/generated';
 import { YieldType } from '@/shared/models/ProtocolData';
 import { ApiCreditToken, TOKEN_STANDARDS } from '@/shared/models/shared';
 import { formatStringToNumber, Sdk } from '@/shared/utils/subgraph.utils';
@@ -132,13 +133,10 @@ export const getCreditsTokenMap = async (sdk: Sdk) => {
   return unstable_cache(
     async () => {
       const credits = await sdk.carbon.getCreditTokens();
-      return mapToObj(
-        credits.creditTokens,
-        (credit: GetCreditTokensQuery['creditTokens'][number]) => [
-          credit.creditTokenId,
-          credit,
-        ]
-      );
+      return mapToObj(credits.creditTokens, (credit: SDKCreditToken) => [
+        credit.creditTokenId,
+        credit,
+      ]);
     },
     ['credits-map'],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }

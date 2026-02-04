@@ -42,6 +42,10 @@ export type TokenInfo = {
   contractName: ContractName;
 };
 
+export type LockableTokenInfo = Omit<TokenInfo, 'id'> & {
+  id: LockableToken;
+};
+
 export const tokens: Record<Token, TokenInfo> = {
   usdc: {
     id: 'usdc',
@@ -150,8 +154,14 @@ export const isAllocatableToken = (
   return isToken(token) && Object.keys(allocationTokens).includes(token);
 };
 
-export const isLockableToken = (token: unknown): token is LockableToken => {
+const isLockableToken = (token: unknown): token is LockableToken => {
   return isToken(token) && Object.keys(lockableTokens).includes(token);
+};
+
+export const isLockableTokenInfo = (
+  tokenInfo: TokenInfo | null
+): tokenInfo is LockableTokenInfo => {
+  return !!tokenInfo && isLockableToken(tokenInfo.id);
 };
 
 export { CarbonCreditIconImg };

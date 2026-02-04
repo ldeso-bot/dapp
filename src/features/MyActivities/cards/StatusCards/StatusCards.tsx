@@ -24,7 +24,7 @@ export const StatusCard: FC<{
       className="p-4 pt-4 rounded-lg bg-gray-50 border border-gray-300"
       skeletonClassName={skeletonClassName}
     >
-      {children && <div className="flex flex-col gap-2">{children}</div>}
+      {children && <div className="flex flex-col gap-2 h-full">{children}</div>}
     </Card>
   );
 };
