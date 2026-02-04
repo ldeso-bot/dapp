@@ -18,7 +18,6 @@ import { depositK2TokenDialogAtom } from '@/features/MyActivities/modals/Deposit
 import { HoldingEstimatedValue } from '@/features/MyActivities/shared/HoldingEstimatedValue';
 import { HoldingTotalPosition } from '@/features/MyActivities/shared/HoldingTotalPosition';
 import { InfoCard } from '@/features/MyActivities/shared/InfoCard';
-import { RecentActivity } from '@/features/MyActivities/shared/RecentActivity';
 import { K2Onboarding } from '@/features/MyActivities/views/K2View/K2Onboarding';
 import Button from '@/shared/components/Button/Button';
 import Icon from '@/shared/components/Icon/Icon';
@@ -60,7 +59,6 @@ export const K2View = () => {
             content={<K2Overview />}
           />
           <K2VariableRewards />
-          <RecentActivity />
         </>
       )}
     </>
