@@ -35,7 +35,6 @@ export default function KvcmAllocationsCard(props: CardProps) {
           <span>kVCM Allocations</span>
         </div>
       }
-      titleAddOnBadge="Price Lever"
       titleClassName="text-size-18 font-medium"
       data={allocations}
       unallocatedAmount={unallocatedKvcm}

@@ -171,12 +171,8 @@ const K2Overview = () => {
             <HoldingTotalPosition
               symbol="K2"
               totalPosition={k2Data.positionAmount}
-              tooltip="Sum of Claimable + Pending + Tokens Locked."
             />
-            <HoldingEstimatedValue
-              estimatedValue={k2Data.positionValue}
-              tooltip="Estimate of the USD equivalent value of your K2 tokens plus incentives according to current market conditions."
-            />
+            <HoldingEstimatedValue estimatedValue={k2Data.positionValue} />
           </>
         )}
       </div>
@@ -203,7 +199,7 @@ const K2VariableRewards = () => {
               aprValue={formatPercentage(
                 protocolData.midnightInfos.k2ApyForK2 ?? 0
               )}
-              aprTooltip="The annual percentage rate of the variable rewards. This is an estimate, is not guaranteed, can change, and may be zero."
+              aprTooltip="Percent represents current incentive rate. This is an estimate, is not guaranteed, can change, and may be zero."
             />
             <VariableRewardsItemContent>
               <div className="flex flex-1 flex-col">

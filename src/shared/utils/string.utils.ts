@@ -80,29 +80,42 @@ export const formatAmountWithCommas = (
   value?: number,
   digits?: number | 'auto'
 ): string => {
-  if (!value) {
-    return '0.00';
-  }
-  const absValue = Math.abs(value ?? 0);
+  if (isNullish(value)) return '0';
 
-  // 2 digits by default
+  const absValue = Math.abs(value);
+
+  // Default: 2 digits
   if (isNullish(digits)) {
     digits = 2;
   }
 
   // Auto detect number of digits to show (3 non zero values)
   if (digits === 'auto') {
-    const decimalPlaces = Math.ceil(Math.abs(Math.log10(absValue)));
-    digits = decimalPlaces + 2;
+    if (absValue === 0) {
+      digits = 0;
+    } else {
+      const decimalPlaces = Math.ceil(Math.abs(Math.log10(absValue)));
+      digits = decimalPlaces + 2;
+    }
   }
+
   const fixedValue = value.toFixed(digits);
+  let [integerPart, decimalPart] = fixedValue.split('.');
 
   // Add commas to the integer part if value is greater than 1 to make it pretty
-  if (value <= 1) return fixedValue;
+  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-  const [integerPart, decimalPart] = fixedValue.split('.');
-  const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  return decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger;
+  if (!decimalPart) {
+    return integerPart;
+  }
+
+  decimalPart = decimalPart.replace(/0+$/, '');
+
+  if (decimalPart.length === 0) {
+    return integerPart;
+  }
+
+  return `${integerPart}.${decimalPart}`;
 };
 
 export const formatAmountWithUnits = (value: number): string => {

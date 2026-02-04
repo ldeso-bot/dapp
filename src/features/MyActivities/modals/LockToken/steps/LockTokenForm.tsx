@@ -178,7 +178,7 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
             />
           )}
           {isMaturityWithin3Days ? (
-            <RootError errorMessage="Locking kVCM is an irreversible protocol action for coordination and parameter signalling. Incentives are variable, non-guaranteed, and may be zero. Locking should not be used for short-term positioning or yield optimisation." />
+            <RootError errorMessage="Locking kVCM is an irreversible protocol action for coordination and parameter signalling. Incentives are variable, non-guaranteed, and may be zero." />
           ) : isMaturityWithin30Days ? (
             <RootError
               variant="warning"

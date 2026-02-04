@@ -23,10 +23,10 @@ export const CarbonSellersHandbookCard = () => {
             </span>
             <span className="flex flex-col gap-1">
               <span className="text-size-16 font-semibold text-gray-800 text-nowrap">
-                Carbon Sellers Handbook
+                Carbon Suppliers Handbook
               </span>
               <span className="text-size-12">
-                Whitelisting, pricing, and the selling process
+                Whitelisting, pricing, and the supplying process
               </span>
             </span>
           </span>

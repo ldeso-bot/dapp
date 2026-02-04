@@ -15,7 +15,7 @@ import {
 export const overviewFlowItems = [
   createFlowItem(
     CarbonCreditsIcon,
-    'Your Capital',
+    'Your Inputs',
     'kVCM, K2, and liquidity tokens in your wallet.',
     0
   ),

@@ -15,7 +15,7 @@ export default function LiquidityPoolsCard(props: CardProps) {
     <Card
       {...props}
       title="Liquidity Pools"
-      tooltip="A liquidity pool is a pair of tokens in a smart contract, facilitating decentralized trading and providing liquidity for users to swap tokens on decentralized exchanges."
+      tooltip="Liquidity pools facilitate the the trade of two tokens via a smart contract. More tokens locked typically enables more efficient execution, with less slippage for users."
       skeletonClassName="h-[17.8rem]"
       className="rounded-xl"
     >

@@ -26,7 +26,7 @@ export default function TotalK2LockedCard(props: CardProps) {
       buttonOnClick={handleButtonClick}
       buttonText="Lock K2"
       title="K2 TVL"
-      tooltip="Locking K2 offers incentives. These locks and the incentives may be unlocked after 24 hours."
+      tooltip="This represents the total amount of K2 locked in the Protocol by all users."
       tooltipPosition="far"
       primaryValue={formatAmountWithCommas(amount, 0)}
       secondaryValue={formatPriceUSDWithCommas(price * amount, 0)}

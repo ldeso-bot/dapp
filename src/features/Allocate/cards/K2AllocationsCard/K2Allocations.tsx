@@ -28,7 +28,6 @@ export default function K2AllocationsCard(props: CardProps) {
           <span>K2 Allocations</span>
         </div>
       }
-      titleAddOnBadge="Price Strength"
       titleClassName="text-size-18 font-medium"
       data={allocations}
       unallocatedAmount={unallocatedK2}

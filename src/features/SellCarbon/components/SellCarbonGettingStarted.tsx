@@ -3,10 +3,7 @@
 import Card from '@/shared/components/Card/Card';
 import LinkOpenInNew from '@/shared/components/LinkWithIcon';
 import { AlertIcon } from '@/shared/components/Svg/AlertIcon';
-import {
-  CARBON_SELLERS_HANDBOOK_URL,
-  DISCORD_URL,
-} from '@/shared/constants/urls.constants';
+import { CARBON_SELLERS_HANDBOOK_URL } from '@/shared/constants/urls.constants';
 
 export const SellCarbonGettingStarted = () => {
   return (
@@ -27,11 +24,8 @@ export const SellCarbonGettingStarted = () => {
           be tokenized and present in your wallet.
         </span>
         <span className="flex flex-row gap-3 items-center">
-          <LinkOpenInNew href={DISCORD_URL}>
-            <span className="text-size-14">Discord</span>
-          </LinkOpenInNew>
           <LinkOpenInNew href={CARBON_SELLERS_HANDBOOK_URL}>
-            <span className="text-size-14">Sellers Handbook</span>
+            <span className="text-size-14">Suppliers Handbook</span>
           </LinkOpenInNew>
         </span>
       </div>

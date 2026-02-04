@@ -79,7 +79,7 @@ export const VariableRewardsItemTitle = (props: ItemTitleProps) => {
       {aprValue && (
         <div className="flex gap-2 items-center">
           <span className="text-size-14 text-gray-900 font-medium">
-            {aprValue} APR
+            {aprValue}
           </span>
           <Tooltip
             content={aprTooltip}

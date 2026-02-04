@@ -9,6 +9,7 @@ import TokenAmountInput from '@/shared/components/Form/TokenAmountInput';
 import LinkOpenInNew from '@/shared/components/LinkWithIcon';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { AlertIcon } from '@/shared/components/Svg/AlertIcon';
+import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
 import { CARBON_SELLERS_HANDBOOK_URL } from '@/shared/constants/urls.constants';
 import { formatStringToNumber } from '@/shared/utils/subgraph.utils';
 import { useEffect } from 'react';
@@ -71,10 +72,13 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
           <div className="flex-1">
             <div className="font-base text-gray-500 text-size-14">
               Quotes are not guaranteed due to ever-changing network conditions.
-              Slippage may occur.{' '}
-              <LinkOpenInNew href={CARBON_SELLERS_HANDBOOK_URL} withoutIcon>
-                <span className="text-size-12">Learn more</span>
-              </LinkOpenInNew>
+              Slippage may occur.
+              <span className="inline-flex items-center align-middle ml-1.5">
+                <Tooltip
+                  className="max-w-[30rem] text-size-12 p-3"
+                  content="Slippage in blockchain-enabled transactions is the difference between the price you expect (or are quoted) when you submit a swap and the actual price you get when the trade executes on-chain. Slippage occurs due to small time delays when executing a transaction on the blockchain and can range from 0.2%-1% (trending toward the lower value). The quoted kVCM includes an extra 1% to account for slippage."
+                />
+              </span>
             </div>
           </div>
           <form

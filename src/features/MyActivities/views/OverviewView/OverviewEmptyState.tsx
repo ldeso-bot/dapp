@@ -25,11 +25,11 @@ export const OverviewEmptyState = ({ onStartSelling }: Props) => {
   return (
     <EmptyState
       title={
-        <>
-          Use Capital.
+        <div className="pb-2">
+          Carbon Market Infrastructure.
           <br />
-          Drive Climate Impact.
-        </>
+          Driving Climate Impact.
+        </div>
       }
       description="Lock kVCM and K2 into incentivized Klima strategies to support carbon markets."
       flowItems={overviewFlowItems}

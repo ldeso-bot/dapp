@@ -167,7 +167,7 @@ const PositionCard: FC<PositionCardProps> = ({ lock }) => {
             </div>
             <Tooltip
               className="max-w-[30rem] text-size-12 p-3"
-              content="Base Accrual and K2 Incentives accrue while your kVCM is locked. Both are claimable at maturity along with your principal."
+              content="Base accrual and K2 incentives accrue while your kVCM is locked. Both are claimable when your tokens unlock. Percent represents current incentive rate."
             />
           </div>
 
@@ -178,7 +178,7 @@ const PositionCard: FC<PositionCardProps> = ({ lock }) => {
             </div>
             <div className="text-size-14 text-gray-900 font-[400]">
               {formatAmountWithCommas(baseRewardAmount)}{' '}
-              {getTokenSymbol('kvcm')} at {formatPercentage(baseApy)} APR
+              {getTokenSymbol('kvcm')} at {formatPercentage(baseApy)}
             </div>
           </div>
 
@@ -189,7 +189,7 @@ const PositionCard: FC<PositionCardProps> = ({ lock }) => {
             </div>
             <div className="text-size-14 text-gray-900 font-[400]">
               {formatAmountWithCommas(k2RewardAmount)} K2 at{' '}
-              {formatPercentage(lock.k2YieldApyPercent)} APR
+              {formatPercentage(lock.k2YieldApyPercent)}
             </div>
           </div>
         </div>

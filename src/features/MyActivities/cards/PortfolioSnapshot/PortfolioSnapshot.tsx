@@ -83,28 +83,21 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
             <div className="flex items-center gap-2 mb-2 sm:mb-3 md:mb-2">
               <div className="flex items-center gap-2">
                 {/* <WalletCards className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" /> */}
-                <div className="text-size-18 font-medium">Holdings</div>
+                <div className="text-size-18 font-medium">
+                  Holdings (estimated USD value)
+                </div>
               </div>
             </div>
             <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-start lg:justify-between lg:gap-4">
               <div className="flex-shrink-0">
-                <div className="text-[5rem] leading-[5.5rem] font-bold tabular-nums mb-1">
-                  {formatPriceUSDWithCommas(holdingsData.portfolioValue)}
-                </div>
-                <div className="flex items-center gap-2 mb-0.5">
-                  <span className="text-size-14 text-gray-500">
-                    Estimated value
-                  </span>
-                  <Tooltip
-                    className="max-w-[35rem] text-size-12 p-3"
-                    content="Total portfolio value including all accrued rewards (claimable + accruing). This is your complete position value."
-                  />
+                <div className="text-[4rem] leading-[5.5rem] tabular-nums mb-1">
+                  ~{formatPriceUSDWithCommas(holdingsData.portfolioValue)}
                 </div>
                 <div className="text-size-12 text-gray-500">
                   As of {liveTimestamp}
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-2 sm:gap-4 lg:flex lg:flex-row lg:items-start lg:gap-6 lg:pt-2">
+              <div className="grid grid-cols-2 gap-2 sm:gap-4 lg:flex lg:flex-row lg:items-center lg:gap-6">
                 <div>
                   <div className="flex items-center gap-1.5 mb-1">
                     <span className="text-size-12 font-medium text-gray-500 uppercase tracking-wide">
@@ -115,12 +108,12 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                       content="Total amount currently allocated to protocol participation, including voting and liquidity."
                     />
                   </div>
-                  <div className="text-[2.4rem] leading-[2.8rem] font-bold tabular-nums">
+                  <div className="text-[2.4rem] leading-[2.8rem] font-medium tabular-nums">
                     {formatPriceUSDWithCommas(holdingsData.lockedValue)}
                   </div>
                 </div>
                 {shouldShowBadge && (
-                  <div>
+                  <div className="relative -top-[4px]">
                     <div className="flex items-center gap-1.5 mb-1">
                       <span className="text-size-12 font-medium text-gray-500 uppercase tracking-wide">
                         Status
@@ -130,6 +123,7 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                         content={statusInfo.tooltip}
                       />
                     </div>
+
                     <div className="flex items-center gap-1.5">
                       <StatusCardBadge variant={statusInfo.statusColor} />
                       <span

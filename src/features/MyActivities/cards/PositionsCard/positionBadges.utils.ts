@@ -1,5 +1,4 @@
 import { ROUTES } from '@/shared/constants/route.constants';
-import { formatPriceUSDWithCommas } from '@/shared/utils/string.utils';
 import type { AggregatedHoldingsData } from '../../hooks/useHoldingsData';
 import type { ActionBadge } from '../../shared/PositionStatusCard';
 
@@ -13,18 +12,12 @@ type BadgeConfig = {
 
 const createActionBadges = (props: BadgeConfig) => {
   const badges: ActionBadge[] = [];
-  const {
-    view,
-    unitLabel,
-    maturedCount,
-    claimableValue,
-    soonToBeMaturedCount,
-  } = props;
+  const { view, unitLabel, maturedCount, soonToBeMaturedCount } = props;
 
   if (maturedCount) {
     badges.push({
       variant: 'green',
-      text: `Claimable now • ${unitLabel} (${maturedCount}) • ${formatPriceUSDWithCommas(claimableValue)}`,
+      text: `Claimable now: ${maturedCount} ${unitLabel} `,
       href: `${ROUTES.MY_ACTIVITIES}?activeView=${view}`,
     });
   }
@@ -32,7 +25,7 @@ const createActionBadges = (props: BadgeConfig) => {
   if (soonToBeMaturedCount) {
     badges.push({
       variant: 'blue',
-      text: `Unlocks ≤30d • ${unitLabel}(${soonToBeMaturedCount})`,
+      text: `Claimable soon: ${soonToBeMaturedCount} ${unitLabel}`,
       href: `${ROUTES.MY_ACTIVITIES}?activeView=${view}`,
     });
   }

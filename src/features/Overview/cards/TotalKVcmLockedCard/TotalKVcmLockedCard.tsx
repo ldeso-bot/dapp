@@ -27,7 +27,7 @@ export default function TotalKVcmLockedCard(props: CardProps) {
       buttonText="Lock kVCM"
       buttonOnClick={handleButtonClick}
       title="kVCM TVL"
-      tooltip="Locking kVCM offers variable kVCM incentives."
+      tooltip="This represents the total amount of kVCM locked in the Protocol by all users."
       tooltipPosition="far"
       primaryValue={formatAmountWithCommas(amount, 0)}
       secondaryValue={formatPriceUSDWithCommas(price * amount, 0)}

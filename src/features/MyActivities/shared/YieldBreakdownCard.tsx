@@ -29,9 +29,11 @@ export const IncentivesBreakdownCard = ({
               <div className="text-size-14 text-gray-600">
                 kVCM incentives (variable)
               </div>
-              <div className="text-size-16 text-gray-900 space-y-1 tracking-tight font-semibold inline-flex items-center gap-2">
-                <span>{baseYieldFormatted}% APR</span>
-                <Tooltip content="The annual percentage rate of the variable rewards. This is an estimate, is not guaranteed, can change, and may be zero." />
+              <div className="text-size-16 text-gray-900 tracking-tight font-semibold inline-flex items-center">
+                <span>{baseYieldFormatted}%</span>
+                <span className="inline-flex items-center ml-1 -translate-y-px">
+                  <Tooltip content="The annual percentage rate of the variable rewards. This is an estimate, is not guaranteed, can change, and may be zero." />
+                </span>
               </div>
             </div>
             <div className="text-size-12 text-gray-500">

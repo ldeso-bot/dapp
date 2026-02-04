@@ -142,12 +142,8 @@ const KvcmOverview = () => {
             <HoldingTotalPosition
               symbol="kVCM"
               totalPosition={kvcmData.positionAmount}
-              tooltip="Amount of kVCM tokens you have locked."
             />
-            <HoldingEstimatedValue
-              estimatedValue={kvcmData.positionValue}
-              tooltip="Estimate of the USD equivalent value of your kVCM tokens according to current market conditions."
-            />
+            <HoldingEstimatedValue estimatedValue={kvcmData.positionValue} />
           </>
         )}
       </div>
