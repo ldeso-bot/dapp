@@ -59,7 +59,7 @@ export const KvcmView = () => {
 };
 
 const KvcmOverview = () => {
-  const [tokenLocksOpen, setTokenLocksOpen] = useState(false);
+  const [tokenLocksOpen, setTokenLocksOpen] = useState(true);
   const { timestamp: nextMaturityDate, daysFromNow: nextMaturityInDays } =
     useNextMaturity();
   const { data: kvcmData } = useTokenHoldingsData('kvcm');

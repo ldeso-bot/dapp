@@ -75,6 +75,7 @@ export const getLocks = async (
 const getMockLocks = (): Locks => {
   return [
     {
+      created: 1719859200,
       canRequestUnlock: false,
       id: '1',
       contractLockId: 1,
@@ -106,6 +107,7 @@ const getMockLocks = (): Locks => {
       earningStatus: 'earning',
     },
     {
+      created: 1764515366,
       canRequestUnlock: true,
       id: '2',
       contractLockId: 2,

@@ -108,7 +108,7 @@ const PositionCard: FC<PositionCardProps> = ({ lock }) => {
   const isMatured = lock.status === 'matured';
   const isMaturing = lock.status === 'active';
   const title = DEV_MODE
-    ? `Contract ID: ${lock.contractLockId}\nMaturity ID: ${lock.maturityId}`
+    ? `Contract ID: ${lock.contractLockId}\nMaturity ID: ${lock.maturityId}\nCreated: ${formatTimestamp(lock.created * 1000, 'short')}`
     : '';
   const token = lock.token;
 

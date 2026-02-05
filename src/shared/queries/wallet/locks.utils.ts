@@ -135,6 +135,7 @@ export const mapKvcmOrLpLock = ({
   const lockedUntil = formatStringToNumber(lock.maturity?.timestamp, 0);
   const isMatured = lockedUntil < new Date().getTime() / 1000;
   const isClaimable = isMatured;
+  const created = formatStringToNumber(lock.lockActions[0]?.timestamp, 0) ?? 0;
 
   //Computing rewards information
   const lockedAmount = formatStringToNumber(lock.amount, tokenInfo.decimals);
@@ -231,6 +232,7 @@ export const mapKvcmOrLpLock = ({
 
   return {
     id: lock.id,
+    created,
     contractLockId: formatStringToNumber(lock.contractLockId, 0),
     lockedAmount,
     lockedValueUSD,
@@ -340,26 +342,31 @@ export const mapK2Lock = ({
 }: MapLockProps): Lock | null => {
   const now = new Date().getTime() / 1000;
 
+  /**
+   * request unlock timestamp
+   * if it is not 0 then unlock was requested and rewards have not been claimed yet
+   */
   const requestUnlockTimestamp = formatStringToNumber(
     lock.requestUnlockTimestamp,
     0
   );
 
-  const isAfterRequestUnlockTimestamp = now > requestUnlockTimestamp;
-  // Computing lock maturation
-  const isMatured = requestUnlockTimestamp > 0 && isAfterRequestUnlockTimestamp;
-  const lockedUntil = requestUnlockTimestamp;
-
   // A K2 lock is claimable if an unlock request has been made and the request unlock timestamp has been reached
+  const isMatured = requestUnlockTimestamp > 0 && now > requestUnlockTimestamp;
   const isClaimable = isMatured;
+  const lockedUntil = requestUnlockTimestamp;
+  const created = formatStringToNumber(lock.lockActions[0]?.timestamp, 0) ?? 0;
 
-  const canRequestUnlock = !isClaimable;
+  // A K2 lock can be requested if no unlock request have been made
+  // or if the request unlock timestamp has not been reached yet (adds unlock amount to the same midnight)
+  const canRequestUnlock =
+    requestUnlockTimestamp == 0 || now < requestUnlockTimestamp;
 
-  // Locked amount cannot be fetched from the subgraph because there are no events when K2 locks are actuaoly unlocked
+  // Locked amount cannot be fetched from the subgraph because there are no events when the K2 escrow is actually released
   // We sum all LockActions amounts to get the locked amount
   // TODO: This could lead to a performance issue with large amount of lock actions
   const lockedAmount = lock.lockActions.reduce((acc, action) => {
-    // We take into consideration only actions thatn n
+    // We take into consideration only actions that happened before the current timestamp (discarding future unlocks)
     const actionTimestamp = formatStringToNumber(action.timestamp, 0);
     const amount = actionTimestamp < now ? action.amount : 0n;
     return acc + formatStringToNumber(amount, tokenInfo.decimals);
@@ -440,6 +447,7 @@ export const mapK2Lock = ({
 
   return {
     id: lock.id,
+    created,
     contractLockId: formatStringToNumber(lock.contractLockId, 0),
     lockedAmount,
     lockedValueUSD,

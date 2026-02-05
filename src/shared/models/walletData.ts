@@ -58,6 +58,8 @@ export type Lock = {
   status: LockStatus;
   /** Earning status of the lock */
   earningStatus: EarningStatus;
+  /** Date of lock creation */
+  created: number;
 };
 
 export type Locks = Lock[];
