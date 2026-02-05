@@ -143,7 +143,6 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
               label="Token"
               value={isKvcm ? tokens.kvcm.symbol : tokens.k2.symbol}
               iconSrc={isKvcm ? tokens.kvcm.iconSrc : tokens.k2.iconSrc}
-              {...form.register('token')}
             />
             <small className="text-size-12 text-gray-500">
               Allocations influence the indicative price by adding token weight
