@@ -58,6 +58,11 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
 
   const isValidAmount = !!(amount && amount > 0);
   const availableBalance = Number(walletData?.balances?.[typedToken] ?? 0);
+  const exceedsBalance =
+    isValidAmount && Number(amount) > availableBalance;
+  const balanceErrorMessage = exceedsBalance
+    ? 'You cannot add more than your available balance.'
+    : null;
 
   const amountWei = isValidAmount
     ? parseUnits(String(amount), tokenInfo.decimals)
@@ -114,7 +119,12 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
             iconSize="sm"
             iconSrc={tokens[typedToken].iconSrc}
             {...form.register('amount')}
-            error={formState.errors.amount}
+            error={
+              formState.errors.amount ||
+              (balanceErrorMessage
+                ? { type: 'manual', message: balanceErrorMessage }
+                : undefined)
+            }
             addOnButton={
               <Button
                 type="button"
@@ -137,7 +147,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
           <TotalMaturity
             tokenSymbol={tokenSymbol}
             currentLockAmount={currentLockAmount}
-            totalAccruingRewards={totalAccruingRewards}
+            topUpAmount={isValidAmount ? Number(amount) : 0}
           />
           <K2Incentives k2Incentives={totalAccruingRewards} />
         </div>
@@ -158,7 +168,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
             colors="secondary"
             context="flow"
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !!balanceErrorMessage}
           >
             {isSubmitting ? 'Topping up...' : 'Confirm top up'}
           </Button>
