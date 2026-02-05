@@ -93,7 +93,7 @@ const UnlockK2TokenConfirm: FormFlowStep<UnlockTokenFields> = ({
 
     setAlert({
       title: 'Unlock Successful',
-      description: `You've successfully unlocked ${form.watch('amount')} of your ${tokens[lock.token].symbol} tokens! You can manage your positions in the "My Holdings" dashboard.`,
+      description: `You've successfully unlocked ${form.watch('amount')} of your ${tokens[lock.token].symbol} tokens! You can manage your positions in the "My Activities" dashboard.`,
       type: 'success',
       links: [
         {

@@ -105,7 +105,7 @@ export const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({
 
     const result = await handleTransaction(stake, {
       successTitle: 'Stake LP Successful',
-      successDescription: `You've successfully staked ${formatAmountWithCommas(Number(amount) || 0)} ${lpTokenDisplayName} LP! You can manage your positions in the "My Holdings" dashboard.`,
+      successDescription: `You've successfully staked ${formatAmountWithCommas(Number(amount) || 0)} ${lpTokenDisplayName} LP! You can manage your positions in the "My Activities" dashboard.`,
       errorDescription:
         'Something went wrong and your stake was not successful.',
       onSuccess: async () => {
