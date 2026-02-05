@@ -63,7 +63,7 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
 
   const minKvcmOut = applySlippage(
     parsedForm.current?.kvcmOutQuoteWei ?? 0n,
-    parsedForm.current?.slippage ?? 0
+    -(parsedForm.current?.slippage ?? 0)
   );
 
   const kvcmOutString = `${formatStringToNumber(parsedForm.current?.kvcmOutQuoteWei, 18)} KVCM`;

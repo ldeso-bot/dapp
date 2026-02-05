@@ -86,7 +86,6 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
         return;
       }
     }
-    console.log(data);
     next();
   };
 

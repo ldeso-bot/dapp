@@ -6,10 +6,12 @@ import Card from '@/shared/components/Card/Card';
 import Dialog from '@/shared/components/Dialog/Dialog';
 import Input from '@/shared/components/Form/Input';
 import InputError from '@/shared/components/Form/layout/InputError';
+import LinkOpenInNew from '@/shared/components/LinkWithIcon';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { CarbonCreditIconImg } from '@/shared/constants/tokens.constants';
 import { useAllowance } from '@/shared/hooks/useAllowance';
+import { useChainId } from '@/shared/hooks/web3/useChainId';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { TOKEN_STANDARDS } from '@/shared/models/shared';
 import {
@@ -17,6 +19,7 @@ import {
   formatAddress,
   formatAmountWithCommas,
 } from '@/shared/utils/string.utils';
+import { getScanLink } from '@/shared/utils/web3.utils';
 import { useSetAtom } from 'jotai';
 import { useRetireCarbon } from '../hooks/useRetireCarbon';
 import { useRetireCarbonForm } from '../hooks/useRetireCarbonForm';
@@ -30,6 +33,7 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
   const { parsedForm, form } = data;
   const setRetireCarbonDialogState = useSetAtom(retireCarbonDialogAtom);
   const setAlert = useSetAtom(alertAtom);
+  const chainId = useChainId();
 
   const {
     selectedCarbonCredit,
@@ -45,12 +49,15 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
     setRetireCarbonDialogState({ open: false, token: null });
   };
 
-  const { contract } = useContract('RetirementAggregator');
+  const { contract: retirementAggregatorContract } = useContract(
+    'RetirementAggregator'
+  );
+  const { contract: aamContractContract } = useContract('AAMDiamond');
 
   const { isAllowed, setAllowance, isSettingAllowance } = useAllowance({
     tokenAddress: inputTokenInfo?.address || '',
     tokenStandard: TOKEN_STANDARDS.ERC20,
-    spender: contract?.address || '',
+    spender: aamContractContract?.address || '',
     amount: maxInputTokenInWei,
   });
 
@@ -85,11 +92,20 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
 
   const handleRetireCarbon = async () => {
     const result = await retireCarbon();
-    if (result?.error === null) {
+    if (result.hash) {
       // Show success message
       setAlert({
         title: 'Retirement complete',
-        description: `You've successfully retired ${parsedForm.current?.amountTonnes} ${selectedCarbonCredit?.symbol} tonnes! Your carbon credits have been permanently retired and you've received verifiable proof of your climate action.`,
+        description: (
+          <>
+            Your carbon credits have been permanently retired. Immutable proof
+            of your climate action can be accessed{' '}
+            <LinkOpenInNew href={getScanLink(chainId, result.hash)}>
+              here
+            </LinkOpenInNew>
+            .
+          </>
+        ),
         type: 'success',
         links: [
           {
@@ -125,7 +141,7 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
             transfer tokens on your behalf.
             <Input
               label="Contract Address"
-              value={formatAddress(contract?.address)}
+              value={formatAddress(retirementAggregatorContract?.address)}
               readOnly
             />
             <Input

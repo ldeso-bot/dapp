@@ -2,7 +2,7 @@ import { atom } from 'jotai';
 
 type Alert = {
   title: string;
-  description: string;
+  description: React.ReactNode;
   type: 'error' | 'success';
   links?: {
     label: string;

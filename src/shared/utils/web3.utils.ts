@@ -1,3 +1,4 @@
+import { ExecuteWithValidationResult } from '@/features/MyActivities/hooks/useTransactionWithValidation';
 import contracts, {
   ContractName,
 } from '@/shared/constants/contracts.constants';
@@ -124,10 +125,19 @@ export const getTransactionTransferLogs = async (
   return decodedLogs;
 };
 
-export const exitWithErrorMessage = (message: string) => {
+export const exitWithErrorMessage = (
+  message: string
+): ExecuteWithValidationResult => {
   console.error(message);
   return {
     error: message,
     hash: null,
   };
+};
+
+export const getScanLink = (chainId: ChainId, txHash: Hash) => {
+  if (chainId === baseSepolia.id) {
+    return `https://sepolia.basescan.org/tx/${txHash}`;
+  }
+  return `https://basescan.org/tx/${txHash}`;
 };
