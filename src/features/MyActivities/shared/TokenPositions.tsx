@@ -1,9 +1,3 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/shared/components/Accordion/Accordion';
 import Button from '@/shared/components/Button/Button';
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
 import { DEV_MODE, USE_LOCAL_RPC } from '@/shared/constants/config.constants';
@@ -31,12 +25,7 @@ type TokenPositionsProps = {
   accordionLabel?: 'lots' | 'locks';
 };
 
-export const TokenPositions: FC<TokenPositionsProps> = ({
-  isOpen,
-  onOpenChange,
-  token,
-  accordionLabel = 'lots',
-}) => {
+export const TokenPositions: FC<TokenPositionsProps> = ({ token }) => {
   const { data } = useWalletData();
 
   const locks =
@@ -49,46 +38,16 @@ export const TokenPositions: FC<TokenPositionsProps> = ({
   if (!count) return null;
 
   return (
-    <Accordion
-      type="single"
-      collapsible
-      value={isOpen ? 'lots' : undefined}
-      onValueChange={(value) => onOpenChange?.(value === 'lots')}
-    >
-      <AccordionItem value="lots">
-        <AccordionTrigger className="hover:no-underline border-t border-gray-100 flex items-center justify-start rounded-none gap-1">
-          <div className="flex items-center gap-2">
-            <div className="text-size-14 text-gray-900 font-[400]">
-              View {accordionLabel} ({count})
-            </div>
-            <Tooltip
-              className="max-w-[30rem] text-size-12 p-3"
-              content={
-                <div className="space-y-2">
-                  <div>
-                    <strong>Top up:</strong> Add tokens to a lock without
-                    changing its duration. Newly added tokens are eligible for
-                    variable incentives immediately.
-                  </div>
-                  <div>
-                    <strong>Claim:</strong> Available only when tokens unlock at
-                    the end of their lock duration. Claims locked tokens plus
-                    any received incentives. Cannot be claimed early.
-                  </div>
-                </div>
-              }
-            />
-          </div>
-        </AccordionTrigger>
-        <AccordionContent className="text-size-14">
-          <div className="flex flex-col gap-3">
-            {locks.map((lock) => {
-              return <PositionCard key={lock.id} lock={lock} />;
-            })}
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+    <div className="border-t border-gray-100 pb-5">
+      <div className="flex items-center gap-2 py-3"></div>
+      <div className="text-size-14">
+        <div className="flex flex-col gap-3">
+          {locks.map((lock) => (
+            <PositionCard key={lock.id} lock={lock} />
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 
