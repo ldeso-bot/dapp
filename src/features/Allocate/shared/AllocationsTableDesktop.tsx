@@ -93,7 +93,11 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
             sortConfig={sortConfig}
             onSort={onSort}
             label={!isK2 ? `Indicative price` : `Capacity effect`}
-            infoIcon={!isK2 ? "Informational estimate of the price per tonne the protocol is currently targeting for this carbon class, based on portfolio state and allocations. Not a guarantee and may change as markets and allocations update." : "How much your K2 helps the system maintain the target price for this carbon class. Higher capacity means more volume can be bought or retired before the price needs to move."}
+            infoIcon={
+              !isK2
+                ? 'Informational estimate of the price per tonne the protocol is currently targeting for this carbon class, based on portfolio state and allocations. Not a guarantee and may change as markets and allocations update.'
+                : 'How much your K2 helps the system maintain the target price for this carbon class. Higher capacity means more volume can be bought or retired before the price needs to move.'
+            }
             className="text-center justify-center"
           />
           <TableHead className="min-w-[14rem]">&nbsp;</TableHead>
@@ -163,7 +167,7 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
   const isKvcm = tokenInfo.id === 'kvcm';
   const { data: protocolData } = useProtocolData();
   const { data: allocationData } = useAllocationData();
-  
+
   const hasLocks = allocations.some((a) => a.contractLockId !== undefined);
   const [isExpanded, setIsExpanded] = useState(!hasLocks);
 
@@ -237,7 +241,10 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
           {!isK2 && (
             <TableCell className="text-center border-0">
               <div className="flex justify-center">
-                <AllocationPriceEffect {...props} allocation={firstAllocation} />
+                <AllocationPriceEffect
+                  {...props}
+                  allocation={firstAllocation}
+                />
               </div>
             </TableCell>
           )}
@@ -389,7 +396,6 @@ const LockSubRow: FC<LockSubRowProps> = (props) => {
     totalAmount,
     availableAmount,
   } = props;
-  const [isHovered, setIsHovered] = useState(false);
   const isKvcm = tokenInfo.id === 'kvcm';
 
   const lockPercent =
@@ -401,11 +407,9 @@ const LockSubRow: FC<LockSubRowProps> = (props) => {
     <TableRow
       key={`lock-${lockAllocation.contractLockId}`}
       className="bg-white border-b border-gray-200/30"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <TableCell className="text-left border-0">
-        <div className="flex items-start pl-[25px] gap-[10px]">
+        <div className="flex items-center pl-[25px] gap-[10px]">
           <Icon
             size={2.4}
             icon={LockIcon}
@@ -417,7 +421,8 @@ const LockSubRow: FC<LockSubRowProps> = (props) => {
                 {lockDate ? `Lock: ${lockDate}` : 'Lock'}
               </span>
               <span className="text-size-12 text-gray-500 font-normal">
-                {formatAmountWithCommas(availableAmount)} {tokenInfo.symbol} available
+                {formatAmountWithCommas(availableAmount)} {tokenInfo.symbol}{' '}
+                available
               </span>
             </div>
             <Progress progressPercent={lockPercent} />
@@ -449,9 +454,9 @@ const LockSubRow: FC<LockSubRowProps> = (props) => {
           <span className="text-size-12 text-void-50">—</span>
         </div>
       </TableCell>
-      <TableCell className="border-0">
+      <TableCell colSpan={2} className="border-0 justify-end !pr-6">
         <div className="flex justify-end">
-          {isHovered && lockAllocations.length > 0 && (
+          {lockAllocations.length > 0 && (
             <div className="flex gap-2">
               {lockAllocations.map((allocation) => (
                 <AllocationEditButton
@@ -464,7 +469,6 @@ const LockSubRow: FC<LockSubRowProps> = (props) => {
           )}
         </div>
       </TableCell>
-      <TableCell className="border-0" />
     </TableRow>
   );
 };
@@ -472,8 +476,7 @@ const LockSubRow: FC<LockSubRowProps> = (props) => {
 const AllocationTableRow = (
   props: AllocationsCardProps & { allocation: Allocation }
 ) => {
-  const { allocation, tokenInfo, totalAmount } = props;
-  const [isHovered, setIsHovered] = useState(false);
+  const { tokenInfo, totalAmount, allocation } = props;
   const isK2 = tokenInfo.id === 'k2';
 
   const allocationPercent =
@@ -482,42 +485,34 @@ const AllocationTableRow = (
       : 0;
 
   return (
-    <>
-      <TableRow
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <TableCell className="text-left border-0">
-          <div className="flex flex-col gap-1">
-            <AllocationClass {...props} />
-            <AllocationCategory {...props} />
-            <Progress progressPercent={allocationPercent} />
-          </div>
-        </TableCell>
-        <TableCell className="text-right border-0">
-          <AllocationAmount {...props} />
-        </TableCell>
-        {!isK2 && (
-          <TableCell className="text-center border-0 ">
-            <div className="flex justify-center">
-              <AllocationPriceEffect {...props} />
-            </div>
-          </TableCell>
-        )}
-        <TableCell className="text-left border-0">
+    <TableRow>
+      <TableCell className="text-left border-0">
+        <div className="flex flex-col gap-1">
+          <AllocationClass {...props} />
+          <AllocationCategory {...props} />
+          <Progress progressPercent={allocationPercent} />
+        </div>
+      </TableCell>
+      <TableCell className="text-right border-0">
+        <AllocationAmount {...props} />
+      </TableCell>
+      {!isK2 && (
+        <TableCell className="text-center border-0 ">
           <div className="flex justify-center">
-            <AllocationPrice {...props} />
+            <AllocationPriceEffect {...props} />
           </div>
         </TableCell>
-        <TableCell className="border-0">
-          <div className="flex justify-end">
-            {isHovered && <AllocationEditButton {...props} />}
-          </div>
-        </TableCell>
-        <TableCell className="border-0 justify-end">
-          <Icon className="rotate-270" icon={ArrowDown} size={2.2} />
-        </TableCell>
-      </TableRow>
-    </>
+      )}
+      <TableCell className="text-left border-0">
+        <div className="flex justify-center">
+          <AllocationPrice {...props} />
+        </div>
+      </TableCell>
+      <TableCell colSpan={2} className="border-0 justify-end !pr-6">
+        <div className="flex justify-end">
+          <AllocationEditButton {...props} />
+        </div>
+      </TableCell>
+    </TableRow>
   );
 };
