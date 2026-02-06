@@ -38,7 +38,7 @@ export const getCreditBalances = async (
         return null;
       }
       return {
-        balance: formatStringToNumber(balance.balance, 18),
+        balance: formatStringToNumber(balance.balance, balance.credit.decimals),
         creditToken,
         registeredClasses: carbonClasses.filter((c) =>
           c.registeredTokens.some(

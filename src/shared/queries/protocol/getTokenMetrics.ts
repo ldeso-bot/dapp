@@ -4,7 +4,10 @@ import {
   AERODROME_KVCM_USDC_POOL_INDEX,
 } from '@/shared/constants/contracts.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
-import { SubgraphTokenSymbol } from '@/shared/constants/tokens.constants';
+import {
+  SubgraphTokenSymbol,
+  tokens,
+} from '@/shared/constants/tokens.constants';
 import { AllMetrics, Metrics } from '@/shared/models/ProtocolData';
 import { getAerodromePoolInfoByIndex } from '@/shared/utils/aerodrome.utils';
 import {
@@ -35,7 +38,10 @@ const getMainnetKvcmPrice = async (): Promise<number> => {
     const tokensResponse = await mainnetSdk.protocol.getTokens();
     const kvcmToken = tokensResponse.tokens.find((t) => t?.symbol === 'KVCM');
     if (kvcmToken?.priceUsdc?.priceUsdc) {
-      return formatStringToNumber(kvcmToken.priceUsdc.priceUsdc, 6);
+      return formatStringToNumber(
+        kvcmToken.priceUsdc.priceUsdc,
+        tokens.usdc.decimals
+      );
     }
     return 0;
   } catch (error) {
@@ -50,7 +56,10 @@ const getMainnetK2Price = async (): Promise<number> => {
     const tokensResponse = await mainnetSdk.protocol.getTokens();
     const k2Token = tokensResponse.tokens.find((t) => t?.symbol === 'K2');
     if (k2Token?.priceUsdc?.priceUsdc) {
-      return formatStringToNumber(k2Token.priceUsdc.priceUsdc, 6);
+      return formatStringToNumber(
+        k2Token.priceUsdc.priceUsdc,
+        tokens.usdc.decimals
+      );
     }
     return 0;
   } catch (error) {
@@ -116,7 +125,10 @@ const getTokenMetricsUncached = async (sdk: Sdk): Promise<AllMetrics> => {
         ? (supplyLocked - snapshotSupplyLocked) / snapshotSupplyLocked
         : 0;
 
-    let tokenPriceUSD = formatStringToNumber(token?.priceUsdc?.priceUsdc, 6);
+    let tokenPriceUSD = formatStringToNumber(
+      token?.priceUsdc?.priceUsdc,
+      tokens.usdc.decimals
+    );
     if (symbol === 'KVCM') {
       const mainnetPrice = await getMainnetKvcmPrice();
       if (mainnetPrice > 0) {
@@ -131,7 +143,7 @@ const getTokenMetricsUncached = async (sdk: Sdk): Promise<AllMetrics> => {
     const valueUSD = tokenPriceUSD;
 
     const snapshotValueUSD = snapshot?.priceUsdc
-      ? formatStringToNumber(snapshot.priceUsdc, 6)
+      ? formatStringToNumber(snapshot.priceUsdc, tokens.usdc.decimals)
       : valueUSD;
 
     const valueUSDChangePercent24h =

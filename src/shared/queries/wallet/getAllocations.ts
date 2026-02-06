@@ -63,7 +63,7 @@ export const getAllocations = async (
 
       const userAmount = formatStringToNumber(allocation.amount, 18);
       const tokenAddress = allocation.token.address.toLowerCase();
-      const carbonClassId = allocation.carbonClass.carbonClassId.toLowerCase();      
+      const carbonClassId = allocation.carbonClass.carbonClassId.toLowerCase();
       const carbonClassInfo = getCarbonClassInfo(chainId, carbonClassId);
       const category = carbonClassInfo?.category ?? 'Other';
       const contractLockId = allocation.lock?.contractLockId
@@ -98,7 +98,6 @@ export const getAllocations = async (
           name: tokenInfo.id,
           address: allocation.token.address,
         },
-
       };
     }
   );

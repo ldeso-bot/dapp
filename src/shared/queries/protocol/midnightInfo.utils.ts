@@ -294,12 +294,14 @@ export const getFormattedMidnightInfoAccumulator = (
   if (type === YieldType.K2) {
     rawAccumulator =
       token === 'k2'
-        ? midnightInfo.riskyYieldAccumulatorForK2
+        ? midnightInfo.k2YieldAccumulatorForK2
         : token === 'kvcm-k2'
-          ? midnightInfo.riskyYieldAccumulatorForKVCM_K2_LP
+          ? midnightInfo.k2YieldAccumulatorForKVCM_K2_LP
           : token === 'kvcm-usdc'
-            ? midnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP
-            : 0;
+            ? 0
+            : token === 'kvcm'
+              ? midnightInfo.k2YieldAccumulatorForKVCM
+              : 0;
   } else if (type === YieldType.RISKY) {
     rawAccumulator =
       token === 'k2'

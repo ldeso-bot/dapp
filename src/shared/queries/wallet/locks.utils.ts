@@ -3,6 +3,7 @@ import {
   LockableTokenInfo,
   Token,
   tokenInfoFromSubgraphSymbol,
+  tokens,
 } from '@/shared/constants/tokens.constants';
 import { SDKLock } from '@/shared/models/generated';
 import { AllMetrics, YieldType } from '@/shared/models/ProtocolData';
@@ -33,10 +34,13 @@ const computeSyntheticYieldRewards = (
       action.type === LockActionType.SHARES_UPDATED &&
       action.syntheticYieldEntryMidnightInfo?.keeperUpdated
     ) {
-      const actionAmount = formatStringToNumber(action.amount, 18); // Amount locked
+      const actionAmount = formatStringToNumber(
+        action.amount,
+        tokens.kvcm.decimals
+      ); // Amount locked
       const actionPps = formatStringToNumber(
         action.syntheticYieldEntryMidnightInfo.syntheticYieldPps,
-        18
+        tokens.kvcm.decimals
       ); // PPS at the time the lock shares are minted (during next midnight)
       const actionShares = actionAmount / actionPps; // Shares minted
       const actionClaimable = actionShares * currentPps; // Claimable for the action
@@ -62,6 +66,18 @@ const getRewardsBetweenMidnights = ({
   yieldType: YieldType;
   token: Token;
 }) => {
+  if (!midnightInfoNow.keeperUpdated) {
+    console.warn(
+      '⚠️ Computing rewards with non updated midnight info',
+      midnightInfoNow
+    );
+  }
+  if (!midnightInfoThen.keeperUpdated) {
+    console.warn(
+      '⚠️ Computing rewards with non updated midnight info',
+      midnightInfoThen
+    );
+  }
   const accumulatorNow = getFormattedMidnightInfoAccumulator(
     midnightInfoNow,
     yieldType,
@@ -93,6 +109,8 @@ const computeAccumlulatorYieldRewards = (
       yieldType === YieldType.K2
         ? action.k2YieldEntryMidnightInfo
         : action.riskyYieldEntryMidnightInfo;
+    const decimals =
+      yieldType === YieldType.K2 ? tokens.k2.decimals : tokens.kvcm.decimals;
     if (
       action.type === LockActionType.SHARES_UPDATED &&
       entryMidnightInfo?.keeperUpdated
@@ -101,10 +119,11 @@ const computeAccumlulatorYieldRewards = (
       if (actionTimestamp < minTimestamp || actionTimestamp > maxTimestamp) {
         return acc;
       }
+
       const actionRewards = getRewardsBetweenMidnights({
-        midnightInfoNow: formatMidnightInfo(entryMidnightInfo),
-        midnightInfoThen: midnightInfo,
-        shares: formatStringToNumber(action.amount, 18),
+        midnightInfoNow: midnightInfo,
+        midnightInfoThen: formatMidnightInfo(entryMidnightInfo),
+        shares: formatStringToNumber(action.amount, decimals),
         yieldType,
         token: tokenInfo.id,
       });
@@ -324,7 +343,7 @@ const computeK2LockAccumulatedRewards = ({
     tmpKvcmRewards += getRewardsBetweenMidnights({
       midnightInfoNow: endMidnightInfo,
       midnightInfoThen: formatMidnightInfo(lock.k2WindowStartMidnightInfo),
-      shares: formatStringToNumber(lock.k2SharesAtClaimed, 18),
+      shares: formatStringToNumber(lock.k2SharesAtClaimed, tokens.k2.decimals),
       yieldType: YieldType.RISKY,
       token: 'k2',
     });
@@ -404,20 +423,22 @@ export const mapK2Lock = ({
     ? lock.k2SharesAtUnlockRequest
     : lock.k2SharesAtClaimed;
 
-  const endMidnightInfo = latestMidnightInfo;
   const { tmpK2Rewards, tmpKvcmRewards } = computeK2LockAccumulatedRewards({
     lock,
-    shares: formatStringToNumber(startShares, 18),
-    endMidnightInfo,
+    shares: formatStringToNumber(startShares, tokens.k2.decimals),
+    endMidnightInfo: latestMidnightInfo,
     startTimestamp: startAccruingRewardsTimestamp,
     endTimestamp: Number.MAX_SAFE_INTEGER,
   });
   k2AccruingRewards = tmpK2Rewards;
   kvcmAccruingRewards = tmpKvcmRewards;
 
-  // Compute claimable yield
-  if (isClaimable && lock.k2WindowEndMidnightInfo) {
-    const endMidnightInfo = formatMidnightInfo(lock.k2WindowEndMidnightInfo);
+  // Compute claimable rewards
+  if (isClaimable) {
+    const endMidnightInfo = lock.k2WindowEndMidnightInfo?.keeperUpdated
+      ? formatMidnightInfo(lock.k2WindowEndMidnightInfo)
+      : latestMidnightInfo;
+
     const endMidnightIndex = endMidnightInfo.midnightIndex;
     const startMidnightIndex = formatStringToNumber(
       lock.k2WindowStartMidnightInfo?.midnightIndex ?? 0n,
@@ -433,7 +454,10 @@ export const mapK2Lock = ({
 
     const { tmpK2Rewards, tmpKvcmRewards } = computeK2LockAccumulatedRewards({
       lock,
-      shares: formatStringToNumber(lock.k2SharesAtUnlockRequest, 18),
+      shares: formatStringToNumber(
+        lock.k2SharesAtUnlockRequest,
+        tokens.k2.decimals
+      ),
       endMidnightInfo,
       startTimestamp: startClaimableRewardsTimestamp,
       endTimestamp: endClaimableRewardsTimestamp,

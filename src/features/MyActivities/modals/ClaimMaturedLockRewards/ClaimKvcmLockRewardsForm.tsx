@@ -1,5 +1,6 @@
 'use client';
 
+import { tokens } from '@/shared/constants/tokens.constants';
 import { useTransactionAndWaitForWalletUpdate } from '@/shared/hooks/useTransactionAndWaitForWalletUpdate';
 import { useChainId } from '@/shared/hooks/web3/useChainId';
 import { useContract, useContractInfo } from '@/shared/hooks/web3/useContract';
@@ -40,7 +41,7 @@ const ClaimKvcmLockRewardsForm = ({ lock }: Props) => {
   });
 
   const kvcmAmount = isNonNullish(kvcmAmountWei)
-    ? formatStringToNumber(kvcmAmountWei, 18)
+    ? formatStringToNumber(kvcmAmountWei, tokens.kvcm.decimals)
     : undefined;
 
   // K2 amount

@@ -154,7 +154,7 @@ export const useStakeLpToken = (params: {
           throw new Error('Failed to approve LP token');
         }
       }
-      console.log('Staking LP token:', finalLpAddress, maturityId, amount);
+
       const executeTransaction = () =>
         stakingContract.write.stakeLP([finalLpAddress, maturityId, amount], {
           chain,
