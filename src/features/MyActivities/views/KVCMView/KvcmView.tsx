@@ -77,7 +77,10 @@ const KvcmOverview = () => {
               <StatusCardTitle badge="green">Ready to unlock</StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
-                  {formatAmountWithCommas(kvcmData.kvcmClaimableAmount)} kVCM
+                  {formatAmountWithCommas(
+                    kvcmData.claimableRewardsPlusPrincipalAmount
+                  )}{' '}
+                  kVCM
                 </div>
               </div>
               {kvcmData.kvcmClaimableValue > 0 && (

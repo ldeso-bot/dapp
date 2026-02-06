@@ -258,6 +258,7 @@ export const mapKvcmOrLpLock = ({
       k2: k2AccruingRewards,
     },
     isClaimable,
+    isPendingUnlock: false,
     canRequestUnlock: isClaimable,
     lockedUntil,
     status,
@@ -354,6 +355,8 @@ export const mapK2Lock = ({
   // A K2 lock is claimable if an unlock request has been made and the request unlock timestamp has been reached
   const isMatured = requestUnlockTimestamp > 0 && now > requestUnlockTimestamp;
   const isClaimable = isMatured;
+  const isPendingUnlock =
+    requestUnlockTimestamp > 0 && now < requestUnlockTimestamp;
   const lockedUntil = requestUnlockTimestamp;
   const created = formatStringToNumber(lock.lockActions[0]?.timestamp, 0) ?? 0;
 
@@ -473,6 +476,7 @@ export const mapK2Lock = ({
       k2: k2AccruingRewards,
     },
     isClaimable,
+    isPendingUnlock,
     lockedUntil,
     status,
     earningStatus,

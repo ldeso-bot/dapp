@@ -54,6 +54,10 @@ interface TokenHoldingsData {
   claimableValue: number;
   positionAmount: number;
   positionValue: number;
+  claimableRewardsPlusPrincipalAmount: number;
+  claimableRewardsPlusPrincipalValue: number;
+  pendingRewardsPlusPrincipalAmount: number;
+  pendingRewardsPlusPrincipalValue: number;
   balanceValue: number;
 }
 
@@ -75,6 +79,8 @@ export type AggregatedHoldingsData = {
   claimableValue: number;
   portfolioValue: number;
 };
+
+const isKVCMOrK2 = (token: LockableToken) => token === 'kvcm' || token === 'k2';
 
 const computeLockRewards = ({
   locks,
@@ -110,6 +116,31 @@ const computeLockRewards = ({
   const kvcmAccruingClaimableAmount = sumBy(
     locks,
     (lock) => lock.accruingRewards.kvcm
+  );
+
+  const claimableRewardsPlusPrincipalAmount = sumBy(locks, (lock) => {
+    if (!lock.isClaimable) return 0;
+    let res = lock.lockedAmount;
+    if (isKVCMOrK2(lock.token)) {
+      res += lock.claimableRewards[lock.token];
+    }
+    return res;
+  });
+
+  const claimableRewardsPlusPrincipalValue = computeValueUSD(
+    claimableRewardsPlusPrincipalAmount
+  );
+
+  const pendingRewardsPlusPrincipalAmount = sumBy(locks, (lock) => {
+    if (!lock.isPendingUnlock) return 0;
+    let res = lock.lockedAmount;
+    if (isKVCMOrK2(lock.token)) {
+      res += lock.accruingRewards[lock.token];
+    }
+    return res;
+  });
+  const pendingRewardsPlusPrincipalValue = computeValueUSD(
+    pendingRewardsPlusPrincipalAmount
   );
 
   // Accruing claimable values
@@ -184,6 +215,10 @@ const computeLockRewards = ({
     claimableValue,
     positionAmount,
     positionValue,
+    claimableRewardsPlusPrincipalValue,
+    pendingRewardsPlusPrincipalValue,
+    claimableRewardsPlusPrincipalAmount,
+    pendingRewardsPlusPrincipalAmount,
   };
 };
 
@@ -218,9 +253,7 @@ export function useTokenHoldingsData(
         lockedTokenBalance: walletData.balances[token],
       });
 
-      return {
-        ...rewards,
-      };
+      return rewards;
     },
   });
 }

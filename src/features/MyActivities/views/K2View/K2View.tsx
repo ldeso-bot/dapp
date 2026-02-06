@@ -87,7 +87,10 @@ const K2Overview = () => {
                 <StatusCardTitle badge="green">Claimable</StatusCardTitle>
                 <div className="space-y-1">
                   <div className="text-size-18 font-bold text-gray-900 tabular-nums">
-                    {formatAmountWithCommas(k2Data.k2AccruedClaimableAmount)} K2
+                    {formatAmountWithCommas(
+                      k2Data?.claimableRewardsPlusPrincipalAmount
+                    )}{' '}
+                    K2
                   </div>
                 </div>
               </div>
@@ -114,7 +117,10 @@ const K2Overview = () => {
               <StatusCardTitle badge="yellow">Pending</StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
-                  {formatAmountWithCommas(k2Data.k2AccruingClaimableAmount)} K2
+                  {formatAmountWithCommas(
+                    k2Data.pendingRewardsPlusPrincipalAmount
+                  )}{' '}
+                  K2
                 </div>
               </div>
             </>

@@ -56,7 +56,9 @@ export const LiquidityPositionStatus = ({
               </StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
-                  {formatAmountWithCommas(tokenData.accruedClaimableValue)}
+                  {formatAmountWithCommas(
+                    tokenData.claimableRewardsPlusPrincipalAmount
+                  )}
                 </div>
                 <div className="text-size-14 text-gray-500 tabular-nums">
                   {tokenData.maturedLocks.length > 0 ? (
