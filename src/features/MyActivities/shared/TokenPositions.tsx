@@ -102,7 +102,7 @@ const PositionCard: FC<PositionCardProps> = ({ lock }) => {
         <div className="flex flex-col gap-3 col-span-3">
           <div className="flex flex-col gap-1">
             <div className="text-size-12 text-gray-500 font-[400]">
-              Principal
+              Original amount locked
             </div>
             <div className="text-size-16 text-gray-900 font-bold">
               {formatAmountWithCommas(lock.lockedAmount)}{' '}

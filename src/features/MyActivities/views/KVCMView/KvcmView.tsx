@@ -13,7 +13,6 @@ import { useNextMaturity } from '@/shared/hooks/useNextMaturity';
 import Plus from '@/shared/images/plus.svg';
 import {
   formatAmountWithCommas,
-  formatPriceUSDWithCommas,
   formatTimestamp,
 } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
@@ -83,21 +82,13 @@ const KvcmOverview = () => {
                   kVCM
                 </div>
               </div>
-              {kvcmData.kvcmClaimableValue > 0 && (
-                <button
-                  onClick={() => setTokenLocksOpen(true)}
-                  className="cursor-pointer mt-3 text-size-14 text-gray-900 hover:text-gray-700 underline underline-offset-2 font-medium"
-                >
-                  Claim locks
-                </button>
-              )}
             </>
           )}
         </StatusCard>
         <StatusCard>
           {kvcmData && (
             <>
-              <StatusCardTitle badge="yellow">Unlockable on</StatusCardTitle>
+              <StatusCardTitle badge="yellow">Next unlock on</StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900">
                   {formatTimestamp(nextMaturityDate * 1000)}
@@ -112,14 +103,13 @@ const KvcmOverview = () => {
         <StatusCard>
           {kvcmData && (
             <>
-              <StatusCardTitle badge="gray">Tokens locked</StatusCardTitle>
+              <StatusCardTitle badge="gray">
+                Original amount locked
+              </StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
                   {formatAmountWithCommas(kvcmData.lockedAmount)} kVCM
                 </div>
-                <span className="text-size-16 text-void-80 w-full">
-                  {formatPriceUSDWithCommas(kvcmData.lockedValue)}
-                </span>
                 <div className="text-size-14 text-gray-500 mt-2 space-y-0.5">
                   <div>
                     <Link
