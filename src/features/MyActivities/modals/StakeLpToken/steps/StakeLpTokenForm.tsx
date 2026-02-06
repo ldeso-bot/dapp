@@ -76,6 +76,7 @@ export const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({
     }
   }, [duration, maturity, form]);
 
+  console.log('decimals', tokenInfo.decimals);
   const amountWei = isValidAmount
     ? parseUnits(String(amount), tokenInfo.decimals)
     : 0n;

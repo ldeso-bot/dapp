@@ -57,7 +57,8 @@ export const LiquidityPositionStatus = ({
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
                   {formatAmountWithCommas(
-                    tokenData.claimableRewardsPlusPrincipalAmount
+                    tokenData.claimableRewardsPlusPrincipalAmount,
+                    'auto'
                   )}
                 </div>
                 <div className="text-size-14 text-gray-500 tabular-nums">
@@ -92,7 +93,7 @@ export const LiquidityPositionStatus = ({
               </StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900">
-                  {formatAmountWithCommas(tokenData.lockedAmount)}
+                  {formatAmountWithCommas(tokenData.lockedAmount, 'auto')}
                 </div>
                 {earliestUnlockTimestamp && (
                   <div className="text-size-14 text-gray-500">
@@ -115,7 +116,7 @@ export const LiquidityPositionStatus = ({
               </StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
-                  {formatAmountWithCommas(tokenData.balanceValue)}
+                  {formatAmountWithCommas(tokenData.balanceAmount)}
                 </div>
                 <div className="text-size-14 text-gray-500 tabular-nums">
                   {tokenSymbol}

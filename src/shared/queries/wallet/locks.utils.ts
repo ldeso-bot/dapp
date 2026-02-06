@@ -196,6 +196,7 @@ export const mapKvcmOrLpLock = ({
         midnightInfo,
         YieldType.K2
       );
+
       k2YieldApyPercent = midnightInfo.k2ApyFor[tokenInfo.id];
     }
     // Risky yield

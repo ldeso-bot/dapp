@@ -105,7 +105,7 @@ const PositionCard: FC<PositionCardProps> = ({ lock }) => {
               Original amount locked
             </div>
             <div className="text-size-16 text-gray-900 font-bold">
-              {formatAmountWithCommas(lock.lockedAmount)}{' '}
+              {formatAmountWithCommas(lock.lockedAmount, 'auto')}{' '}
               {getTokenSymbol(lock.token)}
             </div>
             <div className="text-size-14 text-gray-900 font-[400]">
@@ -136,7 +136,7 @@ const PositionCard: FC<PositionCardProps> = ({ lock }) => {
               Base
             </div>
             <div className="text-size-14 text-gray-900 font-[400]">
-              {formatAmountWithCommas(baseRewardAmount)}{' '}
+              {formatAmountWithCommas(baseRewardAmount, 'auto')}{' '}
               {getTokenSymbol('kvcm')} at {formatPercentage(baseApy)}
             </div>
           </div>
@@ -147,7 +147,7 @@ const PositionCard: FC<PositionCardProps> = ({ lock }) => {
               K2
             </div>
             <div className="text-size-14 text-gray-900 font-[400]">
-              {formatAmountWithCommas(k2RewardAmount)} K2 at{' '}
+              {formatAmountWithCommas(k2RewardAmount, 'auto')} K2 at{' '}
               {formatPercentage(lock.k2YieldApyPercent)}
             </div>
           </div>

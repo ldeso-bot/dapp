@@ -208,11 +208,15 @@ const K2VariableRewards = () => {
             <VariableRewardsItemContent>
               <div className="flex flex-1 flex-col">
                 <span className="text-gray-900 font-medium">
-                  {formatAmountWithCommas(k2Data.k2ClaimableAmount)} K2
+                  {formatAmountWithCommas(k2Data.k2ClaimableAmount, 'auto')} K2
                 </span>
                 <span className="text-size-12 text-gray-500">
                   Accrued to date:{' '}
-                  {formatAmountWithCommas(k2Data.k2AccruedClaimableAmount)} K2
+                  {formatAmountWithCommas(
+                    k2Data.k2AccruedClaimableAmount,
+                    'auto'
+                  )}{' '}
+                  K2
                 </span>
               </div>
             </VariableRewardsItemContent>
@@ -225,12 +229,14 @@ const K2VariableRewards = () => {
             <VariableRewardsItemContent>
               <div className="flex flex-1 flex-col">
                 <span className="text-gray-900 font-medium">
-                  {formatAmountWithCommas(k2Data.kvcmClaimableAmount)} kVCM
+                  {formatAmountWithCommas(k2Data.kvcmClaimableAmount, 'auto')}{' '}
+                  kVCM
                 </span>
                 <span className="text-size-12 text-gray-500">
                   Accrued to date:{' '}
                   {formatAmountWithCommas(
-                    k2Data.kvcmAccruedClaimableAmount
+                    k2Data.kvcmAccruedClaimableAmount,
+                    'auto'
                   )}{' '}
                 </span>
               </div>

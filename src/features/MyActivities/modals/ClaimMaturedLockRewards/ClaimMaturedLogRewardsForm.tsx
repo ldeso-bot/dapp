@@ -86,20 +86,22 @@ const ClaimMaturedLogRewardsForm = ({
                   <div className="flex flex-row justify-between">
                     <span>Principal</span>
                     <span>
-                      {formatAmountWithCommas(lock.lockedAmount)}{' '}
+                      {formatAmountWithCommas(lock.lockedAmount, 'auto')}{' '}
                       {getTokenSymbol(lock.token)}
                     </span>
                   </div>
                   <div className="flex flex-row justify-between">
                     <span>Base Accrual</span>
-                    <span>+ {formatAmountWithCommas(kvcmAmount, 2)} KVCM</span>
+                    <span>
+                      + {formatAmountWithCommas(kvcmAmount, 'auto')} KVCM
+                    </span>
                   </div>
                   <div className="flex flex-row justify-between font-bold">
                     <span>Total</span>
                     <span>
                       {formatAmountWithCommas(
                         lock.lockedAmount + kvcmAmount,
-                        2
+                        'auto'
                       )}{' '}
                       KVCM
                     </span>
@@ -109,7 +111,7 @@ const ClaimMaturedLogRewardsForm = ({
                   <div className="flex flex-row justify-between">
                     <span>K2 incentives</span>
                     <span className="font-bold">
-                      + {formatAmountWithCommas(k2Amount, 2)} K2
+                      + {formatAmountWithCommas(k2Amount, 'auto')} K2
                     </span>
                   </div>
                 </div>

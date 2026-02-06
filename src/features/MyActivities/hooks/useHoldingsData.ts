@@ -59,6 +59,7 @@ interface TokenHoldingsData {
   pendingRewardsPlusPrincipalAmount: number;
   pendingRewardsPlusPrincipalValue: number;
   balanceValue: number;
+  balanceAmount: number;
 }
 
 export type AggregatedHoldingsData = {
@@ -103,6 +104,7 @@ const computeLockRewards = ({
   const lockedAmount = sumBy(locks, (lock) => lock.lockedAmount);
 
   // Balance
+  const balanceAmount = lockedTokenBalance;
   const balanceValue = computeValueUSD(lockedTokenBalance);
 
   // Locked value
@@ -191,6 +193,7 @@ const computeLockRewards = ({
   const positionValue = computeValueUSD(positionAmount);
 
   return {
+    balanceAmount,
     balanceValue,
     locks,
     activeLocks,

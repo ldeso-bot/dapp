@@ -27,7 +27,7 @@ export type SubgraphTokenSymbol =
  * This is not really important as long that it is consistent across liquidity values
  * It helps to display the liquidity values nicely though...
  */
-export const AERODROME_LIQUIDITY_DECIMALS = 12;
+export const AERODROME_LIQUIDITY_DECIMALS = 18;
 
 export type TokenInfo = {
   id: Token;
