@@ -91,7 +91,7 @@ const PositionCard: FC<PositionCardProps> = ({ lock }) => {
             isMatured ? 'bg-green-10 text-green-80' : 'bg-void-10 text-void-80'
           )}
         >
-          {isMatured ? 'Ready to unlock' : 'Locked'}{' '}
+          {isMatured ? 'Ready to unlock' : 'Unlocks on'}{' '}
         </div>
         <span className="text-12 text-gray-600">
           {formatTimestamp(lock.lockedUntil * 1000, 'short')}
