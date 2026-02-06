@@ -76,7 +76,6 @@ export const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({
     }
   }, [duration, maturity, form]);
 
-  console.log('decimals', tokenInfo.decimals);
   const amountWei = isValidAmount
     ? parseUnits(String(amount), tokenInfo.decimals)
     : 0n;
@@ -106,7 +105,7 @@ export const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({
 
     const result = await handleTransaction(stake, {
       successTitle: 'Stake LP Successful',
-      successDescription: `You've successfully staked ${formatAmountWithCommas(Number(amount) || 0)} ${lpTokenDisplayName} LP! You can manage your positions in the "My Activities" dashboard.`,
+      successDescription: `You've successfully staked ${formatAmountWithCommas(Number(amount) || 0, 'auto')} ${lpTokenDisplayName} LP! You can manage your positions in the "My Activities" dashboard.`,
       errorDescription:
         'Something went wrong and your stake was not successful.',
       onSuccess: async () => {
@@ -135,6 +134,7 @@ export const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({
                 iconSize="md"
                 iconSrc={tokens[typedToken].iconSrc}
                 {...form.register('amount')}
+                step={10 ** -tokenInfo.decimals}
                 error={formState.errors.amount}
               />
               <Button
@@ -147,7 +147,7 @@ export const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({
               </Button>
             </div>
             <span className="text-size-12 text-gray-500">
-              Balance: {formatAmountWithCommas(Number(tokenBalance))}{' '}
+              Balance: {formatAmountWithCommas(Number(tokenBalance), 'auto')}{' '}
               {tokenInfo.symbol}
             </span>
           </div>

@@ -58,8 +58,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
 
   const isValidAmount = !!(amount && amount > 0);
   const availableBalance = Number(walletData?.balances?.[typedToken] ?? 0);
-  const exceedsBalance =
-    isValidAmount && Number(amount) > availableBalance;
+  const exceedsBalance = isValidAmount && Number(amount) > availableBalance;
   const balanceErrorMessage = exceedsBalance
     ? 'You cannot add more than your available balance.'
     : null;
@@ -119,6 +118,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
             iconSize="sm"
             iconSrc={tokens[typedToken].iconSrc}
             {...form.register('amount')}
+            step={10 ** -tokenInfo.decimals}
             error={
               formState.errors.amount ||
               (balanceErrorMessage

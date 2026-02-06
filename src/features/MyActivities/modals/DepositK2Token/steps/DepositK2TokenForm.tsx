@@ -112,6 +112,7 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
                 iconSize="sm"
                 iconSrc={tokenInfo.iconSrc}
                 {...form.register('amount')}
+                step={10 ** -tokenInfo.decimals}
                 error={formState.errors.amount}
               />
               <Button

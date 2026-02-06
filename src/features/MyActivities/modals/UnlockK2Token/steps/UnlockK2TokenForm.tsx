@@ -45,7 +45,7 @@ const UnlockK2TokenForm: FormFlowStep<UnlockTokenFields> = ({ next, data }) => {
               ...form.register('amount'),
               max: lock.lockedAmount,
               min: 0,
-              step: 0.001,
+              step: 10 ** -tokens.k2.decimals,
             }}
             availableBalance={lock.lockedAmount}
           />
