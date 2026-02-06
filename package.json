@@ -13,6 +13,7 @@
     "pools:show": "tsx src/scripts/showKlimaPools.ts"
   },
   "dependencies": {
+    "@formo/analytics": "^1.27.0",
     "@hookform/resolvers": "^5.1.1",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-dialog": "^1.1.14",

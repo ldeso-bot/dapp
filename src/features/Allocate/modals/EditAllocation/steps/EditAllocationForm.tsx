@@ -14,10 +14,14 @@ import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { formatDateDDMMYYYY } from '@/shared/utils/date.utils';
+import { useFormo } from '@formo/analytics';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { EditAllocationFields, editAllocationDialogAtom } from '../editAllocation.utils';
+import {
+  EditAllocationFields,
+  editAllocationDialogAtom,
+} from '../editAllocation.utils';
 import { useEditAllocationChangeNotification } from '../hooks/useEditAllocationChangeNotification';
 import { useEditAllocationValidation } from '../hooks/useEditAllocationValidation';
 import {
@@ -34,14 +38,17 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
 
   const setAlert = useSetAtom(alertAtom);
   const editAllocationDialogState = useAtomValue(editAllocationDialogAtom);
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const allocation = editAllocationDialogState.allocation;
   const originalAmount = Number(allocation?.amount ?? 0);
 
   const watchedAmount = watch('amount');
-  const newAmount = watchedAmount != null && !isNaN(Number(watchedAmount)) ? Number(watchedAmount) : originalAmount;
+  const newAmount =
+    watchedAmount != null && !isNaN(Number(watchedAmount))
+      ? Number(watchedAmount)
+      : originalAmount;
 
   const { errorMessage, availableKvcm, maxK2ForThisAllocation, isKvcm, isK2 } =
     useEditAllocationValidation({
@@ -56,14 +63,20 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
       newAmount,
       originalAmount,
     });
-  
+
   const lockInfo =
     isKvcm && allocation?.lockedUntil
       ? `Matures: ${formatDateDDMMYYYY(allocation.lockedUntil)}`
       : null;
 
+  const analytics = useFormo();
   const onSubmit = async (formData: EditAllocationFields) => {
-
+    if (analytics) {
+      analytics.track('edit_allocation', {
+        allocationId: allocation?.id,
+        amount: formData.amount,
+      });
+    }
     if (!allocation) {
       setError('root', {
         type: 'manual',
@@ -108,7 +121,10 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
       router.push(ROUTES.ALLOCATE);
     } catch (error) {
       console.error('Edit allocation error:', error);
-      setError('root', { type: 'manual', message: 'An unexpected error occurred' });
+      setError('root', {
+        type: 'manual',
+        message: 'An unexpected error occurred',
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -166,8 +182,7 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
             )}
             {isK2 && (
               <small className="text-size-12 text-gray-500">
-                Available:{' '}
-                {maxK2ForThisAllocation.toLocaleString()} K2
+                Available: {maxK2ForThisAllocation.toLocaleString()} K2
               </small>
             )}
           </div>
@@ -202,7 +217,11 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
             colors="secondary"
             context="flow"
             type="submit"
-            disabled={isSubmitting || !!errorMessage || (changeNotification === 'The allocation amount has not changed.')}
+            disabled={
+              isSubmitting ||
+              !!errorMessage ||
+              changeNotification === 'The allocation amount has not changed.'
+            }
           >
             {isSubmitting ? 'Submitting...' : 'Save Allocation'}
           </Button>

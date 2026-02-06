@@ -1,6 +1,7 @@
 import Alert from '@/features/Alert/Alert';
 import { DisclaimerModal } from '@/shared/components/Disclaimer/Disclaimer';
 import Footer from '@/shared/components/Footer/Footer';
+import { FormoTracker } from '@/shared/components/FormoTracker/FormoTracker';
 import DesktopNavBar from '@/shared/components/NavBar/DesktopNavBar';
 import MobileNavBar from '@/shared/components/NavBar/MobileNavBar';
 import { WALLET_CONNECTION_HISTORY_COOKIE } from '@/shared/constants/storage.constants';
@@ -45,6 +46,7 @@ export default async function RootLayout({
           <WalletConnectionHistoryProvider
             hasPreviouslyConnected={hasPreviouslyConnected}
           >
+            <FormoTracker />
             <div className="flex flex-col lg:flex-row">
               <DesktopNavBar />
               <MobileNavBar />
