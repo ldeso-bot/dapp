@@ -17,7 +17,6 @@ import {
 } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
 import Link from 'next/link';
-import { useState } from 'react';
 import { useAccount } from 'wagmi';
 import { useTokenHoldingsData } from '../../hooks/useHoldingsData';
 import { lockTokenDialogAtom } from '../../modals/LockToken/lockToken.utils';
@@ -58,7 +57,6 @@ export const KvcmView = () => {
 };
 
 const KvcmOverview = () => {
-  const [tokenLocksOpen, setTokenLocksOpen] = useState(true);
   const { timestamp: nextMaturityDate, daysFromNow: nextMaturityInDays } =
     useNextMaturity();
   const { data: kvcmData } = useTokenHoldingsData('kvcm');
@@ -141,10 +139,8 @@ const KvcmOverview = () => {
         )}
       </div>
       <TokenPositions
-        isOpen={tokenLocksOpen}
-        onOpenChange={setTokenLocksOpen}
         token="kvcm"
-        accordionLabel="locks"
+        rewardsTooltipContent="Base accrual and K2 incentives accrue while your kVCM is locked. Both are claimable when your tokens unlock. Percent represents current incentive rate."
       />
     </>
   );

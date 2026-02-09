@@ -9,7 +9,6 @@ import { formatDurationFromTimestamp } from '@/shared/utils/date.utils';
 import { formatAmountWithCommas } from '@/shared/utils/string.utils';
 import { getTokenSymbol } from '@/shared/utils/token.utils';
 import { useSetAtom } from 'jotai';
-import { useState } from 'react';
 import { useHoldingsData } from '../../hooks/useHoldingsData';
 import { stakeLpTokenDialogAtom } from '../../modals/StakeLpToken/stakeLpToken.utils';
 
@@ -20,7 +19,6 @@ interface LiquidityPositionStatusProps {
 export const LiquidityPositionStatus = ({
   token,
 }: LiquidityPositionStatusProps) => {
-  const [tokenLotsOpen, setTokenLotsOpen] = useState(false);
   const { data: holdingsData } = useHoldingsData();
   const setStakeLpTokenDialog = useSetAtom(stakeLpTokenDialogAtom);
 
@@ -33,8 +31,6 @@ export const LiquidityPositionStatus = ({
     tokenData && tokenData.activeLocks.length > 0
       ? Math.min(...tokenData.activeLocks.map((lock) => lock.lockedUntil))
       : undefined;
-
-  const handleOpenTokenLots = () => setTokenLotsOpen((prevOpen) => !prevOpen);
 
   const handleOpenStakeDialog = () =>
     setStakeLpTokenDialog({
@@ -50,10 +46,11 @@ export const LiquidityPositionStatus = ({
             <>
               <StatusCardTitle
                 badge="green"
-                tooltip="Liquidity lots which reached their terms' end and can be unstaked. Incentives are claimable."
+                tooltip="Liquidity locks which reached their terms' end and can be unstaked. Incentives are claimable."
               >
                 Claimable
               </StatusCardTitle>
+
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
                   {formatAmountWithCommas(
@@ -61,33 +58,27 @@ export const LiquidityPositionStatus = ({
                     'auto'
                   )}
                 </div>
+
                 <div className="text-size-14 text-gray-500 tabular-nums">
                   {tokenData.maturedLocks.length > 0 ? (
                     <>
-                      {tokenSymbol} • {tokenData.maturedLocks.length} lots
+                      {tokenSymbol} • {tokenData.maturedLocks.length} locks
                     </>
                   ) : (
-                    'No claimable lots'
+                    'No claimable locks'
                   )}
                 </div>
               </div>
-              {tokenData.maturedLocks.length > 0 && (
-                <button
-                  onClick={handleOpenTokenLots}
-                  className="cursor-pointer mt-6 text-size-14 text-gray-900 hover:text-gray-700 underline underline-offset-2 font-medium"
-                >
-                  Claim/unstake lots
-                </button>
-              )}
             </>
           )}
         </StatusCard>
+
         <StatusCard>
           {tokenData && (
             <>
               <StatusCardTitle
                 badge="yellow"
-                tooltip="Locked lots which are accruing incentives. Cannot be unstaked early."
+                tooltip="Locks which are accruing incentives. Cannot be unstaked early."
               >
                 Locked Liquidity
               </StatusCardTitle>
@@ -135,9 +126,8 @@ export const LiquidityPositionStatus = ({
       <div className="flex flex-col gap-2 my-4 mx-auto max-w-[60%]"></div>
       {tokenData && tokenData.locks.length > 0 && (
         <TokenPositions
-          isOpen={tokenLotsOpen}
-          onOpenChange={setTokenLotsOpen}
           token={token}
+          rewardsTooltipContent="Incentives received from your locked liquidity tokens. These incentives depend on protocol parameters, are variable, non-guaranteed, and may be zero. Both are claimable at the end of the lock period. Percent represents current incentive rate."
         />
       )}
     </div>

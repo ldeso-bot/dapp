@@ -19,8 +19,8 @@ export const InfoCardTooltips = {
       </div>
       <div>
         <strong>Claiming.</strong> Locked tokens plus any received kVCM
-        incentives become claimable after the lock&apos;s duration ends. Variable K2
-        incentives can be claimed anytime.
+        incentives become claimable after the lock&apos;s duration ends.
+        Variable K2 incentives can be claimed anytime.
       </div>
     </div>
   ),
@@ -58,13 +58,13 @@ export const InfoCardTooltips = {
   'liquidity-positions': () => (
     <div className="space-y-3">
       <div>
-        <strong>Lots per pool.</strong> Deposit liquidity on Aerodrome, then{' '}
-        <i>Stake in Klima</i>. Each stake becomes a <i>lot</i> with a standard
+        <strong>Locks per pool.</strong> Deposit liquidity on Aerodrome, then{' '}
+        <i>Stake in Klima</i>. Each stake becomes a <i>lock</i> with a standard
         duration.
       </div>
       <div>
         <strong>Liquidity unlocks.</strong> Liquidity staked in Klima Protocol
-        cannot be unlocked early. Rewards unlock and are claimable after a lot
+        cannot be unlocked early. Rewards unlock and are claimable after a lock
         has reached the end of its duration.
       </div>
       <div>

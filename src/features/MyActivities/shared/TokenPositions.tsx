@@ -22,10 +22,13 @@ type TokenPositionsProps = {
   isOpen?: boolean;
   token: Token;
   onOpenChange?: (isOpen: boolean) => void;
-  accordionLabel?: 'lots' | 'locks';
+  rewardsTooltipContent: string;
 };
 
-export const TokenPositions: FC<TokenPositionsProps> = ({ token }) => {
+export const TokenPositions: FC<TokenPositionsProps> = ({
+  token,
+  rewardsTooltipContent,
+}) => {
   const { data } = useWalletData();
 
   const locks =
@@ -43,7 +46,11 @@ export const TokenPositions: FC<TokenPositionsProps> = ({ token }) => {
       <div className="text-size-14">
         <div className="flex flex-col gap-3">
           {locks.map((lock) => (
-            <PositionCard key={lock.id} lock={lock} />
+            <PositionCard
+              key={lock.id}
+              lock={lock}
+              rewardsTooltipContent={rewardsTooltipContent}
+            />
           ))}
         </div>
       </div>
@@ -53,9 +60,13 @@ export const TokenPositions: FC<TokenPositionsProps> = ({ token }) => {
 
 type PositionCardProps = {
   lock: Lock;
+  rewardsTooltipContent: string;
 };
 
-const PositionCard: FC<PositionCardProps> = ({ lock }) => {
+const PositionCard: FC<PositionCardProps> = ({
+  lock,
+  rewardsTooltipContent,
+}) => {
   const setTopupLockDialog = useSetAtom(topupLockDialogAtom);
   const setDepositK2TokenDialog = useSetAtom(depositK2TokenDialogAtom);
   const setClaimMaturedLockRewardsDialog = useSetAtom(
@@ -97,6 +108,7 @@ const PositionCard: FC<PositionCardProps> = ({ lock }) => {
           {formatTimestamp(lock.lockedUntil * 1000, 'short')}
         </span>
       </div>
+
       <div className="grid grid-cols-8 gap-2 px-2 py-2 border-void-20 border-x-1 border-b-1 rounded-b-xl">
         {/* Left side - Principal */}
         <div className="flex flex-col gap-3 col-span-3">
@@ -124,16 +136,17 @@ const PositionCard: FC<PositionCardProps> = ({ lock }) => {
             >
               {isMatured ? 'Rewards' : 'Rewards (accruing)'}
             </div>
+
             <Tooltip
               className="max-w-[30rem] text-size-12 p-3"
-              content="Base accrual and K2 incentives accrue while your kVCM is locked. Both are claimable when your tokens unlock. Percent represents current incentive rate."
+              content={rewardsTooltipContent}
             />
           </div>
 
           {/* Base Reward */}
           <div className="flex items-center gap-2">
             <div className="bg-gray-100 text-gray-800 py-1 px-2 rounded-full text-size-12 font-medium">
-              Base
+              kVCM
             </div>
             <div className="text-size-14 text-gray-900 font-[400]">
               {formatAmountWithCommas(baseRewardAmount, 'auto')}{' '}
@@ -152,6 +165,7 @@ const PositionCard: FC<PositionCardProps> = ({ lock }) => {
             </div>
           </div>
         </div>
+
         {/* Action Buttons */}
         <div className="flex items-center gap-2 col-span-2 flex-row-reverse">
           {isMaturing && (

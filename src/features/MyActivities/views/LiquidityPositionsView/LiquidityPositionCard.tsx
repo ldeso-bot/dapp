@@ -8,7 +8,6 @@ import {
 import ExternalLink from '@/shared/images/external_link.svg';
 import Plus from '@/shared/images/plus.svg';
 import { getTokenIcon, getTokenSymbol } from '@/shared/utils/token.utils';
-import { LiquidityPositionRewards } from './LiquidityPositionRewards';
 import { LiquidityPositionStatus } from './LiquidityPositionStatus';
 
 interface LiquidityPositionCardProps {
@@ -46,7 +45,6 @@ export const LiquidityPositionCard = ({
         </Button>
       </div>
       <LiquidityPositionStatus token={token} />
-      <LiquidityPositionRewards token={token} />
     </div>
   );
 };

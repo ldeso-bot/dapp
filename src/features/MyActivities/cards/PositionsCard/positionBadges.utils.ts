@@ -51,7 +51,7 @@ const createLiquidityActionBadges = (props: AggregatedHoldingsData) => {
   } = props;
 
   return createActionBadges({
-    unitLabel: 'lots',
+    unitLabel: 'locks',
     view: 'liquidity',
     maturedCount: liquidityMaturedLocks.length,
     claimableValue: claimableValueFromLiquidity,
