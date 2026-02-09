@@ -28,7 +28,7 @@ export const K2Incentives: FC<K2IncentivesProps> = (props) => {
         >
           <div className="flex items-center gap-2">
             <div className="text-size-14 text-gray-900 font-[400]">
-              K2 Incentives (Variable)
+              K2 incentives (variable)
             </div>
           </div>
         </AccordionTrigger>
@@ -38,8 +38,8 @@ export const K2Incentives: FC<K2IncentivesProps> = (props) => {
               ~ {k2Incentives} K2 / kVCM / epoch
             </div>
             <p className="text-size-12 text-gray-500">
-              K2 Incentives earned by your time-locked kVCM. K2 amounts are
-              variable and may change, including to 0.
+              Indicative rate of K2 incentives earned by your time-locked kVCM.
+              These amounts are are variable, non-guaranteed, and may be zero.
             </p>
           </div>
         </AccordionContent>

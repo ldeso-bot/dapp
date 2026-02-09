@@ -101,7 +101,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
     <Card className="rounded-lg px-6 py-4 overflow-y-auto w-[42rem]">
       <DialogHeader showCloseButton title="Top up lock" onClose={reset} />
       <p className="text-size-14 text-gray-500">
-        Keep this maturity; new amount accrues from now.
+        Lock duration will stay unchanged.
       </p>
       <Form className="gap-4" onSubmit={handleSubmit(onSubmit)}>
         <StatsCard

@@ -30,7 +30,7 @@ export const StatsCard: FC<StatsCardProps> = (props) => {
       <div className="flex flex-row gap-2 items-start justify-between">
         <div className="flex flex-col gap-0">
           <div className="text-size-12 font-medium text-gray-600 uppercase">
-            Maturity
+            Duration
           </div>
           <p className="text-size-16 font-semibold text-gray-800">
             {maturityDate

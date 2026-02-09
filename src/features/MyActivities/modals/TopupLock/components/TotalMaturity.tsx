@@ -18,14 +18,21 @@ export const TotalMaturity: FC<TotalMaturityProps> = (props) => {
       <div className="flex flex-row gap-2 items-start justify-between">
         <div className="flex flex-col gap-2">
           <div className="text-size-14 font-medium text-gray-800">
-            Your total at maturity (this lock)
+            New amount of staked tokens
           </div>
-          <p className="text-size-12 text-gray-500">
-            Existing (projected) ~ {formatAmountWithCommas(currentLockAmount, 0)}{' '}
-            + Top-up base ~ {formatAmountWithCommas(topUpAmount, 0)}
-          </p>
+          <div className="text-size-12 text-gray-800">
+            <div>
+              Original lock: {formatAmountWithCommas(currentLockAmount, 0)}{' '}
+              {tokenSymbol}
+            </div>
+            <div>
+              Added amount: {formatAmountWithCommas(topUpAmount, 0)}{' '}
+              {tokenSymbol}
+            </div>
+          </div>
+
           <p className="text-size-20 font-semibold text-gray-800">
-            ~ {formatAmountWithCommas(total, 0)} {tokenSymbol}
+            {formatAmountWithCommas(total, 0)} {tokenSymbol}
           </p>
         </div>
       </div>
