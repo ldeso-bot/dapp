@@ -1,9 +1,10 @@
 import Alert from '@/features/Alert/Alert';
 import { DisclaimerModal } from '@/shared/components/Disclaimer/Disclaimer';
 import Footer from '@/shared/components/Footer/Footer';
-import { FormoTracker } from '@/shared/components/FormoTracker/FormoTracker';
 import DesktopNavBar from '@/shared/components/NavBar/DesktopNavBar';
 import MobileNavBar from '@/shared/components/NavBar/MobileNavBar';
+import { UserTracker } from '@/shared/components/UserTracker/UserTracker';
+import { LUCKY_ORANGE_SITE_ID } from '@/shared/constants/config.constants';
 import { WALLET_CONNECTION_HISTORY_COOKIE } from '@/shared/constants/storage.constants';
 import { WalletConnectionHistoryProvider } from '@/shared/contexts/WalletCookieContext';
 import '@/shared/css/globals.css';
@@ -46,7 +47,7 @@ export default async function RootLayout({
           <WalletConnectionHistoryProvider
             hasPreviouslyConnected={hasPreviouslyConnected}
           >
-            <FormoTracker />
+            <UserTracker />
             <div className="flex flex-col lg:flex-row">
               <DesktopNavBar />
               <MobileNavBar />
@@ -59,6 +60,10 @@ export default async function RootLayout({
           </WalletConnectionHistoryProvider>
         </Providers>
       </body>
+      <Script
+        strategy="afterInteractive"
+        src={`https://tools.luckyorange.com/core/lo.js?site-id=${LUCKY_ORANGE_SITE_ID}`}
+      />
     </html>
   );
 }

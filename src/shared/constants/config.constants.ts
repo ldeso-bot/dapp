@@ -27,3 +27,6 @@ export const WALLETCONNECT_PROJECT_ID =
 export const DEFAULT_SLIPPAGE = 0.005; // 0.5%
 
 export const FORMO_WRITE_KEY = process.env.NEXT_PUBLIC_FORMO_WRITE_KEY ?? '';
+
+export const LUCKY_ORANGE_SITE_ID =
+  process.env.NEXT_PUBLIC_LUCKY_ORANGE_SITE_ID ?? '';
