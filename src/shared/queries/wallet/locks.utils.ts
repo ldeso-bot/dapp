@@ -153,7 +153,7 @@ export const mapKvcmOrLpLock = ({
   // Computing lock maturation
   const lockedUntil = formatStringToNumber(lock.maturity?.timestamp, 0);
   const isMatured = lockedUntil < new Date().getTime() / 1000;
-  const isClaimable = isMatured;
+  const isClaimable = isMatured && lock.status !== 'UNLOCKED';
   const created = formatStringToNumber(lock.lockActions[0]?.timestamp, 0) ?? 0;
 
   //Computing rewards information
