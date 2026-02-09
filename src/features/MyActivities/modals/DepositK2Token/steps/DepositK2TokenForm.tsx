@@ -96,9 +96,9 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
       <Form className="pt-0 relative" onSubmit={handleSubmit(onSubmit)}>
         <InputGroup className="pt-1">
           <div className="text-size-14 text-gray-600">
-            Add K2 tokens to your position. Newly deposited K2 begins accruing
-            incentives immediately and becomes eligible for unlock after 24h +
-            the next daily boundary.
+            Lock K2 tokens. Newly deposited K2 begins accruing variable
+            incentives immediately and becomes eligible for unlocking after 24
+            hours and at the next daily cutoff.
           </div>
           <div className="flex flex-col gap-1 pt-3">
             <div className="flex flex-col gap-1">

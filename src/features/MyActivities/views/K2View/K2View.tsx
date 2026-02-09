@@ -55,7 +55,7 @@ export const K2View = () => {
               </>
             }
             onButtonClick={() => setDepositK2TokenDialog({ open: true })}
-            description="Lock K2 to become eligible for variable K2 incentives and a share of kVCM incentives. After 24 hours, you can request an unlock. Your locked tokens become claimable at the daily cutoff. You can also allocate locked K2 tokens to carbon classes."
+            description="Lock K2 to become eligible for variable K2 incentives and a share of kVCM incentives. After 24 hours, you can request an unlock. Your requested tokens become claimable at the daily cutoff. You can also allocate locked K2 tokens to carbon classes."
             content={<K2Overview />}
           />
           <K2VariableRewards />
@@ -84,7 +84,9 @@ const K2Overview = () => {
           {k2Data && protocolData?.midnightInfos && (
             <div className="flex flex-col justify-between h-full">
               <div>
-                <StatusCardTitle badge="green">Claimable</StatusCardTitle>
+                <StatusCardTitle badge="green">
+                  Claimable tokens & incentives
+                </StatusCardTitle>
                 <div className="space-y-1">
                   <div className="text-size-18 font-bold text-gray-900 tabular-nums">
                     {formatAmountWithCommas(
@@ -105,7 +107,7 @@ const K2Overview = () => {
                   colors="positive"
                   className="mt-3 text-size-14"
                 >
-                  Claim principal (+ rewards)
+                  Claim
                 </Button>
               )}
             </div>
@@ -114,7 +116,9 @@ const K2Overview = () => {
         <StatusCard>
           {k2Data && (
             <>
-              <StatusCardTitle badge="yellow">Pending</StatusCardTitle>
+              <StatusCardTitle badge="yellow">
+                Requested for unlock
+              </StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
                   {formatAmountWithCommas(
