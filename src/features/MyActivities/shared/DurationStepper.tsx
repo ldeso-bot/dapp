@@ -1,7 +1,7 @@
 'use client';
 
 import { ONE_DAY } from '@/shared/constants/protocol.constants';
-import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
+import { useLockableMaturities } from '@/shared/hooks/useLockableMaturities';
 import { FormControlProps } from '@/shared/utils/form.types';
 import { Controller } from 'react-hook-form';
 
@@ -46,11 +46,10 @@ export const DurationStepper = <T extends DurationFormFields>({
   name,
   control,
 }: FormControlProps<T>) => {
-  const { data: protocolData } = useProtocolData();
-  const maturities = protocolData?.maturities ?? [];
+  const lockableMaturities = useLockableMaturities();
 
   const currentMaturityDays =
-    maturities?.map((maturity) => ({
+    lockableMaturities?.map((maturity) => ({
       maturity,
       days: getDaysFromTimestamp(maturity.maturationTimestamp),
     })) ?? [];
@@ -64,7 +63,7 @@ export const DurationStepper = <T extends DurationFormFields>({
         render={({ field }) => {
           const currentDuration = Number(field.value);
 
-          if (maturities.length === 0) {
+          if (lockableMaturities.length === 0) {
             return (
               <div className="flex items-center justify-center space-x-4 p-4 bg-[#EFEFEF] rounded-lg">
                 <div className="flex-1 text-center text-size-14 text-void-40">
@@ -88,15 +87,15 @@ export const DurationStepper = <T extends DurationFormFields>({
             currentMaturity = closest.maturity;
           }
 
-          const currentIndex = maturities.findIndex(
+          const currentIndex = lockableMaturities.findIndex(
             (m) => m.maturityId === currentMaturity.maturityId
           );
           const hasPrevious = currentIndex > 0;
-          const hasNext = currentIndex < maturities.length - 1;
+          const hasNext = currentIndex < lockableMaturities.length - 1;
 
           const handlePrevious = () => {
             if (hasPrevious) {
-              const prevMaturity = maturities[currentIndex - 1];
+              const prevMaturity = lockableMaturities[currentIndex - 1];
               const days = getDaysFromTimestamp(
                 prevMaturity.maturationTimestamp
               );
@@ -106,7 +105,7 @@ export const DurationStepper = <T extends DurationFormFields>({
 
           const handleNext = () => {
             if (hasNext) {
-              const nextMaturity = maturities[currentIndex + 1];
+              const nextMaturity = lockableMaturities[currentIndex + 1];
               const days = getDaysFromTimestamp(
                 nextMaturity.maturationTimestamp
               );

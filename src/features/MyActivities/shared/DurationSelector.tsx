@@ -7,6 +7,7 @@ import {
 } from '@/shared/constants/protocol.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useCurrentTimestamp } from '@/shared/hooks/useCurrentTimestamp';
+import { useLockableMaturities } from '@/shared/hooks/useLockableMaturities';
 import { cn } from '@/shared/utils/component.utils';
 import {
   calculateApproxDuration,
@@ -42,6 +43,7 @@ export const DurationSelector = <T extends DurationFormFields>({
   control,
   name,
 }: FormControlProps<T>) => {
+  const lockableMaturities = useLockableMaturities();
   const currentTimestamp = useCurrentTimestamp();
   const { data: protocolData } = useProtocolData();
   const { nextResetDate, daysUntilReset } = getNextResetInfo();
@@ -52,13 +54,13 @@ export const DurationSelector = <T extends DurationFormFields>({
   const PRESET_DURATIONS = getPresetDurations(daysBetweenMaturities);
 
   const presetDurations = useMemo(() => {
-    const maturities = protocolData?.maturities ?? [];
-    const firstMaturity = maturities[0] ?? null;
+    const firstMaturity = lockableMaturities[0] ?? null;
     const shortestDays = firstMaturity
       ? getDaysFromTimestamp(firstMaturity.maturationTimestamp, true)
       : PRESET_DURATIONS[0].days;
 
-    const lastMaturity = maturities[maturities.length - 1] ?? null;
+    const lastMaturity =
+      lockableMaturities[lockableMaturities.length - 1] ?? null;
     const longestDays = lastMaturity
       ? getDaysFromTimestamp(lastMaturity.maturationTimestamp, true)
       : PRESET_DURATIONS[PRESET_DURATIONS.length - 1].days;
@@ -72,7 +74,7 @@ export const DurationSelector = <T extends DurationFormFields>({
           ? longestDays
           : preset.days;
 
-      const maturity = findClosestMaturityByDays(daysToUse, maturities);
+      const maturity = findClosestMaturityByDays(daysToUse, lockableMaturities);
       const timestamp = maturity?.maturationTimestamp
         ? maturity.maturationTimestamp
         : currentTimestamp + daysToUse * ONE_DAY;
@@ -86,7 +88,7 @@ export const DurationSelector = <T extends DurationFormFields>({
       };
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [protocolData?.maturities]);
+  }, [lockableMaturities, currentTimestamp]);
 
   return (
     <div className="flex flex-col gap-2 mt-2">

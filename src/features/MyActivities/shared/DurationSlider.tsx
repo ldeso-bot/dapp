@@ -1,7 +1,7 @@
 'use client';
 
 import { ONE_DAY } from '@/shared/constants/protocol.constants';
-import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
+import { useLockableMaturities } from '@/shared/hooks/useLockableMaturities';
 import { FormControlProps } from '@/shared/utils/form.types';
 import { Slider as SliderPrimitive } from 'radix-ui';
 import { Controller } from 'react-hook-form';
@@ -17,11 +17,11 @@ export const DurationSlider = <T extends DurationFormFields>({
   name,
   control,
 }: FormControlProps<T>) => {
-  const { data: protocolData } = useProtocolData();
-
-  const maturities = protocolData?.maturities ?? [];
+  const lockableMaturities = useLockableMaturities();
   const maturityDays =
-    maturities?.map((m) => getDaysFromTimestamp(m.maturationTimestamp)) ?? [];
+    lockableMaturities?.map((m) =>
+      getDaysFromTimestamp(m.maturationTimestamp)
+    ) ?? [];
 
   return (
     <div className="px-1">
@@ -52,7 +52,7 @@ export const DurationSlider = <T extends DurationFormFields>({
           }
 
           const minIndex = 0;
-          const maxIndex = maturities.length - 1;
+          const maxIndex = lockableMaturities.length - 1;
 
           const handleValueChange = (values: number[]) => {
             const newIndex = Math.round(values[0]);
@@ -60,7 +60,7 @@ export const DurationSlider = <T extends DurationFormFields>({
               minIndex,
               Math.min(maxIndex, newIndex)
             );
-            const selectedMaturity = maturities[clampedIndex];
+            const selectedMaturity = lockableMaturities[clampedIndex];
             if (selectedMaturity) {
               const days = getDaysFromTimestamp(
                 selectedMaturity.maturationTimestamp
