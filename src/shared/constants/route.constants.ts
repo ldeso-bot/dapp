@@ -5,4 +5,5 @@ export const ROUTES = {
   MY_ACTIVITIES: '/my-activities',
   OVERVIEW: '/protocol-overview',
   SELL_CARBON: '/sell-carbon',
+  TERMS: '/terms',
 };
