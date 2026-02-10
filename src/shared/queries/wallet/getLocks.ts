@@ -49,7 +49,9 @@ export const getLocks = async (
       return null;
     }
     const isK2Lock = tokenInfo.id === 'k2';
-    const latestMidnightInfo = latestMidnightInfos[Number(lock.maturityId)];
+    const latestMidnightInfosArray = Object.values(latestMidnightInfos);
+    const latestMidnightInfo =
+      latestMidnightInfosArray[Number(lock.maturityId)];
 
     return isK2Lock
       ? mapK2Lock({

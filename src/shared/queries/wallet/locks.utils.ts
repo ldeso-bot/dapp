@@ -139,7 +139,7 @@ type MapLockProps = {
   lock: SDKLock;
   protocolState: ProtocolState;
   tokenMetrics: AllMetrics;
-  latestMidnightInfo: ComputedMidnightInfo;
+  latestMidnightInfo: ComputedMidnightInfo | undefined;
   tokenInfo: LockableTokenInfo;
 };
 
@@ -303,10 +303,17 @@ const computeK2LockAccumulatedRewards = ({
 }: {
   lock: SDKLock;
   shares: number;
-  endMidnightInfo: FormattedMidnightInfo;
+  endMidnightInfo: FormattedMidnightInfo | undefined;
   startTimestamp: number;
   endTimestamp: number;
 }) => {
+  if (!endMidnightInfo) {
+    console.error('❌ End midnight info not found');
+    return {
+      tmpK2Rewards: 0,
+      tmpKvcmRewards: 0,
+    };
+  }
   // K2 Rewards
   // Get rewards for the claimable window
   let tmpK2Rewards = computeAccumlulatorYieldRewards(
@@ -389,6 +396,12 @@ export const mapK2Lock = ({
   // We sum all LockActions amounts to get the locked amount
   // TODO: This could lead to a performance issue with large amount of lock actions
   const lockedAmount = lock.lockActions.reduce((acc, action) => {
+    if (
+      action.type !== LockActionType.UNLOCK_REQUESTED &&
+      action.type !== LockActionType.LOCKED
+    ) {
+      return acc;
+    }
     // We take into consideration only actions that happened before the current timestamp (discarding future unlocks)
     const actionTimestamp = formatStringToNumber(action.timestamp, 0);
     const amount = actionTimestamp < now ? action.amount : 0n;
@@ -408,8 +421,9 @@ export const mapK2Lock = ({
   let kvcmClaimableRewards = 0;
   let k2AccruingRewards = 0;
   let kvcmAccruingRewards = 0;
-  const riskyYieldApyPercent = latestMidnightInfo.kvcmApyFor[tokenInfo.id];
-  const k2YieldApyPercent = latestMidnightInfo.k2ApyFor[tokenInfo.id];
+  const riskyYieldApyPercent =
+    latestMidnightInfo?.kvcmApyFor[tokenInfo.id] ?? 0;
+  const k2YieldApyPercent = latestMidnightInfo?.k2ApyFor[tokenInfo.id] ?? 0;
 
   // Compute earning status
   const earningStatus = computeEarningStatus(protocolState, tokenInfo.id);
@@ -434,7 +448,7 @@ export const mapK2Lock = ({
   kvcmAccruingRewards = tmpKvcmRewards;
 
   // Compute claimable rewards
-  if (isClaimable) {
+  if (isClaimable && latestMidnightInfo) {
     const endMidnightInfo = lock.k2WindowEndMidnightInfo?.keeperUpdated
       ? formatMidnightInfo(lock.k2WindowEndMidnightInfo)
       : latestMidnightInfo;
