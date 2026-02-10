@@ -1,191 +1,49 @@
 const abi = [
   {
-    inputs: [],
-    name: 'AmountCannotBeZero',
-    type: 'error',
+    inputs: [
+      { internalType: 'address', name: '_contractOwner', type: 'address' },
+      { internalType: 'address', name: '_diamondCutFacet', type: 'address' },
+    ],
+    stateMutability: 'payable',
+    type: 'constructor',
   },
   {
+    anonymous: false,
     inputs: [
       {
+        components: [
+          { internalType: 'address', name: 'facetAddress', type: 'address' },
+          {
+            internalType: 'enum IDiamondCut.FacetCutAction',
+            name: 'action',
+            type: 'uint8',
+          },
+          {
+            internalType: 'bytes4[]',
+            name: 'functionSelectors',
+            type: 'bytes4[]',
+          },
+        ],
+        indexed: false,
+        internalType: 'struct IDiamondCut.FacetCut[]',
+        name: '_diamondCut',
+        type: 'tuple[]',
+      },
+      {
+        indexed: false,
         internalType: 'address',
-        name: 'carbonClass',
+        name: '_init',
         type: 'address',
       },
       {
-        internalType: 'uint256',
-        name: 'allocatedAmount',
-        type: 'uint256',
+        indexed: false,
+        internalType: 'bytes',
+        name: '_calldata',
+        type: 'bytes',
       },
     ],
-    name: 'DeallocationAmountExceedsAllocatedAmountForClass',
-    type: 'error',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'bytes32',
-        name: 'key',
-        type: 'bytes32',
-      },
-    ],
-    name: 'EnumerableMapNonexistentKey',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'InvalidAddress',
-    type: 'error',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'firstMaturityId',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'lastMaturityId',
-        type: 'uint256',
-      },
-    ],
-    name: 'InvalidMaturityRange',
-    type: 'error',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'priceAllocations',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'principal',
-        type: 'uint256',
-      },
-    ],
-    name: 'KvcmAllocationExceedsLock',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'KvcmLockAllocationNotFound',
-    type: 'error',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'minAmount',
-        type: 'uint256',
-      },
-    ],
-    name: 'KvcmLockAmountTooSmall',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'KvcmLockIsClosed',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'KvcmLockMatured',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'KvcmLockNotMatured',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'KvcmLockNotOwned',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'KvcmLockNotSet',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'KvcmStakingPaused',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'KvcmTokenNotSet',
-    type: 'error',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'maturityId',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'start',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'end',
-        type: 'uint256',
-      },
-    ],
-    name: 'MaturityIdOutOfRange',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'ReentrancyGuardReentrantCall',
-    type: 'error',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint8',
-        name: 'bits',
-        type: 'uint8',
-      },
-      {
-        internalType: 'uint256',
-        name: 'value',
-        type: 'uint256',
-      },
-    ],
-    name: 'SafeCastOverflowedUintDowncast',
-    type: 'error',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'token',
-        type: 'address',
-      },
-    ],
-    name: 'SafeERC20FailedOperation',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'ZeroAddressNotAllowed',
-    type: 'error',
+    name: 'DiamondCut',
+    type: 'event',
   },
   {
     anonymous: false,
@@ -193,9 +51,838 @@ const abi = [
       {
         indexed: true,
         internalType: 'address',
-        name: 'user',
+        name: 'previousOwner',
         type: 'address',
       },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address',
+      },
+    ],
+    name: 'OwnershipTransferred',
+    type: 'event',
+  },
+  { stateMutability: 'payable', type: 'fallback' },
+  { stateMutability: 'payable', type: 'receive' },
+  {
+    inputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'facetAddress', type: 'address' },
+          {
+            internalType: 'enum IDiamondCut.FacetCutAction',
+            name: 'action',
+            type: 'uint8',
+          },
+          {
+            internalType: 'bytes4[]',
+            name: 'functionSelectors',
+            type: 'bytes4[]',
+          },
+        ],
+        internalType: 'struct IDiamondCut.FacetCut[]',
+        name: '_diamondCut',
+        type: 'tuple[]',
+      },
+      { internalType: 'address', name: '_init', type: 'address' },
+      { internalType: 'bytes', name: '_calldata', type: 'bytes' },
+    ],
+    name: 'diamondCut',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  { inputs: [], name: 'AlreadyInitialized', type: 'error' },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'minLockAmount', type: 'uint256' },
+      { internalType: 'uint256', name: 'maxLockAmount', type: 'uint256' },
+    ],
+    name: 'InvalidAmounts',
+    type: 'error',
+  },
+  { inputs: [], name: 'InvalidValue', type: 'error' },
+  { inputs: [], name: 'NotAuthorized', type: 'error' },
+  {
+    inputs: [
+      { internalType: 'uint8', name: 'bits', type: 'uint8' },
+      { internalType: 'uint256', name: 'value', type: 'uint256' },
+    ],
+    name: 'SafeCastOverflowedUintDowncast',
+    type: 'error',
+  },
+  { inputs: [], name: 'ZeroAddress', type: 'error' },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: false, internalType: 'address', name: 'aam', type: 'address' },
+    ],
+    name: 'AAMUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'accessManager',
+        type: 'address',
+      },
+    ],
+    name: 'AccessManagerUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'carbonLedger',
+        type: 'address',
+      },
+    ],
+    name: 'CarbonLedgerUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'tokenAddress',
+        type: 'address',
+      },
+      { indexed: true, internalType: 'address', name: 'to', type: 'address' },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'DustRemoved',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'zkMeCooperator', type: 'address' },
+          { internalType: 'address', name: 'zkMeVerify', type: 'address' },
+          { internalType: 'bool', name: 'zkMeRequired', type: 'bool' },
+        ],
+        indexed: false,
+        internalType: 'struct StakingManagerStorage.IntegrationConfig',
+        name: 'newIntegrationConfig',
+        type: 'tuple',
+      },
+    ],
+    name: 'IntegrationConfigurationUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'minLockPeriod',
+        type: 'uint256',
+      },
+    ],
+    name: 'K2LockPeriodUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: false, internalType: 'address', name: 'k2', type: 'address' },
+    ],
+    name: 'K2TokenUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'k2YieldToken',
+        type: 'address',
+      },
+    ],
+    name: 'K2YieldTokenUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'kvcmLock',
+        type: 'address',
+      },
+    ],
+    name: 'KvcmLockUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'kvcm',
+        type: 'address',
+      },
+    ],
+    name: 'KvcmTokenUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'minLockAmount',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'maxLockAmount',
+        type: 'uint256',
+      },
+    ],
+    name: 'LockAmountsUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'maturityManager',
+        type: 'address',
+      },
+    ],
+    name: 'MaturityManagerUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'protocolSupplyOracle',
+        type: 'address',
+      },
+    ],
+    name: 'ProtocolSupplyOracleUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'retirementAggregator',
+        type: 'address',
+      },
+    ],
+    name: 'RetirementAggregatorUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'rewardManager',
+        type: 'address',
+      },
+    ],
+    name: 'RewardManagerUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'riskyYieldToken',
+        type: 'address',
+      },
+    ],
+    name: 'RiskyYieldTokenUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'accessManager', type: 'address' },
+          { internalType: 'address', name: 'aam', type: 'address' },
+          { internalType: 'address', name: 'kvcmToken', type: 'address' },
+          { internalType: 'address', name: 'k2Token', type: 'address' },
+          { internalType: 'address', name: 'rewardManager', type: 'address' },
+          { internalType: 'address', name: 'maturityManager', type: 'address' },
+          { internalType: 'address', name: 'carbonLedger', type: 'address' },
+          { internalType: 'address', name: 'kvcmLocks', type: 'address' },
+          {
+            internalType: 'address',
+            name: 'kvcmLocksManager',
+            type: 'address',
+          },
+          { internalType: 'address', name: 'k2YieldToken', type: 'address' },
+        ],
+        indexed: false,
+        internalType: 'struct StakingManagerStorage.StakingManagerConfig',
+        name: 'newConfig',
+        type: 'tuple',
+      },
+      {
+        components: [
+          { internalType: 'address', name: 'zkMeCooperator', type: 'address' },
+          { internalType: 'address', name: 'zkMeVerify', type: 'address' },
+          { internalType: 'bool', name: 'zkMeRequired', type: 'bool' },
+        ],
+        indexed: false,
+        internalType: 'struct StakingManagerStorage.IntegrationConfig',
+        name: 'newIntegrationConfig',
+        type: 'tuple',
+      },
+    ],
+    name: 'StakingManagerConfigurationUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'stakingManager',
+        type: 'address',
+      },
+    ],
+    name: 'StakingManagerUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: false, internalType: 'bool', name: 'isPaused', type: 'bool' },
+    ],
+    name: 'SystemPauseStatusChanged',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint128',
+        name: 'yieldDistributionInterval',
+        type: 'uint128',
+      },
+    ],
+    name: 'YieldDistributionIntervalUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'zkMeCooperator',
+        type: 'address',
+      },
+    ],
+    name: 'ZkMeCooperatorUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'bool',
+        name: 'zkMeRequired',
+        type: 'bool',
+      },
+    ],
+    name: 'ZkMeRequiredUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'zkMeVerify',
+        type: 'address',
+      },
+    ],
+    name: 'ZkMeVerifyUpdated',
+    type: 'event',
+  },
+  {
+    inputs: [],
+    name: 'getAAM',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getAccessManager',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getCarbonLedger',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getIntegrationConfiguration',
+    outputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'zkMeCooperator', type: 'address' },
+          { internalType: 'address', name: 'zkMeVerify', type: 'address' },
+          { internalType: 'bool', name: 'zkMeRequired', type: 'bool' },
+        ],
+        internalType: 'struct StakingManagerStorage.IntegrationConfig',
+        name: 'integrationConfig',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getK2LockLimits',
+    outputs: [
+      { internalType: 'uint256', name: 'minLockAmount', type: 'uint256' },
+      { internalType: 'uint256', name: 'maxLockAmount', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getK2LockPeriod',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getK2Token',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getKvcmToken',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getMaturityManager',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getRewardManager',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getStakingManagerConfiguration',
+    outputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'accessManager', type: 'address' },
+          { internalType: 'address', name: 'aam', type: 'address' },
+          { internalType: 'address', name: 'kvcmToken', type: 'address' },
+          { internalType: 'address', name: 'k2Token', type: 'address' },
+          { internalType: 'address', name: 'rewardManager', type: 'address' },
+          { internalType: 'address', name: 'maturityManager', type: 'address' },
+          { internalType: 'address', name: 'carbonLedger', type: 'address' },
+          { internalType: 'address', name: 'kvcmLocks', type: 'address' },
+          {
+            internalType: 'address',
+            name: 'kvcmLocksManager',
+            type: 'address',
+          },
+          { internalType: 'address', name: 'k2YieldToken', type: 'address' },
+        ],
+        internalType: 'struct StakingManagerStorage.StakingManagerConfig',
+        name: 'config',
+        type: 'tuple',
+      },
+      {
+        components: [
+          { internalType: 'address', name: 'zkMeCooperator', type: 'address' },
+          { internalType: 'address', name: 'zkMeVerify', type: 'address' },
+          { internalType: 'bool', name: 'zkMeRequired', type: 'bool' },
+        ],
+        internalType: 'struct StakingManagerStorage.IntegrationConfig',
+        name: 'integrationConfig',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getZkMeCooperator',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getZkMeRequired',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getZkMeVerify',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '_accessManager', type: 'address' },
+    ],
+    name: 'initAccessManager',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'aam', type: 'address' }],
+    name: 'setAAM',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'accessManager', type: 'address' },
+    ],
+    name: 'setAccessManager',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'carbonLedger', type: 'address' },
+    ],
+    name: 'setCarbonLedger',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'accessManager', type: 'address' },
+          { internalType: 'address', name: 'aam', type: 'address' },
+          { internalType: 'address', name: 'kvcmToken', type: 'address' },
+          { internalType: 'address', name: 'k2Token', type: 'address' },
+          { internalType: 'address', name: 'rewardManager', type: 'address' },
+          { internalType: 'address', name: 'maturityManager', type: 'address' },
+          { internalType: 'address', name: 'carbonLedger', type: 'address' },
+          { internalType: 'address', name: 'kvcmLocks', type: 'address' },
+          {
+            internalType: 'address',
+            name: 'kvcmLocksManager',
+            type: 'address',
+          },
+          { internalType: 'address', name: 'k2YieldToken', type: 'address' },
+        ],
+        internalType: 'struct StakingManagerStorage.StakingManagerConfig',
+        name: 'config',
+        type: 'tuple',
+      },
+      {
+        components: [
+          { internalType: 'address', name: 'zkMeCooperator', type: 'address' },
+          { internalType: 'address', name: 'zkMeVerify', type: 'address' },
+          { internalType: 'bool', name: 'zkMeRequired', type: 'bool' },
+        ],
+        internalType: 'struct StakingManagerStorage.IntegrationConfig',
+        name: 'integrationConfig',
+        type: 'tuple',
+      },
+    ],
+    name: 'setConfiguration',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'zkMeCooperator', type: 'address' },
+          { internalType: 'address', name: 'zkMeVerify', type: 'address' },
+          { internalType: 'bool', name: 'zkMeRequired', type: 'bool' },
+        ],
+        internalType: 'struct StakingManagerStorage.IntegrationConfig',
+        name: 'integrationConfig',
+        type: 'tuple',
+      },
+    ],
+    name: 'setIntegrationConfiguration',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'minLockAmount', type: 'uint256' },
+      { internalType: 'uint256', name: 'maxLockAmount', type: 'uint256' },
+    ],
+    name: 'setK2LockLimits',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'minLockPeriod', type: 'uint256' },
+    ],
+    name: 'setK2LockPeriod',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'k2Token', type: 'address' }],
+    name: 'setK2Token',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'kvcmLock', type: 'address' }],
+    name: 'setKvcmLock',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'kvcmToken', type: 'address' }],
+    name: 'setKvcmToken',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'maturityManager', type: 'address' },
+    ],
+    name: 'setMaturityManager',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'rewardManager', type: 'address' },
+    ],
+    name: 'setRewardManager',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'zkMeCooperator', type: 'address' },
+    ],
+    name: 'setZkMeCooperator',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'bool', name: 'zkMeRequired', type: 'bool' }],
+    name: 'setZkMeRequired',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'zkMeVerify', type: 'address' }],
+    name: 'setZkMeVerify',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'carbonClass', type: 'address' }],
+    name: 'getAllocationsForClass',
+    outputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'carbonClass', type: 'address' },
+          { internalType: 'uint256', name: 'kvcmAllocation', type: 'uint256' },
+          { internalType: 'uint256', name: 'k2Allocation', type: 'uint256' },
+        ],
+        internalType: 'struct IStakingManager.ClassAllocations',
+        name: '',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getK2Locked',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getKvcmLocked',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  { inputs: [], name: 'AmountCannotBeZero', type: 'error' },
+  {
+    inputs: [
+      { internalType: 'address', name: 'carbonClass', type: 'address' },
+      { internalType: 'uint256', name: 'allocatedAmount', type: 'uint256' },
+    ],
+    name: 'DeallocationAmountExceedsAllocatedAmountForClass',
+    type: 'error',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'priceAllocations', type: 'uint256' },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+    ],
+    name: 'DeallocationAmountExceedsLockPriceAllocations',
+    type: 'error',
+  },
+  {
+    inputs: [{ internalType: 'bytes32', name: 'key', type: 'bytes32' }],
+    name: 'EnumerableMapNonexistentKey',
+    type: 'error',
+  },
+  { inputs: [], name: 'InvalidAddress', type: 'error' },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'firstMaturityId', type: 'uint256' },
+      { internalType: 'uint256', name: 'lastMaturityId', type: 'uint256' },
+    ],
+    name: 'InvalidMaturityRange',
+    type: 'error',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'uint256', name: 'priceAllocations', type: 'uint256' },
+      { internalType: 'uint256', name: 'principal', type: 'uint256' },
+    ],
+    name: 'KvcmAllocationExceedsLock',
+    type: 'error',
+  },
+  { inputs: [], name: 'KvcmLockAllocationNotFound', type: 'error' },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'uint256', name: 'minAmount', type: 'uint256' },
+    ],
+    name: 'KvcmLockAmountTooSmall',
+    type: 'error',
+  },
+  { inputs: [], name: 'KvcmLockIsClosed', type: 'error' },
+  { inputs: [], name: 'KvcmLockMatured', type: 'error' },
+  { inputs: [], name: 'KvcmLockNotMatured', type: 'error' },
+  { inputs: [], name: 'KvcmLockNotOwned', type: 'error' },
+  { inputs: [], name: 'KvcmLockNotSet', type: 'error' },
+  { inputs: [], name: 'KvcmStakingPaused', type: 'error' },
+  { inputs: [], name: 'KvcmTokenNotSet', type: 'error' },
+  {
+    inputs: [{ internalType: 'uint256', name: 'maturityId', type: 'uint256' }],
+    name: 'MaturityIdNotExpired',
+    type: 'error',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'maturityId', type: 'uint256' },
+      { internalType: 'uint256', name: 'start', type: 'uint256' },
+      { internalType: 'uint256', name: 'end', type: 'uint256' },
+    ],
+    name: 'MaturityIdOutOfRange',
+    type: 'error',
+  },
+  { inputs: [], name: 'ReentrancyGuardReentrantCall', type: 'error' },
+  {
+    inputs: [{ internalType: 'address', name: 'token', type: 'address' }],
+    name: 'SafeERC20FailedOperation',
+    type: 'error',
+  },
+  { inputs: [], name: 'ZeroAddressNotAllowed', type: 'error' },
+  {
+    inputs: [{ internalType: 'address', name: 'user', type: 'address' }],
+    name: 'ZkMeNotVerified',
+    type: 'error',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
       {
         indexed: true,
         internalType: 'uint256',
@@ -221,12 +908,7 @@ const abi = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
       {
         indexed: true,
         internalType: 'uint256',
@@ -252,12 +934,7 @@ const abi = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
       {
         indexed: false,
         internalType: 'uint256',
@@ -289,18 +966,8 @@ const abi = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
+      { indexed: true, internalType: 'address', name: 'from', type: 'address' },
+      { indexed: true, internalType: 'address', name: 'to', type: 'address' },
       {
         indexed: true,
         internalType: 'uint256',
@@ -320,12 +987,7 @@ const abi = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
       {
         indexed: true,
         internalType: 'uint256',
@@ -357,12 +1019,7 @@ const abi = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
       {
         indexed: true,
         internalType: 'uint256',
@@ -399,21 +1056,9 @@ const abi = [
   },
   {
     inputs: [
-      {
-        internalType: 'uint256',
-        name: 'lockId',
-        type: 'uint256',
-      },
-      {
-        internalType: 'address',
-        name: 'carbonClass',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'lockId', type: 'uint256' },
+      { internalType: 'address', name: 'carbonClass', type: 'address' },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
     ],
     name: 'allocateKvcm',
     outputs: [],
@@ -421,22 +1066,17 @@ const abi = [
     type: 'function',
   },
   {
+    inputs: [{ internalType: 'uint256', name: 'maturityId', type: 'uint256' }],
+    name: 'cleanUpAllocationsForMaturity',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     inputs: [
-      {
-        internalType: 'uint256',
-        name: 'lockId',
-        type: 'uint256',
-      },
-      {
-        internalType: 'address',
-        name: 'carbonClass',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'lockId', type: 'uint256' },
+      { internalType: 'address', name: 'carbonClass', type: 'address' },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
     ],
     name: 'deallocateKvcm',
     outputs: [],
@@ -444,27 +1084,13 @@ const abi = [
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'lockId',
-        type: 'uint256',
-      },
-    ],
+    inputs: [{ internalType: 'uint256', name: 'lockId', type: 'uint256' }],
     name: 'getKvcmLockInfo',
     outputs: [
       {
         components: [
-          {
-            internalType: 'uint256',
-            name: 'lockId',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'principal',
-            type: 'uint256',
-          },
+          { internalType: 'uint256', name: 'lockId', type: 'uint256' },
+          { internalType: 'uint256', name: 'principal', type: 'uint256' },
           {
             internalType: 'uint256',
             name: 'priceAllocations',
@@ -475,21 +1101,9 @@ const abi = [
             name: 'maturityTimestamp',
             type: 'uint128',
           },
-          {
-            internalType: 'uint128',
-            name: 'startTimestamp',
-            type: 'uint128',
-          },
-          {
-            internalType: 'uint128',
-            name: 'maturityId',
-            type: 'uint128',
-          },
-          {
-            internalType: 'address',
-            name: 'lockOwner',
-            type: 'address',
-          },
+          { internalType: 'uint128', name: 'startTimestamp', type: 'uint128' },
+          { internalType: 'uint128', name: 'maturityId', type: 'uint128' },
+          { internalType: 'address', name: 'lockOwner', type: 'address' },
           {
             internalType: 'enum IKvcmStakingFacet.KvcmLockStatus',
             name: 'status',
@@ -505,36 +1119,16 @@ const abi = [
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint128',
-        name: 'maturityId',
-        type: 'uint128',
-      },
-    ],
+    inputs: [{ internalType: 'uint128', name: 'maturityId', type: 'uint128' }],
     name: 'getKvcmLockedForMaturity',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'uint128',
-        name: 'firstMaturityId',
-        type: 'uint128',
-      },
-      {
-        internalType: 'uint128',
-        name: 'lastMaturityId',
-        type: 'uint128',
-      },
+      { internalType: 'uint128', name: 'firstMaturityId', type: 'uint128' },
+      { internalType: 'uint128', name: 'lastMaturityId', type: 'uint128' },
     ],
     name: 'getKvcmLockedForMaturityRange',
     outputs: [
@@ -543,11 +1137,7 @@ const abi = [
         name: 'maturityTotalLocked',
         type: 'uint256[]',
       },
-      {
-        internalType: 'uint256',
-        name: 'totalKvcmLocked',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'totalKvcmLocked', type: 'uint256' },
     ],
     stateMutability: 'view',
     type: 'function',
@@ -555,227 +1145,83 @@ const abi = [
   {
     inputs: [],
     name: 'getTotalKvcmLocked',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'lockId',
-        type: 'uint256',
-      },
-    ],
+    inputs: [{ internalType: 'uint256', name: 'lockId', type: 'uint256' }],
     name: 'isKvcmLockMatured',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'uint256',
-        name: 'lockId',
-        type: 'uint256',
-      },
-      {
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
+      { internalType: 'uint256', name: 'lockId', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' },
     ],
     name: 'isKvcmLockOwned',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint128',
-        name: 'maturityId',
-        type: 'uint128',
-      },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'uint128', name: 'maturityId', type: 'uint128' },
     ],
     name: 'lockKvcm',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: 'lockId',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: 'lockId', type: 'uint256' }],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint128',
-        name: 'maturityId',
-        type: 'uint128',
-      },
-      {
-        internalType: 'address',
-        name: 'user_',
-        type: 'address',
-      },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'uint128', name: 'maturityId', type: 'uint128' },
+      { internalType: 'address', name: 'user_', type: 'address' },
     ],
     name: 'lockKvcmFor',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: 'lockId',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: 'lockId', type: 'uint256' }],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint128',
-        name: 'maturityId',
-        type: 'uint128',
-      },
-      {
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'deadline',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint8',
-        name: 'v',
-        type: 'uint8',
-      },
-      {
-        internalType: 'bytes32',
-        name: 'r',
-        type: 'bytes32',
-      },
-      {
-        internalType: 'bytes32',
-        name: 's',
-        type: 'bytes32',
-      },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'uint128', name: 'maturityId', type: 'uint128' },
+      { internalType: 'address', name: 'user', type: 'address' },
+      { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      { internalType: 'uint8', name: 'v', type: 'uint8' },
+      { internalType: 'bytes32', name: 'r', type: 'bytes32' },
+      { internalType: 'bytes32', name: 's', type: 'bytes32' },
     ],
     name: 'lockKvcmForWithPermit',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: 'lockId',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: 'lockId', type: 'uint256' }],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint128',
-        name: 'maturityId',
-        type: 'uint128',
-      },
-      {
-        internalType: 'uint256',
-        name: 'deadline',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint8',
-        name: 'v',
-        type: 'uint8',
-      },
-      {
-        internalType: 'bytes32',
-        name: 'r',
-        type: 'bytes32',
-      },
-      {
-        internalType: 'bytes32',
-        name: 's',
-        type: 'bytes32',
-      },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'uint128', name: 'maturityId', type: 'uint128' },
+      { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      { internalType: 'uint8', name: 'v', type: 'uint8' },
+      { internalType: 'bytes32', name: 'r', type: 'bytes32' },
+      { internalType: 'bytes32', name: 's', type: 'bytes32' },
     ],
     name: 'lockKvcmWithPermit',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: 'lockId',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: 'lockId', type: 'uint256' }],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'uint256',
-        name: 'lockId',
-        type: 'uint256',
-      },
-      {
-        internalType: 'address',
-        name: 'fromCarbonClass',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'toCarbonClass',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'lockId', type: 'uint256' },
+      { internalType: 'address', name: 'fromCarbonClass', type: 'address' },
+      { internalType: 'address', name: 'toCarbonClass', type: 'address' },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
     ],
     name: 'reallocateKvcm',
     outputs: [],
@@ -783,13 +1229,7 @@ const abi = [
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'lockId_',
-        type: 'uint256',
-      },
-    ],
+    inputs: [{ internalType: 'uint256', name: 'lockId_', type: 'uint256' }],
     name: 'unlockKvcm',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -797,16 +1237,8 @@ const abi = [
   },
   {
     inputs: [
-      {
-        internalType: 'uint256',
-        name: 'lockId_',
-        type: 'uint256',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
+      { internalType: 'uint256', name: 'lockId_', type: 'uint256' },
+      { internalType: 'address', name: 'to', type: 'address' },
     ],
     name: 'unlockKvcmTo',
     outputs: [],
@@ -814,643 +1246,425 @@ const abi = [
     type: 'function',
   },
   {
-    type: 'function',
-    name: 'lockK2',
     inputs: [
-      {
-        name: 'amount',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
+      { internalType: 'uint256', name: 'totalAllocated', type: 'uint256' },
+      { internalType: 'uint256', name: 'newAllocatedAmount', type: 'uint256' },
     ],
-    outputs: [],
-    stateMutability: 'nonpayable',
+    name: 'AllocationsExceedsLockedAmount',
+    type: 'error',
+  },
+  { inputs: [], name: 'ClaimNotAllowed', type: 'error' },
+  { inputs: [], name: 'ClaimRequired', type: 'error' },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'unlockedPrincipal', type: 'uint256' },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+    ],
+    name: 'InsufficientK2UnlockedPrincipal',
+    type: 'error',
+  },
+  { inputs: [], name: 'InvalidAllocationsLength', type: 'error' },
+  {
+    inputs: [{ internalType: 'uint256', name: 'amount', type: 'uint256' }],
+    name: 'InvalidAmountTooLarge',
+    type: 'error',
   },
   {
-    type: 'function',
-    name: 'lockK2WithPermit',
+    inputs: [{ internalType: 'uint256', name: 'amount', type: 'uint256' }],
+    name: 'InvalidAmountTooSmall',
+    type: 'error',
+  },
+  { inputs: [], name: 'InvalidMidnightTimestamp', type: 'error' },
+  { inputs: [], name: 'InvalidMinK2LockPeriod', type: 'error' },
+  { inputs: [], name: 'K2StakingPaused', type: 'error' },
+  { inputs: [], name: 'LockedSlotsFull', type: 'error' },
+  { inputs: [], name: 'NoK2Allocated', type: 'error' },
+  { inputs: [], name: 'NoK2ClaimEscrow', type: 'error' },
+  { inputs: [], name: 'NoK2Locked', type: 'error' },
+  { inputs: [], name: 'NoUnlockRequested', type: 'error' },
+  {
     inputs: [
+      { internalType: 'uint256', name: 'unstakeAmount', type: 'uint256' },
       {
-        name: 'amount',
-        type: 'uint256',
         internalType: 'uint256',
-      },
-      {
-        name: 'deadline',
+        name: 'existingAllocatedAmount',
         type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'v',
-        type: 'uint8',
-        internalType: 'uint8',
-      },
-      {
-        name: 'r',
-        type: 'bytes32',
-        internalType: 'bytes32',
-      },
-      {
-        name: 's',
-        type: 'bytes32',
-        internalType: 'bytes32',
       },
     ],
-    outputs: [],
-    stateMutability: 'nonpayable',
+    name: 'UnstakeExceedsExistingAllocation',
+    type: 'error',
   },
+  { inputs: [], name: 'ZeroAmount', type: 'error' },
   {
-    type: 'function',
-    name: 'lockK2For',
+    anonymous: false,
     inputs: [
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
       {
+        indexed: false,
+        internalType: 'uint256',
         name: 'amount',
         type: 'uint256',
-        internalType: 'uint256',
       },
       {
-        name: 'user_',
-        type: 'address',
+        indexed: false,
         internalType: 'address',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'lockK2ForWithPermit',
-    inputs: [
-      {
-        name: 'amount',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'user',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'deadline',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'v',
-        type: 'uint8',
-        internalType: 'uint8',
-      },
-      {
-        name: 'r',
-        type: 'bytes32',
-        internalType: 'bytes32',
-      },
-      {
-        name: 's',
-        type: 'bytes32',
-        internalType: 'bytes32',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'unlockK2',
-    inputs: [
-      {
-        name: 'amount',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'claimK2',
-    inputs: [],
-    outputs: [
-      {
-        name: 'claimAmount',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'claimK2For',
-    inputs: [
-      {
-        name: 'user_',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-    outputs: [
-      {
-        name: 'claimAmount',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'allocateK2',
-    inputs: [
-      {
-        name: 'newAllocationAmount',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
         name: 'carbonClass',
         type: 'address',
-        internalType: 'address',
       },
     ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'deallocateK2',
-    inputs: [
-      {
-        name: 'unstakeAmount',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'carbonClass',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'reallocateK2',
-    inputs: [
-      {
-        name: 'amount',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'fromCarbonClass',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'toCarbonClass',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'batchAllocateK2',
-    inputs: [
-      {
-        name: 'allocations',
-        type: 'tuple[]',
-        internalType: 'struct IK2StakingFacet.AllocationInfo[]',
-        components: [
-          {
-            name: 'amount',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'carbonClass',
-            type: 'address',
-            internalType: 'address',
-          },
-        ],
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'batchDeallocateK2',
-    inputs: [
-      {
-        name: 'allocations',
-        type: 'tuple[]',
-        internalType: 'struct IK2StakingFacet.AllocationInfo[]',
-        components: [
-          {
-            name: 'amount',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'carbonClass',
-            type: 'address',
-            internalType: 'address',
-          },
-        ],
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'getTotalK2Allocations',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'getK2LockInfo',
-    inputs: [
-      {
-        name: 'user',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-    outputs: [
-      {
-        name: 'lock',
-        type: 'tuple',
-        internalType: 'struct IK2StakingFacet.K2LockView',
-        components: [
-          {
-            name: 'unlockedPrincipal',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'escrowedPrincipal',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'claimEscrow',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'startTimestamp',
-            type: 'uint128',
-            internalType: 'uint128',
-          },
-          {
-            name: 'claimTimestamp',
-            type: 'uint128',
-            internalType: 'uint128',
-          },
-          {
-            name: 'totalAllocated',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'status',
-            type: 'uint8',
-            internalType: 'enum IK2StakingFacet.K2LockStatus',
-          },
-        ],
-      },
-      {
-        name: 'allocations',
-        type: 'tuple[]',
-        internalType: 'struct IK2StakingFacet.AllocationInfo[]',
-        components: [
-          {
-            name: 'amount',
-            type: 'uint256',
-            internalType: 'uint256',
-          },
-          {
-            name: 'carbonClass',
-            type: 'address',
-            internalType: 'address',
-          },
-        ],
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'getK2AllocatedForCarbonClass',
-    inputs: [
-      {
-        name: 'carbonClass',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'getK2LockedPrincipalLockStatus',
-    inputs: [
-      {
-        name: 'user',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-    outputs: [
-      {
-        name: 'unlockedPrincipal',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'escrowedPrincipal',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'getK2LockedTotalPrincipal',
-    inputs: [
-      {
-        name: 'user',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-    outputs: [
-      {
-        name: 'totalPrincipal',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'getRawK2LockInfo',
-    inputs: [
-      {
-        name: 'user',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-    outputs: [
-      {
-        name: 'lockId',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'unlockedPrincipal',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'escrowedPrincipalInfo',
-        type: 'tuple[2]',
-        internalType: 'struct IK2StakingFacet.EscrowedPrincipalInfo[2]',
-        components: [
-          {
-            name: 'amount',
-            type: 'uint128',
-            internalType: 'uint128',
-          },
-          {
-            name: 'unlockTimestamp',
-            type: 'uint128',
-            internalType: 'uint128',
-          },
-        ],
-      },
-      {
-        name: 'claimEscrow',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'startTimestamp',
-        type: 'uint128',
-        internalType: 'uint128',
-      },
-      {
-        name: 'claimTimestamp',
-        type: 'uint128',
-        internalType: 'uint128',
-      },
-      {
-        name: 'totalAllocated',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'status',
-        type: 'uint8',
-        internalType: 'enum IK2StakingFacet.K2LockStatus',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'getTotalK2Staked',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
+    name: 'K2Allocated',
     type: 'event',
-    name: 'K2Locked',
+  },
+  {
+    anonymous: false,
     inputs: [
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
       {
-        name: 'user',
-        type: 'address',
-        indexed: false,
-        internalType: 'address',
-      },
-      {
-        name: 'amount',
-        type: 'uint256',
         indexed: false,
         internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+    ],
+    name: 'K2Claimed',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
       },
       {
+        indexed: false,
+        internalType: 'address',
+        name: 'carbonClass',
+        type: 'address',
+      },
+    ],
+    name: 'K2Deallocated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
         name: 'targetUnlock',
         type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
       },
       {
+        indexed: false,
+        internalType: 'uint256',
         name: 'lockId',
         type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
       },
     ],
-    anonymous: false,
+    name: 'K2Locked',
+    type: 'event',
   },
   {
-    type: 'event',
-    name: 'K2UnlockRequested',
-    inputs: [
-      {
-        name: 'user',
-        type: 'address',
-        indexed: false,
-        internalType: 'address',
-      },
-      {
-        name: 'amount',
-        type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
-      },
-      {
-        name: 'claimTimestamp',
-        type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
-      },
-    ],
     anonymous: false,
-  },
-  {
-    type: 'event',
-    name: 'K2Claimed',
     inputs: [
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
       {
-        name: 'user',
-        type: 'address',
-        indexed: false,
-        internalType: 'address',
-      },
-      {
-        name: 'amount',
-        type: 'uint256',
         indexed: false,
         internalType: 'uint256',
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: 'event',
-    name: 'K2Allocated',
-    inputs: [
-      {
-        name: 'user',
-        type: 'address',
-        indexed: false,
-        internalType: 'address',
-      },
-      {
         name: 'amount',
         type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
       },
       {
-        name: 'carbonClass',
-        type: 'address',
         indexed: false,
         internalType: 'address',
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: 'event',
-    name: 'K2Deallocated',
-    inputs: [
-      {
-        name: 'user',
-        type: 'address',
-        indexed: false,
-        internalType: 'address',
-      },
-      {
-        name: 'amount',
-        type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
-      },
-      {
-        name: 'carbonClass',
-        type: 'address',
-        indexed: false,
-        internalType: 'address',
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: 'event',
-    name: 'K2Reallocated',
-    inputs: [
-      {
-        name: 'user',
-        type: 'address',
-        indexed: false,
-        internalType: 'address',
-      },
-      {
-        name: 'amount',
-        type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
-      },
-      {
         name: 'fromCarbonClass',
         type: 'address',
-        indexed: false,
-        internalType: 'address',
       },
       {
-        name: 'toCarbonClass',
-        type: 'address',
         indexed: false,
         internalType: 'address',
+        name: 'toCarbonClass',
+        type: 'address',
       },
     ],
+    name: 'K2Reallocated',
+    type: 'event',
+  },
+  {
     anonymous: false,
+    inputs: [
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'claimTimestamp',
+        type: 'uint256',
+      },
+    ],
+    name: 'K2UnlockRequested',
+    type: 'event',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'newAllocationAmount', type: 'uint256' },
+      { internalType: 'address', name: 'carbonClass', type: 'address' },
+    ],
+    name: 'allocateK2',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'carbonClass', type: 'address' },
+          { internalType: 'uint256', name: 'amount', type: 'uint256' },
+        ],
+        internalType: 'struct IK2StakingFacet.AllocationInfo[]',
+        name: 'allocations',
+        type: 'tuple[]',
+      },
+    ],
+    name: 'batchAllocateK2',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'carbonClass', type: 'address' },
+          { internalType: 'uint256', name: 'amount', type: 'uint256' },
+        ],
+        internalType: 'struct IK2StakingFacet.AllocationInfo[]',
+        name: 'allocations',
+        type: 'tuple[]',
+      },
+    ],
+    name: 'batchDeallocateK2',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'claimK2',
+    outputs: [
+      { internalType: 'uint256', name: 'claimAmount', type: 'uint256' },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'user_', type: 'address' }],
+    name: 'claimK2For',
+    outputs: [
+      { internalType: 'uint256', name: 'claimAmount', type: 'uint256' },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'unstakeAmount', type: 'uint256' },
+      { internalType: 'address', name: 'carbonClass', type: 'address' },
+    ],
+    name: 'deallocateK2',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'carbonClass', type: 'address' }],
+    name: 'getK2AllocatedForCarbonClass',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'user', type: 'address' }],
+    name: 'getK2LockInfo',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'unlockedPrincipal',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'escrowedPrincipal',
+            type: 'uint256',
+          },
+          { internalType: 'uint256', name: 'claimEscrow', type: 'uint256' },
+          { internalType: 'uint256', name: 'startTimestamp', type: 'uint256' },
+          { internalType: 'uint256', name: 'claimTimestamp', type: 'uint256' },
+          { internalType: 'uint256', name: 'totalAllocated', type: 'uint256' },
+          {
+            internalType: 'enum IK2StakingFacet.K2LockStatus',
+            name: 'status',
+            type: 'uint8',
+          },
+        ],
+        internalType: 'struct IK2StakingFacet.K2LockView',
+        name: 'lock',
+        type: 'tuple',
+      },
+      {
+        components: [
+          { internalType: 'address', name: 'carbonClass', type: 'address' },
+          { internalType: 'uint256', name: 'amount', type: 'uint256' },
+        ],
+        internalType: 'struct IK2StakingFacet.AllocationInfo[]',
+        name: 'allocations',
+        type: 'tuple[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'user', type: 'address' }],
+    name: 'getK2LockedPrincipalLockStatus',
+    outputs: [
+      { internalType: 'uint256', name: 'unlockedPrincipal', type: 'uint256' },
+      { internalType: 'uint256', name: 'escrowedPrincipal', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'user', type: 'address' }],
+    name: 'getK2LockedTotalPrincipal',
+    outputs: [
+      { internalType: 'uint256', name: 'totalPrincipal', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'user', type: 'address' }],
+    name: 'getRawK2LockInfo',
+    outputs: [
+      { internalType: 'uint256', name: 'lockId', type: 'uint256' },
+      { internalType: 'uint256', name: 'unlockedPrincipal', type: 'uint256' },
+      {
+        components: [
+          { internalType: 'uint128', name: 'amount', type: 'uint128' },
+          { internalType: 'uint128', name: 'unlockTimestamp', type: 'uint128' },
+        ],
+        internalType: 'struct IK2StakingFacet.EscrowedPrincipalInfo[2]',
+        name: 'escrowedPrincipalInfo',
+        type: 'tuple[2]',
+      },
+      { internalType: 'uint256', name: 'claimEscrow', type: 'uint256' },
+      { internalType: 'uint128', name: 'startTimestamp', type: 'uint128' },
+      { internalType: 'uint128', name: 'claimTimestamp', type: 'uint128' },
+      { internalType: 'uint256', name: 'totalAllocated', type: 'uint256' },
+      {
+        internalType: 'enum IK2StakingFacet.K2LockStatus',
+        name: 'status',
+        type: 'uint8',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getTotalK2Allocations',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getTotalK2Staked',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'amount', type: 'uint256' }],
+    name: 'lockK2',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'address', name: 'user_', type: 'address' },
+    ],
+    name: 'lockK2For',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'address', name: 'user', type: 'address' },
+      { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      { internalType: 'uint8', name: 'v', type: 'uint8' },
+      { internalType: 'bytes32', name: 'r', type: 'bytes32' },
+      { internalType: 'bytes32', name: 's', type: 'bytes32' },
+    ],
+    name: 'lockK2ForWithPermit',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'uint256', name: 'deadline', type: 'uint256' },
+      { internalType: 'uint8', name: 'v', type: 'uint8' },
+      { internalType: 'bytes32', name: 'r', type: 'bytes32' },
+      { internalType: 'bytes32', name: 's', type: 'bytes32' },
+    ],
+    name: 'lockK2WithPermit',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
+      { internalType: 'address', name: 'fromCarbonClass', type: 'address' },
+      { internalType: 'address', name: 'toCarbonClass', type: 'address' },
+    ],
+    name: 'reallocateK2',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'amount', type: 'uint256' }],
+    name: 'unlockK2',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [{ internalType: 'address', name: 'lpToken', type: 'address' }],
@@ -1465,7 +1679,6 @@ const abi = [
     name: 'InvalidRange',
     type: 'error',
   },
-  { inputs: [], name: 'NotAuthorized', type: 'error' },
   { inputs: [], name: 'PairAlreadyRegistered', type: 'error' },
   {
     inputs: [{ internalType: 'uint256', name: 'rangeSize', type: 'uint256' }],
@@ -1474,7 +1687,6 @@ const abi = [
   },
   { inputs: [], name: 'SystemPaused', type: 'error' },
   { inputs: [], name: 'TokenMismatch', type: 'error' },
-  { inputs: [], name: 'ZeroAddress', type: 'error' },
   {
     anonymous: false,
     inputs: [
@@ -1806,6 +2018,207 @@ const abi = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: false, internalType: 'bool', name: 'isPaused', type: 'bool' },
+    ],
+    name: 'K2StakingPauseStatusChanged',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: false, internalType: 'bool', name: 'isPaused', type: 'bool' },
+    ],
+    name: 'KvcmStakingPauseStatusChanged',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: false, internalType: 'bool', name: 'isPaused', type: 'bool' },
+    ],
+    name: 'LpStakingPauseStatusChanged',
+    type: 'event',
+  },
+  {
+    inputs: [],
+    name: 'getSystemPauseConfig',
+    outputs: [
+      { internalType: 'bool', name: 'systemPaused', type: 'bool' },
+      { internalType: 'bool', name: 'kvcmStakingPaused', type: 'bool' },
+      { internalType: 'bool', name: 'k2StakingPaused', type: 'bool' },
+      { internalType: 'bool', name: 'lpStakingPaused', type: 'bool' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'isSystemPaused',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'pauseK2Staking',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'pauseKvcmStaking',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'pauseLpStaking',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'pauseSystem',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'unpauseK2Staking',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'unpauseKvcmStaking',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'unpauseLpStaking',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'unpauseSystem',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'bytes4', name: '_functionSelector', type: 'bytes4' },
+    ],
+    name: 'facetAddress',
+    outputs: [
+      { internalType: 'address', name: 'facetAddress_', type: 'address' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'facetAddresses',
+    outputs: [
+      { internalType: 'address[]', name: 'facetAddresses_', type: 'address[]' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_facet', type: 'address' }],
+    name: 'facetFunctionSelectors',
+    outputs: [
+      {
+        internalType: 'bytes4[]',
+        name: 'facetFunctionSelectors_',
+        type: 'bytes4[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'facets',
+    outputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'facetAddress', type: 'address' },
+          {
+            internalType: 'bytes4[]',
+            name: 'functionSelectors',
+            type: 'bytes4[]',
+          },
+        ],
+        internalType: 'struct IDiamondLoupe.Facet[]',
+        name: 'facets_',
+        type: 'tuple[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'owner',
+    outputs: [{ internalType: 'address', name: 'owner_', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_newOwner', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'implementation', type: 'address' },
+      { internalType: 'bytes', name: '_data', type: 'bytes' },
+    ],
+    stateMutability: 'payable',
+    type: 'constructor',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'target', type: 'address' }],
+    name: 'AddressEmptyCode',
+    type: 'error',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'implementation', type: 'address' },
+    ],
+    name: 'ERC1967InvalidImplementation',
+    type: 'error',
+  },
+  { inputs: [], name: 'ERC1967NonPayable', type: 'error' },
+  { inputs: [], name: 'FailedCall', type: 'error' },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'implementation',
+        type: 'address',
+      },
+    ],
+    name: 'Upgraded',
+    type: 'event',
+  },
 ] as const;
-
 export default abi;

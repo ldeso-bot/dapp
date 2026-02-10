@@ -10,7 +10,8 @@
     "knip": "knip --reporter=markdown --exclude=binaries --exclude=dependencies",
     "tsc": "tsc",
     "codegen": "graphql-codegen --config src/scripts/codegen/codegen.ts",
-    "pools:show": "tsx src/scripts/showKlimaPools.ts"
+    "pools:show": "tsx src/scripts/showKlimaPools.ts",
+    "build:abis": "tsx src/scripts/build-abis/build-diamond-abis.ts"
   },
   "dependencies": {
     "@formo/analytics": "^1.27.0",
