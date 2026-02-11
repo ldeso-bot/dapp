@@ -9,17 +9,10 @@ import {
   allocationStats,
 } from '../allocate.constants';
 
-type Props = {
-  onStartAllocating?: () => void;
-};
-
-export const AllocationEmptyState = ({ onStartAllocating }: Props) => {
+export const AllocationEmptyState = () => {
   const emptyStateButtonConfig = useEmptyStateButton({
-    onStartAction: onStartAllocating,
-    disconnectedDescription: 'View and manage your allocations.',
-    noLocksDescription:
-      'Lock kVCM or K2 tokens in positions before you can allocate.',
-    hasLocksActionText: 'Start Allocating',
+    description: 'View and manage your allocations.',
+    onClick: (openConnectModal) => openConnectModal(),
   });
 
   return (

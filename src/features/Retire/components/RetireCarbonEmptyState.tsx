@@ -14,20 +14,22 @@ import {
 } from '../retire.constants';
 
 export const RetireCarbonEmptyState = () => {
-  
   const { address } = useAccount();
-  
-  const emptyStateButtonConfig: CtaConfig = !address ? {
-    text: 'Connect Wallet to Start',
-    icon: WalletIcon,
-    description: 'You choose the credits and set the beneficiary details.',
-    onClick: (openConnectModal) => openConnectModal(),
-  } : {
-    text: 'Get kVCM',
-    icon: DollarIcon,
-    description: 'Acquire kVCM tokens to offset emissions and retire credits.',
-    href:BUY_KVCM_URL
-  };
+
+  const emptyStateButtonConfig: CtaConfig = !address
+    ? {
+        text: 'Connect wallet to start',
+        icon: WalletIcon,
+        description: 'You choose the credits and set the beneficiary details.',
+        onClick: (openConnectModal) => openConnectModal(),
+      }
+    : {
+        text: 'Get kVCM',
+        icon: DollarIcon,
+        description:
+          'Acquire kVCM tokens to offset emissions and retire credits.',
+        href: BUY_KVCM_URL,
+      };
 
   return (
     <EmptyState

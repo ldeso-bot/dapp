@@ -13,10 +13,8 @@ import { OnboardingContainer } from '../../shared/OnboardingContainer';
 
 export const K2Onboarding = () => {
   const emptyStateButtonConfig = useEmptyStateButton({
-    onStartAction: () => {},
-    disconnectedDescription: 'View and manage your K2 locks.',
-    noLocksDescription: 'Acquire K2 tokens to start earning rewards.',
-    hasLocksActionText: 'Deposit K2',
+    description: 'View and manage your K2 deposits.',
+    onClick: (openConnectModal) => openConnectModal(),
   });
 
   return (

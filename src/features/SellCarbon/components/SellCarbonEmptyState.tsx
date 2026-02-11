@@ -12,7 +12,7 @@ import {
 
 export const SellCarbonEmptyState = () => {
   const emptyStateButtonConfig: CtaConfig = {
-    text: 'Connect Wallet to Start',
+    text: 'Connect wallet to start',
     icon: WalletIcon,
     description: 'Fair, transparent pricing.',
     onClick: (openConnectModal) => openConnectModal(),

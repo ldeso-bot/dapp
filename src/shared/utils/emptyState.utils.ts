@@ -9,7 +9,7 @@ export type CtaConfig = {
   description?: string | ReactNode;
   className?: string;
   href?: string;
-} ;
+};
 
 export type FlowItemProps = {
   icon: React.ComponentType<{ className?: string }>;
@@ -61,8 +61,6 @@ export type EmptyStateProps = {
   primaryColor?: string;
   customCalloutSection?: ReactNode;
 };
-
-export type WalletState = 'disconnected' | 'connected-no-locks' | 'has-locks';
 
 const KLIMA_DOCS_URL = 'https://docs.klimaprotocol.com/';
 

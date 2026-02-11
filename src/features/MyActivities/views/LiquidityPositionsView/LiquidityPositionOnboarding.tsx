@@ -12,11 +12,8 @@ import { OnboardingContainer } from '../../shared/OnboardingContainer';
 
 export const LiquidityPositionOnboarding = () => {
   const emptyStateButtonConfig = useEmptyStateButton({
-    onStartAction: () => {},
-    disconnectedDescription: 'View and manage your liquidity positions.',
-    noLocksDescription:
-      'Provide liquidity on the DEX to get LP tokens, then stake here.',
-    hasLocksActionText: 'Start Selling',
+    description: 'View and manage your liquidity positions.',
+    onClick: (openConnectModal) => openConnectModal(),
   });
 
   return (

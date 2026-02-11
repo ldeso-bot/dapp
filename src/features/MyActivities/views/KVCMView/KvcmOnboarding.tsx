@@ -13,10 +13,8 @@ import { OnboardingContainer } from '../../shared/OnboardingContainer';
 
 export const KvcmOnboarding = () => {
   const emptyStateButtonConfig = useEmptyStateButton({
-    onStartAction: () => {},
-    disconnectedDescription: 'View and manage your kVCM locks.',
-    noLocksDescription: 'Acquire kVCM tokens to create locks.',
-    hasLocksActionText: 'Start Selling',
+    description: 'View and manage your kVCM locks.',
+    onClick: (openConnectModal) => openConnectModal(),
   });
 
   return (

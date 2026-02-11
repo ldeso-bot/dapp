@@ -14,12 +14,11 @@ type Props = {
 };
 
 export const OverviewEmptyState = ({ onStartSelling }: Props) => {
+  void onStartSelling;
+
   const emptyStateButtonConfig = useEmptyStateButton({
-    onStartAction: onStartSelling,
-    disconnectedDescription: 'View and manage your positions.',
-    noLocksDescription:
-      'Lock kVCM or K2 tokens in positions before you can allocate.',
-    hasLocksActionText: 'Start Selling',
+    description: 'View and manage your positions.',
+    onClick: (openConnectModal) => openConnectModal(),
   });
 
   return (
