@@ -3,35 +3,35 @@
     "chainId": 84532,
     "etherscanApiUrl": "https://api.etherscan.io/v2/api",
     "rewardManager": {
-      "diamond": "0x40CFF01992B0768a205001df8C0c0930967a3C3b",
+      "diamond": "0x5CB8440D322Aecd648d010c27dB0AF2C4067d8D8",
       "facets": {
-        "diamondCut": "0x3c60Aea78637983c4D1ADe87016B9A879eFC813e",
-        "riskyYield": "0xD64cEd644DB0B29427d23Fa0845EB477A7d4f2D4",
-        "k2Yield": "0x84A0840A5A2889a66c69B56Fa3Efbeb07AE68797",
-        "k2YieldCurve": "0xE19AEcAaf532b482580a75F0bbe936dB4B417C90",
-        "rmLpRewards": "0x69842B2a01C031d42d9517F701E2C10c017F67bf",
-        "k2StakersRewards": "0x1E6CCEd00e201083e2Bf26751dfAc408E4Aa06F4",
-        "rmConfig": "0x13910F146736714e55FbA47733d9E245b6A7c65e",
-        "kvcmIncentivesCurve": "0xb4C9A9D8d70E3e88d083efeCf9BB0974e66742ce",
-        "rollUpdate": "0x3CDEF343cF0a739eB138931126aFcAc0075Bb72F",
-        "rewardManagerView": "0x4aE0aDb13B75AaBD028BF2B8A389CA67cf8125A6",
-        "rmKvcmStakersRewards": "0xA6b488852F9766D8B52522CC01ff475dD380761c",
-        "ownership": "0x1528d373815C11Ceabd3f8464C966c502D1F5DfE"
+        "diamondCut": "0x1AD9f149519DEC57c30a05a16F5F2ECf6C18B5Bd",
+        "riskyYield": "0x95A628b2f6DB4e49acaBB6DB959f5CD5C4fD678e",
+        "k2Yield": "0x107B28B9FE797df65f62f6CD85226C863a72731b",
+        "k2YieldCurve": "0xAc2eeEa1B19621943eF5d8aEa705A8F2616364e5",
+        "rmLpRewards": "0xB40712Fcf72eAe8f379b8d0D12caB17c60b0977A",
+        "k2StakersRewards": "0xe243f77D4F7Beafc02E60225e75B53630432697F",
+        "rmConfig": "0x828D031EE0B192B206E51A74cbE4300bDB6b22e9",
+        "kvcmIncentivesCurve": "0xb10216CC491955aaf76667053213A797D0f60D66",
+        "rollUpdate": "0x02FD5741126Aa5555e338a66C5F73C7e52294D35",
+        "rewardManagerView": "0x1A04Ff42C92cA52cd182d340Af48FfCE39d2A021",
+        "rmKvcmStakersRewards": "0x49C0b046eD982D8f5903391c3aBC7C6461D7C3B4",
+        "ownership": "0x700f5FC6cB654a0f05aaC748f94d36636FbDfEFa"
       }
     },
     "stakingManager": {
-      "diamond": "0x659e2f31Ea9C5903D7A01a7290C78E10C6341338",
+      "diamond": "0xB288c457083B5Cb7C5008CF9e135B370B2206f8B",
       "facets": {
-        "diamondCut": "0x725156d506E6Bd169A5297c6a001249fd6af4784",
-        "smConfig": "0x14B6dDCac9012691AaB165697f6b7e30d97DB1f9",
-        "smView": "0x1dB58E9858B01C03911d4b49fE76CBa35eAb8f37",
-        "kvcmStaking": "0x467cbEE20AB0742127647962Cf4EbAe4629977BB",
-        "k2Staking": "0xac943d1Aa8C2aE7A668ebA7cA1Bde7AC4F49F838",
-        "kvcmLpStaking": "0x928dCEbAB24dC76D37264E74CC3cfAE98B70bc0E",
-        "smPause": "0x4866f6515883C224b85BF8C675D7387A1A2D2111",
-        "diamondLoupe": "0x2A7A31124dDA72A7A01f891e0dc6F1385051e5ef",
-        "ownership": "0xBCCeE9263dACF5EdAC5B118eaEB65C861beF89e7",
-        "kvcmLockNft": "0xfA6509f171F7C9E4526431C700103d0BBaC16dfC"
+        "diamondCut": "0xbBF89DC1fE6746e44810f0b60438bf2d49e772f4",
+        "smConfig": "0xCD7297308b8aFdd821d2770f2987e5C0691B925C",
+        "smView": "0xa17909b9785807B0503c15feccDaE12Eb6De76d7",
+        "kvcmStaking": "0x8d3fb973dCeE0D3954a3e789fC33bc34239cc0a1",
+        "k2Staking": "0x2Bb8ff80F2f228d156dB8FC9f7c3bE71D5138797",
+        "kvcmLpStaking": "0xBE5C11650555EDd5a01073eC8777BFc07cbcd07e",
+        "smPause": "0x03F69BE7f86E16bA9F4E96d341D8a4AF51671Cb8",
+        "diamondLoupe": "0xc777a8554f19C35E9985B403290E5672342B15A5",
+        "ownership": "0x6c5D49F78FE79336BBAeb6dEe3ED24393F6AD14b",
+        "kvcmLockNft": "0x4dd51d90bba0Be4C4A41DB72Ecf73eC41a393678"
       }
     }
   }

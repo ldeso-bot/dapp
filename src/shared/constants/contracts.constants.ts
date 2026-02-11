@@ -21,12 +21,12 @@ const contracts = {
   },
   StakingManagerDiamond: {
     [base.id]: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // TODO: add mainnet address
-    [baseSepolia.id]: '0x659e2f31Ea9C5903D7A01a7290C78E10C6341338',
+    [baseSepolia.id]: '0xB288c457083B5Cb7C5008CF9e135B370B2206f8B',
     abi: StakingManagerDiamond,
   },
   RewardManagerDiamond: {
     [base.id]: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // TODO: add mainnet address
-    [baseSepolia.id]: '0x40CFF01992B0768a205001df8C0c0930967a3C3b',
+    [baseSepolia.id]: '0x5CB8440D322Aecd648d010c27dB0AF2C4067d8D8',
     abi: RewardManagerDiamond,
   },
   AAMDiamond: {
