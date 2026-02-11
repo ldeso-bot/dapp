@@ -16,7 +16,7 @@ export const OnboardingContainer = (props: Props) => {
         <AnimatedLines />
         <div className="relative pb-12 max-w-[90rem] mx-auto">
           <div className="flex items-center gap-2 mb-3">
-            <h1 className="text-[4rem] font-bold leading-normal tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-[#2b2b2b] to-[#00994a]">
+            <h1 className="text-[4rem] font-bold leading-normal tracking-tight bg-clip-text text-[#2B2B2B]">
               {title}
             </h1>
           </div>

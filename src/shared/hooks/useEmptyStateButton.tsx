@@ -60,7 +60,7 @@ export const useEmptyStateButton = ({
 
     switch (walletState) {
       case 'disconnected':
-        text = 'Connect Wallet to Start';
+        text = 'Connect wallet to start';
         icon = WalletIcon;
         description = disconnectedDescription;
         break;

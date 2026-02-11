@@ -53,13 +53,13 @@ export const retireCarbonFlowItems = [
   createFlowItem(KvcmIcon, 'Your kVCM', 'kVCM tokens in your wallet.', 0),
   createFlowItem(
     BadgeIcon,
-    'Retire Credits',
+    'Retire credits',
     'Select and retire carbon credits.',
     1
   ),
   createFlowItem(
     GlobeIcon,
-    'Climate Impact',
+    'Climate impact',
     'Verifiable proof of your contribution.',
     2
   ),
@@ -81,25 +81,25 @@ export const retireCarbonStats: StatItem[] = [
 ];
 
 export const retireCarbonInfoCards = {
-  title: 'Why Retire with Klima?',
+  title: 'Why retire with Klima?',
   description:
     'Retire carbon credits to permanently offset emissions and receive verifiable proof of your climate action.',
   cards: [
     {
       icon: BadgeIcon,
-      title: 'Blockchain-Verified',
+      title: 'Blockchain-verified',
       description:
         'Receive a proof-of-retirement certificate that is publicly verifiable and blockchain-secured via Carbonmark.',
     },
     {
       icon: DocIcon,
-      title: 'Public Beneficiary Details',
+      title: 'Public beneficiary details',
       description:
         'Connect the certificate to yourself or your enterprise by publishing public beneficiary details.',
     },
     {
       icon: CarbonCreditsIcon,
-      title: 'Diverse Selection',
+      title: 'Diverse selection',
       description:
         'Choose from a wide selection of carbon credits, vintages, and methodologies.',
     },

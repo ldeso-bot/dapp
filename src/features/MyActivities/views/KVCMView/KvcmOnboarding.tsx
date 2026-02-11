@@ -25,13 +25,13 @@ export const KvcmOnboarding = () => {
       description="Lock kVCM for a fixed term to receive incentives when the term ends. Locked kVCM can also be allocated to carbon classes to influence protocol pricing. Incentives (K2) accrue on locked kVCM and are claimable anytime."
     >
       <NoPositionsHeader
-        title="No Active Locks"
+        title="No active locks"
         icon={<LockIcon className="w-10 h-10 fill-[#00994a]" />}
         description="Create your first kVCM lock to participate in carbon class allocation and receive incentives."
       />
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:w-2xl w-full mx-auto my-4">
         <NoPositionsInfoCard
-          title="Fixed Terms"
+          title="Fixed terms"
           icon={<CalendarIcon className="w-5 h-5 fill-[#00994a]" />}
           description="Choose your lock duration"
         />
@@ -41,7 +41,7 @@ export const KvcmOnboarding = () => {
           description="kVCM + K2 incentives"
         />
         <NoPositionsInfoCard
-          title="Allocate to Carbon"
+          title="Allocate to carbon"
           icon={<AllocateIcon className="w-5 h-5 fill-[#00994a]" />}
           description="Influence carbon class pricing"
         />

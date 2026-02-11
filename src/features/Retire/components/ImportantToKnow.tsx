@@ -15,7 +15,7 @@ export const ImportantToKnow = () => (
           </div>
           <div>
             <h3 className="text-4xl font-bold mb-2 group-hover:text-[#00994a] transition-colors">
-              Important to Know
+              Important to know
             </h3>
             <p className="text-2xl text-gray-600 leading-relaxed">
               Before you retire, hereʼs what to expect.

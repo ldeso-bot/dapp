@@ -32,13 +32,13 @@ export type SellCarbonFields = {
 export const sellCarbonFlowItems = [
   createFlowItem(
     CarbonCreditsIcon,
-    'Your Carbon Credits',
+    'Your carbon credits',
     'Carbon credits in your wallet.',
     0
   ),
   createFlowItem(
     SwapHorizontalIcon,
-    'Supply to Protocol',
+    'Supply to protocol',
     'Choose class and amount.',
     1
   ),
@@ -51,25 +51,25 @@ export const sellCarbonFlowItems = [
 ];
 
 export const sellCarbonInfoCards = {
-  title: 'Why Supply to Klima Protocol?',
+  title: 'Why supply to Klima Protocol?',
   description:
     'Convert your carbon credits into kVCM with instant liquidity and transparent pricing.',
   cards: [
     {
       icon: CarbonCreditsIcon,
-      title: 'Carbon Classes',
+      title: 'Carbon classes',
       description:
         'Supply into curated carbon credit baskets. Each class represents specific credit types like Biochar, Avoided Deforestation, or Ocean Alkalinity Enhancement.',
     },
     {
       icon: FairPricingIcon,
-      title: 'Fair Pricing',
+      title: 'Fair pricing',
       description:
         'Prices reflect real market demand. Rates are transparent and publicly visible before you supply your credits to Klima Protocol.',
     },
     {
       icon: InstantLiquidityIcon,
-      title: 'Instant Liquidity',
+      title: 'Instant liquidity',
       description:
         'Exchange your carbon credits directly with the protocol. No order books, no waiting. Receive kVCM immediately.',
     },
@@ -93,7 +93,7 @@ export const sellCarbonStats: StatItem[] = [
 ];
 
 export const sellCarbonDocsCallout: DocsCalloutProps = {
-  title: 'Learn About Carbon Classes & Governance',
+  title: 'Learn about carbon classes & governance',
   description:
     'Explore documentation on carbon class whitelisting, stakeholder governance, and how pricing is determined across the Klima Protocol ecosystem.',
   ...DEFAULT_DOCS_CALLOUT,

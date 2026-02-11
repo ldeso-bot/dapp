@@ -2,8 +2,8 @@
 
 import { BadgeIcon } from '@/shared/components/Svg/BadgeIcon';
 import { CarbonCreditsIcon } from '@/shared/components/Svg/CarbonCreditsIcon';
-import { DocIcon } from '@/shared/components/Svg/DocIcon';
 import { GlobeIcon } from '@/shared/components/Svg/GlobeIcon';
+import { SaveAltIcon } from '@/shared/components/Svg/SaveAltIcon';
 import { SwapHorizontalIcon } from '@/shared/components/Svg/SwapHorizontalIcon';
 import {
   createFlowItem,
@@ -49,7 +49,7 @@ export const overviewCarbonStats: StatItem[] = [
 ];
 
 export const overviewInfoCards = {
-  title: 'How It Works',
+  title: 'How it works',
   description: 'Three ways to use kVCM and K2 inside Klima.',
   showSteps: true,
   cards: [
@@ -64,7 +64,7 @@ export const overviewInfoCards = {
       },
     },
     {
-      icon: DocIcon,
+      icon: SaveAltIcon,
       title: 'Deposit K2',
       description:
         'Deposit K2 to allocate your tokens to carbon classes and receive incentives.',
@@ -75,7 +75,7 @@ export const overviewInfoCards = {
     },
     {
       icon: CarbonCreditsIcon,
-      title: 'Stake Liquidity',
+      title: 'Stake liquidity',
       description:
         'Stake liquidity tokens into Klima liquidity pools to support trading receive incentives.',
       cta: {
@@ -87,7 +87,7 @@ export const overviewInfoCards = {
 };
 
 export const overviewDocsCallout: DocsCalloutProps = {
-  title: 'Dive Deeper into Klima Protocol',
+  title: 'Dive deeper into Klima Protocol',
   description:
     'Explore comprehensive documentation covering user handbooks, governance, carbon market mechanics, and technical architecture design.',
   ...DEFAULT_DOCS_CALLOUT,
