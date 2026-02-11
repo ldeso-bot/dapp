@@ -96,6 +96,15 @@ export const createFlowItem = (
   index: number
 ): FlowItemProps => {
   const style = FLOW_ITEM_STYLES[index % FLOW_ITEM_STYLES.length];
+  if (!style) {
+    return {
+      icon,
+      label,
+      sublabel,
+      bgColor: 'bg-secondary/20',
+      glowColor: 'hsl(0 0% 98.5% / 0.18)',
+    };
+  }
   return {
     icon,
     label,

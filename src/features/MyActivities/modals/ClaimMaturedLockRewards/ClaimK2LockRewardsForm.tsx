@@ -37,12 +37,13 @@ const ClaimK2LockRewardsForm = ({ lock }: Props) => {
 
   const claimK2 =
     useCallback(async (): Promise<ExecuteWithValidationResult> => {
-      if (!stakingManagerContract) {
+      const claimK2Fn = stakingManagerContract?.write.claimK2;
+      if (!claimK2Fn) {
         return exitWithErrorMessage('Contract is not ready');
       }
 
       const transaction = () =>
-        stakingManagerContract.write.claimK2([], {
+        claimK2Fn([], {
           chainId,
         });
 

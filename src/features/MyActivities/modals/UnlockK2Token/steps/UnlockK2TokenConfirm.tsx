@@ -48,7 +48,8 @@ const UnlockK2TokenConfirm: FormFlowStep<UnlockTokenFields> = ({
   const unlockK2 =
     useCallback(async (): Promise<ExecuteWithValidationResult> => {
       try {
-        if (!stakingManagerContract) {
+        const unlockK2Fn = stakingManagerContract?.write.unlockK2;
+        if (!unlockK2Fn) {
           return exitWithErrorMessage('Contract is not ready');
         }
         if (!lock) {
@@ -63,7 +64,7 @@ const UnlockK2TokenConfirm: FormFlowStep<UnlockTokenFields> = ({
         const amountWei = parseAmount(amount, tokens.k2.decimals);
 
         const transaction = () =>
-          stakingManagerContract.write.unlockK2([amountWei], {
+          unlockK2Fn([amountWei], {
             chainId,
           });
 

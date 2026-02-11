@@ -56,7 +56,8 @@ const ClaimKvcmLockRewardsForm = ({ lock }: Props) => {
 
   const unlockKvcm =
     useCallback(async (): Promise<ExecuteWithValidationResult> => {
-      if (!stakingManagerContract) {
+      const unlockKvcmFn = stakingManagerContract?.write.unlockKvcm;
+      if (!unlockKvcmFn) {
         return exitWithErrorMessage('Contract is not ready');
       }
       if (!lock?.contractLockId) {
@@ -64,12 +65,9 @@ const ClaimKvcmLockRewardsForm = ({ lock }: Props) => {
       }
 
       const transaction = () =>
-        stakingManagerContract.write.unlockKvcm(
-          [BigInt(lock?.contractLockId)],
-          {
-            chainId,
-          }
-        );
+        unlockKvcmFn([BigInt(lock?.contractLockId)], {
+          chainId,
+        });
 
       return executeWithValidation(transaction);
     }, [stakingManagerContract, lock, executeWithValidation, chainId]);

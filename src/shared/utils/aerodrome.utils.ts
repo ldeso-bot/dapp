@@ -57,8 +57,11 @@ export const getKlimaProtocolPools = async (): Promise<KlimaProtocolPools> => {
   const publicClient = getPublicClient(chainId);
   const contract = getContract(chainId, 'VelodromeSugar', publicClient);
 
+  const countFn = contract.read.count;
+  if (!countFn) throw new Error('count function not found on contract');
+
   // Get total count of pools
-  const totalCount = (await contract.read.count()) as bigint;
+  const totalCount = (await countFn()) as bigint;
   const totalPools = Number(totalCount);
 
   // Fetch pools in batches of 100 - Sequentially to avoid rate limiting
@@ -71,7 +74,10 @@ export const getKlimaProtocolPools = async (): Promise<KlimaProtocolPools> => {
     const offset = i * batchSize;
     const limit = Math.min(batchSize, totalPools - offset);
 
-    const pools = (await contract.read.all([
+    const allFn = contract.read.all;
+    if (!allFn) throw new Error('all function not found on contract');
+
+    const pools = (await allFn([
       BigInt(limit),
       BigInt(offset),
       0n,
@@ -113,7 +119,10 @@ export const getAerodromePoolByIndex = async (
   const publicClient = getPublicClient(chainId);
   const contract = getContract(chainId, 'VelodromeSugar', publicClient);
 
-  const pool = (await contract.read.all([1n, BigInt(index), 0n])) as Pool[];
+  const allFn = contract.read.all;
+  if (!allFn) return undefined;
+
+  const pool = (await allFn([1n, BigInt(index), 0n])) as Pool[];
 
   return pool[0];
 };

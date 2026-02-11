@@ -63,7 +63,7 @@ export const DurationSelector = <T extends DurationFormFields>({
       lockableMaturities[lockableMaturities.length - 1] ?? null;
     const longestDays = lastMaturity
       ? getDaysFromTimestamp(lastMaturity.maturationTimestamp, true)
-      : PRESET_DURATIONS[PRESET_DURATIONS.length - 1].days;
+      : (PRESET_DURATIONS[PRESET_DURATIONS.length - 1]?.days ?? 0);
 
     return PRESET_DURATIONS.map((preset, index) => {
       const isFirst = index === 0;

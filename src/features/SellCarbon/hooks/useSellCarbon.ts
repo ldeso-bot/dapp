@@ -95,9 +95,14 @@ export const useSellCarbon = (params: SellCarbonParams) => {
           ] as const,
         };
 
+        const swapCarbonCreditForKvcmFn = contract?.write.swapCarbonCreditForKvcm;
+        if (!swapCarbonCreditForKvcmFn) {
+          return exitWithErrorMessage('Contract is not ready');
+        }
+
         // Call the contract
         const transaction = () =>
-          contract.write.swapCarbonCreditForKvcm([swapParams], {
+          swapCarbonCreditForKvcmFn([swapParams], {
             chain,
           });
 

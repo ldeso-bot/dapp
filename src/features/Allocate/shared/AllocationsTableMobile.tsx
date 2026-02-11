@@ -118,6 +118,7 @@ const CarbonClassGroupMobile: FC<CarbonClassGroupMobileProps> = (props) => {
               0
             );
             const lockAllocation = lockAllocations[0];
+            if (!lockAllocation) return null;
             const lockDate =
               lockAllocation.lockedUntil &&
               formatDateDDMMYYYY(lockAllocation.lockedUntil);
@@ -207,6 +208,7 @@ export const AllocationsTableMobile: FC<AllocationsCardProps> = (props) => {
           const totalAmountForClass =
             getTotalAllocatedForCarbonClass(allocations);
           const firstAllocation = allocations[0];
+          if (!firstAllocation) return null;
 
           return (
             <CarbonClassGroupMobile

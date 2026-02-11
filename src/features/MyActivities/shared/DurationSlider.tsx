@@ -44,9 +44,11 @@ export const DurationSlider = <T extends DurationFormFields>({
           if (currentIndex === -1) {
             currentIndex = maturityDays.reduce((closestIndex, days, index) => {
               const currentDiff = Math.abs(days - currentDuration);
-              const closestDiff = Math.abs(
-                maturityDays[closestIndex] - currentDuration
-              );
+              const closestMaturityDay = maturityDays[closestIndex];
+              const closestDiff =
+                closestMaturityDay !== undefined
+                  ? Math.abs(closestMaturityDay - currentDuration)
+                  : Infinity;
               return currentDiff < closestDiff ? index : closestIndex;
             }, 0);
           }
@@ -55,7 +57,9 @@ export const DurationSlider = <T extends DurationFormFields>({
           const maxIndex = lockableMaturities.length - 1;
 
           const handleValueChange = (values: number[]) => {
-            const newIndex = Math.round(values[0]);
+            const val = values[0];
+            if (val === undefined) return;
+            const newIndex = Math.round(val);
             const clampedIndex = Math.max(
               minIndex,
               Math.min(maxIndex, newIndex)

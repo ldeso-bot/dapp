@@ -31,7 +31,8 @@ export const useAllocateKvcm = () => {
   const allocate = useCallback(
     async (params: AllocateKvcmParams): Promise<{ error: string | null }> => {
       try {
-        if (!contract) {
+        const allocateKvcm = contract?.write.allocateKvcm;
+        if (!allocateKvcm) {
           return { error: 'Contract is not ready' };
         }
 
@@ -48,7 +49,7 @@ export const useAllocateKvcm = () => {
         }
 
         const executeTransaction = () =>
-          contract.write.allocateKvcm(
+          allocateKvcm(
             [
               BigInt(params.lockId),
               params.carbonClass as `0x${string}`,
@@ -69,7 +70,8 @@ export const useAllocateKvcm = () => {
   const deallocate = useCallback(
     async (params: DeallocateKvcmParams): Promise<{ error: string | null }> => {
       try {
-        if (!contract) {
+        const deallocateKvcm = contract?.write.deallocateKvcm;
+        if (!deallocateKvcm) {
           return { error: 'Contract is not ready' };
         }
 
@@ -86,7 +88,7 @@ export const useAllocateKvcm = () => {
         }
 
         const executeTransaction = () =>
-          contract.write.deallocateKvcm(
+          deallocateKvcm(
             [
               BigInt(params.lockId),
               params.carbonClass as `0x${string}`,

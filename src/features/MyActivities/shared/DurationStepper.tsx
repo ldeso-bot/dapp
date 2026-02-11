@@ -96,6 +96,7 @@ export const DurationStepper = <T extends DurationFormFields>({
           const handlePrevious = () => {
             if (hasPrevious) {
               const prevMaturity = lockableMaturities[currentIndex - 1];
+              if (!prevMaturity) return;
               const days = getDaysFromTimestamp(
                 prevMaturity.maturationTimestamp
               );
@@ -106,6 +107,7 @@ export const DurationStepper = <T extends DurationFormFields>({
           const handleNext = () => {
             if (hasNext) {
               const nextMaturity = lockableMaturities[currentIndex + 1];
+              if (!nextMaturity) return;
               const days = getDaysFromTimestamp(
                 nextMaturity.maturationTimestamp
               );

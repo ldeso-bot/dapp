@@ -28,10 +28,11 @@ export const getBalances = async (
   // Fetch USDC balance via RPC
   const usdcContract = getContract(chainId, 'USDC', publicClient);
   try {
-    const usdcBalance = (await usdcContract.read.balanceOf([
-      walletAddress,
-    ])) as bigint;
-    res.usdc = formatStringToNumber(usdcBalance, 6); // USDC has 6 decimals
+    const balanceOfFn = usdcContract.read.balanceOf;
+    if (balanceOfFn) {
+      const usdcBalance = (await balanceOfFn([walletAddress])) as bigint;
+      res.usdc = formatStringToNumber(usdcBalance, 6); // USDC has 6 decimals
+    }
   } catch (error) {
     console.error('❌ Error fetching USDC balance via RPC:', error);
   }

@@ -59,7 +59,7 @@ export const useRetireCarbonForm = (
   const selectedPaymentOption = usePaymentOption(paymentMethod);
 
   const inputTokenInfo = useContractInfo(
-    selectedPaymentOption.token.contractName
+    selectedPaymentOption?.token?.contractName ?? 'KVCM'
   );
   const retirementContractInfo = useContractInfo('RetirementAggregator');
 
@@ -86,7 +86,7 @@ export const useRetireCarbonForm = (
 
   const priceQuoted = formatStringToNumber(
     priceQuotedWei,
-    selectedPaymentOption.token.decimals
+    selectedPaymentOption?.token?.decimals ?? 18
   );
 
   // Check if selected credit symbol starts with PURO

@@ -109,6 +109,7 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
           ([carbonClass, allocations]: [string, Allocation[]]) => {
             const totalAmount = getTotalAllocatedForCarbonClass(allocations);
             const firstAllocation = allocations[0];
+            if (!firstAllocation) return null;
             return (
               <CarbonClassGroup
                 key={carbonClass}
@@ -270,6 +271,7 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
               0
             );
             const lockAllocation = lockAllocations[0];
+            if (!lockAllocation) return null;
             const lockDate = lockAllocation.lockedUntil
               ? formatTimestamp(lockAllocation.lockedUntil * 1000)
               : null;

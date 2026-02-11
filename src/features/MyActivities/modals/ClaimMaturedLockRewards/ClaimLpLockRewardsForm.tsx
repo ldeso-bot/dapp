@@ -44,7 +44,8 @@ const ClaimLpLockRewardsForm = ({ lock }: Props) => {
 
   const unlockLp =
     useCallback(async (): Promise<ExecuteWithValidationResult> => {
-      if (!stakingManagerContract) {
+      const unstakeLPFn = stakingManagerContract?.write.unstakeLP;
+      if (!unstakeLPFn) {
         return exitWithErrorMessage('Contract is not ready');
       }
       if (!lock?.contractLockId) {
@@ -52,12 +53,9 @@ const ClaimLpLockRewardsForm = ({ lock }: Props) => {
       }
 
       const transaction = () =>
-        stakingManagerContract.write.unstakeLP(
-          [lpTokenAddress, BigInt(lock?.maturityId)],
-          {
-            chainId,
-          }
-        );
+        unstakeLPFn([lpTokenAddress, BigInt(lock?.maturityId)], {
+          chainId,
+        });
 
       return executeWithValidation(transaction);
     }, [

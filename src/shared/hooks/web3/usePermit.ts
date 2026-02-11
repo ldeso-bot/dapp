@@ -41,19 +41,26 @@ export function usePermit(params: UsePermitParams) {
       const deadline = BigInt(Math.floor(Date.now() / 1000) + 60 * 60 * 24);
 
       // Get owner nonce from the token contract
-      const nonce = await tokenContract.read.nonces([owner]);
+      const noncesFn = tokenContract.read.nonces;
+      if (!noncesFn) throw new Error('nonces function not found on contract');
+      const nonce = await noncesFn([owner]);
 
       // Compute the EIP712 domain information.
       // TODO: This could be cached at the server level
       if (!tokenContract) throw new Error('Token contract is not ready');
-      const name = await tokenContract.read.name();
+      const nameFn = tokenContract.read.name;
+      if (!nameFn) throw new Error('name function not found on contract');
+      const name = await nameFn();
 
       // Try to get version, fallback to "1" if not available
       let version = '1';
       try {
-        const versionResult = await tokenContract.read.version();
-        if (isString(versionResult)) {
-          version = versionResult;
+        const versionFn = tokenContract.read.version;
+        if (versionFn) {
+          const versionResult = await versionFn();
+          if (isString(versionResult)) {
+            version = versionResult;
+          }
         }
       } catch (error) {
         console.warn('Using default version "1" for permit signature', error);

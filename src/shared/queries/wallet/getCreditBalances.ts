@@ -57,10 +57,12 @@ export const getCreditBalances = async (
 };
 
 const getMockCreditBalances = (): CreditBalance[] => {
+  const firstMockToken = mockTokens[0];
+  if (!firstMockToken) return [];
   return [
     {
       balance: 1000,
-      creditToken: mockTokens[0],
+      creditToken: firstMockToken,
       registeredClasses: [
         {
           name: 'Carbon Class 1',

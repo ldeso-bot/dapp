@@ -19,5 +19,8 @@ export default function Steps<T>({ components, data }: Props<T>) {
   const ActiveComponent = components[activeStep];
   const next = () => setActiveStep(activeStep + 1);
   const previous = () => setActiveStep(activeStep - 1);
+
+  if (!ActiveComponent) return null;
+
   return <ActiveComponent data={data} next={next} previous={previous} />;
 }

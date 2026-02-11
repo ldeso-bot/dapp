@@ -61,7 +61,7 @@ export const PayWithOptions = <T extends FieldValues>(props: Props<T>) => {
                 </label>
               ))}
             </div>
-            {selectedPaymentOption && (
+            {selectedPaymentOption && selectedPaymentOption.token && (
               <div className="flex gap-2">
                 <span className="font-medium">Available Balance:</span>
                 <span>

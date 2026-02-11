@@ -270,7 +270,8 @@ export const getLatestMidnightInfoDiffs = async (
         getTokenMetrics(sdk.chain),
       ]);
 
-      if (!midnightInfos || midnightInfos.length === 0) return {};
+      if (!midnightInfos || midnightInfos.length === 0 || !midnightInfos[0])
+        return {};
 
       // Filter to only include midnight infos for the latest midnight index
       const midnightIndex = midnightInfos[0].midnightIndex;

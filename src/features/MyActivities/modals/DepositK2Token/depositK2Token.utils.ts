@@ -53,13 +53,14 @@ export const useDepositK2Token = (params: { amount: bigint }) => {
 
   const deposit = useCallback(async () => {
     try {
-      if (!stakingContract || !chain) {
+      const lockK2WithPermit = stakingContract?.write.lockK2WithPermit;
+      if (!lockK2WithPermit || !chain) {
         throw new Error('Contract or chain not ready');
       }
       const signature = await getPermitSignature();
       const { deadline, r, s, v } = signature;
       const executeTransaction = () =>
-        stakingContract.write.lockK2WithPermit([amount, deadline, v, r, s], {
+        lockK2WithPermit([amount, deadline, v, r, s], {
           chain,
         });
       return await executeWithValidation(executeTransaction);

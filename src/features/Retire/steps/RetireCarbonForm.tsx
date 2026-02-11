@@ -50,7 +50,7 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
 
   const priceQuotedPerTonne = formatStringToNumber(
     priceQuotedForOneTonWei,
-    selectedPaymentOption?.token.decimals
+    selectedPaymentOption?.token?.decimals ?? 18
   );
 
   // Auto select the first carbon credit when selecting a carbon class
@@ -212,7 +212,7 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
               <div className="flex flex-col gap-2">
                 <div>Price per Tonne</div>
                 <div className="flex gap-2">
-                  {selectedPaymentOption?.token.icon(2)}
+                  {selectedPaymentOption?.token?.icon?.(2)}
                   <span>{priceQuotedPerTonne}</span>
                 </div>
               </div>
@@ -221,7 +221,7 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
               <div className="flex flex-col gap-2">
                 <div>Total</div>
                 <div className="flex gap-2">
-                  {selectedPaymentOption?.token.icon(2)}
+                  {selectedPaymentOption?.token?.icon?.(2)}
                   <span>{priceQuoted}</span>
                 </div>
               </div>

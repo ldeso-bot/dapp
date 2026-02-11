@@ -7,9 +7,10 @@ export const usePaymentOption = (id: string | undefined) => {
     paymentOptions[0];
 
   const { data: walletData } = useWalletData();
-  const balance = selectedPaymentOption.token.id
-    ? walletData?.balances[selectedPaymentOption.token.id]
-    : 0;
+  const balance =
+    selectedPaymentOption && selectedPaymentOption.token
+      ? walletData?.balances[selectedPaymentOption.token.id]
+      : 0;
   return {
     ...selectedPaymentOption,
     balance,

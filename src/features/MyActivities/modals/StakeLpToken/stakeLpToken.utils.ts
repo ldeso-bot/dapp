@@ -82,9 +82,10 @@ export const useStakeLpToken = (params: {
 
   useEffect(() => {
     const checkPairRegistration = async () => {
-      if (!finalLpAddress || !stakingContract || !chain) return;
+      const getLPStakingPairInfo = stakingContract?.read.getLPStakingPairInfo;
+      if (!finalLpAddress || !getLPStakingPairInfo || !chain) return;
       try {
-        const pairInfo = (await stakingContract.read.getLPStakingPairInfo([
+        const pairInfo = (await getLPStakingPairInfo([
           finalLpAddress,
         ])) as readonly [Address, Address, Address, boolean];
         setIsPairRegistered(pairInfo?.[3]);
@@ -132,7 +133,8 @@ export const useStakeLpToken = (params: {
 
   const stake = useCallback(async () => {
     try {
-      if (!stakingContract || !chain) {
+      const stakeLP = stakingContract?.write.stakeLP;
+      if (!stakeLP || !chain) {
         throw new Error('Contract or chain not ready');
       }
       if (!finalLpAddress) {
@@ -156,7 +158,7 @@ export const useStakeLpToken = (params: {
       }
 
       const executeTransaction = () =>
-        stakingContract.write.stakeLP([finalLpAddress, maturityId, amount], {
+        stakeLP([finalLpAddress, maturityId, amount], {
           chain,
         });
       return await executeWithValidation(executeTransaction);

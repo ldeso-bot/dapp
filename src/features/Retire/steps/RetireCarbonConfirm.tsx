@@ -76,7 +76,7 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
     amount: amountWei,
     carbonClassId: parsedForm.current?.carbonClass ?? '',
     inputTokenAddress: inputTokenInfo?.address ?? '',
-    inputTokenIdentifier: selectedPaymentOption.token.id,
+    inputTokenIdentifier: selectedPaymentOption?.token?.id ?? 'kvcm',
     maxInputTokenIn: maxInputTokenInWei,
     beneficiaryName: parsedForm.current?.beneficiaryName ?? '',
     beneficiaryAddress: parsedForm.current?.beneficiaryAddress,
@@ -148,8 +148,8 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
               label="You are sending"
               readOnly
               iconSize="sm"
-              iconSrc={selectedPaymentOption.token.iconSrc}
-              value={`${formatAmountWithCommas(priceQuoted)} ${selectedPaymentOption?.token.symbol}`}
+              iconSrc={selectedPaymentOption?.token?.iconSrc}
+              value={`${formatAmountWithCommas(priceQuoted)} ${selectedPaymentOption?.token?.symbol ?? ''}`}
             />
             <Input
               label="You are retiring"

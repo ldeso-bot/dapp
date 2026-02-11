@@ -83,7 +83,10 @@ export const useEmptyStateButton = ({
       onClick: () => {
         if (walletState !== 'has-locks') {
           const currentIndex = states.indexOf(walletState);
-          setWalletState(states[(currentIndex + 1) % states.length]);
+          const nextState = states[(currentIndex + 1) % states.length];
+          if (nextState) {
+            setWalletState(nextState);
+          }
         } else {
           onStartAction?.();
         }

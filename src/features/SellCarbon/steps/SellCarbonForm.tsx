@@ -39,7 +39,7 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
 
   // Preselect the first carbon class when selecting a token
   useEffect(() => {
-    if (carbonClasses.length) {
+    if (carbonClasses.length && carbonClasses[0]) {
       form.setValue('carbonClass', carbonClasses[0].carbonClassId);
     }
   }, [carbonClasses, form]);

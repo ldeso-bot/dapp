@@ -29,7 +29,8 @@ export const useAllocateK2 = () => {
   const allocate = useCallback(
     async (params: AllocateK2Params): Promise<{ error: string | null }> => {
       try {
-        if (!contract) {
+        const allocateK2 = contract?.write.allocateK2;
+        if (!allocateK2) {
           return { error: 'Contract is not ready' };
         }
 
@@ -46,10 +47,9 @@ export const useAllocateK2 = () => {
         }
 
         const executeTransaction = () =>
-          contract.write.allocateK2(
-            [params.amount, params.carbonClass as `0x${string}`],
-            { chain }
-          );
+          allocateK2([params.amount, params.carbonClass as `0x${string}`], {
+            chain,
+          });
 
         return await executeWithValidation(executeTransaction);
       } catch (error) {
@@ -63,7 +63,8 @@ export const useAllocateK2 = () => {
   const deallocate = useCallback(
     async (params: DeallocateK2Params): Promise<{ error: string | null }> => {
       try {
-        if (!contract) {
+        const deallocateK2 = contract?.write.deallocateK2;
+        if (!deallocateK2) {
           return { error: 'Contract is not ready' };
         }
 
@@ -80,10 +81,9 @@ export const useAllocateK2 = () => {
         }
 
         const executeTransaction = () =>
-          contract.write.deallocateK2(
-            [params.amount, params.carbonClass as `0x${string}`],
-            { chain }
-          );
+          deallocateK2([params.amount, params.carbonClass as `0x${string}`], {
+            chain,
+          });
 
         return await executeWithValidation(executeTransaction);
       } catch (error) {

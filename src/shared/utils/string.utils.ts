@@ -100,7 +100,11 @@ export const formatAmountWithCommas = (
   }
 
   const fixedValue = value.toFixed(digits);
-  let [integerPart, decimalPart] = fixedValue.split('.');
+  const splitValue = fixedValue.split('.');
+  let integerPart = splitValue[0];
+  let decimalPart = splitValue[1];
+
+  if (isNullish(integerPart)) return '0';
 
   // Add commas to the integer part if value is greater than 1 to make it pretty
   integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');

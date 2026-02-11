@@ -71,7 +71,8 @@ export const useLockToken = (params: {
 
   const lock = useCallback(async () => {
     try {
-      if (!stakingContract || !chain) {
+      const lockKvcmWithPermit = stakingContract?.write.lockKvcmWithPermit;
+      if (!lockKvcmWithPermit || !chain) {
         throw new Error('Contract or chain not ready');
       }
       if (maturityId === undefined) {
@@ -80,10 +81,7 @@ export const useLockToken = (params: {
       const signature = await getPermitSignature();
       const { deadline, r, s, v } = signature;
       const executeTransaction = () =>
-        stakingContract.write.lockKvcmWithPermit(
-          [amount, maturityId, deadline, v, r, s],
-          { chain }
-        );
+        lockKvcmWithPermit([amount, maturityId, deadline, v, r, s], { chain });
       return await executeWithValidation(executeTransaction);
     } catch (error) {
       console.error('❌ Lock error:', error);
