@@ -6,7 +6,14 @@ import {
   formatAmountWithUnits,
   formatPriceUSDWithCommas,
 } from '@/shared/utils/string.utils';
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import {
+  Bar,
+  BarChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 export default function CarbonMarketCard(props: CardProps) {
   const { data } = useProtocolData();
@@ -64,7 +71,15 @@ export default function CarbonMarketCard(props: CardProps) {
                     orientation="right"
                     {...Y_AXIS_PROPS}
                   />
-                  <Bar dataKey="valueUSD" {...BAR_PROPS} />0
+                  <Bar dataKey="valueUSD" {...BAR_PROPS} />
+                  <Tooltip
+                    cursor={{ fill: 'rgba(55, 65, 81, 0)' }}
+                    formatter={(value) => [
+                      `${formatPriceUSDWithCommas(Number(value), 'auto')}`,
+                      'Price',
+                    ]}
+                    labelFormatter={() => ''}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -100,6 +115,14 @@ export default function CarbonMarketCard(props: CardProps) {
                   />
                   <YAxis type="category" width={1} {...Y_AXIS_PROPS} />
                   <Bar dataKey="supplyTonnes" {...BAR_PROPS} />
+                  <Tooltip
+                    cursor={{ fill: 'rgba(55, 65, 81, 0)' }}
+                    formatter={(value) => [
+                      `${formatAmountWithUnits(Number(value))}T`,
+                      'Supply',
+                    ]}
+                    labelFormatter={() => ''}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>

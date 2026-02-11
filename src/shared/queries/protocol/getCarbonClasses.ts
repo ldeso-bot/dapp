@@ -53,12 +53,6 @@ export const getCarbonClasses = async (
 
   //Compute carbon classes
   return carbonClasses?.map((c) => {
-    // Add up the supply tonnes of all registered tokens
-    const supplyTonnes = c.registeredCredits.reduce(
-      (acc, r) => acc + (tokensMap[r.creditTokenId]?.totalSupplyTonnes ?? 0),
-      0
-    );
-
     const valueUSD = formatStringToNumber(c.priceUsdcPerTon?.priceUsdc, 6);
 
     // Compute the price change over 24 hours
@@ -102,6 +96,9 @@ export const getCarbonClasses = async (
       }),
       isNonNullish
     );
+
+    // Add up the supply tonnes of all registered tokens
+    const supplyTonnes = registeredTokens.reduce((acc, r) => acc + r.amount, 0);
 
     return {
       carbonClassId,
