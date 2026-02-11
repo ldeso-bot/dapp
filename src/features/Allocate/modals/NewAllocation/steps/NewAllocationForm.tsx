@@ -48,7 +48,7 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
   const isKvcm = typedToken === 'kvcm';
   const isK2 = typedToken === 'k2';
 
-  const { errorMessage, availableKvcm, availableK2 } =
+  const { errorMessage, availableKvcm, availableK2, hasKvcmLocksAvailable } =
     useNewAllocationValidation({
       amount,
       contractLockId,
@@ -226,7 +226,11 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
             colors="secondary"
             context="flow"
             type="submit"
-            disabled={isSubmitting || !!errorMessage}
+            disabled={
+              isSubmitting ||
+              !!errorMessage ||
+              (isKvcm && !hasKvcmLocksAvailable)
+            }
           >
             {isSubmitting ? 'Submitting...' : 'Save Allocation'}
           </Button>

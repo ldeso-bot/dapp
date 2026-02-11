@@ -22,6 +22,16 @@ export const useNewAllocationValidation = (props: ValidationProps) => {
     [allocationData?.kvcm.availableKvcm]
   );
 
+  const hasKvcmLocksAvailable = useMemo(() => {
+    if (!isKvcm) return true;
+    const kvcmLocks = allocationData?.kvcm.locks ?? [];
+    return kvcmLocks.some((lock) => {
+      if (lock.status === 'matured' || lock.status === 'claimed') return false;
+      const available = availableKvcm.get(lock.contractLockId) ?? 0;
+      return available > 0;
+    });
+  }, [isKvcm, allocationData?.kvcm.locks, availableKvcm]);
+
   const errorMessage = useMemo(() => {
     const numAmount = Number(amount);
     
@@ -56,6 +66,7 @@ export const useNewAllocationValidation = (props: ValidationProps) => {
     errorMessage,
     availableKvcm,
     availableK2,
+    hasKvcmLocksAvailable,
   };
 };
 

@@ -29,46 +29,49 @@ export const LockSelect = <T extends { contractLockId?: number }>({
   const lockSelectItems = useMemo(() => {
     const kvcmLocks = allocationData?.kvcm.locks ?? [];
     const availableKvcm = allocationData?.kvcm.availableKvcm ?? new Map();
-    
-    return kvcmLocks.map((lock) => {
-      const available = availableKvcm.get(lock.contractLockId) ?? 0;
-      const maturityDate = formatDateDDMMYYYY(lock.lockedUntil);
-      return {
-        value: lock?.contractLockId?.toString() ?? '0',
-        label: `${maturityDate} (${available.toLocaleString()} available)`,
-        disabled: available <= 0,
-      };
-    });
+
+    return kvcmLocks
+      .filter((lock) => {
+        if (lock.status === 'matured' || lock.status === 'claimed') return false;
+        const available = availableKvcm.get(lock.contractLockId) ?? 0;
+        return available > 0;
+      })
+      .sort((a, b) => a.lockedUntil - b.lockedUntil)
+      .map((lock) => {
+        const available = availableKvcm.get(lock.contractLockId) ?? 0;
+        const maturityDate = formatDateDDMMYYYY(lock.lockedUntil);
+        return {
+          value: lock.contractLockId.toString(),
+          label: `${maturityDate} (${available.toLocaleString()} available)`,
+        };
+      });
   }, [allocationData?.kvcm.locks, allocationData?.kvcm.availableKvcm]);
 
-  if (lockSelectItems.length === 0) {
-    return null;
-  }
+  const hasNoLocks = lockSelectItems.length === 0;
 
   return (
     <Controller
       name={name}
       control={control}
       render={({ field }) => (
-        <InputWrapper 
-          label="Lock (Maturity Date)" 
+        <InputWrapper
+          label="Lock"
           error={errors?.contractLockId as FieldError}
         >
           <Select
-            value={field.value?.toString()}
+            value={hasNoLocks ? undefined : field.value?.toString()}
             onValueChange={(value) => field.onChange(Number(value))}
-            defaultValue={field.value?.toString()}
           >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a lock" />
+            <SelectTrigger className="w-full" disabled={hasNoLocks}>
+              <SelectValue
+                placeholder={
+                  hasNoLocks ? 'No locks available' : 'Select a lock'
+                }
+              />
             </SelectTrigger>
             <SelectContent>
               {lockSelectItems.map((item) => (
-                <SelectItem
-                  key={item.value}
-                  value={item.value}
-                  disabled={item.disabled}
-                >
+                <SelectItem key={item.value} value={item.value}>
                   {item.label}
                 </SelectItem>
               ))}
