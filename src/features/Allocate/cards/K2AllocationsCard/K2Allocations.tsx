@@ -54,7 +54,6 @@ export default function K2AllocationsCard(props: CardProps) {
           <Icon icon={Plus} size={1.6} /> New Allocation
         </Button>
       }
-      lockWarning="Locked allocations cannot be modified until unlock date."
     />
   );
 }

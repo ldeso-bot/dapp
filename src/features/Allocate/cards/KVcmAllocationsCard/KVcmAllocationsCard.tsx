@@ -61,7 +61,6 @@ export default function KvcmAllocationsCard(props: CardProps) {
           <Icon icon={Plus} size={1.6} /> New Allocation
         </Button>
       }
-      lockWarning="Locked allocations cannot be modified until unlock date."
     />
   );
 }
