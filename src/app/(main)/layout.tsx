@@ -60,10 +60,12 @@ export default async function RootLayout({
           </WalletConnectionHistoryProvider>
         </Providers>
       </body>
-      <Script
-        strategy="afterInteractive"
-        src={`https://tools.luckyorange.com/core/lo.js?site-id=${LUCKY_ORANGE_SITE_ID}`}
-      />
+      {LUCKY_ORANGE_SITE_ID && (
+        <Script
+          strategy="afterInteractive"
+          src={`https://tools.luckyorange.com/core/lo.js?site-id=${LUCKY_ORANGE_SITE_ID}`}
+        />
+      )}
     </html>
   );
 }
