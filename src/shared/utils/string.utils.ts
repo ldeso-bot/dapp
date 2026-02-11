@@ -124,7 +124,7 @@ export const formatAmountWithUnits = (value: number): string => {
 
 export const formatPriceUSDWithCommas = (
   value: number,
-  digits?: number
+  digits?: number | 'auto'
 ): string => {
   return `$${formatAmountWithCommas(value, digits)}`;
 };

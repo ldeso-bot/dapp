@@ -1,14 +1,31 @@
 import Card, { CardProps } from '@/shared/components/Card/Card';
 import { BAR_PROPS, Y_AXIS_PROPS } from '@/shared/constants/chart.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
-import { formatAmountWithUnits } from '@/shared/utils/string.utils';
+import { calculateLogScaleConfig } from '@/shared/utils/chart.utils';
+import {
+  formatAmountWithUnits,
+  formatPriceUSDWithCommas,
+} from '@/shared/utils/string.utils';
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 export default function CarbonMarketCard(props: CardProps) {
   const { data } = useProtocolData();
 
   /** TODO: Show only carbon classes with valueUSD, */
-  const carbonClasses = data?.carbonClasses; /*.filter((a) => a.valueUSD);*/
+  const carbonClasses = data?.carbonClasses.filter((a) => a.valueUSD);
+
+  // Calculate domain and ticks for price chart
+  const priceChartConfig = calculateLogScaleConfig(
+    carbonClasses || [],
+    'valueUSD'
+  );
+
+  // Calculate domain and ticks for capacity chart
+  const capacityChartConfig = calculateLogScaleConfig(
+    carbonClasses || [],
+    'supplyTonnes'
+  );
+  console.log(priceChartConfig);
 
   return (
     <Card
@@ -34,12 +51,12 @@ export default function CarbonMarketCard(props: CardProps) {
                   <XAxis
                     type="number"
                     tickFormatter={(value) =>
-                      `$${formatAmountWithUnits(value)}`
+                      formatPriceUSDWithCommas(Number(value), 'auto')
                     }
-                    ticks={[0.1, 1, 10]}
+                    ticks={priceChartConfig.ticks}
                     reversed
                     scale="log"
-                    domain={[0.1, 10]}
+                    domain={priceChartConfig.domain}
                   />
                   <YAxis
                     type="category"
@@ -47,7 +64,7 @@ export default function CarbonMarketCard(props: CardProps) {
                     orientation="right"
                     {...Y_AXIS_PROPS}
                   />
-                  <Bar dataKey="priceUSD" {...BAR_PROPS} />0
+                  <Bar dataKey="valueUSD" {...BAR_PROPS} />0
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -65,7 +82,7 @@ export default function CarbonMarketCard(props: CardProps) {
                   width={200}
                   {...Y_AXIS_PROPS}
                   axisLine={false}
-                  tick={tickFormatter}
+                  tick={yAxisLabelsFormatter}
                 />
                 <XAxis />
               </BarChart>
@@ -78,8 +95,8 @@ export default function CarbonMarketCard(props: CardProps) {
                     type="number"
                     tickFormatter={(value) => formatAmountWithUnits(value)}
                     scale="log"
-                    domain={[900, 100000000]}
-                    ticks={[1000, 10000, 100000, 1000000, 10000000, 100000000]}
+                    domain={capacityChartConfig.domain}
+                    ticks={capacityChartConfig.ticks}
                   />
                   <YAxis type="category" width={1} {...Y_AXIS_PROPS} />
                   <Bar dataKey="supplyTonnes" {...BAR_PROPS} />
@@ -93,13 +110,44 @@ export default function CarbonMarketCard(props: CardProps) {
   );
 }
 
-const tickFormatter = (props: {
+const yAxisLabelsFormatter = (props: {
   height: number;
   width: number;
   x: number;
   y: number;
   payload: { value: string };
 }) => {
+  // Simple word wrapping to minimize lines while staying within bounds
+  const wrapText = (text: string, maxWidth: number = 180): string[] => {
+    const words = text.split(' ');
+    const lines: string[] = [];
+    let currentLine = '';
+
+    for (const word of words) {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+      // Rough estimate: ~6px per character at font-size 12
+      const estimatedWidth = testLine.length * 6;
+
+      if (estimatedWidth > maxWidth && currentLine) {
+        lines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    }
+
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+
+    return lines;
+  };
+
+  const lines = wrapText(props.payload.value);
+
+  // Calculate vertical centering offset based on number of lines
+  const centerOffset = lines.length > 1 ? ((lines.length - 1) * 14 - 8) / 2 : 0;
+
   return (
     <g transform={`translate(${-props.width / 2}, 0)`}>
       <text
@@ -107,13 +155,15 @@ const tickFormatter = (props: {
         stroke="none"
         fontSize="12"
         x={props.x + 100}
-        y={props.y}
+        y={props.y - centerOffset}
         textAnchor="middle"
         fill="#666"
       >
-        <tspan x="204" dy="0.355em">
-          {props.payload.value}
-        </tspan>
+        {lines.map((line, index) => (
+          <tspan key={index} x="204" dy={`${index === 0 ? 0 : 14}px`}>
+            {line}
+          </tspan>
+        ))}
       </text>
     </g>
   );
