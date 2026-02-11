@@ -111,10 +111,19 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
                 type="number"
                 iconSize="sm"
                 iconSrc={tokenInfo.iconSrc}
-                {...form.register('amount')}
+                {...form.register('amount', { valueAsNumber: true })}
                 step={10 ** -tokenInfo.decimals}
                 error={formState.errors.amount}
+                onFocus={(e) => {
+                  if (
+                    e.currentTarget.value !== '' &&
+                    Number(e.currentTarget.value) === 0
+                  ) {
+                    e.currentTarget.select();
+                  }
+                }}
               />
+
               <Button
                 type="button"
                 colors="secondary"

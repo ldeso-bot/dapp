@@ -50,32 +50,36 @@ export default function TokenAmountInput<T extends FieldValues>(
       <Controller
         name={name}
         control={control}
-        render={({ field }) => {
-          return (
-            <div className="flex w-full items-center">
-              <Input
-                iconSize="sm"
-                iconSrc={tokenIconSrc}
-                {...inputProps}
-                value={field.value ?? ''}
-                className="h-[4rem] border-r-0 rounded-e-none mr-1.5"
-              />
-              <div className="flex items-center gap-2 -ml-1">
-                <Button
-                  type="button"
-                  colors="secondary"
-                  className="uppercase py-3 text-md h-[4rem]"
-                  onClick={() => {
-                    const maxValue = Number(availableBalance ?? 0);
-                    field.onChange(maxValue);
-                  }}
-                >
-                  Max
-                </Button>
-              </div>
+        render={({ field }) => (
+          <div className="flex w-full items-center">
+            <Input
+              iconSize="sm"
+              iconSrc={tokenIconSrc}
+              {...inputProps}
+              value={field.value ?? ''}
+              className="h-[4rem] border-r-0 rounded-e-none"
+              onFocus={(e) => {
+                const v = e.currentTarget.value;
+                if (v !== '' && Number(v) === 0) e.currentTarget.select();
+              }}
+              onChange={(e) => {
+                field.onChange(e);
+                inputProps?.onChange?.(e);
+              }}
+            />
+
+            <div className="flex items-center gap-2 -ml-1">
+              <Button
+                type="button"
+                colors="secondary"
+                className="uppercase py-3 text-md h-[4rem]"
+                onClick={() => field.onChange(Number(availableBalance ?? 0))}
+              >
+                Max
+              </Button>
             </div>
-          );
-        }}
+          </div>
+        )}
       />
     </InputWrapper>
   );

@@ -41,7 +41,7 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
   const token = watch('token');
   const amount = watch('amount');
   const contractLockId = watch('contractLockId');
-  
+
   const isAmountTouched = formState.touchedFields.amount;
   const typedToken = isToken(token) ? token : DEFAULT_ALLOCATION_TOKEN;
 
@@ -59,7 +59,7 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
 
   const onSubmit = async (formData: NewAllocationFields) => {
     if (!isToken(formData.token) || errorMessage) return;
-    
+
     clearErrors('root');
     setIsSubmitting(true);
 
@@ -167,20 +167,35 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
               type="number"
               iconSize="sm"
               iconSrc={tokens[typedToken].iconSrc}
-              {...form.register('amount')}
-              error={formState.errors.amount || (errorMessage ? { type: 'manual', message: errorMessage } : undefined)}
+              {...form.register('amount', { valueAsNumber: true })}
+              error={
+                formState.errors.amount ||
+                (errorMessage
+                  ? { type: 'manual', message: errorMessage }
+                  : undefined)
+              }
+              onFocus={(e) => {
+                if (
+                  e.currentTarget.value !== '' &&
+                  Number(e.currentTarget.value) === 0
+                ) {
+                  e.currentTarget.select();
+                }
+              }}
             />
+
             {isKvcm && contractLockId && (
               <small className="text-size-12 text-gray-800">
                 Available:{' '}
-                {(availableKvcm.get(Number(contractLockId)) ?? 0).toLocaleString()}{' '}
+                {(
+                  availableKvcm.get(Number(contractLockId)) ?? 0
+                ).toLocaleString()}{' '}
                 {tokens[typedToken].symbol}
               </small>
             )}
             {isK2 && (
               <small className="text-size-12 text-gray-800">
-                Available: {availableK2.toLocaleString()}{' '}
-                {tokens.k2.symbol}
+                Available: {availableK2.toLocaleString()} {tokens.k2.symbol}
               </small>
             )}
           </div>

@@ -133,10 +133,19 @@ export const StakeLpTokenForm: FormFlowStep<StakeLpTokenFields> = ({
                 type="number"
                 iconSize="md"
                 iconSrc={tokens[typedToken].iconSrc}
-                {...form.register('amount')}
+                {...form.register('amount', { valueAsNumber: true })}
                 step={10 ** -tokenInfo.decimals}
                 error={formState.errors.amount}
+                onFocus={(e) => {
+                  if (
+                    e.currentTarget.value !== '' &&
+                    Number(e.currentTarget.value) === 0
+                  ) {
+                    e.currentTarget.select();
+                  }
+                }}
               />
+
               <Button
                 type="button"
                 colors="secondary"

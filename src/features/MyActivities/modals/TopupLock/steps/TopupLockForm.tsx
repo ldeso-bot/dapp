@@ -117,7 +117,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
             type="number"
             iconSize="sm"
             iconSrc={tokens[typedToken].iconSrc}
-            {...form.register('amount')}
+            {...form.register('amount', { valueAsNumber: true })}
             step={10 ** -tokenInfo.decimals}
             error={
               formState.errors.amount ||
@@ -125,6 +125,14 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
                 ? { type: 'manual', message: balanceErrorMessage }
                 : undefined)
             }
+            onFocus={(e) => {
+              if (
+                e.currentTarget.value !== '' &&
+                Number(e.currentTarget.value) === 0
+              ) {
+                e.currentTarget.select();
+              }
+            }}
             addOnButton={
               <Button
                 type="button"
@@ -138,6 +146,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
               </Button>
             }
           />
+
           <span className="text-size-12 text-gray-600">
             Balance: {formatAmountWithCommas(availableBalance)}{' '}
             {tokenInfo.symbol}

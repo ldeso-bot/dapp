@@ -128,9 +128,18 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
                 type="number"
                 iconSize="sm"
                 iconSrc={tokens[typedToken].iconSrc}
-                {...form.register('amount')}
+                {...form.register('amount', { valueAsNumber: true })}
                 error={formState.errors.amount}
+                onFocus={(e) => {
+                  if (
+                    e.currentTarget.value !== '' &&
+                    Number(e.currentTarget.value) === 0
+                  ) {
+                    e.currentTarget.select();
+                  }
+                }}
               />
+
               <Button
                 colors="secondary"
                 className="rounded-xl min-h-[4rem]"

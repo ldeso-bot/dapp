@@ -162,14 +162,23 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
               type="number"
               iconSize="sm"
               iconSrc={tokens[allocation.token.name].iconSrc}
-              {...form.register('amount')}
+              {...form.register('amount', { valueAsNumber: true })}
               error={
                 formState.errors.amount ||
                 (errorMessage
                   ? { type: 'manual', message: errorMessage }
                   : undefined)
               }
+              onFocus={(e) => {
+                if (
+                  e.currentTarget.value !== '' &&
+                  Number(e.currentTarget.value) === 0
+                ) {
+                  e.currentTarget.select();
+                }
+              }}
             />
+
             {isKvcm && allocation.contractLockId && (
               <small className="text-size-12 text-gray-500">
                 Maximum available:{' '}
