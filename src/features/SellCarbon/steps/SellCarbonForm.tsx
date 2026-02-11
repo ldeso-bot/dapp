@@ -4,6 +4,7 @@ import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
 import Input from '@/shared/components/Form/Input';
 import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
+import InputError from '@/shared/components/Form/layout/InputError';
 import SelectInput from '@/shared/components/Form/SelectInput';
 import TokenAmountInput from '@/shared/components/Form/TokenAmountInput';
 import LinkOpenInNew from '@/shared/components/LinkWithIcon';
@@ -43,7 +44,7 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
     }
   }, [carbonClasses, form]);
 
-  const { data: quoteWei } = useSellCarbonQuoter({
+  const { data: quoteWei, isError } = useSellCarbonQuoter({
     carbonClass: carbonClass || '',
     tokenAddress: selectedBalance?.creditToken.address || '',
     tokenId: selectedBalance?.creditToken.tokenId || 0,
@@ -59,6 +60,10 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
   useEffect(() => {
     form.setValue('kvcmOutQuoteWei', quoteWei);
   }, [quoteWei, form]);
+
+  const error = isError
+    ? 'Could not get a quote for supplying carbon'
+    : undefined;
 
   return (
     <Card
@@ -157,6 +162,7 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
                 Supply Carbon
               </Button>
             </ButtonGroup>
+            <InputError error={{ message: error }} />
           </form>
         </>
       )}

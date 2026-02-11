@@ -101,5 +101,6 @@ export const useRetireCarbonQuoter = ({
   return {
     priceQuotedWei: priceQuotedWei.data,
     priceQuotedForOneTonWei: priceQuotedForOneTonWei.data,
+    isError: priceQuotedWei.isError || priceQuotedForOneTonWei.isError,
   };
 };

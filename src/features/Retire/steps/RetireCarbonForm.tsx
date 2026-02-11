@@ -5,6 +5,7 @@ import Card from '@/shared/components/Card/Card';
 import Input from '@/shared/components/Form/Input';
 import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
 import Form from '@/shared/components/Form/layout/Form';
+import InputError from '@/shared/components/Form/layout/InputError';
 import InputGroup from '@/shared/components/Form/layout/InputGroup';
 import SelectInput from '@/shared/components/Form/SelectInput';
 import { TextArea } from '@/shared/components/Form/TextArea';
@@ -34,9 +35,14 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
   } = useRetireCarbonForm(watch);
 
   // Update priceQuoted in form when it changes from the quoter
-  const { priceQuotedWei, priceQuotedForOneTonWei } = useRetireCarbonQuoter({
-    form,
-  });
+  const { priceQuotedWei, priceQuotedForOneTonWei, isError } =
+    useRetireCarbonQuoter({
+      form,
+    });
+
+  const error = isError
+    ? 'Could not get a quote for retiring carbon'
+    : undefined;
 
   useEffect(() => {
     form.setValue('priceQuotedWei', priceQuotedWei);
@@ -232,6 +238,7 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
               Retire Carbon
             </Button>
           </ButtonGroup>
+          <InputError error={{ message: error }} />
         </Form>
       )}
     </Card>
