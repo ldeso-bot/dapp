@@ -19,6 +19,7 @@ import {
   tokens,
 } from '@/shared/constants/tokens.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
+import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useSetAtom } from 'jotai';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -38,6 +39,8 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const { data: walletData } = useWalletData();
+
   const token = watch('token');
   const amount = watch('amount');
   const contractLockId = watch('contractLockId');
@@ -56,6 +59,14 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
       isK2,
       isAmountTouched,
     });
+
+  const walletTokenBalance = walletData?.balances?.[typedToken] ?? 0;
+
+  const maxAmount = isKvcm
+    ? contractLockId
+      ? (availableKvcm.get(Number(contractLockId)) ?? 0)
+      : 0
+    : (availableK2 ?? walletTokenBalance);
 
   const onSubmit = async (formData: NewAllocationFields) => {
     if (!isToken(formData.token) || errorMessage) return;
@@ -162,27 +173,46 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
             />
           )}
           <div className="flex flex-col gap-1">
-            <Input
-              label="Amount"
-              type="number"
-              iconSize="sm"
-              iconSrc={tokens[typedToken].iconSrc}
-              {...form.register('amount', { valueAsNumber: true })}
-              error={
-                formState.errors.amount ||
-                (errorMessage
-                  ? { type: 'manual', message: errorMessage }
-                  : undefined)
-              }
-              onFocus={(e) => {
-                if (
-                  e.currentTarget.value !== '' &&
-                  Number(e.currentTarget.value) === 0
-                ) {
-                  e.currentTarget.select();
+            <div className="flex items-end gap-2">
+              <div className="flex-1">
+                <Input
+                  label="Amount"
+                  type="number"
+                  iconSize="sm"
+                  iconSrc={tokens[typedToken].iconSrc}
+                  {...form.register('amount', { valueAsNumber: true })}
+                  error={
+                    formState.errors.amount ||
+                    (errorMessage
+                      ? { type: 'manual', message: errorMessage }
+                      : undefined)
+                  }
+                  onFocus={(e) => {
+                    if (
+                      e.currentTarget.value !== '' &&
+                      Number(e.currentTarget.value) === 0
+                    ) {
+                      e.currentTarget.select();
+                    }
+                  }}
+                />
+              </div>
+
+              <Button
+                type="button"
+                colors="secondary"
+                className="rounded-xl min-h-[4rem]"
+                onClick={() =>
+                  form.setValue('amount', Number(maxAmount), {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                  })
                 }
-              }}
-            />
+                disabled={(isKvcm && !contractLockId) || Number(maxAmount) <= 0}
+              >
+                Max
+              </Button>
+            </div>
 
             {isKvcm && contractLockId && (
               <small className="text-size-12 text-gray-800">
@@ -198,11 +228,6 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
                 Available: {availableK2.toLocaleString()} {tokens.k2.symbol}
               </small>
             )}
-          </div>
-          <div className="px-4 py-3 bg-gray-50 rounded-lg">
-            <p className="text-size-14 text-gray-500">
-              Rebalancing never changes your lock maturity dates.
-            </p>
           </div>
           {formState.errors.root && (
             <RootError
