@@ -41,7 +41,14 @@ export default function KvcmAllocationsCard(props: CardProps) {
       totalAmount={totalKvcm}
       noAllocationComponent={
         <div className="bg-void-10 py-3 px-6 w-full">
-          You haven’t allocated any of your bonded kVCM yet. Get started.
+          You haven&apos;t locked any of your kVCM yet.{' '}
+          <a
+            href={`${ROUTES.MY_ACTIVITIES}?activeView=kvcm`}
+            className="underline text-black-500"
+          >
+            Create a lock
+          </a>{' '}
+          to get started.
         </div>
       }
       tokenInfo={tokens.kvcm}

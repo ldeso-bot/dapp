@@ -34,7 +34,14 @@ export default function K2AllocationsCard(props: CardProps) {
       totalAmount={totalK2}
       noAllocationComponent={
         <div className="bg-void-10 py-3 px-6 w-full">
-          You haven’t locked any of your K2 yet. Create a Lock to get started.
+          You haven&apos;t deposited any of your K2 yet.{' '}
+          <a
+            href={`${ROUTES.MY_ACTIVITIES}?activeView=k2`}
+            className="underline text-black-500"
+          >
+            Create a deposit
+          </a>{' '}
+          to get started.
         </div>
       }
       tokenInfo={tokens.k2}
