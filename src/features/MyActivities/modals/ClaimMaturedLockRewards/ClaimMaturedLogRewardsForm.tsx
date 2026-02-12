@@ -136,11 +136,10 @@ const ClaimMaturedLogRewardsForm = ({
                 colors="secondary"
                 context="flow"
                 type="submit"
-                disabled={isLoading}
-                loading={isClaiming}
+                disabled={isLoading || isClaiming}
                 onClick={handleOnClaim}
               >
-                Claim All
+                {isClaiming ? 'Claiming...' : 'Claim All'}
               </Button>
             </ButtonGroup>
           </div>

@@ -6,7 +6,6 @@ import Card from '@/shared/components/Card/Card';
 import Dialog from '@/shared/components/Dialog/Dialog';
 import Input from '@/shared/components/Form/Input';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
-import { DEV_MODE } from '@/shared/constants/config.constants';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { CarbonCreditIconImg } from '@/shared/constants/tokens.constants';
 import { useAllowance } from '@/shared/hooks/useAllowance';
@@ -44,13 +43,12 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
 
   const { contract } = useContract('AAMDiamond');
 
-  const { allowance, isAllowed, setAllowance, isSettingAllowance } =
-    useAllowance({
-      tokenAddress: selectedBalance?.creditToken.address || '',
-      tokenStandard: TOKEN_STANDARDS.ERC20,
-      spender: parsedForm.current?.carbonClass || '',
-      amount: amountToSellWei,
-    });
+  const { isAllowed, setAllowance, isSettingAllowance } = useAllowance({
+    tokenAddress: selectedBalance?.creditToken.address || '',
+    tokenStandard: TOKEN_STANDARDS.ERC20,
+    spender: parsedForm.current?.carbonClass || '',
+    amount: amountToSellWei,
+  });
 
   const handleSetAllowance = async (amount?: bigint) => {
     const result = await setAllowance(amount);
@@ -154,13 +152,13 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
           <div className="flex flex-col gap-3 w-full">
             {!isAllowed && (
               <Button
-                loading={isSettingAllowance}
                 colors="secondary"
                 context="flow"
                 type="submit"
                 onClick={() => handleSetAllowance()}
+                disabled={isSettingAllowance}
               >
-                Approve
+                {isSettingAllowance ? 'Approving...' : 'Approve'}
               </Button>
             )}
             {isAllowed && (
@@ -169,21 +167,9 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
                 context="flow"
                 type="submit"
                 onClick={handleSellCarbon}
-                loading={isExecuting}
+                disabled={isExecuting}
               >
-                Supply Carbon
-              </Button>
-            )}
-            {/* This button can be safely removed*/}
-            {DEV_MODE && (
-              <Button
-                loading={isSettingAllowance}
-                colors="secondary"
-                context="flow"
-                type="submit"
-                onClick={() => handleSetAllowance(0n)}
-              >
-                Unapprove {allowance}
+                {isExecuting ? 'Supplying Carbon...' : 'Supply Carbon'}
               </Button>
             )}
             <Button colors="primary" context="flow" onClick={previous}>

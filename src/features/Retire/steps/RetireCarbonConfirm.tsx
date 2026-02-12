@@ -162,13 +162,13 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
           <div className="flex flex-col gap-3 w-full">
             {!isAllowed && (
               <Button
-                loading={isSettingAllowance}
                 colors="secondary"
                 context="flow"
                 type="submit"
                 onClick={() => handleSetAllowance()}
+                disabled={isSettingAllowance}
               >
-                Approve
+                {isSettingAllowance ? 'Approving...' : 'Approve'}
               </Button>
             )}
             {isAllowed && (
@@ -177,9 +177,9 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
                 context="flow"
                 type="submit"
                 onClick={handleRetireCarbon}
-                loading={isExecuting}
+                disabled={isExecuting}
               >
-                Retire Carbon
+                {isExecuting ? 'Retiring...' : 'Retire Carbon'}
               </Button>
             )}
             <Button colors="primary" context="flow" onClick={previous}>
