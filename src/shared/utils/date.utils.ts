@@ -49,8 +49,7 @@ export const getDaysFromTimestamp = (
   allowNegative = false
 ): number => {
   const now = Math.floor(Date.now() / 1000);
-  const diff = timestamp - now;
-  const days = Math.floor(diff / ONE_DAY);
+  const days = Math.floor(timestamp / ONE_DAY) - Math.floor(now / ONE_DAY);
   return allowNegative ? days : Math.max(0, days);
 };
 

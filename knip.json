@@ -4,6 +4,8 @@
   "entry": [
     "{index,cli,main}.{js,cjs,mjs,jsx,ts,cts,mts,tsx}",
     "src/{index,cli,main}.{js,cjs,mjs,jsx,ts,cts,mts,tsx}",
-    "src/scripts/codegen/codegen.ts"
+    "src/scripts/codegen/codegen.ts",
+    "src/scripts/showKlimaPools.ts",
+    "src/scripts/build-abis/build-diamond-abis.ts"
   ]
 }

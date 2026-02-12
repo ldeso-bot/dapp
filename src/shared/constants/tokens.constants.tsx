@@ -115,7 +115,7 @@ export const tokens: Record<Token, TokenInfo> = {
 export const DEFAULT_ALLOCATION_TOKEN = 'kvcm';
 export const DEFAULT_LP_TOKEN = 'kvcm-k2';
 
-export const lpTokens = {
+const lpTokens = {
   'kvcm-usdc': tokens['kvcm-usdc'],
   'kvcm-k2': tokens['kvcm-k2'],
 } as const;
@@ -154,7 +154,7 @@ export const isAllocatableToken = (
   return isToken(token) && Object.keys(allocationTokens).includes(token);
 };
 
-const isLockableToken = (token: unknown): token is LockableToken => {
+export const isLockableToken = (token: unknown): token is LockableToken => {
   return isToken(token) && Object.keys(lockableTokens).includes(token);
 };
 

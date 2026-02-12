@@ -13,7 +13,9 @@ export const DialogHeader: FC<Props> = (props) => {
   const { title, showCloseButton, onClose } = props;
   return (
     <div className="flex items-center justify-between">
-      <h2 className="text-size-20 font-semibold text-gray-900">{title}</h2>
+      <h2 className="text-size-20 font-semibold text-gray-900 capitalize">
+        {title}
+      </h2>
       {showCloseButton && (
         <button
           type="button"

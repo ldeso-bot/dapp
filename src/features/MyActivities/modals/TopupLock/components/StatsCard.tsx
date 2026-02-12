@@ -1,5 +1,6 @@
 'use client';
 
+import { TokenInfo } from '@/shared/constants/tokens.constants';
 import { formatDurationFromTimestamp } from '@/shared/utils/date.utils';
 import {
   formatAmountWithCommas,
@@ -13,7 +14,7 @@ type StatsCardProps = {
   maturityDate: number | null;
   baseApy: number;
   totalAccruingRewards: number;
-  tokenSymbol: string;
+  token: TokenInfo;
 };
 
 export const StatsCard: FC<StatsCardProps> = (props) => {
@@ -22,8 +23,11 @@ export const StatsCard: FC<StatsCardProps> = (props) => {
     baseApy,
     currentLockAmount,
     totalAccruingRewards,
-    tokenSymbol,
+    token,
   } = props;
+
+  const isKvcm = token.id === 'kvcm';
+  const lockTerm = isKvcm ? 'lock' : 'stake';
 
   return (
     <div className="rounded-lg py-3 px-4 bg-gray-50 border border-gray-200">
@@ -54,17 +58,17 @@ export const StatsCard: FC<StatsCardProps> = (props) => {
       <div className="h-px bg-gray-200 my-3" />
       <div className="flex flex-col gap-1">
         <div className="text-size-12 font-medium text-gray-600 uppercase">
-          Current lock
+          Current {lockTerm}
         </div>
         <p className="text-size-16 font-medium text-gray-800">
-          {formatAmountWithCommas(currentLockAmount, 0)}{' '}
+          {formatAmountWithCommas(currentLockAmount, 'auto')}{' '}
           <span className="text-gray-600 text-size-14 font-normal">
-            {tokenSymbol}
+            {token.symbol}
           </span>{' '}
           <span className="text-gray-400 text-size-14 font-normal">•</span>{' '}
           <span className="text-gray-600 text-size-14 font-normal">
-            {formatAmountWithCommas(totalAccruingRewards, 0)} {tokenSymbol}{' '}
-            accruing
+            {formatAmountWithCommas(totalAccruingRewards, 'auto')}{' '}
+            {token.symbol} accruing
           </span>
         </p>
       </div>

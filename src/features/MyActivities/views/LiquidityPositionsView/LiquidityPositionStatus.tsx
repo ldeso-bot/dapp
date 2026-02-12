@@ -10,7 +10,7 @@ import { formatAmountWithCommas } from '@/shared/utils/string.utils';
 import { getTokenSymbol } from '@/shared/utils/token.utils';
 import { useSetAtom } from 'jotai';
 import { useHoldingsData } from '../../hooks/useHoldingsData';
-import { stakeLpTokenDialogAtom } from '../../modals/StakeLpToken/stakeLpToken.utils';
+import { lockTokenDialogAtom } from '../../modals/LockToken/lockToken.utils';
 
 interface LiquidityPositionStatusProps {
   token: LpToken;
@@ -20,7 +20,7 @@ export const LiquidityPositionStatus = ({
   token,
 }: LiquidityPositionStatusProps) => {
   const { data: holdingsData } = useHoldingsData();
-  const setStakeLpTokenDialog = useSetAtom(stakeLpTokenDialogAtom);
+  const setLockTokenDialog = useSetAtom(lockTokenDialogAtom);
 
   const tokenData =
     token === 'kvcm-usdc' ? holdingsData?.kvcmUsdc : holdingsData?.kvcmK2;
@@ -33,7 +33,7 @@ export const LiquidityPositionStatus = ({
       : undefined;
 
   const handleOpenStakeDialog = () =>
-    setStakeLpTokenDialog({
+    setLockTokenDialog({
       open: true,
       token,
     });

@@ -1,26 +1,18 @@
-import { LockableToken } from '@/shared/constants/tokens.constants';
+import { Lock } from '@/shared/models/walletData';
 import { atom } from 'jotai';
+import z from 'zod';
 
-export type TopupLockFields = {
-  token: string;
-  amount: number;
-  tokenSymbol: string;
-  currentLockAmount: number;
-  totalAccruingRewards: number;
-  baseApy: number;
-  maturityDate: number;
-  maturityId: number;
-};
+export const topupLockSchema = z.object({
+  token: z.string(),
+  maturityId: z.number(),
+  amount: z.coerce.number().gt(0, 'Amount must be greater than 0'),
+});
+
+export type TopupLockFields = z.infer<typeof topupLockSchema>;
 
 const topupLockDialogState = {
   open: false,
-  token: null as LockableToken | null,
-  tokenSymbol: null as string | null,
-  currentLockAmount: 0 as number | null,
-  totalAccruingRewards: 0 as number | null,
-  baseApy: 0 as number | null,
-  maturityDate: null as number | null,
-  maturityId: null as number | null,
+  lock: null as Lock | null,
 };
 
 export const topupLockDialogAtom = atom(topupLockDialogState);

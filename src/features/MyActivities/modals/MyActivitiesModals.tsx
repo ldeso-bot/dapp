@@ -11,8 +11,6 @@ import { depositK2TokenDialogAtom } from './DepositK2Token/depositK2Token.utils'
 import DepositK2TokenFlow from './DepositK2Token/DepositK2TokenFlow';
 import { lockTokenDialogAtom } from './LockToken/lockToken.utils';
 import LockTokenFlow from './LockToken/LockTokenFlow';
-import { stakeLpTokenDialogAtom } from './StakeLpToken/stakeLpToken.utils';
-import StakeLpTokenFlow from './StakeLpToken/StakeLpTokenFlow';
 import TopupLockFlow from './TopupLock/TopupLock';
 import {
   resetTopupLockDialog,
@@ -30,9 +28,7 @@ export const MyActivitiesModals = () => {
   // tracks previous dialog state to detect when a dialog closes
   const prevHasOpenDialogRef = useRef(false);
   const [lockTokenDialog, setLockTokenDialog] = useAtom(lockTokenDialogAtom);
-  const [stakeLpTokenDialog, setStakeLpTokenDialog] = useAtom(
-    stakeLpTokenDialogAtom
-  );
+
   const [unlockK2TokenDialog, setUnlockK2TokenDialog] = useAtom(
     unlockK2TokenDialogAtom
   );
@@ -46,7 +42,6 @@ export const MyActivitiesModals = () => {
   useEffect(() => {
     const hasOpenDialog =
       lockTokenDialog.open ||
-      stakeLpTokenDialog.open ||
       unlockK2TokenDialog.open ||
       topupLockDialog.open ||
       claimMaturedLockRewardsDialog.open ||
@@ -69,7 +64,6 @@ export const MyActivitiesModals = () => {
     prevHasOpenDialogRef.current = hasOpenDialog;
   }, [
     lockTokenDialog.open,
-    stakeLpTokenDialog.open,
     unlockK2TokenDialog.open,
     topupLockDialog.open,
     claimMaturedLockRewardsDialog.open,
@@ -83,18 +77,11 @@ export const MyActivitiesModals = () => {
     const action = searchParams.get('action');
 
     /* Close dialogs if navigation to /my_holdings with empty action parameter */
-    setStakeLpTokenDialog({ open: false, token: null });
     setLockTokenDialog({ open: false, token: null });
     setUnlockK2TokenDialog({ open: false, lock: null });
     setTopupLockDialog({
       open: false,
-      token: null,
-      currentLockAmount: null,
-      maturityId: null,
-      totalAccruingRewards: 0,
-      baseApy: 0,
-      maturityDate: null,
-      tokenSymbol: null,
+      lock: null,
     });
     setClaimMaturedLockRewardsDialog({
       open: false,
@@ -112,21 +99,17 @@ export const MyActivitiesModals = () => {
       setDepositK2TokenDialog({ open: true });
     }
     if (action === 'lock_kvcm-k2') {
-      setStakeLpTokenDialog({ open: true, token: 'kvcm-k2' });
+      setLockTokenDialog({ open: true, token: 'kvcm-k2' });
     }
     if (action === 'lock_kvcm-usdc') {
-      setStakeLpTokenDialog({ open: true, token: 'kvcm-usdc' });
+      setLockTokenDialog({ open: true, token: 'kvcm-usdc' });
     }
     if (action === 'topup') {
+      const id = action.split('_')[2];
+      const lock = data?.locks.find((lock) => lock.id === id) ?? null;
       setTopupLockDialog({
         open: true,
-        token: 'kvcm',
-        currentLockAmount: null,
-        maturityId: null,
-        totalAccruingRewards: 0,
-        baseApy: 0,
-        maturityDate: null,
-        tokenSymbol: null,
+        lock,
       });
     }
     if (action === 'claim_matured_lock') {
@@ -153,7 +136,6 @@ export const MyActivitiesModals = () => {
   }, [
     searchParams,
     setLockTokenDialog,
-    setStakeLpTokenDialog,
     setUnlockK2TokenDialog,
     setClaimMaturedLockRewardsDialog,
     setTopupLockDialog,
@@ -168,9 +150,6 @@ export const MyActivitiesModals = () => {
         onClose={() => setLockTokenDialog({ open: false, token: null })}
       >
         <LockTokenFlow />
-      </Dialog>
-      <Dialog open={stakeLpTokenDialog.open}>
-        <StakeLpTokenFlow />
       </Dialog>
       <Dialog open={unlockK2TokenDialog.open}>
         <UnlockK2TokenFlow />

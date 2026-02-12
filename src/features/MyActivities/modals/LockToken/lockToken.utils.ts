@@ -1,7 +1,7 @@
 import { usePermitSignature } from '@/features/MyActivities/hooks/usePermitSignature';
 import { useTransactionWithValidation } from '@/features/MyActivities/hooks/useTransactionWithValidation';
-import { AllocatableToken } from '@/shared/constants/tokens.constants';
-import { useContract } from '@/shared/hooks/web3/useContract';
+import { LockableToken } from '@/shared/constants/tokens.constants';
+import { useContract, useContractInfo } from '@/shared/hooks/web3/useContract';
 import { WalletData } from '@/shared/models/walletData';
 import { handleWeb3Error } from '@/shared/utils/web3.utils';
 import { atom } from 'jotai';
@@ -18,11 +18,11 @@ export type LockTokenFields = {
 
 export const lockTokenDialogAtom = atom({
   open: false,
-  token: null as AllocatableToken | null,
+  token: null as LockableToken | null,
 });
 
 export const useLockToken = (params: {
-  token: AllocatableToken;
+  token: LockableToken;
   amount: bigint;
   maturityId?: number;
 }) => {
@@ -32,6 +32,9 @@ export const useLockToken = (params: {
   const tokenContractName = 'KVCM' as const;
   const queryKey = [`wallet-data-${userAddress}`];
   const { contract: stakingContract } = useContract('StakingManagerDiamond');
+
+  const { address: kvcmUsdcAddress } = useContractInfo('KVCM_USDC');
+  const { address: kvcmK2Address } = useContractInfo('KVCM_K2');
 
   const { getPermitSignature } = usePermitSignature({
     amount,
@@ -69,7 +72,7 @@ export const useLockToken = (params: {
     },
   });
 
-  const lock = useCallback(async () => {
+  const lockKvcm = useCallback(async () => {
     try {
       const lockKvcmWithPermit = stakingContract?.write.lockKvcmWithPermit;
       if (!lockKvcmWithPermit || !chain) {
@@ -96,8 +99,52 @@ export const useLockToken = (params: {
     executeWithValidation,
   ]);
 
+  const stakeLp = useCallback(async () => {
+    try {
+      const stakeLP = stakingContract?.write.stakeLP;
+      const lpAddress =
+        token === 'kvcm-usdc'
+          ? kvcmUsdcAddress
+          : token === 'kvcm-k2'
+            ? kvcmK2Address
+            : null;
+      if (!stakeLP || !chain) {
+        throw new Error('Contract or chain not ready');
+      }
+      if (!lpAddress) {
+        throw new Error('LP token address not available');
+      }
+
+      const executeTransaction = () =>
+        stakeLP([lpAddress, maturityId, amount], {
+          chain,
+        });
+      return await executeWithValidation(executeTransaction);
+    } catch (error) {
+      console.error('❌ Stake LP error:', error);
+      return handleWeb3Error(error);
+    }
+  }, [
+    stakingContract,
+    chain,
+    token,
+    kvcmUsdcAddress,
+    kvcmK2Address,
+    maturityId,
+    amount,
+    executeWithValidation,
+  ]);
+
+  const lockToken = useCallback(async () => {
+    if (token === 'kvcm') {
+      return await lockKvcm();
+    }
+    return await stakeLp();
+  }, [token, lockKvcm, stakeLp]);
+
   return {
-    lock,
+    lockToken,
+    stakeLp,
     contract: stakingContract,
   };
 };

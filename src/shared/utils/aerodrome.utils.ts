@@ -77,11 +77,7 @@ export const getKlimaProtocolPools = async (): Promise<KlimaProtocolPools> => {
     const allFn = contract.read.all;
     if (!allFn) throw new Error('all function not found on contract');
 
-    const pools = (await allFn([
-      BigInt(limit),
-      BigInt(offset),
-      0n,
-    ])) as Pool[];
+    const pools = (await allFn([BigInt(limit), BigInt(offset), 0n])) as Pool[];
 
     // Lookup Klima Protocol pools in the batch
     let index = 0;
@@ -112,7 +108,7 @@ export const getKlimaProtocolPools = async (): Promise<KlimaProtocolPools> => {
 };
 
 /** Returns a pool by index from the Velodrome Sugar contract */
-export const getAerodromePoolByIndex = async (
+const getAerodromePoolByIndex = async (
   index: number
 ): Promise<Pool | undefined> => {
   const chainId = base.id;

@@ -1,10 +1,7 @@
 'use client';
 
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
-import {
-  MILLISECONDS_PER_DAY,
-  ONE_DAY,
-} from '@/shared/constants/protocol.constants';
+import { ONE_DAY } from '@/shared/constants/protocol.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useCurrentTimestamp } from '@/shared/hooks/useCurrentTimestamp';
 import { useLockableMaturities } from '@/shared/hooks/useLockableMaturities';
@@ -29,16 +26,6 @@ const getPresetDurations = (daysBetweenMaturities: number) => {
   ] as const;
 };
 
-// @todo - replace with actual data...
-const getNextResetInfo = () => {
-  const today = new Date();
-  const nextResetDate = new Date('2025-12-14');
-  const daysUntilReset = Math.ceil(
-    (nextResetDate.getTime() - today.getTime()) / MILLISECONDS_PER_DAY
-  );
-  return { nextResetDate, daysUntilReset };
-};
-
 export const DurationSelector = <T extends DurationFormFields>({
   control,
   name,
@@ -46,15 +33,20 @@ export const DurationSelector = <T extends DurationFormFields>({
   const lockableMaturities = useLockableMaturities();
   const currentTimestamp = useCurrentTimestamp();
   const { data: protocolData } = useProtocolData();
-  const { nextResetDate, daysUntilReset } = getNextResetInfo();
 
   const daysBetweenMaturities =
     (protocolData?.protocolState?.maturityPeriod ?? 0) / ONE_DAY;
 
   const PRESET_DURATIONS = getPresetDurations(daysBetweenMaturities);
 
+  const firstMaturity = protocolData?.maturities[0] ?? null;
+  const firstMaturityTimestamp = firstMaturity?.maturationTimestamp ?? 0;
+  const nextResetDate = new Date(firstMaturityTimestamp * 1000);
+  const daysUntilReset = firstMaturity
+    ? getDaysFromTimestamp(firstMaturity.maturationTimestamp)
+    : 0;
+
   const presetDurations = useMemo(() => {
-    const firstMaturity = lockableMaturities[0] ?? null;
     const shortestDays = firstMaturity
       ? getDaysFromTimestamp(firstMaturity.maturationTimestamp, true)
       : PRESET_DURATIONS[0].days;

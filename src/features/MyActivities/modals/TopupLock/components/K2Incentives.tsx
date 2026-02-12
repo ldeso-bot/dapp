@@ -6,14 +6,16 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/shared/components/Accordion/Accordion';
+import { LockableToken } from '@/shared/constants/tokens.constants';
 import { type FC } from 'react';
 
 type K2IncentivesProps = {
   k2Incentives: number;
+  token: LockableToken;
 };
 
 export const K2Incentives: FC<K2IncentivesProps> = (props) => {
-  const { k2Incentives } = props;
+  const { k2Incentives, token } = props;
 
   return (
     <Accordion
@@ -38,8 +40,9 @@ export const K2Incentives: FC<K2IncentivesProps> = (props) => {
               ~ {k2Incentives} K2 / kVCM / epoch
             </div>
             <p className="text-size-12 text-gray-500">
-              Indicative rate of K2 incentives earned by your time-locked kVCM.
-              These amounts are are variable, non-guaranteed, and may be zero.
+              Indicative rate of K2 incentives earned by your time-locked{' '}
+              {token}. These amounts are are variable, non-guaranteed, and may
+              be zero.
             </p>
           </div>
         </AccordionContent>

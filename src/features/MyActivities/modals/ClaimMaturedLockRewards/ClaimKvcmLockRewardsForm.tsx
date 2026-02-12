@@ -12,7 +12,7 @@ import { useCallback, useMemo } from 'react';
 import { isNonNullish } from 'remeda';
 import { useReadContract } from 'wagmi';
 import { ExecuteWithValidationResult } from '../../hooks/useTransactionWithValidation';
-import ClaimMaturedLogRewardsForm from './ClaimMaturedLogRewardsForm';
+import ClaimMaturedLogRewardsForm from './ClaimMaturedLockRewardsForm';
 
 type Props = {
   lock: Lock;

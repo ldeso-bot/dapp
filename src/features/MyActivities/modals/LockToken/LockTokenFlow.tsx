@@ -16,10 +16,7 @@ export default function LockTokenFlow() {
 
   const schema = z.object({
     token: z.string(),
-    amount: z.coerce
-      .number()
-      .gt(0, 'Amount must be a positive integer')
-      .int('Amount must be a positive integer'),
+    amount: z.coerce.number().gt(0, 'Amount must be a positive'),
     duration: z.coerce.number(),
     maturityId: z.coerce.number(),
     maturityDate: z.coerce.number(),

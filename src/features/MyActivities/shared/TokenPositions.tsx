@@ -178,13 +178,7 @@ const PositionCard: FC<PositionCardProps> = ({
                 } else {
                   setTopupLockDialog({
                     open: true,
-                    token: lock.token,
-                    currentLockAmount: lock.lockedAmount,
-                    totalAccruingRewards: lock.rewards.kvcm,
-                    tokenSymbol: getTokenSymbol(lock.token),
-                    baseApy: lock.syntheticYieldApyPercent,
-                    maturityDate: lock.lockedUntil,
-                    maturityId: lock.maturityId,
+                    lock,
                   });
                 }
               }}

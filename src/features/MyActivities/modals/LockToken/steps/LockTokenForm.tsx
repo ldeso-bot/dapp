@@ -15,9 +15,8 @@ import { RootError } from '@/shared/components/Form/RootError';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import {
-  AllocatableToken,
   DEFAULT_ALLOCATION_TOKEN,
-  isToken,
+  isLockableToken,
   tokens,
 } from '@/shared/constants/tokens.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
@@ -52,7 +51,7 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
   const duration = watch('duration');
   const maturityId = watch('maturityId');
 
-  const typedToken = isToken(token) ? token : DEFAULT_ALLOCATION_TOKEN;
+  const typedToken = isLockableToken(token) ? token : DEFAULT_ALLOCATION_TOKEN;
   const tokenInfo = tokens[typedToken];
   const tokenBalance = walletData?.balances?.[typedToken] ?? 0;
 
@@ -70,8 +69,6 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
   const fullMaturity = protocolData?.maturities?.find(
     (m) => m.maturityId === maturity?.maturityId
   );
-  const isMaturityWithin3Days =
-    isValidAmount && isMaturityWithinDays(maturityDate, 3);
   const isMaturityWithin30Days =
     isValidAmount && isMaturityWithinDays(maturityDate, 30);
 
@@ -82,21 +79,31 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
     }
   }, [duration, maturity, form]);
 
-  const { lock } = useLockToken({
+  const { lockToken } = useLockToken({
     amount: amountWei,
-    token: typedToken as AllocatableToken,
+    token: typedToken,
     maturityId: maturityId ?? 1,
   });
+
+  const isKvcm = token === 'kvcm';
+  const lockTerm = isKvcm ? 'lock' : 'stake';
+  const lockTermed = isKvcm ? 'locked' : 'staked';
+  const buttonText = isKvcm
+    ? isSubmitting
+      ? 'Locking...'
+      : `Lock ${tokenInfo.symbol}`
+    : isSubmitting
+      ? 'Staking...'
+      : `Stake ${tokenInfo.symbol}`;
 
   const onSubmit = async () => {
     if (!isConnected) return;
     clearErrors('root');
 
-    const result = await handleTransaction(lock, {
-      successTitle: 'Lock Successful',
-      successDescription: `You've successfully locked ${amount} ${tokenInfo.symbol}! You can manage your positions in the "My Activities" dashboard.`,
-      errorDescription:
-        'Something went wrong and your lock was not successful.',
+    const result = await handleTransaction(lockToken, {
+      successTitle: isKvcm ? 'Lock Successful' : 'Stake Successful',
+      successDescription: `You've successfully ${lockTermed} ${amount} ${tokenInfo.symbol}! You can manage your positions in the "My Activities" dashboard.`,
+      errorDescription: `Something went wrong and your ${lockTerm} was not successful.`,
       successLinks: [{ label: 'My Activities', href: ROUTES.MY_ACTIVITIES }],
       onSuccess: async () => {
         await delay(300);
@@ -114,22 +121,25 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
     <Card className="rounded-lg px-6 py-4 max-h-[70vh] overflow-y-auto w-[42rem] mx-auto">
       <DialogHeader
         showCloseButton
-        title={`Lock ${tokenInfo.symbol} Tokens`}
+        title={`${lockTerm} ${tokenInfo.symbol} Tokens`}
         onClose={() => setLockTokenDialogState({ open: false, token: null })}
       />
       <Form className="pt-0 relative" onSubmit={handleSubmit(onSubmit)}>
         <InputGroup className="pt-1">
           <div className="flex flex-col gap-1 pt-3">
             <div className="flex flex-col gap-1">
-              <label className="text-size-14 font-medium">Amount to lock</label>
+              <label className="text-size-14 font-medium">
+                Amount to {lockTerm}
+              </label>
             </div>
             <div className="flex items-start gap-2">
               <Input
                 type="number"
-                iconSize="sm"
+                iconSize={isKvcm ? 'sm' : 'md'}
                 iconSrc={tokens[typedToken].iconSrc}
                 {...form.register('amount', { valueAsNumber: true })}
                 error={formState.errors.amount}
+                step={10 ** -tokenInfo.decimals}
                 onFocus={(e) => {
                   if (
                     e.currentTarget.value !== '' &&
@@ -149,7 +159,7 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
               </Button>
             </div>
             <span className="text-size-12 text-gray-500">
-              Balance: {formatAmountWithCommas(Number(tokenBalance))}{' '}
+              Balance: {formatAmountWithCommas(Number(tokenBalance), 'auto')}{' '}
               {tokenInfo.symbol}
             </span>
           </div>
@@ -186,9 +196,7 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
               errorMessage={formState.errors.root.message ?? ''}
             />
           )}
-          {isMaturityWithin3Days ? (
-            <RootError errorMessage="Locking kVCM is a protocol action for coordination and parameter signalling. Your tokens can not be unlocked before the end of your selected duration. Incentives are variable, non-guaranteed, and may be zero." />
-          ) : isMaturityWithin30Days ? (
+          {isMaturityWithin30Days ? (
             <RootError
               variant="warning"
               errorMessage="Time to maturity reset is in less than 30 days. Pay attention to short maturity dates; rewards may not accrue for very long."
@@ -207,13 +215,13 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
             Cancel
           </Button>
           <Button
-            className="rounded-xl"
+            className="rounded-xl capitalize"
             colors="secondary"
             context="flow"
             type="submit"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Locking...' : `Lock ${tokenInfo.symbol}`}
+            {buttonText}
           </Button>
         </ButtonGroup>
       </Form>
