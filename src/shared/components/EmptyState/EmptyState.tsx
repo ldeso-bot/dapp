@@ -15,6 +15,8 @@ export const EmptyState = ({
   flowItems,
   cta,
   stats,
+  protocolStatsBar,
+  customFlowSection,
   infoCards,
   docsCallout,
   customCalloutSection,
@@ -25,7 +27,7 @@ export const EmptyState = ({
       <div className="relative z-10 flex flex-col items-center justify-center px-4 pt-24 pb-12 md:pt-32 md:pb-16">
         <div className="text-center max-w-7xl mx-auto space-y-12 md:space-y-16 animate-fade-in-up">
           <Header title={title} description={description} />
-          <FlowItems flowItems={flowItems} />
+          {flowItems.length > 0 && <FlowItems flowItems={flowItems} />}
           <div className="flex flex-col items-center space-y-4">
             <EmptyStateButton cta={{ ...cta }} />
           </div>
@@ -33,6 +35,8 @@ export const EmptyState = ({
         </div>
       </div>
     </div>
+    {customFlowSection && customFlowSection}
+    {protocolStatsBar}
     <div className="px-16">
       {infoCards && <InfoCards {...infoCards} />}
       {docsCallout && <DocsCallout {...docsCallout} />}

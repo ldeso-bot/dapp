@@ -1,13 +1,18 @@
 'use client';
 
 import { EmptyState } from '@/shared/components/EmptyState/EmptyState';
+import { ProtocolStatsBar } from '@/shared/components/EmptyState/ProtocolStatsBar';
 import { useEmptyStateButton } from '@/shared/hooks/useEmptyStateButton';
-import { CustomFlowSection } from '../../shared/CustomFlowSection';
-import { overviewDocsCallout, overviewInfoCards } from './overview.constants';
+import {
+  overviewCarbonStats,
+  overviewDocsCallout,
+  overviewFlowItems,
+  overviewInfoCards,
+} from './overview.constants';
 
 export const OverviewEmptyState = () => {
   const emptyStateButtonConfig = useEmptyStateButton({
-    description: 'View your positions and track incentives.',
+    description: 'View and manage your positions.',
     onClick: (openConnectModal) => openConnectModal(),
   });
 
@@ -15,16 +20,16 @@ export const OverviewEmptyState = () => {
     <EmptyState
       title={
         <div className="pb-2">
-          Your Klima Positions
+          Carbon Market Infrastructure.
           <br />
-          at a Glance.
+          Driving Climate Impact.
         </div>
       }
-      description="See your kVCM locks, K2 position, and liquidity — with real-time balances and claimable incentives."
-      stats={[]}
-      flowItems={[]}
-      customFlowSection={<CustomFlowSection />}
+      description="Lock kVCM and K2 into incentivized Klima strategies to support carbon markets."
+      flowItems={overviewFlowItems}
       cta={emptyStateButtonConfig}
+      protocolStatsBar={<ProtocolStatsBar />}
+      stats={overviewCarbonStats}
       infoCards={overviewInfoCards}
       docsCallout={overviewDocsCallout}
     />

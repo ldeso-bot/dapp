@@ -55,6 +55,8 @@ export type EmptyStateProps = {
   flowItems: FlowItemProps[];
   cta: CtaConfig;
   stats?: StatItem[];
+  protocolStatsBar?: ReactNode;
+  customFlowSection?: ReactNode;
   infoCards?: InfoCardsProps;
   docsCallout?: DocsCalloutProps;
   topographicBackgroundId?: string;

@@ -126,6 +126,11 @@ export const formatAmountWithUnits = (value: number): string => {
   return nFormatter(value, 0);
 };
 
+export const formatTonnesWithSuffix = (totalTonnes: number) => {
+  const formatted = formatAmountWithUnits(totalTonnes);
+  return totalTonnes >= 1_000_000 ? `${formatted}+` : formatted;
+};
+
 export const formatPriceUSDWithCommas = (
   value: number,
   digits?: number | 'auto'
