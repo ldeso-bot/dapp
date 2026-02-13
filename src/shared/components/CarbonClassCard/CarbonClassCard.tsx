@@ -31,7 +31,7 @@ export default function CarbonClassCard() {
                     {/* todo - move out to a shared price badge component??? */}
                     <div className="flex items-center gap-4">
                       <div className="text-size-14 text-void-80">
-                        {formatPriceUSDWithCommas(item.valueUSD)}
+                        {formatPriceUSDWithCommas(item.valueUSD, 'auto')}
                       </div>
                       <div
                         className={clsx(
