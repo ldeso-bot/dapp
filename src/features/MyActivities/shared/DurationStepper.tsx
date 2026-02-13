@@ -48,12 +48,6 @@ export const DurationStepper = <T extends DurationFormFields>({
 }: FormControlProps<T>) => {
   const lockableMaturities = useLockableMaturities();
 
-  const currentMaturityDays =
-    lockableMaturities?.map((maturity) => ({
-      maturity,
-      days: getDaysFromTimestamp(maturity.maturationTimestamp),
-    })) ?? [];
-
   return (
     <>
       <label className="text-size-14 font-medium">Custom Duration</label>
@@ -61,7 +55,7 @@ export const DurationStepper = <T extends DurationFormFields>({
         name={name}
         control={control}
         render={({ field }) => {
-          const currentDuration = Number(field.value);
+          const currentMaturityId = Number(field.value);
 
           if (lockableMaturities.length === 0) {
             return (
@@ -73,53 +67,32 @@ export const DurationStepper = <T extends DurationFormFields>({
             );
           }
 
-          let currentMaturity = currentMaturityDays.find(
-            (m) => Math.abs(m.days - currentDuration) <= 1
-          )?.maturity;
-
-          if (!currentMaturity) {
-            const closest = currentMaturityDays.reduce((closest, current) => {
-              return Math.abs(current.days - currentDuration) <
-                Math.abs(closest.days - currentDuration)
-                ? current
-                : closest;
-            });
-            currentMaturity = closest.maturity;
-          }
-
+          const currentMaturity = lockableMaturities.find(
+            (m) => m.maturityId === currentMaturityId
+          );
           const currentIndex = lockableMaturities.findIndex(
-            (m) => m.maturityId === currentMaturity.maturityId
+            (m) => m.maturityId === currentMaturity?.maturityId
           );
           const hasPrevious = currentIndex > 0;
           const hasNext = currentIndex < lockableMaturities.length - 1;
 
           const handlePrevious = () => {
             if (hasPrevious) {
-              const prevMaturity = lockableMaturities[currentIndex - 1];
-              if (!prevMaturity) return;
-              const days = getDaysFromTimestamp(
-                prevMaturity.maturationTimestamp
-              );
-              field.onChange(days);
+              field.onChange(currentMaturityId - 1);
             }
           };
 
           const handleNext = () => {
             if (hasNext) {
-              const nextMaturity = lockableMaturities[currentIndex + 1];
-              if (!nextMaturity) return;
-              const days = getDaysFromTimestamp(
-                nextMaturity.maturationTimestamp
-              );
-              field.onChange(days);
+              field.onChange(currentMaturityId + 1);
             }
           };
 
           const displayDate = formatMaturityDate(
-            currentMaturity.maturationTimestamp
+            currentMaturity?.maturationTimestamp ?? 0
           );
           const displayDuration = formatLockDuration(
-            getDaysFromTimestamp(currentMaturity.maturationTimestamp)
+            getDaysFromTimestamp(currentMaturity?.maturationTimestamp ?? 0)
           );
 
           return (

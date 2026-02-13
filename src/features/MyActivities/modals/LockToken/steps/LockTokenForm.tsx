@@ -23,10 +23,8 @@ import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useTransactionHandler } from '@/shared/hooks/useTransactionHandler';
 import { delay, isMaturityWithinDays } from '@/shared/utils/date.utils';
-import { findClosestMaturityByDays } from '@/shared/utils/protocol.utils';
 import { formatAmountWithCommas } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
-import { useEffect } from 'react';
 import { parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 import {
@@ -48,7 +46,6 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
 
   const token = watch('token');
   const amount = watch('amount');
-  const duration = watch('duration');
   const maturityId = watch('maturityId');
 
   const typedToken = isLockableToken(token) ? token : DEFAULT_ALLOCATION_TOKEN;
@@ -60,24 +57,10 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
     ? parseUnits(String(amount), tokenInfo.decimals)
     : 0n;
 
-  const maturity = findClosestMaturityByDays(
-    Number(duration),
-    protocolData?.maturities ?? []
-  );
-
+  const maturity = protocolData?.maturities[maturityId] ?? null;
   const maturityDate = maturity?.maturationTimestamp;
-  const fullMaturity = protocolData?.maturities?.find(
-    (m) => m.maturityId === maturity?.maturityId
-  );
   const isMaturityWithin30Days =
     isValidAmount && isMaturityWithinDays(maturityDate, 30);
-
-  useEffect(() => {
-    if (maturity) {
-      form.setValue('maturityId', maturity.maturityId);
-      form.setValue('maturityDate', maturity.maturationTimestamp);
-    }
-  }, [duration, maturity, form]);
 
   const { lockToken } = useLockToken({
     amount: amountWei,
@@ -163,12 +146,12 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
               {tokenInfo.symbol}
             </span>
           </div>
-          {duration !== undefined && (
+          {maturityId !== undefined && (
             <>
-              <DurationSelector name="duration" control={form.control} />
+              <DurationSelector name="maturityId" control={form.control} />
               <div className="space-y-2 flex flex-col gap-2">
-                <DurationStepper name="duration" control={form.control} />
-                <DurationSlider name="duration" control={form.control} />
+                <DurationStepper name="maturityId" control={form.control} />
+                <DurationSlider name="maturityId" control={form.control} />
               </div>
               <div className="text-size-12 text-void-40">
                 <p>
@@ -181,11 +164,10 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
                   duration and then become claimable.
                 </p>
               </div>
-              {fullMaturity && duration !== undefined && (
+              {maturity && (
                 <IncentivesBreakdownCard
-                  duration={duration}
                   amount={watch('amount')}
-                  fullMaturity={fullMaturity}
+                  maturity={maturity}
                 />
               )}
             </>

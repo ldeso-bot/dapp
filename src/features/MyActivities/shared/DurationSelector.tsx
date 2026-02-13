@@ -1,7 +1,6 @@
 'use client';
 
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
-import { ONE_DAY } from '@/shared/constants/protocol.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useCurrentTimestamp } from '@/shared/hooks/useCurrentTimestamp';
 import { useLockableMaturities } from '@/shared/hooks/useLockableMaturities';
@@ -12,17 +11,17 @@ import {
   getDaysFromTimestamp,
 } from '@/shared/utils/date.utils';
 import { FormControlProps } from '@/shared/utils/form.types';
-import { findClosestMaturityByDays } from '@/shared/utils/protocol.utils';
 import { useMemo } from 'react';
 import { Controller } from 'react-hook-form';
+import { isNonNullish } from 'remeda';
 import { DurationFormFields } from './DurationStepper';
 
-const getPresetDurations = (daysBetweenMaturities: number) => {
+const getPresetDurations = () => {
   return [
-    { days: daysBetweenMaturities, description: 'Shortest' },
-    { days: daysBetweenMaturities * 4, description: 'Short' },
-    { days: daysBetweenMaturities * 12, description: 'Medium' },
-    { days: daysBetweenMaturities * 40, description: 'Longest' },
+    { index: 0, description: 'Shortest' },
+    { index: 4, description: 'Short' },
+    { index: 12, description: 'Medium' },
+    { index: -1, description: 'Longest' },
   ] as const;
 };
 
@@ -34,10 +33,7 @@ export const DurationSelector = <T extends DurationFormFields>({
   const currentTimestamp = useCurrentTimestamp();
   const { data: protocolData } = useProtocolData();
 
-  const daysBetweenMaturities =
-    (protocolData?.protocolState?.maturityPeriod ?? 0) / ONE_DAY;
-
-  const PRESET_DURATIONS = getPresetDurations(daysBetweenMaturities);
+  const PRESET_DURATIONS = getPresetDurations();
 
   const firstMaturity = protocolData?.maturities[0] ?? null;
   const firstMaturityTimestamp = firstMaturity?.maturationTimestamp ?? 0;
@@ -47,38 +43,21 @@ export const DurationSelector = <T extends DurationFormFields>({
     : 0;
 
   const presetDurations = useMemo(() => {
-    const shortestDays = firstMaturity
-      ? getDaysFromTimestamp(firstMaturity.maturationTimestamp, true)
-      : PRESET_DURATIONS[0].days;
-
-    const lastMaturity =
-      lockableMaturities[lockableMaturities.length - 1] ?? null;
-    const longestDays = lastMaturity
-      ? getDaysFromTimestamp(lastMaturity.maturationTimestamp, true)
-      : (PRESET_DURATIONS[PRESET_DURATIONS.length - 1]?.days ?? 0);
-
-    return PRESET_DURATIONS.map((preset, index) => {
-      const isFirst = index === 0;
-      const isLast = index === PRESET_DURATIONS.length - 1;
-      const daysToUse = isFirst
-        ? shortestDays
-        : isLast
-          ? longestDays
-          : preset.days;
-
-      const maturity = findClosestMaturityByDays(daysToUse, lockableMaturities);
-      const timestamp = maturity?.maturationTimestamp
-        ? maturity.maturationTimestamp
-        : currentTimestamp + daysToUse * ONE_DAY;
+    return PRESET_DURATIONS.map((preset) => {
+      const maturityListIndex =
+        preset.index >= 0 ? preset.index : lockableMaturities.length - 1;
+      const maturity = lockableMaturities[maturityListIndex];
+      if (!maturity) return null;
+      const timestamp = maturity.maturationTimestamp ?? 0;
 
       return {
         ...preset,
-        days: daysToUse,
+        maturity,
         label: formatDateDDMMYYYY(timestamp),
         baseAPY: maturity?.syntheticYieldZeroCouponYieldCurve ?? 3,
         approxDuration: calculateApproxDuration(timestamp),
       };
-    });
+    }).filter(isNonNullish);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lockableMaturities, currentTimestamp]);
 
@@ -106,16 +85,16 @@ export const DurationSelector = <T extends DurationFormFields>({
         {presetDurations.map((preset) => (
           <Controller
             name={name}
-            key={preset.days}
+            key={preset.maturity.maturityId}
             control={control}
             render={({ field }) => {
-              const isSelected = field.value === preset.days;
+              const isSelected = field.value === preset.maturity.maturityId;
               return (
                 <Tooltip
                   trigger={
                     <button
                       type="button"
-                      onClick={() => field.onChange(preset.days)}
+                      onClick={() => field.onChange(preset.maturity.maturityId)}
                       className={cn(
                         'w-full flex flex-col items-center px-3 py-2 border-2 rounded-xl text-center',
                         isSelected

@@ -6,25 +6,24 @@ import { getDaysFromTimestamp } from '@/shared/utils/date.utils';
 
 export type UseIncentivesBreakdownParams = {
   amount: number;
-  duration: number;
-  fullMaturity: Maturity;
+  maturity: Maturity;
 };
 
 export const useIncentivesBreakdown = ({
   amount,
-  duration,
-  fullMaturity,
+  maturity,
 }: UseIncentivesBreakdownParams) => {
+  const duration = getDaysFromTimestamp(maturity.maturationTimestamp);
   const baseYieldFormatted = (
-    fullMaturity.syntheticYieldZeroCouponYieldCurve * 100
+    maturity.syntheticYieldZeroCouponYieldCurve * 100
   ).toFixed(2);
 
   const incentivesYieldFormatted = (
-    fullMaturity.riskyYieldZeroCouponYieldCurve ?? 0 * amount
+    maturity.riskyYieldZeroCouponYieldCurve ?? 0 * amount
   ).toFixed(2);
 
   const durationInDaysFromMaturity = getDaysFromTimestamp(
-    fullMaturity.maturationTimestamp
+    maturity.maturationTimestamp
   );
 
   const effectiveDurationDays =

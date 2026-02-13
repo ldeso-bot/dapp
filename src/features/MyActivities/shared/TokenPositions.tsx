@@ -168,7 +168,7 @@ const PositionCard: FC<PositionCardProps> = ({
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2 col-span-2 flex-row-reverse">
-          {isMaturing && (
+          {lock.canTopUp && (
             <Button
               colors="neutral"
               className="text-size-12"

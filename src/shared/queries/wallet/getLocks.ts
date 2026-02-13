@@ -108,6 +108,7 @@ const getMockLocks = (): Locks => {
       lockedUntil: 1719859200,
       status: 'active',
       earningStatus: 'earning',
+      canTopUp: true,
     },
     {
       created: 1764515366,
@@ -141,6 +142,7 @@ const getMockLocks = (): Locks => {
       lockedUntil: 1764515366,
       status: 'active',
       earningStatus: 'paused',
+      canTopUp: true,
     },
   ];
 };

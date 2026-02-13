@@ -7,14 +7,12 @@ import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
 
 export const IncentivesBreakdownCard = ({
   amount,
-  duration,
-  fullMaturity,
+  maturity,
 }: UseIncentivesBreakdownParams) => {
   const { baseYieldFormatted, incentivesYieldFormatted, lockDuration } =
     useIncentivesBreakdown({
       amount,
-      duration,
-      fullMaturity,
+      maturity,
     });
 
   return (

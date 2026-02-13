@@ -247,6 +247,10 @@ export const mapKvcmOrLpLock = ({
     tokenMetrics
   );
 
+  const now = new Date().getTime() / 1000;
+  const canTopUp =
+    Math.floor(lockedUntil / ONE_DAY) - Math.floor(now / ONE_DAY) > 1;
+
   const status =
     lock.status === 'UNLOCKED' ? 'claimed' : isMatured ? 'matured' : 'active';
 
@@ -283,6 +287,7 @@ export const mapKvcmOrLpLock = ({
     lockedUntil,
     status,
     earningStatus,
+    canTopUp,
   };
 };
 
@@ -520,6 +525,7 @@ export const mapK2Lock = ({
     status,
     earningStatus,
     canRequestUnlock,
+    canTopUp: true,
   };
 };
 

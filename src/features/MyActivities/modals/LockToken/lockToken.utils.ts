@@ -11,9 +11,7 @@ import { useAccount } from 'wagmi';
 export type LockTokenFields = {
   token: string;
   amount: number;
-  duration: number;
   maturityId: number;
-  maturityDate: number;
 };
 
 export const lockTokenDialogAtom = atom({

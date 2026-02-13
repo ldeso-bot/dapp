@@ -62,6 +62,8 @@ export type Lock = {
   earningStatus: EarningStatus;
   /** Date of lock creation */
   created: number;
+  /* Whether the lock can be topped up */
+  canTopUp: boolean;
 };
 
 export type Locks = Lock[];

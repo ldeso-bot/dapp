@@ -2,6 +2,7 @@
 
 import Steps from '@/shared/components/Steps/Steps';
 import { DEFAULT_ALLOCATION_TOKEN } from '@/shared/constants/tokens.constants';
+import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useParsedForm } from '@/shared/hooks/web3/useParsedForm';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAtomValue } from 'jotai';
@@ -13,13 +14,12 @@ import { LockTokenForm } from './steps/LockTokenForm';
 export default function LockTokenFlow() {
   const lockTokenDialog = useAtomValue(lockTokenDialogAtom);
   const token = lockTokenDialog.token ?? DEFAULT_ALLOCATION_TOKEN;
+  const { data: protocolData } = useProtocolData();
 
   const schema = z.object({
     token: z.string(),
     amount: z.coerce.number().gt(0, 'Amount must be a positive'),
-    duration: z.coerce.number(),
     maturityId: z.coerce.number(),
-    maturityDate: z.coerce.number(),
   });
 
   const form = useForm<LockTokenFields>({
@@ -27,9 +27,7 @@ export default function LockTokenFlow() {
     defaultValues: {
       token,
       amount: 0,
-      duration: 365,
-      maturityId: undefined,
-      maturityDate: undefined,
+      maturityId: protocolData?.maturities[4]?.maturityId ?? 0,
     },
   });
 
