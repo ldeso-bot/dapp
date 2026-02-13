@@ -15,7 +15,6 @@ import { CARBON_SELLERS_HANDBOOK_URL } from '@/shared/constants/urls.constants';
 import { formatStringToNumber } from '@/shared/utils/subgraph.utils';
 import { useEffect } from 'react';
 import { zeroAddress } from 'viem';
-import { SlippageSlider } from '../components/SlippageSlider';
 import { useSellCarbonForm } from '../hooks/useSellCarbonForm';
 import { useSellCarbonQuoter } from '../hooks/useSellCarbonQuoter';
 import { SellCarbonFields } from '../sellCarbon.constants';
@@ -150,7 +149,6 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
                     : 'Select a token first'
                 }
               />
-              <SlippageSlider form={form} />
             </div>
             <ButtonGroup className="flex-col w-full">
               <Button
