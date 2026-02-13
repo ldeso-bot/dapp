@@ -9,9 +9,9 @@ import { InfoCard } from '@/features/MyActivities/shared/InfoCard';
 import Icon from '@/shared/components/Icon/Icon';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { useHasPreviouslyConnected } from '@/shared/hooks/useHasPreviouslyConnected';
-import { useNextMaturity } from '@/shared/hooks/useNextMaturity';
 import Plus from '@/shared/images/plus.svg';
 import {
+  daysUntil,
   formatAmountWithCommas,
   formatTimestamp,
 } from '@/shared/utils/string.utils';
@@ -57,13 +57,20 @@ export const KvcmView = () => {
 };
 
 const KvcmOverview = () => {
-  const { timestamp: nextMaturityDate, daysFromNow: nextMaturityInDays } =
-    useNextMaturity();
   const { data: kvcmData } = useTokenHoldingsData('kvcm');
   const { data: allocationData } = useAllocationData();
 
   const allocated = allocationData?.kvcm.allocated ?? 0;
   const unallocated = allocationData?.kvcm.unallocated ?? 0;
+
+  const nextActiveLock = (kvcmData?.activeLocks || []).sort(
+    (a, b) => a.created - b.created
+  )[0];
+
+  const nextUnlockTimestamp = (nextActiveLock?.lockedUntil ?? 0) * 1000;
+  const nextUnlockInDays = daysUntil(nextUnlockTimestamp);
+
+  const nextUnlockLabel = nextActiveLock ? 'Next Unlock on' : 'No active locks';
 
   return (
     <>
@@ -86,15 +93,22 @@ const KvcmOverview = () => {
         <StatusCard>
           {kvcmData && (
             <>
-              <StatusCardTitle badge="yellow">Next unlock on</StatusCardTitle>
-              <div className="space-y-1">
-                <div className="text-size-18 font-bold text-gray-900">
-                  {formatTimestamp(nextMaturityDate * 1000)}
+              <StatusCardTitle badge="yellow">
+                {nextUnlockLabel}
+              </StatusCardTitle>
+              {nextActiveLock && (
+                <div className="space-y-1">
+                  <div className="text-size-18 font-bold text-gray-900">
+                    {formatTimestamp(
+                      nextActiveLock.lockedUntil * 1000,
+                      'short'
+                    )}
+                  </div>
+                  <div className="text-size-14 text-gray-500">
+                    • {nextUnlockInDays} days
+                  </div>
                 </div>
-                <div className="text-size-14 text-gray-500">
-                  • {nextMaturityInDays} days
-                </div>
-              </div>
+              )}
             </>
           )}
         </StatusCard>

@@ -1,5 +1,6 @@
 import { isNullish } from 'remeda';
 import { parseUnits } from 'viem';
+import { MILLISECONDS_PER_DAY } from '../constants/protocol.constants';
 
 /*
   Formats a number to a string with a suffix.
@@ -65,6 +66,10 @@ export const formatTimestamp = (
     day: 'numeric',
     month: month ?? 'long',
   });
+};
+
+export const daysUntil = (timestamp: number): number => {
+  return Math.ceil((timestamp - new Date().getTime()) / MILLISECONDS_PER_DAY);
 };
 
 export const formatCurrentTime = (): string =>
