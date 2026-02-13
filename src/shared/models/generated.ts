@@ -5,6 +5,7 @@ import {
 } from '@generated/gql/types/protocol.types';
 
 export type SDKLock = NonNullable<GetLocksQuery['locks']>[number];
+export type SDKLockAction = NonNullable<SDKLock['lockActions']>[number];
 export type SDKMidnightInfo = NonNullable<
   GetLatestMidnightInfoQuery['midnightInfos']
 >[number];

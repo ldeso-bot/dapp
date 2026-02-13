@@ -121,10 +121,7 @@ const K2Overview = () => {
               </StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-gray-900 tabular-nums">
-                  {formatAmountWithCommas(
-                    k2Data.pendingRewardsPlusPrincipalAmount
-                  )}{' '}
-                  K2
+                  {formatAmountWithCommas(lock?.requestedForUnlockAmount)} K2
                 </div>
               </div>
             </>
@@ -193,7 +190,7 @@ const K2VariableRewards = () => {
   const { data: protocolData } = useProtocolData();
 
   return (
-    <VariableRewardsCard>
+    <VariableRewardsCard skeletonClassName="h-[20.3rem]">
       {k2Data && protocolData && (
         <>
           <VariableRewardsHeader

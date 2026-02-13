@@ -18,6 +18,7 @@ fragment MidnightInfoFragment on MidnightInfo {
 
   k2YieldAccumulatorForK2
   k2YieldAccumulatorForKVCM_K2_LP
+  k2YieldAccumulatorForKVCM_USDC_LP
   k2YieldAccumulatorForKVCM
 
   riskyYieldAccumulatorForKVCM_K2_LP

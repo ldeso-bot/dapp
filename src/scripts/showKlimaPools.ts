@@ -4,8 +4,8 @@ import { getKlimaProtocolPools } from '../shared/utils/aerodrome.utils.js';
 async function main() {
   const pools = await getKlimaProtocolPools();
   pools.forEach((pool) => {
-    console.log('pool', pool.pool.symbol, pool.index);
-    console.log(pool);
+    console.info('pool', pool.pool.symbol, pool.index);
+    console.info(pool);
   });
 }
 

@@ -73,6 +73,10 @@ export const formatMidnightInfo = (
       midnightInfo.k2YieldAccumulatorForKVCM,
       18
     ),
+    k2YieldAccumulatorForKVCM_USDC_LP: formatStringToNumber(
+      midnightInfo.k2YieldAccumulatorForKVCM_USDC_LP,
+      18
+    ),
 
     riskyYieldAccumulatorForKVCM_K2_LP: formatStringToNumber(
       midnightInfo.riskyYieldAccumulatorForKVCM_K2_LP,
@@ -299,7 +303,7 @@ export const getFormattedMidnightInfoAccumulator = (
         : token === 'kvcm-k2'
           ? midnightInfo.k2YieldAccumulatorForKVCM_K2_LP
           : token === 'kvcm-usdc'
-            ? 0
+            ? midnightInfo.k2YieldAccumulatorForKVCM_USDC_LP
             : token === 'kvcm'
               ? midnightInfo.k2YieldAccumulatorForKVCM
               : 0;
@@ -313,7 +317,7 @@ export const getFormattedMidnightInfoAccumulator = (
             ? midnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP
             : 0;
   } else {
-    console.error(`Yeld type does not have an accumulator: ${type}`);
+    console.error(`Yield type does not have an accumulator: ${type}`);
   }
 
   return rawAccumulator;

@@ -122,7 +122,7 @@ const computeLockRewards = ({
 
   const claimableRewardsPlusPrincipalAmount = sumBy(locks, (lock) => {
     if (!lock.isClaimable) return 0;
-    let res = lock.lockedAmount;
+    let res = lock.unlockableLockedAmount;
     if (isKVCMOrK2(lock.token)) {
       res += lock.claimableRewards[lock.token];
     }

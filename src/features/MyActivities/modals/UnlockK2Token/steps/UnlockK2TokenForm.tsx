@@ -1,5 +1,7 @@
 'use client';
 
+import { alertAtom } from '@/features/Alert/alert.atom';
+import { useUnlockK2 } from '@/features/MyActivities/modals/UnlockK2Token/hooks/useUnlockK2';
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
 import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
@@ -7,24 +9,46 @@ import Form from '@/shared/components/Form/layout/Form';
 import InputGroup from '@/shared/components/Form/layout/InputGroup';
 import TokenAmountInput from '@/shared/components/Form/TokenAmountInput';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
+import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
-import { useAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 import {
   unlockK2TokenDialogAtom,
   UnlockTokenFields,
 } from '../unlockK2Token.utils';
 
-const UnlockK2TokenForm: FormFlowStep<UnlockTokenFields> = ({ next, data }) => {
+const UnlockK2TokenForm: FormFlowStep<UnlockTokenFields> = ({ data }) => {
   const { form } = data;
   const { handleSubmit } = form;
-  const [unlockTokenDialogState, setUnlockTokenDialogState] = useAtom(
-    unlockK2TokenDialogAtom
-  );
-  const lock = unlockTokenDialogState.lock;
+  const { unlockK2, lock, isExecuting } = useUnlockK2(form);
+  const setUnlockTokenDialogState = useSetAtom(unlockK2TokenDialogAtom);
+  const setAlert = useSetAtom(alertAtom);
 
-  // Wrapping next into handleSubmit to ensure the form is valid before going to the validation step
-  const onSubmit = () => {
-    next();
+  // Handle form submission by directly unlocking the tokens
+  const onSubmit = async () => {
+    const result = await unlockK2();
+
+    if (result.error) {
+      setAlert({
+        title: 'Unlock Failed',
+        description: result.error,
+        type: 'error',
+      });
+      return;
+    }
+
+    setAlert({
+      title: 'Unlock Successful',
+      description: `You've successfully unlocked ${form.watch('amount')} of your ${tokens[lock!.token].symbol} tokens! You can manage your positions in the "My Activities" dashboard.`,
+      type: 'success',
+      links: [
+        {
+          label: 'My Activities',
+          href: ROUTES.MY_ACTIVITIES,
+        },
+      ],
+    });
+    setUnlockTokenDialogState({ open: false, lock: null });
   };
 
   if (!lock) return null;
@@ -43,16 +67,21 @@ const UnlockK2TokenForm: FormFlowStep<UnlockTokenFields> = ({ next, data }) => {
               'aria-label': 'Token Input',
               placeholder: 'Select a token first',
               ...form.register('amount'),
-              max: lock.lockedAmount,
+              max: lock.availableForUnlockRequestAmount,
               min: 0,
               step: 10 ** -tokens.k2.decimals,
             }}
-            availableBalance={lock.lockedAmount}
+            availableBalance={lock.availableForUnlockRequestAmount}
           />
         </InputGroup>
         <ButtonGroup>
-          <Button colors="secondary" context="flow" type="submit">
-            Unlock
+          <Button
+            colors="secondary"
+            context="flow"
+            type="submit"
+            disabled={isExecuting}
+          >
+            {isExecuting ? 'Unlocking...' : `Unlock ${tokens.k2.symbol}`}
           </Button>
           <Button
             colors="primary"

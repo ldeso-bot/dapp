@@ -52,8 +52,14 @@ export type Lock = {
   };
   /** Whether the lock is claimable */
   isClaimable: boolean;
-  /** Whether the lock is claimable */
+  /** Whether the lock is pending unlock (K2 only) */
   isPendingUnlock: boolean;
+  /** Amount that can be requested for unlocked (K2 only) */
+  availableForUnlockRequestAmount: number;
+  /** Amount that can be unlocked */
+  unlockableLockedAmount: number;
+  /** Amount that is pending unlock (K2 only) */
+  requestedForUnlockAmount: number;
   /** Whether the lock can be requested to be unlocked (K2 only) */
   canRequestUnlock: boolean;
   /** Status of the lock */

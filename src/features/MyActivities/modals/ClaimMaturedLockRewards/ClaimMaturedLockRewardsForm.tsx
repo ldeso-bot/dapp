@@ -86,7 +86,10 @@ const ClaimMaturedLogRewardsForm = ({
                   <div className="flex flex-row justify-between">
                     <span>Principal</span>
                     <span>
-                      {formatAmountWithCommas(lock.lockedAmount, 'auto')}{' '}
+                      {formatAmountWithCommas(
+                        lock.unlockableLockedAmount,
+                        'auto'
+                      )}{' '}
                       {getTokenSymbol(lock.token)}
                     </span>
                   </div>

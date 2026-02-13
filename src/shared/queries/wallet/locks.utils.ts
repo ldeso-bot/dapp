@@ -5,7 +5,7 @@ import {
   tokenInfoFromSubgraphSymbol,
   tokens,
 } from '@/shared/constants/tokens.constants';
-import { SDKLock } from '@/shared/models/generated';
+import { SDKLock, SDKLockAction } from '@/shared/models/generated';
 import { AllMetrics, YieldType } from '@/shared/models/ProtocolData';
 import { EarningStatus, Lock } from '@/shared/models/walletData';
 import { computeTokenAmountValueUSD } from '@/shared/utils/protocol.utils';
@@ -103,7 +103,6 @@ const computeAccumlulatorYieldRewards = (
     console.error('❌ Token info not found');
     return 0;
   }
-
   const rewards = lock.lockActions.reduce((acc, action) => {
     const entryMidnightInfo =
       yieldType === YieldType.K2
@@ -111,6 +110,7 @@ const computeAccumlulatorYieldRewards = (
         : action.riskyYieldEntryMidnightInfo;
     const decimals =
       yieldType === YieldType.K2 ? tokens.k2.decimals : tokens.kvcm.decimals;
+
     if (
       action.type === LockActionType.SHARES_UPDATED &&
       entryMidnightInfo?.keeperUpdated
@@ -132,6 +132,7 @@ const computeAccumlulatorYieldRewards = (
     }
     return acc;
   }, 0);
+
   return rewards;
 };
 
@@ -175,6 +176,7 @@ export const mapKvcmOrLpLock = ({
   let kvcmClaimableRewards = 0;
   let k2AccruingRewards = 0;
   let kvcmAccruingRewards = 0;
+  let unlockableLockedAmount = 0;
 
   // Compute earning status
   const earningStatus = computeEarningStatus(protocolState, tokenInfo.id);
@@ -234,12 +236,28 @@ export const mapKvcmOrLpLock = ({
       positionAmount += kvcmRewards;
     }
   }
+
   if (isClaimable) {
-    k2ClaimableRewards = k2Rewards;
-    kvcmClaimableRewards = kvcmRewards;
+    const riskyYieldClaimed = formatStringToNumber(
+      lock.riskyYieldClaimed,
+      tokens.kvcm.decimals
+    );
+    const syntheticYieldClaimed = formatStringToNumber(
+      lock.syntheticYieldClaimed,
+      tokens.kvcm.decimals
+    );
+    const k2YieldClaimed = formatStringToNumber(
+      lock.k2YieldClaimed,
+      tokens.k2.decimals
+    );
+    k2ClaimableRewards = k2Rewards - k2YieldClaimed;
+    kvcmClaimableRewards =
+      kvcmRewards - riskyYieldClaimed - syntheticYieldClaimed;
+    unlockableLockedAmount = lockedAmount;
+  } else {
+    k2AccruingRewards = k2Rewards;
+    kvcmAccruingRewards = kvcmRewards;
   }
-  k2AccruingRewards = k2Rewards - k2ClaimableRewards;
-  kvcmAccruingRewards = kvcmRewards - kvcmClaimableRewards;
 
   const positionValueUSD = computeTokenAmountValueUSD(
     tokenInfo.id,
@@ -283,6 +301,9 @@ export const mapKvcmOrLpLock = ({
     },
     isClaimable,
     isPendingUnlock: false,
+    unlockableLockedAmount,
+    availableForUnlockRequestAmount: 0,
+    requestedForUnlockAmount: 0,
     canRequestUnlock: isClaimable,
     lockedUntil,
     status,
@@ -366,6 +387,30 @@ const computeK2LockAccumulatedRewards = ({
   };
 };
 
+/**
+ * Helper function to sum the amounts of the lock actions witrh weights
+ * @param lock
+ * @param multiplierFunction
+ * @returns
+ */
+const sumLockActionsAmounts = (
+  lock: SDKLock,
+  multiplierFunction: (action: SDKLockAction, daysSinceAction: number) => number
+) => {
+  return lock.lockActions.reduce((acc, action) => {
+    const actionTimestamp = formatStringToNumber(action.timestamp, 0);
+    const now = new Date().getTime() / 1000;
+    const daysSinceAction =
+      Math.floor(now / ONE_DAY) - Math.floor(actionTimestamp / ONE_DAY);
+
+    return (
+      acc +
+      formatStringToNumber(action.amount, tokens.k2.decimals) *
+        multiplierFunction(action, daysSinceAction)
+    );
+  }, 0);
+};
+
 export const mapK2Lock = ({
   lock,
   protocolState,
@@ -383,35 +428,60 @@ export const mapK2Lock = ({
     lock.requestUnlockTimestamp,
     0
   );
+  const isUnlockRequested = lock.status === 'UNLOCK_REQUESTED';
 
   // A K2 lock is claimable if an unlock request has been made and the request unlock timestamp has been reached
-  const isMatured = requestUnlockTimestamp > 0 && now > requestUnlockTimestamp;
+  const isMatured = isUnlockRequested && now > requestUnlockTimestamp;
   const isClaimable = isMatured;
-  const isPendingUnlock =
-    requestUnlockTimestamp > 0 && now < requestUnlockTimestamp;
+  const isPendingUnlock = isUnlockRequested && now < requestUnlockTimestamp;
   const lockedUntil = requestUnlockTimestamp;
   const created = formatStringToNumber(lock.lockActions[0]?.timestamp, 0) ?? 0;
-
-  // A K2 lock can be requested if no unlock request have been made
-  // or if the request unlock timestamp has not been reached yet (adds unlock amount to the same midnight)
-  const canRequestUnlock =
-    requestUnlockTimestamp == 0 || now < requestUnlockTimestamp;
 
   // Locked amount cannot be fetched from the subgraph because there are no events when the K2 escrow is actually released
   // We sum all LockActions amounts to get the locked amount
   // TODO: This could lead to a performance issue with large amount of lock actions
-  const lockedAmount = lock.lockActions.reduce((acc, action) => {
-    if (
-      action.type !== LockActionType.UNLOCK_REQUESTED &&
-      action.type !== LockActionType.LOCKED
-    ) {
-      return acc;
+  const lockedAmount = sumLockActionsAmounts(
+    lock,
+    (action, daysSinceAction) => {
+      // We take into consideration only actions that happened before the current timestamp (discarding future unlocks)
+      if (daysSinceAction < 0) return 0;
+      return action.type === LockActionType.LOCKED
+        ? 1
+        : action.type === LockActionType.UNLOCK_REQUESTED
+          ? -1
+          : 0;
     }
-    // We take into consideration only actions that happened before the current timestamp (discarding future unlocks)
-    const actionTimestamp = formatStringToNumber(action.timestamp, 0);
-    const amount = actionTimestamp < now ? action.amount : 0n;
-    return acc + formatStringToNumber(amount, tokenInfo.decimals);
-  }, 0);
+  );
+
+  const availableForUnlockRequestAmount = sumLockActionsAmounts(
+    lock,
+    (action, daysSinceAction) => {
+      if (action.type === LockActionType.LOCKED && daysSinceAction > 1)
+        return 1;
+      if (action.type === LockActionType.UNLOCK_REQUESTED) return -1;
+      return 0;
+    }
+  );
+
+  const requestedForUnlockAmount = sumLockActionsAmounts(
+    lock,
+    (action, daysSinceAction) => {
+      return action.type === LockActionType.UNLOCK_REQUESTED &&
+        daysSinceAction == -1
+        ? 1
+        : 0;
+    }
+  );
+
+  // A K2 lock can be requested if no unlock request have been made
+  // or if the request unlock timestamp has not been reached yet (adds unlock amount to the same midnight)
+  // And there are tokens to be unlocked
+  const canRequestUnlock =
+    availableForUnlockRequestAmount > 0 &&
+    (requestUnlockTimestamp == 0 || now < requestUnlockTimestamp);
+
+  let unlockableLockedAmount = 0;
+
   const positionAmount = lockedAmount;
   const lockedValueUSD = computeTokenAmountValueUSD(
     tokenInfo.id,
@@ -483,8 +553,17 @@ export const mapK2Lock = ({
     });
     k2ClaimableRewards = tmpK2Rewards;
     kvcmClaimableRewards = tmpKvcmRewards;
+
+    unlockableLockedAmount = sumLockActionsAmounts(
+      lock,
+      (action, daysSinceAction) => {
+        return daysSinceAction < 0 &&
+          action.type == LockActionType.UNLOCK_REQUESTED
+          ? 1
+          : 0;
+      }
+    );
   }
-  // Pending rewards
 
   const k2Rewards = k2AccruingRewards + k2ClaimableRewards;
   const kvcmRewards = kvcmAccruingRewards + kvcmClaimableRewards;
@@ -522,6 +601,9 @@ export const mapK2Lock = ({
     isClaimable,
     isPendingUnlock,
     lockedUntil,
+    unlockableLockedAmount,
+    availableForUnlockRequestAmount,
+    requestedForUnlockAmount,
     status,
     earningStatus,
     canRequestUnlock,

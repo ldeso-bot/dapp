@@ -32,7 +32,6 @@ export default function CarbonMarketCard(props: CardProps) {
     carbonClasses || [],
     'supplyTonnes'
   );
-  console.log(priceChartConfig);
 
   return (
     <Card

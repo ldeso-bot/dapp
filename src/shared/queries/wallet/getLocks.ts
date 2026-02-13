@@ -49,9 +49,13 @@ export const getLocks = async (
       return null;
     }
     const isK2Lock = tokenInfo.id === 'k2';
-    const latestMidnightInfosArray = Object.values(latestMidnightInfos);
-    const latestMidnightInfo =
-      latestMidnightInfosArray[Number(lock.maturityId)];
+    const latestMidnightInfo = latestMidnightInfos[Number(lock.maturityId)];
+    if (!latestMidnightInfo) {
+      console.error(
+        `No latest midnight info found for lock ${lock.id} (maturityId: ${lock.maturityId})`
+      );
+      return null;
+    }
 
     return isK2Lock
       ? mapK2Lock({
@@ -105,6 +109,9 @@ const getMockLocks = (): Locks => {
       },
       isClaimable: true,
       isPendingUnlock: false,
+      unlockableLockedAmount: 1000,
+      availableForUnlockRequestAmount: 1000,
+      requestedForUnlockAmount: 10,
       lockedUntil: 1719859200,
       status: 'active',
       earningStatus: 'earning',
@@ -139,6 +146,9 @@ const getMockLocks = (): Locks => {
       },
       isClaimable: false,
       isPendingUnlock: false,
+      unlockableLockedAmount: 12.25,
+      availableForUnlockRequestAmount: 1000,
+      requestedForUnlockAmount: 10,
       lockedUntil: 1764515366,
       status: 'active',
       earningStatus: 'paused',

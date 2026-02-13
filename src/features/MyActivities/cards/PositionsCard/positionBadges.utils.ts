@@ -61,21 +61,20 @@ const createLiquidityActionBadges = (props: AggregatedHoldingsData) => {
 
 const createK2ActionBadges = (props: AggregatedHoldingsData) => {
   const { k2 } = props;
-  const maturedCount = k2.maturedLocks.length;
-  const soonToBeMaturedCount = k2.soonToBeMaturedLocks.length;
+  const k2Lock = k2.locks[0];
+  const maturedCount = k2Lock?.isClaimable ? 1 : 0;
+  const soonToBeMaturedCount = k2Lock?.isPendingUnlock ? 1 : 0;
 
   if (!k2.claimableValue && !soonToBeMaturedCount) {
     return [];
   }
 
-  const displayMaturedCount = maturedCount || (k2.claimableValue ? 1 : 0);
-
   return createActionBadges({
     view: 'k2',
     unitLabel: 'deposits',
-    maturedCount: displayMaturedCount,
+    maturedCount,
     soonToBeMaturedCount,
-    claimableValue: k2.claimableValue,
+    claimableValue: k2.claimableRewardsPlusPrincipalAmount,
   });
 };
 

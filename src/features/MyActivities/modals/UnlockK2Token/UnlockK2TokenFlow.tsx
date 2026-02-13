@@ -6,7 +6,6 @@ import { useParsedForm } from '@/shared/hooks/web3/useParsedForm';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z, ZodNumber } from 'zod';
-import UnlockK2TokenConfirm from './steps/UnlockK2TokenConfirm';
 import UnlockK2TokenForm from './steps/UnlockK2TokenForm';
 import { UnlockTokenFields } from './unlockK2Token.utils';
 
@@ -23,7 +22,7 @@ export default function UnlockK2TokenFlow() {
   const defaultValues: {
     amount: number;
   } = {
-    amount: lock?.lockedAmount ?? 0,
+    amount: lock?.availableForUnlockRequestAmount ?? 0,
   };
 
   const schema = z.object(schemaObj);
@@ -38,7 +37,7 @@ export default function UnlockK2TokenFlow() {
   // Form is passed to each step
   return (
     <Steps
-      components={[UnlockK2TokenForm, UnlockK2TokenConfirm]}
+      components={[UnlockK2TokenForm]}
       data={{ form, schema, parsedForm }}
     />
   );

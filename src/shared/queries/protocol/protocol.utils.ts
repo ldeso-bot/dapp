@@ -16,7 +16,12 @@ import { base } from 'viem/chains';
 import { getLatestMidnightInfoDiffs } from './midnightInfo.utils';
 
 export const tokensEligibleForIncentives: Record<YieldType, Token[]> = {
-  [YieldType.K2]: [tokens.k2.id, tokens.kvcm.id, tokens['kvcm-k2'].id],
+  [YieldType.K2]: [
+    tokens.k2.id,
+    tokens.kvcm.id,
+    tokens['kvcm-k2'].id,
+    tokens['kvcm-usdc'].id,
+  ],
   [YieldType.RISKY]: [
     tokens.k2.id,
     tokens['kvcm-usdc'].id,

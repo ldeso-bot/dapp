@@ -116,13 +116,13 @@ async function buildDiamondAbi(
 
   const abiArrays: AbiItem[][] = [];
   for (const addr of addresses) {
-    console.log(`Fetching ABI: ${diamondName} facet/diamond ${addr}`);
+    console.info(`Fetching ABI: ${diamondName} facet/diamond ${addr}`);
     abiArrays.push(await fetchAbi(apiUrl, addr, apiKey));
   }
   const merged = mergeAndDeduplicateAbis(abiArrays);
   const outPath = join(outDir, `${diamondName}Diamond.ts`);
   writeFileSync(outPath, emitAbiTs(merged), 'utf-8');
-  console.log(`Wrote ${outPath} (${merged.length} ABI items).`);
+  console.info(`Wrote ${outPath} (${merged.length} ABI items).`);
 }
 
 function parseApiKey(): string {
@@ -152,8 +152,20 @@ async function main(): Promise<void> {
 
   const outDir = join(__dirname, '..', '..', 'shared', 'utils', 'abis');
 
-  await buildDiamondAbi(rewardAddresses, apiUrl, apiKey, outDir, 'RewardManager');
-  await buildDiamondAbi(stakingAddresses, apiUrl, apiKey, outDir, 'StakingManager');
+  await buildDiamondAbi(
+    rewardAddresses,
+    apiUrl,
+    apiKey,
+    outDir,
+    'RewardManager'
+  );
+  await buildDiamondAbi(
+    stakingAddresses,
+    apiUrl,
+    apiKey,
+    outDir,
+    'StakingManager'
+  );
 }
 
 main().catch((err) => {
