@@ -19,11 +19,7 @@ export const OverviewEmptyState = () => {
   return (
     <EmptyState
       title={
-        <div className="pb-2">
-          Carbon Market Infrastructure.
-          <br />
-          Driving Climate Impact.
-        </div>
+        <div className="pb-2">Open Infrastructure for Carbon Markets.</div>
       }
       description="Lock kVCM and K2 into incentivized Klima strategies to support carbon markets."
       flowItems={overviewFlowItems}
