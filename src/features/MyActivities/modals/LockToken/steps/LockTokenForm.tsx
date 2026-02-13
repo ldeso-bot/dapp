@@ -134,6 +134,7 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
               />
 
               <Button
+                type="button"
                 colors="secondary"
                 className="rounded-xl min-h-[4rem]"
                 onClick={() => form.setValue('amount', Number(tokenBalance))}
