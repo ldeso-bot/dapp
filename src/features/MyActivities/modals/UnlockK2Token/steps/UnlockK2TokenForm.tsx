@@ -19,7 +19,7 @@ import {
 
 const UnlockK2TokenForm: FormFlowStep<UnlockTokenFields> = ({ data }) => {
   const { form } = data;
-  const { handleSubmit } = form;
+  const { handleSubmit, formState } = form;
   const { unlockK2, lock, isExecuting } = useUnlockK2(form);
   const setUnlockTokenDialogState = useSetAtom(unlockK2TokenDialogAtom);
   const setAlert = useSetAtom(alertAtom);
@@ -62,10 +62,11 @@ const UnlockK2TokenForm: FormFlowStep<UnlockTokenFields> = ({ data }) => {
             control={form.control}
             label="Amount to unlock"
             tokenIconSrc={tokens.k2.iconSrc}
+            errorMessage={formState.errors.amount}
             inputProps={{
               type: 'number',
               'aria-label': 'Token Input',
-              placeholder: 'Select a token first',
+              placeholder: 'Enter amount',
               ...form.register('amount'),
               max: lock.availableForUnlockRequestAmount,
               min: 0,
@@ -75,23 +76,27 @@ const UnlockK2TokenForm: FormFlowStep<UnlockTokenFields> = ({ data }) => {
           />
         </InputGroup>
         <ButtonGroup>
-          <Button
-            colors="secondary"
-            context="flow"
-            type="submit"
-            disabled={isExecuting}
-          >
-            {isExecuting ? 'Unlocking...' : `Unlock ${tokens.k2.symbol}`}
-          </Button>
-          <Button
-            colors="primary"
-            context="flow"
-            onClick={() =>
-              setUnlockTokenDialogState({ open: false, lock: null })
-            }
-          >
-            Cancel
-          </Button>
+          <div className="flex gap-3 w-full">
+            <Button
+              colors="primary"
+              context="flow"
+              onClick={() =>
+                setUnlockTokenDialogState({ open: false, lock: null })
+              }
+              className="flex-1"
+            >
+              Cancel
+            </Button>
+            <Button
+              colors="secondary"
+              context="flow"
+              type="submit"
+              disabled={isExecuting || !formState.isValid}
+              className="flex-1"
+            >
+              {isExecuting ? 'Unlocking...' : `Unlock ${tokens.k2.symbol}`}
+            </Button>
+          </div>
         </ButtonGroup>
       </Form>
     </Card>

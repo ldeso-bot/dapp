@@ -57,7 +57,7 @@ export default function TokenAmountInput<T extends FieldValues>(
               iconSrc={tokenIconSrc}
               {...inputProps}
               value={field.value ?? ''}
-              className="h-[4rem] border-r-0 rounded-e-none"
+              className="h-[4rem] border-r-0 rounded-e-none mr-3"
               onFocus={(e) => {
                 const v = e.currentTarget.value;
                 if (v !== '' && Number(v) === 0) e.currentTarget.select();

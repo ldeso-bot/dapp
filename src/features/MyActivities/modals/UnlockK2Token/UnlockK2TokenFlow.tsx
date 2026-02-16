@@ -12,24 +12,27 @@ import { UnlockTokenFields } from './unlockK2Token.utils';
 export default function UnlockK2TokenFlow() {
   const { data } = useWalletData();
   const lock = data?.locks.find((lock) => lock.token === 'k2') ?? null;
+  const maxAmount = lock?.availableForUnlockRequestAmount ?? 0;
 
   // Form and schema are defined at the flow level
   const schemaObj: {
     amount: ZodNumber;
   } = {
-    amount: z.coerce.number(),
-  };
-  const defaultValues: {
-    amount: number;
-  } = {
-    amount: lock?.availableForUnlockRequestAmount ?? 0,
+    amount: z.coerce
+      .number()
+      .gt(0, 'Amount must be greater than 0')
+      .lte(maxAmount, 'Amount exceeds available balance'),
   };
 
   const schema = z.object(schemaObj);
+  const defaultValues: Partial<UnlockTokenFields> = {
+    amount: undefined,
+  };
 
   const form = useForm<UnlockTokenFields>({
     resolver: zodResolver(schema),
     defaultValues,
+    mode: 'onChange',
   });
 
   const parsedForm = useParsedForm(form, schema);
