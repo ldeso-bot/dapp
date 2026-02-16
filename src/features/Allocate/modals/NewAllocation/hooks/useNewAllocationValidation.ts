@@ -1,5 +1,6 @@
 import { useAllocationData } from '@/features/Allocate/hooks/useAllocationData';
 import { useMemo } from 'react';
+import { isNonNullish } from 'remeda';
 
 type ValidationProps = {
   isK2: boolean;
@@ -16,7 +17,7 @@ export const useNewAllocationValidation = (props: ValidationProps) => {
   const lockedK2 = allocationData?.k2.locked ?? 0;
   const allocatedK2 = allocationData?.k2.allocated ?? 0;
   const availableK2 = Math.max(0, lockedK2 - allocatedK2);
-  
+
   const availableKvcm = useMemo(
     () => allocationData?.kvcm.availableKvcm ?? new Map(),
     [allocationData?.kvcm.availableKvcm]
@@ -34,12 +35,12 @@ export const useNewAllocationValidation = (props: ValidationProps) => {
 
   const errorMessage = useMemo(() => {
     const numAmount = Number(amount);
-    
+
     if (isAmountTouched && (isNaN(numAmount) || numAmount <= 0)) {
       return 'Amount must be greater than 0';
     }
 
-    if (isKvcm && contractLockId && numAmount > 0) {
+    if (isKvcm && isNonNullish(contractLockId) && numAmount > 0) {
       const availableForLock = availableKvcm.get(Number(contractLockId)) ?? 0;
       if (numAmount > availableForLock) {
         return 'You cannot allocate more tokens than are available in the selected lock.';
@@ -69,4 +70,3 @@ export const useNewAllocationValidation = (props: ValidationProps) => {
     hasKvcmLocksAvailable,
   };
 };
-

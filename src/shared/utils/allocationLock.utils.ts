@@ -1,3 +1,4 @@
+import { isNonNullish } from 'remeda';
 import { Allocation, Lock } from '../models/walletData';
 
 /**
@@ -19,7 +20,7 @@ export const calculateAvailableKvcmPerLock = (
 
   // Subtract allocated amounts
   allocations.forEach((allocation) => {
-    if (allocation.contractLockId !== undefined) {
+    if (isNonNullish(allocation.contractLockId)) {
       const current = availableKvcm.get(allocation.contractLockId) ?? 0;
       availableKvcm.set(
         allocation.contractLockId,

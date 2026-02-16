@@ -6,7 +6,7 @@ import { useContract, useContractInfo } from '@/shared/hooks/web3/useContract';
 import { Lock, WalletData } from '@/shared/models/walletData';
 import { exitWithErrorMessage } from '@/shared/utils/web3.utils';
 import { useCallback, useMemo } from 'react';
-import { isNonNullish } from 'remeda';
+import { isNonNullish, isNullish } from 'remeda';
 import { ExecuteWithValidationResult } from '../../hooks/useTransactionWithValidation';
 import ClaimMaturedLogRewardsForm from './ClaimMaturedLockRewardsForm';
 
@@ -48,7 +48,7 @@ const ClaimLpLockRewardsForm = ({ lock }: Props) => {
       if (!unstakeLPFn) {
         return exitWithErrorMessage('Contract is not ready');
       }
-      if (!lock?.contractLockId) {
+      if (isNullish(lock?.contractLockId)) {
         return exitWithErrorMessage('Lock ID is not ready');
       }
 

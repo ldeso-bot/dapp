@@ -23,6 +23,7 @@ import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useSetAtom } from 'jotai';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { isNullish } from 'remeda';
 import { parseUnits } from 'viem';
 import { useNewAllocationValidation } from '../hooks/useNewAllocationValidation';
 import { NewAllocationFields } from '../newAllocation.utils';
@@ -91,7 +92,7 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
       let result: { error: string | null } = { error: null };
 
       if (isKvcm) {
-        if (!formData.contractLockId) {
+        if (isNullish(formData.contractLockId)) {
           setError('root', {
             type: 'manual',
             message: 'Please select a lock',

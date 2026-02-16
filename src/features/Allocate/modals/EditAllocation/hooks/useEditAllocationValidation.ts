@@ -2,6 +2,7 @@ import { useAllocationData } from '@/features/Allocate/hooks/useAllocationData';
 import { Allocation } from '@/shared/models/walletData';
 import { computeMaxAllocationForPosition } from '@/shared/utils/allocation.utils';
 import { useMemo } from 'react';
+import { isNonNullish } from 'remeda';
 
 type ValidationProps = {
   allocation: Allocation | null | undefined;
@@ -15,7 +16,7 @@ export const useEditAllocationValidation = (props: ValidationProps) => {
 
   const isKvcm = allocation?.token.name === 'kvcm';
   const isK2 = allocation?.token.name === 'k2';
-  
+
   const availableKvcm = useMemo(
     () => allocationData?.kvcm.availableKvcm ?? new Map<number, number>(),
     [allocationData?.kvcm.availableKvcm]
@@ -42,7 +43,7 @@ export const useEditAllocationValidation = (props: ValidationProps) => {
       return null;
     }
 
-    if (isKvcm && allocation.contractLockId && amountDiff > 0) {
+    if (isKvcm && isNonNullish(allocation.contractLockId) && amountDiff > 0) {
       const availableForLock =
         availableKvcm.get(allocation.contractLockId) ?? 0;
       const totalAvailable = availableForLock + originalAmount;
@@ -73,4 +74,3 @@ export const useEditAllocationValidation = (props: ValidationProps) => {
     isK2,
   };
 };
-

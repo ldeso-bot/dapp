@@ -9,7 +9,7 @@ import RewardManagerDiamond from '@/shared/utils/abis/RewardManagerDiamond';
 import { formatStringToNumber } from '@/shared/utils/subgraph.utils';
 import { exitWithErrorMessage } from '@/shared/utils/web3.utils';
 import { useCallback, useMemo } from 'react';
-import { isNonNullish } from 'remeda';
+import { isNonNullish, isNullish } from 'remeda';
 import { useReadContract } from 'wagmi';
 import { ExecuteWithValidationResult } from '../../hooks/useTransactionWithValidation';
 import ClaimMaturedLogRewardsForm from './ClaimMaturedLockRewardsForm';
@@ -60,7 +60,7 @@ const ClaimKvcmLockRewardsForm = ({ lock }: Props) => {
       if (!unlockKvcmFn) {
         return exitWithErrorMessage('Contract is not ready');
       }
-      if (!lock?.contractLockId) {
+      if (isNullish(lock?.contractLockId)) {
         return exitWithErrorMessage('Lock ID is not ready');
       }
 
