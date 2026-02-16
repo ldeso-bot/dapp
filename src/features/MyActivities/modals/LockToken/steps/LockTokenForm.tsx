@@ -54,7 +54,7 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
 
   const isValidAmount = !!(amount && amount > 0);
   const amountWei = isValidAmount
-    ? parseUnits(String(amount), tokenInfo.decimals)
+    ? parseUnits(String(amount.toFixed(tokenInfo.decimals)), tokenInfo.decimals)
     : 0n;
 
   const maturity = protocolData?.maturities[maturityId] ?? null;

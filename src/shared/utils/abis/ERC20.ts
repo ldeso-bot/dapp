@@ -787,4 +787,5 @@ const abi = [
   },
 ] as const;
 
+export type ERC20Abi = typeof abi;
 export default abi;
