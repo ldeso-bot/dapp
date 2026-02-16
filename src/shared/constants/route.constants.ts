@@ -1,9 +1,15 @@
 export const ROUTES = {
   ALLOCATE: '/allocate',
   RETIRE: '/retire',
-  CARBON_UNIVERSITY: '/carbon-university',
   MY_ACTIVITIES: '/my-activities',
   OVERVIEW: '/protocol-overview',
   SELL_CARBON: '/sell-carbon',
   TERMS: '/terms',
+  KLIMAPROTOCOL: 'https://www.klimaprotocol.com/',
+  RESOURCES: 'https://docs.klimaprotocol.com/',
+  CONTACT_US: 'https://us.bigin.online/org894283421/forms/klima-contact-us',
+  AUDIT: 'https://hashlock.com/audits/klima-protocol',
+  X: 'https://twitter.com/KlimaDAO',
+  DISCORD: 'https://www.klimaprotocol.com/discord',
+  TELEGRAM: 'https://t.me/KlimaDAO_Official',
 };
