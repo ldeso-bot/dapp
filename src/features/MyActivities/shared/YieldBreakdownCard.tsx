@@ -1,9 +1,11 @@
 'use client';
+
 import {
   useIncentivesBreakdown,
   UseIncentivesBreakdownParams,
 } from '@/features/MyActivities/hooks/useIncentivesBreakdown';
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
+import { DEV_MODE } from '@/shared/constants/config.constants';
 
 export const IncentivesBreakdownCard = ({
   amount,
@@ -14,6 +16,8 @@ export const IncentivesBreakdownCard = ({
       amount,
       maturity,
     });
+
+  if (!DEV_MODE) return null;
 
   return (
     <>
