@@ -554,15 +554,13 @@ export const mapK2Lock = ({
     k2ClaimableRewards = tmpK2Rewards;
     kvcmClaimableRewards = tmpKvcmRewards;
 
-    unlockableLockedAmount = sumLockActionsAmounts(
-      lock,
-      (action, daysSinceAction) => {
-        return daysSinceAction < 0 &&
-          action.type == LockActionType.UNLOCK_REQUESTED
-          ? 1
-          : 0;
-      }
-    );
+    unlockableLockedAmount = sumLockActionsAmounts(lock, (action) => {
+      return formatStringToNumber(action.timestamp, 0) ==
+        endClaimableRewardsTimestamp &&
+        action.type == LockActionType.UNLOCK_REQUESTED
+        ? 1
+        : 0;
+    });
   }
 
   const k2Rewards = k2AccruingRewards + k2ClaimableRewards;

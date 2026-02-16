@@ -21,7 +21,7 @@ type Props = {
   isLoading: boolean;
   kvcmAmount: number | undefined;
   k2Amount: number | undefined;
-  lock?: Lock;
+  lock: Lock;
   onClaim: () => Promise<ExecuteWithValidationResult>;
 };
 
@@ -37,6 +37,9 @@ const ClaimMaturedLogRewardsForm = ({
   );
   const setAlert = useSetAtom(alertAtom);
   const [isClaiming, setIsClaiming] = useState(false);
+  const tokenSymbol = getTokenSymbol(lock.token);
+  const isK2Lock = lock.token === 'k2';
+  const accrual = (isK2Lock ? k2Amount : kvcmAmount) ?? 0;
 
   const handleOnClaim = async () => {
     try {
@@ -96,26 +99,37 @@ const ClaimMaturedLogRewardsForm = ({
                   <div className="flex flex-row justify-between">
                     <span>Base Accrual</span>
                     <span>
-                      + {formatAmountWithCommas(kvcmAmount, 'auto')} KVCM
+                      + {formatAmountWithCommas(accrual, 'auto')} {tokenSymbol}
                     </span>
                   </div>
                   <div className="flex flex-row justify-between font-bold">
                     <span>Total</span>
                     <span>
                       {formatAmountWithCommas(
-                        lock.lockedAmount + kvcmAmount,
+                        lock.unlockableLockedAmount + accrual,
                         'auto'
                       )}{' '}
-                      KVCM
+                      {tokenSymbol}
                     </span>
                   </div>
                 </div>
                 <div className="flex flex-col gap-3 border-void-20 border-1 rounded-2xl p-3">
                   <div className="flex flex-row justify-between">
-                    <span>K2 incentives</span>
-                    <span className="font-bold">
-                      + {formatAmountWithCommas(k2Amount, 'auto')} K2
-                    </span>
+                    {isK2Lock ? (
+                      <>
+                        <span>Protocol distribution (kVCM)</span>
+                        <span className="font-bold">
+                          + {formatAmountWithCommas(kvcmAmount, 'auto')} KVCM
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span>K2 incentives</span>
+                        <span className="font-bold">
+                          + {formatAmountWithCommas(k2Amount, 'auto')} K2
+                        </span>
+                      </>
+                    )}
                   </div>
                 </div>
               </>
