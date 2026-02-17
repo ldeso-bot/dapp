@@ -1,9 +1,9 @@
 export const ROUTES = {
   ALLOCATE: '/allocate',
-  RETIRE: '/retire',
+  RETIRE: '/retire-carbon',
   MY_ACTIVITIES: '/my-activities',
   OVERVIEW: '/protocol-overview',
-  SELL_CARBON: '/sell-carbon',
+  SELL_CARBON: '/supply-carbon',
   TERMS: '/terms',
   KLIMAPROTOCOL: 'https://www.klimaprotocol.com/',
   RESOURCES: 'https://docs.klimaprotocol.com/',
