@@ -99,8 +99,9 @@ export const formatAmountWithCommas = (
     if (absValue === 0) {
       digits = 0;
     } else {
-      const decimalPlaces = Math.ceil(Math.abs(Math.log10(absValue)));
-      digits = decimalPlaces + 2;
+      const log = Math.log10(absValue);
+      // log > 0 means the number is greater than 1, so we don't need to show any digits
+      digits = log > 0 ? 0 : Math.ceil(-log) + 2;
     }
   }
 
@@ -109,16 +110,16 @@ export const formatAmountWithCommas = (
   let integerPart = splitValue[0];
   let decimalPart = splitValue[1];
 
-  if (isNullish(integerPart)) return '0';
+  if (isNullish(integerPart)) return (0).toFixed(digits);
 
   // Add commas to the integer part if value is greater than 1 to make it pretty
   integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-  if (!decimalPart) {
+  if (isNullish(decimalPart)) {
     return integerPart;
   }
 
-  decimalPart = decimalPart.replace(/0+$/, '');
+  decimalPart = decimalPart.replace(/0+$/, '').padEnd(digits, '0');
 
   if (decimalPart.length === 0) {
     return integerPart;

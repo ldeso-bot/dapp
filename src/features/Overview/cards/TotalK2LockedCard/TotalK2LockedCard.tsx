@@ -29,7 +29,7 @@ export default function TotalK2LockedCard(props: CardProps) {
       tooltip="This represents the total amount of K2 locked in the Protocol by all users."
       tooltipPosition="far"
       primaryValue={formatAmountWithCommas(amount, 0)}
-      secondaryValue={formatPriceUSDWithCommas(price * amount, 0)}
+      secondaryValue={formatPriceUSDWithCommas(price * amount, 2)}
       changePercent={data?.metrics.k2.supplyLockedChangePercent24h}
       token={tokens.k2}
     />

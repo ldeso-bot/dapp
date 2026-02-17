@@ -9,7 +9,7 @@ import StatCard from '../../shared/StatCard/StatCard';
 
 export default function KVcmPriceCard(props: CardProps) {
   const { data } = useProtocolData();
-  const price = formatPriceUSDWithCommas(data?.metrics.kvcm.valueUSD ?? 0);
+  const price = formatPriceUSDWithCommas(data?.metrics.kvcm.valueUSD ?? 0, 2);
 
   return (
     <StatCard

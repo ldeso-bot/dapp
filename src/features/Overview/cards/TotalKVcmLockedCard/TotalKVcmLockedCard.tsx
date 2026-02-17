@@ -30,7 +30,7 @@ export default function TotalKVcmLockedCard(props: CardProps) {
       tooltip="This represents the total amount of kVCM locked in the Protocol by all users."
       tooltipPosition="far"
       primaryValue={formatAmountWithCommas(amount, 0)}
-      secondaryValue={formatPriceUSDWithCommas(price * amount, 0)}
+      secondaryValue={formatPriceUSDWithCommas(price * amount, 2)}
       changePercent={data?.metrics.kvcm.supplyLockedChangePercent24h}
       token={tokens.kvcm}
     />
