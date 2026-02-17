@@ -162,11 +162,3 @@ export const dateStringToTimestamp = (dateString?: string): number => {
   const date = new Date(dateString);
   return Math.floor(date.getTime() / 1000);
 };
-
-/**
- * Returns true if two strings match after normalizing.
- */
-export const matchesNormalized = (a: string, b: string) => {
-  const normalized = (s: string) => s.trim().toLowerCase().replace(/\s+/g, ' ');
-  return normalized(a) === normalized(b);
-};
