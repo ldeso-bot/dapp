@@ -9,6 +9,7 @@ import { useParsedForm } from '@/shared/hooks/web3/useParsedForm';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { RetireCarbonEmptyState } from './components/RetireCarbonEmptyState';
+import { RegenNetworkCreditsCard } from './components/RegenNetworkCreditsCard';
 import { RetireCarbonFields, retireCarbonSchema } from './retire.constants';
 import RetireCarbonConfirm from './steps/RetireCarbonConfirm';
 import RetireCarbonForm from './steps/RetireCarbonForm';
@@ -62,7 +63,12 @@ export default function RetirePage() {
               components={[RetireCarbonForm, RetireCarbonConfirm]}
               data={{ form, schema, parsedForm }}
             />
-            <CarbonClassCard />
+            <div className="flex flex-col gap-4">
+              <CarbonClassCard />
+              <RegenNetworkCreditsCard
+                selectedCarbonClassId={form.watch('carbonClass')}
+              />
+            </div>
           </div>
         </div>
       )}

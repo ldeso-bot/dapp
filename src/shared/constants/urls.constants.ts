@@ -3,6 +3,7 @@ import contracts from './contracts.constants';
 
 export const DOCS_URL = `https://docs.klimaprotocol.com`;
 export const CARBON_SELLERS_HANDBOOK_URL = `https://docs.klimaprotocol.com/carbon-sellers-handbook/overview`;
+export const REGEN_NETWORK_DOCS_URL = `https://docs.klimaprotocol.com/carbon-class-handbook/regen-network-credits`;
 
 export const BUY_KVCM_URL = `https://aerodrome.finance/swap?from=${contracts.USDC[base.id]}&to=${contracts.KVCM[base.id]}&chain1=${base.id}`;
 export const BUY_K2_URL = `https://aerodrome.finance/swap?from=${contracts.USDC[base.id]}&to=${contracts.K2[base.id]}&chain1=${base.id}`;
