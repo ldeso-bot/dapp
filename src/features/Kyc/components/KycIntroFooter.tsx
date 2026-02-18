@@ -12,7 +12,7 @@ type Props = {
 export const KycIntroFooter = ({ onContinue, acknowledged }: Props) => (
   <div className="flex items-center justify-between gap-4 pt-3 border-t border-gray-100">
     <Link
-      href={ROUTES.LEGAL}
+      href={ROUTES.TERMS}
       className="text-size-14 underline min-h-[44px] flex items-center hover:opacity-80 transition-opacity text-gray-600"
     >
       Full privacy notice

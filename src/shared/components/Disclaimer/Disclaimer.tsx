@@ -49,8 +49,7 @@ export const DisclaimerModal = () => {
           software — not an intermediary.
         </p>
         <p className="text-size-14 text-gray-600">
-          To learn more, click on the Legal & Risk Disclosure link in the
-          footer.
+          To learn more, click on the Terms link in the footer.
         </p>
       </div>
       <div className="flex items-center justify-end sm:justify-between shrink-0">

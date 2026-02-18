@@ -5,7 +5,7 @@ import { PageTitle } from '@/shared/components/PageTitle/PageTitle';
 
 export const TermsPage = () => (
   <div className="flex flex-col gap-2 overflow-y-auto">
-    <PageTitle>Legal &amp; Risk Disclosure</PageTitle>
+    <PageTitle>Terms &amp; Conditions</PageTitle>
     <SectionTitle>Nature of the Protocol</SectionTitle>
     <DocumentBody>
       Klima Protocol is an open-source, autonomous software system designed to
