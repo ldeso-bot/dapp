@@ -8,6 +8,7 @@ import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
 import Form from '@/shared/components/Form/layout/Form';
 import { RootError } from '@/shared/components/Form/RootError';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
+import { DEV_MODE } from '@/shared/constants/config.constants';
 import { ROUTES } from '@/shared/constants/route.constants';
 import {
   DEFAULT_LP_TOKEN,
@@ -168,10 +169,12 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
             currentLockAmount={currentLockAmount}
             topUpAmount={isValidAmount ? Number(amount) : 0}
           />
-          <K2Incentives
-            k2Incentives={totalAccruingRewards}
-            token={typedToken}
-          />
+          {DEV_MODE && (
+            <K2Incentives
+              k2Incentives={totalAccruingRewards}
+              token={typedToken}
+            />
+          )}
         </div>
         {formState.errors.root && (
           <RootError
