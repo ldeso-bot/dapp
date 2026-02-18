@@ -1,8 +1,12 @@
 'use client';
 
+import { useHasKycVerification } from '@/features/Kyc/useHasKycVerification';
 import Dialog from '@/shared/components/Dialog/Dialog';
 import { ROUTES } from '@/shared/constants/route.constants';
-import { AllocationToken } from '@/shared/constants/tokens.constants';
+import {
+  type AllocationToken,
+  isAllocatableToken,
+} from '@/shared/constants/tokens.constants';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useAtom } from 'jotai';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -15,6 +19,7 @@ import NewAllocationFlow from './NewAllocation/NewAllocationFlow';
 export default function AllocateModals() {
   const { data } = useWalletData();
   const router = useRouter();
+  const { openKycOrProceed } = useHasKycVerification();
 
   const [editAllocationDialog, setEditAllocationDialog] = useAtom(
     editAllocationDialogAtom
@@ -38,7 +43,7 @@ export default function AllocateModals() {
 
   useEffect(() => {
     const action = searchParams.get('action');
-    
+
     // If there's no action, just close dialogs and return
     if (!action) {
       setEditAllocationDialog({ open: false, allocation: null });
@@ -48,11 +53,19 @@ export default function AllocateModals() {
 
     if (!data?.allocations) return;
 
-    /* Open dialogs if navigating to /allocate with action parameter */
     if (action.startsWith('new_allocation_')) {
-      const token = action.split('_')[2];
-      setNewAllocationDialog({ open: true, token: token as AllocationToken });
-    } else if (action.startsWith('edit_allocation_')) {
+      const tokenCandidate = action.split('_')[2];
+      if (!isAllocatableToken(tokenCandidate)) return;
+
+      const token = tokenCandidate as AllocationToken;
+      const source = token === 'k2' ? 'allocate_k2' : 'allocate_kvcm';
+
+      openKycOrProceed(source, () =>
+        setNewAllocationDialog({ open: true, token })
+      );
+      return;
+    }
+    if (action.startsWith('edit_allocation_')) {
       const id = action.split('_')[2];
       const allocation =
         data.allocations.find((allocation) => allocation.id === id) ?? null;
@@ -63,6 +76,7 @@ export default function AllocateModals() {
     setEditAllocationDialog,
     data?.allocations,
     setNewAllocationDialog,
+    openKycOrProceed,
   ]);
 
   return (

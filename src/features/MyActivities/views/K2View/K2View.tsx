@@ -1,6 +1,7 @@
 'use client';
 
 import { useAllocationData } from '@/features/Allocate/hooks/useAllocationData';
+import { useHasKycVerification } from '@/features/Kyc/useHasKycVerification';
 import {
   StatusCard,
   StatusCardTitle,
@@ -40,6 +41,7 @@ export const K2View = () => {
   const account = useAccount();
   const { hasPreviouslyConnected } = useHasPreviouslyConnected();
   const setDepositK2TokenDialog = useSetAtom(depositK2TokenDialogAtom);
+  const { openKycOrProceed } = useHasKycVerification();
   return (
     <>
       {!account.isConnected && !hasPreviouslyConnected ? (
@@ -54,7 +56,11 @@ export const K2View = () => {
                 <Icon icon={Plus} size={1.6} /> Deposit
               </>
             }
-            onButtonClick={() => setDepositK2TokenDialog({ open: true })}
+            onButtonClick={() =>
+              openKycOrProceed('deposit_k2', () =>
+                setDepositK2TokenDialog({ open: true })
+              )
+            }
             description="Lock K2 to become eligible for variable K2 incentives and a share of kVCM incentives. After 24 hours, you can request an unlock. Your requested tokens become claimable at the daily cutoff. You can also allocate locked K2 tokens to carbon classes."
             content={<K2Overview />}
           />

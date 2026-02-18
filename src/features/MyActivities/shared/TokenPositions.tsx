@@ -1,3 +1,4 @@
+import { useHasKycVerification } from '@/features/Kyc/useHasKycVerification';
 import Button from '@/shared/components/Button/Button';
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
 import { DEV_MODE, USE_LOCAL_RPC } from '@/shared/constants/config.constants';
@@ -72,6 +73,7 @@ const PositionCard: FC<PositionCardProps> = ({
   const setClaimMaturedLockRewardsDialog = useSetAtom(
     claimMaturedLockRewardsDialogAtom
   );
+  const { openKycOrProceed } = useHasKycVerification();
 
   if (lock.status === 'claimed') return null;
 
@@ -174,7 +176,9 @@ const PositionCard: FC<PositionCardProps> = ({
               className="text-size-12"
               onClick={() => {
                 if (lock.token === 'k2') {
-                  setDepositK2TokenDialog({ open: true });
+                  openKycOrProceed('deposit_k2', () =>
+                    setDepositK2TokenDialog({ open: true })
+                  );
                 } else {
                   setTopupLockDialog({
                     open: true,

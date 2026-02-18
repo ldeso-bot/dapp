@@ -1,4 +1,5 @@
 import Alert from '@/features/Alert/Alert';
+import { KycModal } from '@/features/Kyc/KycModal';
 import { DisclaimerModal } from '@/shared/components/Disclaimer/Disclaimer';
 import Footer from '@/shared/components/Footer/Footer';
 import DesktopNavBar from '@/shared/components/NavBar/DesktopNavBar';
@@ -53,6 +54,7 @@ export default async function RootLayout({
               <MobileNavBar />
               <div className="flex flex-col flex-1 relative overflow-x-hidden">
                 <Alert />
+                <KycModal />
                 <div className="flex-1 bg-void-10 p-6">{children}</div>
                 <Footer />
               </div>

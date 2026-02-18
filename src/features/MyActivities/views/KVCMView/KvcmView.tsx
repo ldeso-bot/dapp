@@ -1,6 +1,7 @@
 'use client';
 
 import { useAllocationData } from '@/features/Allocate/hooks/useAllocationData';
+import { useHasKycVerification } from '@/features/Kyc/useHasKycVerification';
 import {
   StatusCard,
   StatusCardTitle,
@@ -29,6 +30,7 @@ export const KvcmView = () => {
   const account = useAccount();
   const { hasPreviouslyConnected } = useHasPreviouslyConnected();
   const setLockTokenDialogState = useSetAtom(lockTokenDialogAtom);
+  const { openKycOrProceed } = useHasKycVerification();
 
   return (
     <>
@@ -46,7 +48,9 @@ export const KvcmView = () => {
             tooltipId="kvcm-locks"
             description="Lock kVCM for a fixed duration to receive variable kVCM incentives when the term ends, and variable K2 incentives at any time. Locked kVCM can also be allocated to carbon classes to influence protocol pricing."
             onButtonClick={() =>
-              setLockTokenDialogState({ open: true, token: 'kvcm' })
+              openKycOrProceed('lock_kvcm', () =>
+                setLockTokenDialogState({ open: true, token: 'kvcm' })
+              )
             }
             content={<KvcmOverview />}
           />

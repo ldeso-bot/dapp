@@ -1,5 +1,6 @@
 'use client';
 
+import { useHasKycVerification } from '@/features/Kyc/useHasKycVerification';
 import Dialog from '@/shared/components/Dialog/Dialog';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useAtom } from 'jotai';
@@ -38,6 +39,7 @@ export const MyActivitiesModals = () => {
   );
   const [claimMaturedLockRewardsDialog, setClaimMaturedLockRewardsDialog] =
     useAtom(claimMaturedLockRewardsDialogAtom);
+  const { openKycOrProceed } = useHasKycVerification();
 
   useEffect(() => {
     const hasOpenDialog =
@@ -91,18 +93,29 @@ export const MyActivitiesModals = () => {
 
     if (action === null) return;
 
-    /* Open dialogs if navigation to /my_holdings with action parameter */
     if (action === 'lock_kvcm') {
-      setLockTokenDialog({ open: true, token: 'kvcm' });
+      openKycOrProceed('lock_kvcm', () =>
+        setLockTokenDialog({ open: true, token: 'kvcm' })
+      );
+      return;
     }
     if (action === 'lock_k2') {
-      setDepositK2TokenDialog({ open: true });
+      openKycOrProceed('deposit_k2', () =>
+        setDepositK2TokenDialog({ open: true })
+      );
+      return;
     }
     if (action === 'lock_kvcm-k2') {
-      setLockTokenDialog({ open: true, token: 'kvcm-k2' });
+      openKycOrProceed('stake_lp', () =>
+        setLockTokenDialog({ open: true, token: 'kvcm-k2' })
+      );
+      return;
     }
     if (action === 'lock_kvcm-usdc') {
-      setLockTokenDialog({ open: true, token: 'kvcm-usdc' });
+      openKycOrProceed('stake_lp', () =>
+        setLockTokenDialog({ open: true, token: 'kvcm-usdc' })
+      );
+      return;
     }
     if (action === 'topup') {
       const id = action.split('_')[2];
@@ -141,6 +154,7 @@ export const MyActivitiesModals = () => {
     setTopupLockDialog,
     setDepositK2TokenDialog,
     data?.locks,
+    openKycOrProceed,
   ]);
 
   return (

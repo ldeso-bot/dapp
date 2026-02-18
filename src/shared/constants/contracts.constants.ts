@@ -3,6 +3,7 @@ import RetirementAggregator from '@/shared/utils/abis/RetirementAggregator';
 import StakingManagerDiamond from '@/shared/utils/abis/StakingManagerDiamond';
 import USDC from '@/shared/utils/abis/USDC.json';
 import VelodromeSugar from '@/shared/utils/abis/VelodromeSugar.json';
+import ZKMEVerifyUpgradeable from '@/shared/utils/abis/ZKMEVerifyUpgradeable';
 import { Address } from 'viem';
 import { base, baseSepolia } from 'viem/chains';
 import RewardManagerDiamond from '../utils/abis/RewardManagerDiamond';
@@ -74,9 +75,17 @@ const contracts = {
     [baseSepolia.id]: '0x0000000000000000000000000000000000000000',
     abi: USDC,
   },
+  ZKMEVerifyUpgradeable: {
+    [base.id]: '0x8c81bbc5cC9B6cdbb5c0e5DD8b9D5bfaF3575710',
+    [baseSepolia.id]: '0xF58De9599C57bBAD68Fea0F39b73913daFcf0976',
+    abi: ZKMEVerifyUpgradeable,
+  },
 } satisfies Record<string, contractInfo>;
 
 export type ContractName = keyof typeof contracts;
+
+export const ZKME_COOPERATOR_ADDRESS: Address =
+  '0x3549200e160Fe6cd3348e19c0cb74d53A95Ece85';
 
 /**
  * The indexes of the Aerodrome pools

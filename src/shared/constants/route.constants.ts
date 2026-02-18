@@ -4,6 +4,7 @@ export const ROUTES = {
   MY_ACTIVITIES: '/my-activities',
   OVERVIEW: '/protocol-overview',
   SELL_CARBON: '/supply-carbon',
+  LEGAL: '/legal',
   TERMS: '/terms',
   KLIMAPROTOCOL: 'https://www.klimaprotocol.com/',
   RESOURCES: 'https://docs.klimaprotocol.com/',

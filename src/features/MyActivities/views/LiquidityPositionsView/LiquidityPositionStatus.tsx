@@ -1,3 +1,4 @@
+import { useHasKycVerification } from '@/features/Kyc/useHasKycVerification';
 import {
   StatusCard,
   StatusCardTitle,
@@ -21,6 +22,7 @@ export const LiquidityPositionStatus = ({
 }: LiquidityPositionStatusProps) => {
   const { data: holdingsData } = useHoldingsData();
   const setLockTokenDialog = useSetAtom(lockTokenDialogAtom);
+  const { openKycOrProceed } = useHasKycVerification();
 
   const tokenData =
     token === 'kvcm-usdc' ? holdingsData?.kvcmUsdc : holdingsData?.kvcmK2;
@@ -33,10 +35,9 @@ export const LiquidityPositionStatus = ({
       : undefined;
 
   const handleOpenStakeDialog = () =>
-    setLockTokenDialog({
-      open: true,
-      token,
-    });
+    openKycOrProceed('stake_lp', () =>
+      setLockTokenDialog({ open: true, token })
+    );
 
   return (
     <div className="bg-white rounded-lg p-6 pb-0 shadow-sm border border-gray-200">
