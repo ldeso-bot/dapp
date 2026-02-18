@@ -10,6 +10,7 @@ import LinkOpenInNew from '@/shared/components/LinkWithIcon';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { CarbonCreditIconImg } from '@/shared/constants/tokens.constants';
+import { CARBONMARK_URL } from '@/shared/constants/urls.constants';
 import { useAllowance } from '@/shared/hooks/useAllowance';
 import { useChainId } from '@/shared/hooks/web3/useChainId';
 import { useContract } from '@/shared/hooks/web3/useContract';
@@ -19,8 +20,10 @@ import {
   formatAddress,
   formatAmountWithCommas,
 } from '@/shared/utils/string.utils';
+import { getCarbonmarkReceiptUrl } from '@/shared/utils/urls.utils';
 import { getScanLink } from '@/shared/utils/web3.utils';
 import { useSetAtom } from 'jotai';
+import Link from 'next/link';
 import { useRetireCarbon } from '../hooks/useRetireCarbon';
 import { useRetireCarbonForm } from '../hooks/useRetireCarbonForm';
 import { RetireCarbonFields } from '../retire.constants';
@@ -93,17 +96,36 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
   const handleRetireCarbon = async () => {
     const result = await retireCarbon();
     if (result.hash) {
-      // Show success message
+      const receiptUrl = getCarbonmarkReceiptUrl(chainId, result.hash, 0);
       setAlert({
         title: 'Retirement complete',
         description: (
           <>
-            Your carbon credits have been permanently retired. Immutable proof
-            of your climate action can be accessed{' '}
+            Your carbon credits have been permanently retired. Proof of your
+            climate action can be accessed{' '}
             <LinkOpenInNew href={getScanLink(chainId, result.hash)}>
               here
             </LinkOpenInNew>
             .
+            <br />
+            <Link
+              href={receiptUrl}
+              target="_blank"
+              className="underline"
+              rel="noopener noreferrer"
+            >
+              View your retirement receipt
+            </Link>{' '}
+            (powered by{' '}
+            <Link
+              target="_blank"
+              className="underline"
+              href={CARBONMARK_URL}
+              rel="noopener noreferrer"
+            >
+              Carbonmark
+            </Link>
+            , our partner in carbon retirements).
           </>
         ),
         type: 'success',

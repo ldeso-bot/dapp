@@ -1,5 +1,6 @@
 'use client';
 
+import { CARBONMARK_URL } from '@/shared/constants/urls.constants';
 import LinkOpenInNew from '@/shared/components/LinkWithIcon';
 import { HandIcon } from '@/shared/components/Svg/HandIcon';
 
@@ -49,7 +50,7 @@ export const ImportantToKnow = () => (
           </li>
         </ul>
         <div className="mt-8 pt-6 border-t border-[#f0f0f0]/60">
-          <LinkOpenInNew href="https://carbonmark.com">
+          <LinkOpenInNew href={CARBONMARK_URL}>
             Learn more about Carbonmark
           </LinkOpenInNew>
         </div>

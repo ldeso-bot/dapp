@@ -4,6 +4,7 @@ import CarbonClassCard from '@/shared/components/CarbonClassCard/CarbonClassCard
 import { PageDescription } from '@/shared/components/PageDescription/PageDescription';
 import { PageTitle } from '@/shared/components/PageTitle/PageTitle';
 import Steps from '@/shared/components/Steps/Steps';
+import { CARBONMARK_URL } from '@/shared/constants/urls.constants';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useParsedForm } from '@/shared/hooks/web3/useParsedForm';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -48,7 +49,7 @@ export default function RetirePage() {
               Purchase a carbon offset and receive a receipt with proof of
               retirement instantly. Powered by{' '}
               <a
-                href="https://carbonmark.com"
+                href={CARBONMARK_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-medium text-primary-600 hover:underline"
