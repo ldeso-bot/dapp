@@ -18,6 +18,10 @@ export type Lock = {
   lockedAmount: number;
   /** Value of the locked tokens in USD */
   lockedValueUSD: number;
+  /** Amount locked */
+  originalLockedAmount: number;
+  /** Value of the locked tokens in USD */
+  originalLockedValueUSD: number;
   /** Amount that participates to the rewards (same as lockedAmount except for KVCM locks where kvcm rewards are added) */
   positionAmount: number;
   /** Value of the position in USD */
@@ -70,6 +74,8 @@ export type Lock = {
   created: number;
   /* Whether the lock can be topped up */
   canTopUp: boolean;
+  /* Whether the lock was claimed partially */
+  isPartiallyClaimed: boolean;
 };
 
 export type Locks = Lock[];

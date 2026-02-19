@@ -27,7 +27,7 @@ export const useNewAllocationValidation = (props: ValidationProps) => {
     if (!isKvcm) return true;
     const kvcmLocks = allocationData?.kvcm.locks ?? [];
     return kvcmLocks.some((lock) => {
-      if (lock.status === 'matured' || lock.status === 'claimed') return false;
+      if (lock.status !== 'active') return false;
       const available = availableKvcm.get(lock.contractLockId) ?? 0;
       return available > 0;
     });

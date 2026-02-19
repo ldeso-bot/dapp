@@ -39,7 +39,12 @@ export const tokensEligibleForIncentives: Record<YieldType, Token[]> = {
 export const getProtocolState = async (sdk: Sdk) => {
   return unstable_cache(
     async () => {
-      const protocolStates = await sdk.protocol.getProtocolState();
+      const [protocolStates, lastestMidnightInfos] = await Promise.all([
+        sdk.protocol.getProtocolState(),
+        getLatestMidnightInfoDiffs(sdk),
+      ]);
+      const lastProcessedMidnightIndex =
+        lastestMidnightInfos[0]?.midnightIndex ?? 0;
       const protocolState = protocolStates.protocolStates[0];
       if (!protocolState) {
         console.error('❌ Protocol state not found');
@@ -70,6 +75,7 @@ export const getProtocolState = async (sdk: Sdk) => {
         maturityPeriod,
         firstActiveMaturityId,
         lastActiveMaturityId,
+        lastProcessedMidnightIndex,
       };
 
       return res;

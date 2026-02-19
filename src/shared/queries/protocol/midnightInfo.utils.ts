@@ -12,38 +12,31 @@ import { unstable_cache } from 'next/cache';
 import { mapToObj } from 'remeda';
 import { getTokenMetrics } from './getTokenMetrics';
 
-const percentageIncrease = (
-  newValue: number,
-  oldValue: number,
-  base?: number
-) => (oldValue > 0 ? (newValue - oldValue) / (base ?? oldValue) : 0);
+const percentageIncrease = (newValue: number, oldValue: number) =>
+  oldValue > 0 ? (newValue - oldValue) / oldValue : 0;
 
-const dailyPercentageIncrease = (
-  newValue: number,
-  oldValue: number,
-  daysBetweenMidnights: number,
-  base?: number
-) => percentageIncrease(newValue, oldValue, base) / daysBetweenMidnights;
+const ppsApr = (
+  newPps: number,
+  oldPps: number,
+  daysBetweenMidnights: number
+) => {
+  return (
+    Math.pow(
+      1 + percentageIncrease(newPps, oldPps) / daysBetweenMidnights,
+      DAYS_IN_YEAR
+    ) - 1
+  );
+};
 
-export const nonCompoundedApr = (
-  newValue: number,
-  oldValue: number,
-  daysBetweenMidnights: number,
-  base?: number
-) =>
-  dailyPercentageIncrease(newValue, oldValue, daysBetweenMidnights, base) *
-  DAYS_IN_YEAR;
-
-const compoundedApr = (
-  newValue: number,
-  oldValue: number,
-  daysBetweenMidnights: number,
-  base?: number
-) =>
-  Math.pow(
-    1 + dailyPercentageIncrease(newValue, oldValue, daysBetweenMidnights, base),
-    DAYS_IN_YEAR
-  ) - 1;
+export const accumulatorApr = (
+  newAccumulator: number,
+  oldAccumulator: number,
+  daysBetweenMidnights: number
+) => {
+  return (
+    ((newAccumulator - oldAccumulator) / daysBetweenMidnights) * DAYS_IN_YEAR
+  );
+};
 
 /**
  * Format the midnight info from the subgraph data to a more usable format
@@ -132,38 +125,38 @@ const computeMidnightInfoDiff = (
 
     // APY
     // K2 APY
-    k2ApyFor.k2 = nonCompoundedApr(
+    k2ApyFor.k2 = accumulatorApr(
       midnightInfo.k2YieldAccumulatorForK2,
       oldMidnightInfo.k2YieldAccumulatorForK2,
       daysBetweenMidnights
     );
 
-    k2ApyFor['kvcm-k2'] = nonCompoundedApr(
+    k2ApyFor['kvcm-k2'] = accumulatorApr(
       midnightInfo.k2YieldAccumulatorForKVCM_K2_LP,
       oldMidnightInfo.k2YieldAccumulatorForKVCM_K2_LP,
       daysBetweenMidnights
     );
 
-    k2ApyFor.kvcm = nonCompoundedApr(
+    k2ApyFor.kvcm = accumulatorApr(
       midnightInfo.k2YieldAccumulatorForKVCM,
       oldMidnightInfo.k2YieldAccumulatorForKVCM,
       daysBetweenMidnights
     );
 
     // KVCM
-    kvcmApyFor['kvcm-k2'] = nonCompoundedApr(
+    kvcmApyFor['kvcm-k2'] = accumulatorApr(
       midnightInfo.riskyYieldAccumulatorForKVCM_K2_LP,
       oldMidnightInfo.riskyYieldAccumulatorForKVCM_K2_LP,
       daysBetweenMidnights
     );
 
-    kvcmApyFor['kvcm-usdc'] = nonCompoundedApr(
+    kvcmApyFor['kvcm-usdc'] = accumulatorApr(
       midnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP,
       oldMidnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP,
       daysBetweenMidnights
     );
 
-    kvcmApyFor.kvcm = compoundedApr(
+    kvcmApyFor.kvcm = ppsApr(
       midnightInfo.syntheticYieldPps,
       oldMidnightInfo.syntheticYieldPps,
       daysBetweenMidnights

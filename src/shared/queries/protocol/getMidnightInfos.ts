@@ -5,9 +5,9 @@ import { getSdk } from '@/shared/utils/subgraph.utils';
 import { NumberKeysOf } from '@/shared/utils/typescript.utils';
 import { mapValues, pick, sumBy } from 'remeda';
 import {
+  accumulatorApr,
   ComputedMidnightInfo,
   getLatestMidnightInfoDiffs,
-  nonCompoundedApr,
 } from './midnightInfo.utils';
 
 export const getMidnightInfos = async (
@@ -48,7 +48,7 @@ export const getMidnightInfos = async (
       midnightInfosWithPreviousInfo,
       (midnightInfo) => midnightInfo.oldMidnightInfo?.[field] ?? 0
     );
-    return nonCompoundedApr(summedField, summedPreviousField, 1);
+    return accumulatorApr(summedField, summedPreviousField, 1);
   };
 
   const k2ApyForK2 = computeGlobalApr('k2YieldAccumulatorForK2');

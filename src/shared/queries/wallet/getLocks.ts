@@ -50,12 +50,6 @@ export const getLocks = async (
     }
     const isK2Lock = tokenInfo.id === 'k2';
     const latestMidnightInfo = latestMidnightInfos[Number(lock.maturityId)];
-    if (!latestMidnightInfo) {
-      console.error(
-        `No latest midnight info found for lock ${lock.id} (maturityId: ${lock.maturityId})`
-      );
-      return null;
-    }
 
     return isK2Lock
       ? mapK2Lock({
@@ -88,6 +82,8 @@ const getMockLocks = (): Locks => {
       maturityId: 1,
       lockedAmount: 1000,
       lockedValueUSD: 3000,
+      originalLockedAmount: 1000,
+      originalLockedValueUSD: 3000,
       positionAmount: 1031.25,
       positionValueUSD: 3093.25,
       riskyYieldApyPercent: 0.06,
@@ -116,6 +112,7 @@ const getMockLocks = (): Locks => {
       status: 'active',
       earningStatus: 'earning',
       canTopUp: true,
+      isPartiallyClaimed: false,
     },
     {
       created: 1764515366,
@@ -125,6 +122,8 @@ const getMockLocks = (): Locks => {
       maturityId: 2,
       lockedAmount: 12.25,
       lockedValueUSD: 36.75,
+      originalLockedAmount: 12.25,
+      originalLockedValueUSD: 36.75,
       positionAmount: 50.9375,
       positionValueUSD: 152.8125,
       riskyYieldApyPercent: 0.06,
@@ -153,6 +152,7 @@ const getMockLocks = (): Locks => {
       status: 'active',
       earningStatus: 'paused',
       canTopUp: true,
+      isPartiallyClaimed: false,
     },
   ];
 };

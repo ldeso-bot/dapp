@@ -20,6 +20,10 @@ const ClaimLpLockRewardsForm = ({ lock }: Props) => {
     'StakingManagerDiamond'
   );
 
+  const { contract: rewardManagerContract } = useContract(
+    'RewardManagerDiamond'
+  );
+
   const chainId = useChainId();
 
   const { address: kvcmUsdcAddress } = useContractInfo('KVCM_USDC');
@@ -38,32 +42,54 @@ const ClaimLpLockRewardsForm = ({ lock }: Props) => {
 
   // Unlock LP
   const { executeWithValidation } = useTransactionAndWaitForWalletUpdate({
-    valueFetcher: (walletData: WalletData) =>
-      walletData?.locks.find((lock) => lock.id === lockId)?.status ?? 'LOCKED',
+    valueFetcher: (walletData: WalletData) => {
+      const lock = walletData?.locks.find((lock) => lock.id === lockId);
+      return lock ? lock.claimableRewards.kvcm + lock.claimableRewards.k2 : 0;
+    },
   });
 
   const unlockLp =
     useCallback(async (): Promise<ExecuteWithValidationResult> => {
-      const unstakeLPFn = stakingManagerContract?.write.unstakeLP;
-      if (!unstakeLPFn) {
-        return exitWithErrorMessage('Contract is not ready');
-      }
-      if (isNullish(lock?.contractLockId)) {
-        return exitWithErrorMessage('Lock ID is not ready');
-      }
+      if (!lock?.isPartiallyClaimed) {
+        const unstakeLPFn = stakingManagerContract?.write.unstakeLP;
 
-      const transaction = () =>
-        unstakeLPFn([lpTokenAddress, BigInt(lock?.maturityId)], {
-          chainId,
-        });
+        if (!unstakeLPFn) {
+          return exitWithErrorMessage('Contract is not ready');
+        }
+        if (isNullish(lock?.contractLockId)) {
+          return exitWithErrorMessage('Lock ID is not ready');
+        }
 
-      return executeWithValidation(transaction);
+        const transaction = () =>
+          unstakeLPFn([lpTokenAddress, BigInt(lock?.maturityId)], {
+            chainId,
+          });
+
+        return executeWithValidation(transaction);
+      } else {
+        const unstakeLPFn = rewardManagerContract?.write.claimLPRewards;
+
+        if (!unstakeLPFn) {
+          return exitWithErrorMessage('Contract is not ready');
+        }
+        if (isNullish(lock?.contractLockId)) {
+          return exitWithErrorMessage('Lock ID is not ready');
+        }
+
+        const transaction = () =>
+          unstakeLPFn([lpTokenAddress, BigInt(lock?.maturityId)], {
+            chainId,
+          });
+
+        return executeWithValidation(transaction);
+      }
     }, [
       stakingManagerContract,
       lock,
       executeWithValidation,
       chainId,
       lpTokenAddress,
+      rewardManagerContract,
     ]);
 
   return (

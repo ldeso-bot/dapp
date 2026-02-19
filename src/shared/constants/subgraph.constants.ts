@@ -12,7 +12,7 @@ let subgraphs = {
   },
   [baseSepolia.id]: {
     carbon: `${GOLDSKY_BASE_URL}/cm-base-sepolia-carbon-staging/latest/gn`,
-    protocol: `${GOLDSKY_BASE_URL}/cm-base-sepolia-protocol-staging/latest/gn`,
+    protocol: `${GOLDSKY_BASE_URL}/cm-base-sepolia-protocol-staging/20260218-130910-a92036a/gn`,
   },
 };
 

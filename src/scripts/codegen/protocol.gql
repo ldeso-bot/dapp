@@ -106,6 +106,7 @@ query getLocks($where: Lock_filter) {
     type
     status
     amount
+    originalAmount
     maturityId
     maturity {
       timestamp

@@ -154,11 +154,21 @@ export const mapKvcmOrLpLock = ({
   // Computing lock maturation
   const lockedUntil = formatStringToNumber(lock.maturity?.timestamp, 0);
   const isMatured = lockedUntil < new Date().getTime() / 1000;
-  const isClaimable = isMatured && lock.status !== 'UNLOCKED';
   const created = formatStringToNumber(lock.lockActions[0]?.timestamp, 0) ?? 0;
 
   //Computing rewards information
   const lockedAmount = formatStringToNumber(lock.amount, tokenInfo.decimals);
+
+  //Computing rewards information
+  const originalLockedAmount = formatStringToNumber(
+    lock.originalAmount,
+    tokenInfo.decimals
+  );
+  const originalLockedValueUSD = computeTokenAmountValueUSD(
+    tokenInfo.id,
+    originalLockedAmount,
+    tokenMetrics
+  );
 
   // For kVCM position amount is later increased with the pending synthetic yield rewards
   let positionAmount = lockedAmount;
@@ -237,6 +247,18 @@ export const mapKvcmOrLpLock = ({
     }
   }
 
+  // We know a lock was partially claimed if it still is locked but the principal was claimed
+  const isPartiallyClaimed = lock.status !== 'UNLOCKED' && lockedAmount == 0;
+
+  // Lock is claimable if all rewards are unlocked but the lock is not totally unlocked yet
+  // or if partial rewards are unlocked and the lock principal was not claimed yet
+  const arePartialRewardsUnlocked = isMatured;
+  const areAllRewardsUnlocked =
+    arePartialRewardsUnlocked && !!lockMaturityMidnightInfo;
+  const isClaimable =
+    (areAllRewardsUnlocked && lock.status !== 'UNLOCKED') ||
+    (arePartialRewardsUnlocked && !isPartiallyClaimed);
+
   if (isClaimable) {
     const riskyYieldClaimed = formatStringToNumber(
       lock.riskyYieldClaimed,
@@ -266,6 +288,8 @@ export const mapKvcmOrLpLock = ({
   );
 
   const now = new Date().getTime() / 1000;
+
+  // A lock can be topped up up to 2 days before it matures
   const canTopUp =
     Math.floor(lockedUntil / ONE_DAY) - Math.floor(now / ONE_DAY) > 1;
 
@@ -278,6 +302,8 @@ export const mapKvcmOrLpLock = ({
     contractLockId: formatStringToNumber(lock.contractLockId, 0),
     lockedAmount,
     lockedValueUSD,
+    originalLockedAmount,
+    originalLockedValueUSD,
     positionAmount,
     positionValueUSD,
     k2YieldApyPercent,
@@ -309,6 +335,7 @@ export const mapKvcmOrLpLock = ({
     status,
     earningStatus,
     canTopUp,
+    isPartiallyClaimed,
   };
 };
 
@@ -575,6 +602,8 @@ export const mapK2Lock = ({
     contractLockId: formatStringToNumber(lock.contractLockId, 0),
     lockedAmount,
     lockedValueUSD,
+    originalLockedAmount: lockedAmount,
+    originalLockedValueUSD: lockedValueUSD,
     positionAmount,
     positionValueUSD,
     k2YieldApyPercent,
@@ -606,6 +635,7 @@ export const mapK2Lock = ({
     earningStatus,
     canRequestUnlock,
     canTopUp: true,
+    isPartiallyClaimed: false,
   };
 };
 

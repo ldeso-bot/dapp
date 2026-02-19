@@ -11,11 +11,19 @@ import { useGetWalletClient } from './useGetWalletClient';
 export const useContract = <T extends Abi>(contractName: ContractName) => {
   const { data: walletClient, ...rest } = useGetWalletClient();
   const { chain } = useAccount();
+  const chainId = useChainId();
+
   const contract =
     walletClient && isChainId(chain?.id)
       ? getContract<T>(chain?.id, contractName, walletClient)
       : null;
-  return { contract, ...rest };
+  const contractInfo = contracts[contractName];
+  return {
+    contract,
+    address: contractInfo[chainId],
+    abi: contractInfo.abi,
+    ...rest,
+  };
 };
 
 /**

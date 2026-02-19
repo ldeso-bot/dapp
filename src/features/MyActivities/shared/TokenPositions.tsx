@@ -77,10 +77,16 @@ const PositionCard: FC<PositionCardProps> = ({
 
   if (lock.status === 'claimed') return null;
 
+  const isClaimable = lock.isClaimable;
   const isMatured = lock.status === 'matured';
-  const isMaturing = lock.status === 'active';
   const title = DEV_MODE
-    ? `Contract ID: ${lock.contractLockId}\nMaturity ID: ${lock.maturityId}\nCreated: ${formatTimestamp(lock.created * 1000, 'short')}`
+    ? `
+ID: ${lock.id}
+Contract ID: ${lock.contractLockId}
+Maturity ID: ${lock.maturityId}
+Created: ${formatTimestamp(lock.created * 1000, 'short')}
+isPartiallyClaimed: ${lock.isPartiallyClaimed}
+    `
     : '';
   const token = lock.token;
 
@@ -94,6 +100,12 @@ const PositionCard: FC<PositionCardProps> = ({
     : lock.accruingRewards.kvcm;
   const k2RewardAmount = isMatured ? lock.rewards.k2 : lock.accruingRewards.k2;
 
+  const statusText = lock.isPartiallyClaimed
+    ? 'Partially claimed'
+    : isMatured
+      ? 'Ready to unlock'
+      : 'Unlocks on';
+
   return (
     <div title={title}>
       {/* Status and Date */}
@@ -104,7 +116,7 @@ const PositionCard: FC<PositionCardProps> = ({
             isMatured ? 'bg-green-10 text-green-80' : 'bg-void-10 text-void-80'
           )}
         >
-          {isMatured ? 'Ready to unlock' : 'Unlocks on'}{' '}
+          {statusText}{' '}
         </div>
         <span className="text-12 text-gray-600">
           {formatTimestamp(lock.lockedUntil * 1000, 'short')}
@@ -119,11 +131,11 @@ const PositionCard: FC<PositionCardProps> = ({
               Original amount locked
             </div>
             <div className="text-size-16 text-gray-900 font-bold">
-              {formatAmountWithCommas(lock.lockedAmount, 'auto')}{' '}
+              {formatAmountWithCommas(lock.originalLockedAmount, 'auto')}{' '}
               {getTokenSymbol(lock.token)}
             </div>
             <div className="text-size-14 text-gray-900 font-[400]">
-              {formatPriceUSDWithCommas(lock.lockedValueUSD)}
+              {formatPriceUSDWithCommas(lock.originalLockedValueUSD)}
             </div>
           </div>
         </div>
@@ -191,11 +203,11 @@ const PositionCard: FC<PositionCardProps> = ({
             </Button>
           )}
           <Button
-            colors={isMatured ? 'positive' : 'neutral'}
-            disabled={isMaturing && !USE_LOCAL_RPC}
+            colors={isClaimable ? 'positive' : 'neutral'}
+            disabled={!isClaimable && !USE_LOCAL_RPC}
             className={cn('text-size-12', {
               'bg-gray-100 text-gray-400 hover:bg-gray-100':
-                isMaturing && !USE_LOCAL_RPC,
+                !isClaimable && !USE_LOCAL_RPC,
             })}
             onClick={() => {
               if (

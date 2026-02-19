@@ -11,7 +11,13 @@ import {
 } from '@/shared/components/Select/Select';
 import { formatDateDDMMYYYY } from '@/shared/utils/date.utils';
 import { useMemo } from 'react';
-import { Control, Controller, FieldError, FieldErrors, Path } from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  FieldError,
+  FieldErrors,
+  Path,
+} from 'react-hook-form';
 
 type LockSelectProps<T extends { contractLockId?: number }> = {
   name: Path<T>;
@@ -32,7 +38,7 @@ export const LockSelect = <T extends { contractLockId?: number }>({
 
     return kvcmLocks
       .filter((lock) => {
-        if (lock.status === 'matured' || lock.status === 'claimed') return false;
+        if (lock.status !== 'active') return false;
         const available = availableKvcm.get(lock.contractLockId) ?? 0;
         return available > 0;
       })
@@ -54,10 +60,7 @@ export const LockSelect = <T extends { contractLockId?: number }>({
       name={name}
       control={control}
       render={({ field }) => (
-        <InputWrapper
-          label="Lock"
-          error={errors?.contractLockId as FieldError}
-        >
+        <InputWrapper label="Lock" error={errors?.contractLockId as FieldError}>
           <Select
             value={hasNoLocks ? undefined : field.value?.toString()}
             onValueChange={(value) => field.onChange(Number(value))}
@@ -82,4 +85,3 @@ export const LockSelect = <T extends { contractLockId?: number }>({
     />
   );
 };
-

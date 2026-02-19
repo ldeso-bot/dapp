@@ -97,11 +97,11 @@ export const formatAmountWithCommas = (
   // Auto detect number of digits to show (3 non zero values)
   if (digits === 'auto') {
     if (absValue === 0) {
+      // No digits for zero values
       digits = 0;
     } else {
       const log = Math.log10(absValue);
-      // log > 0 means the number is greater than 1, so we don't need to show any digits
-      digits = log > 0 ? 0 : Math.ceil(-log) + 2;
+      digits = Math.max(0, Math.ceil(-log) + 2);
     }
   }
 

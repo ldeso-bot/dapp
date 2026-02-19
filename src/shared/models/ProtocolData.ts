@@ -80,6 +80,7 @@ export type ProtocolState = {
   firstActiveMaturityId: number;
   lastActiveMaturityId: number;
   midnightIndex: number;
+  lastProcessedMidnightIndex: number;
 };
 
 /* Protocol Data */
