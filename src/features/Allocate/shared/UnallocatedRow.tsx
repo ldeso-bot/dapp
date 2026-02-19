@@ -2,7 +2,7 @@
 
 import Button from '@/shared/components/Button/Button';
 import Icon from '@/shared/components/Icon/Icon';
-import { Progress } from '@/shared/components/Progress/Progress';
+import { ProgressWithPercentage } from '@/shared/components/Progress/ProgressWithPercentage';
 import { TableCell, TableRow } from '@/shared/components/Table/table';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
@@ -41,28 +41,21 @@ export const UnallocatedRow: FC<UnallocatedRowProps> = ({
     return amount * tokenPrice;
   }, [amount, tokenSymbol, protocolData]);
 
-  const progressPercent = useMemo(() => {
-    return unallocatedPercent;
-  }, [unallocatedPercent]);
-
   return (
     <TableRow className="border-0 bg-gray-50/30 cursor-pointer hover:bg-gray-50/60 transition-colors">
       <TableCell className="text-left border-0">
         <div className="flex flex-col gap-0.5">
           <div className="flex items-center gap-2.5">
-            <Icon
-              size={2}
-              icon={CirclePlus}
-              className="text-void-50"
-            />
-            <div className="font-semibold text-size-16">
-              Unallocated
-            </div>
+            <Icon size={2} icon={CirclePlus} className="text-void-50" />
+            <div className="font-semibold text-size-16">Unallocated</div>
           </div>
           <div className="text-size-12 text-void-50 italic mt-0.5">
             No pricing effect
           </div>
-          <Progress progressPercent={progressPercent} indeterminate />
+          <ProgressWithPercentage
+            indeterminate
+            progressPercent={unallocatedPercent}
+          />
         </div>
       </TableCell>
       <TableCell className="text-right border-0">

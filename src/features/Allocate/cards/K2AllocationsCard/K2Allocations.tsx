@@ -13,9 +13,11 @@ export default function K2AllocationsCard(props: CardProps) {
   const { data } = useWalletData();
   const { data: allocationData } = useAllocationData();
 
-  const totalK2 = data?.balances?.k2 || 0;
   const allocations = allocationData?.k2.allocations || [];
-  const unallocatedK2 = allocationData?.k2.unallocated || 0;
+  const allocatedK2 = allocationData?.k2.allocated ?? 0;
+  const unallocatedK2 = allocationData?.k2.unallocated ?? 0;
+  const totalAllocatableK2 = allocatedK2 + unallocatedK2;
+  const totalK2 = data?.balances?.k2 || 0;
 
   return (
     <AllocationsTable
@@ -31,7 +33,7 @@ export default function K2AllocationsCard(props: CardProps) {
       titleClassName="text-size-18 font-medium"
       data={allocations}
       unallocatedAmount={unallocatedK2}
-      totalAmount={totalK2}
+      totalAmount={totalAllocatableK2 > 0 ? totalAllocatableK2 : totalK2}
       noAllocationComponent={
         <div className="bg-void-10 py-3 px-6 w-full">
           You haven&apos;t deposited any of your K2 yet.{' '}

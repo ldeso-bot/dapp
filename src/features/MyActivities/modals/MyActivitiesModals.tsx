@@ -3,8 +3,9 @@
 import { useHasKycVerification } from '@/features/Kyc/useHasKycVerification';
 import Dialog from '@/shared/components/Dialog/Dialog';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
+import { useClearActionParam } from '@/shared/hooks/useClearActionParam';
 import { useAtom } from 'jotai';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { claimMaturedLockRewardsDialogAtom } from './ClaimMaturedLockRewards/claimKvcmLockRewards.utils';
 import ClaimMaturedLockRewardsDialog from './ClaimMaturedLockRewards/ClaimMaturedLockRewardsDialog';
@@ -21,10 +22,9 @@ import { unlockK2TokenDialogAtom } from './UnlockK2Token/unlockK2Token.utils';
 import UnlockK2TokenFlow from './UnlockK2Token/UnlockK2TokenFlow';
 
 export const MyActivitiesModals = () => {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { data } = useWalletData();
+  const clearActionParam = useClearActionParam();
 
   // tracks previous dialog state to detect when a dialog closes
   const prevHasOpenDialogRef = useRef(false);
@@ -55,12 +55,7 @@ export const MyActivitiesModals = () => {
       searchParams.get('action');
 
     if (shouldRemoveActionParam) {
-      const params = new URLSearchParams(searchParams.toString());
-      params.delete('action');
-      const newSearch = params.toString();
-      router.replace(newSearch ? `?${newSearch}` : pathname, {
-        scroll: false,
-      });
+      clearActionParam({ scroll: false });
     }
     // tracks current state for next render to detect dialog close
     prevHasOpenDialogRef.current = hasOpenDialog;
@@ -71,8 +66,7 @@ export const MyActivitiesModals = () => {
     claimMaturedLockRewardsDialog.open,
     depositK2TokenDialog.open,
     searchParams,
-    router,
-    pathname,
+    clearActionParam,
   ]);
 
   useEffect(() => {

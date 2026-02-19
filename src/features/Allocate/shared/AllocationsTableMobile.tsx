@@ -1,5 +1,5 @@
 import Icon from '@/shared/components/Icon/Icon';
-import { Progress } from '@/shared/components/Progress/Progress';
+import { ProgressWithPercentage } from '@/shared/components/Progress/ProgressWithPercentage';
 import { Separator } from '@/shared/components/Separator/Separator';
 import ArrowDown from '@/shared/images/arrow_down.svg';
 import { Allocation } from '@/shared/models/walletData';
@@ -96,15 +96,13 @@ const CarbonClassGroupMobile: FC<CarbonClassGroupMobileProps> = (props) => {
               <AllocationPrice allocation={firstAllocation} {...props} />
             )}
           </div>
-          <div>
-            <Progress
-              progressPercent={
-                totalAmount && totalAmount > 0
-                  ? totalAmountForClass / totalAmount
-                  : 0
-              }
-            />
-          </div>
+          <ProgressWithPercentage
+            progressPercent={
+              totalAmount && totalAmount > 0
+                ? totalAmountForClass / totalAmount
+                : 0
+            }
+          />
         </div>
       )}
       {shouldShowGrouped &&
@@ -170,15 +168,11 @@ const CarbonClassGroupMobile: FC<CarbonClassGroupMobileProps> = (props) => {
                   <AllocationPrice allocation={allocation} {...props} />
                 )}
               </div>
-              <div>
-                <Progress
-                  progressPercent={
-                    totalAmount && totalAmount > 0
-                      ? allocation.amount / totalAmount
-                      : 0
-                  }
+              {!isKvcm && totalAmount && totalAmount > 0 && (
+                <ProgressWithPercentage
+                  progressPercent={allocation.amount / totalAmount}
                 />
-              </div>
+              )}
               <AllocationEditButton allocation={allocation} {...props} />
             </div>
             <Separator />

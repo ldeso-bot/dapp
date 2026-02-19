@@ -1,6 +1,6 @@
 import { useAllocationData } from '@/features/Allocate/hooks/useAllocationData';
 import Icon from '@/shared/components/Icon/Icon';
-import { Progress } from '@/shared/components/Progress/Progress';
+import { ProgressWithPercentage } from '@/shared/components/Progress/ProgressWithPercentage';
 import { SortableHeader } from '@/shared/components/Table/SortableHeader';
 import {
   Table,
@@ -107,7 +107,8 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
       <TableBody borders="between">
         {Array.from(groupedAllocations.entries()).map(
           ([carbonClass, allocations]: [string, Allocation[]]) => {
-            const totalAmount = getTotalAllocatedForCarbonClass(allocations);
+            const totalAmountForClass =
+              getTotalAllocatedForCarbonClass(allocations);
             const firstAllocation = allocations[0];
             if (!firstAllocation) return null;
             return (
@@ -116,10 +117,13 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
                 {...props}
                 carbonClass={carbonClass}
                 allocations={allocations}
-                totalAmount={totalAmount}
+                totalAmountForClass={totalAmountForClass}
                 allocationPercent={
                   props.totalAmount && props.totalAmount > 0
-                    ? Math.min(1, Math.max(0, totalAmount / props.totalAmount))
+                    ? Math.min(
+                        1,
+                        Math.max(0, totalAmountForClass / props.totalAmount)
+                      )
                     : 0
                 }
                 firstAllocation={firstAllocation}
@@ -150,7 +154,7 @@ export const AllocationsTableDesktop: FC<AllocationsCardProps> = (props) => {
 type CarbonClassGroupProps = AllocationsCardProps & {
   carbonClass: string;
   allocations: Allocation[];
-  totalAmount: number;
+  totalAmountForClass: number;
   allocationPercent: number;
   firstAllocation: Allocation;
 };
@@ -159,7 +163,7 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
   const {
     carbonClass,
     allocations,
-    totalAmount,
+    totalAmountForClass,
     allocationPercent,
     firstAllocation,
     tokenInfo,
@@ -177,8 +181,8 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
     const tokenPrice = isK2
       ? protocolData?.metrics.k2.valueUSD || 0
       : protocolData?.metrics.kvcm.valueUSD || 0;
-    return totalAmount * tokenPrice;
-  }, [totalAmount, isK2, isKvcm, protocolData]);
+    return totalAmountForClass * tokenPrice;
+  }, [totalAmountForClass, isK2, isKvcm, protocolData]);
 
   const allocationsByLock = useMemo(() => {
     const map = new Map<number | undefined, Allocation[]>();
@@ -220,14 +224,14 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
               <div className="flex flex-col gap-0.5 flex-1">
                 <AllocationClass {...props} allocation={firstAllocation} />
                 <AllocationCategory {...props} allocation={firstAllocation} />
-                <Progress progressPercent={allocationPercent} />
+                <ProgressWithPercentage progressPercent={allocationPercent} />
               </div>
             </div>
           </TableCell>
           <TableCell className="text-right border-0">
             <div className="flex flex-col items-end">
               <div className="font-medium text-gray-900 tabular-nums">
-                {formatAmountWithCommas(totalAmount)}{' '}
+                {formatAmountWithCommas(totalAmountForClass)}{' '}
                 <span className="text-void-50 text-size-12">
                   {tokenInfo.symbol}
                 </span>
@@ -395,15 +399,9 @@ const LockSubRow: FC<LockSubRowProps> = (props) => {
     lockAllocation,
     isK2,
     tokenInfo,
-    totalAmount,
     availableAmount,
   } = props;
   const isKvcm = tokenInfo.id === 'kvcm';
-
-  const lockPercent =
-    totalAmount && totalAmount > 0
-      ? Math.min(1, Math.max(0, lockTotal / totalAmount))
-      : 0;
 
   return (
     <TableRow
@@ -415,7 +413,7 @@ const LockSubRow: FC<LockSubRowProps> = (props) => {
           <Icon
             size={2.4}
             icon={LockIcon}
-            className="text-gray-400 flex-shrink-0 mt-1.5"
+            className="text-gray-400 flex-shrink-0"
           />
           <div className="flex flex-col gap-0.5 flex-1">
             <div className="flex flex-col gap-0 flex-1">
@@ -427,7 +425,6 @@ const LockSubRow: FC<LockSubRowProps> = (props) => {
                 available
               </span>
             </div>
-            <Progress progressPercent={lockPercent} />
           </div>
         </div>
       </TableCell>
@@ -492,7 +489,9 @@ const AllocationTableRow = (
         <div className="flex flex-col gap-1">
           <AllocationClass {...props} />
           <AllocationCategory {...props} />
-          <Progress progressPercent={allocationPercent} />
+          {isK2 && (
+            <ProgressWithPercentage progressPercent={allocationPercent} />
+          )}
         </div>
       </TableCell>
       <TableCell className="text-right border-0">

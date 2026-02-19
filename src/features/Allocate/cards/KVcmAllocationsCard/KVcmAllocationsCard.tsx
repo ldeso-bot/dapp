@@ -13,16 +13,15 @@ export default function KvcmAllocationsCard(props: CardProps) {
   const { data } = useWalletData();
   const { data: allocationData } = useAllocationData();
 
-  // Calculate total allocatable kVCM (unlocked + locked)
-  const unlockedKvcm = data?.balances?.kvcm || 0;
   const lockedKvcm =
     data?.locks
       ?.filter((lock) => lock.token === 'kvcm')
       .reduce((sum, lock) => sum + lock.lockedAmount, 0) || 0;
-  const totalKvcm = unlockedKvcm + lockedKvcm;
 
   const allocations = allocationData?.kvcm.allocations || [];
-  const unallocatedKvcm = allocationData?.kvcm.unallocated || 0;
+  const allocatedKvcm = allocationData?.kvcm.allocated ?? 0;
+  const unallocatedKvcm = allocationData?.kvcm.unallocated ?? 0;
+  const totalAllocatableKvcm = allocatedKvcm + unallocatedKvcm;
 
   return (
     <AllocationsTable
@@ -38,7 +37,7 @@ export default function KvcmAllocationsCard(props: CardProps) {
       titleClassName="text-size-18 font-medium"
       data={allocations}
       unallocatedAmount={unallocatedKvcm}
-      totalAmount={totalKvcm}
+      totalAmount={totalAllocatableKvcm > 0 ? totalAllocatableKvcm : lockedKvcm}
       noAllocationComponent={
         <div className="bg-void-10 py-3 px-6 w-full">
           You haven&apos;t locked any of your kVCM yet.{' '}

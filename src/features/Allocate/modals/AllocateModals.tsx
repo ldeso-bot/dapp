@@ -2,15 +2,15 @@
 
 import { useHasKycVerification } from '@/features/Kyc/useHasKycVerification';
 import Dialog from '@/shared/components/Dialog/Dialog';
-import { ROUTES } from '@/shared/constants/route.constants';
 import {
   type AllocationToken,
   isAllocatableToken,
 } from '@/shared/constants/tokens.constants';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
+import { useClearActionParam } from '@/shared/hooks/useClearActionParam';
 import { useAtom } from 'jotai';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useCallback, useEffect } from 'react';
 import { editAllocationDialogAtom } from './EditAllocation/editAllocation.utils';
 import EditAllocationFlow from './EditAllocation/EditAllocationFlow';
 import { newAllocationDialogAtom } from './NewAllocation/newAllocation.utils';
@@ -18,8 +18,8 @@ import NewAllocationFlow from './NewAllocation/NewAllocationFlow';
 
 export default function AllocateModals() {
   const { data } = useWalletData();
-  const router = useRouter();
   const { openKycOrProceed } = useHasKycVerification();
+  const clearActionParam = useClearActionParam();
 
   const [editAllocationDialog, setEditAllocationDialog] = useAtom(
     editAllocationDialogAtom
@@ -31,15 +31,15 @@ export default function AllocateModals() {
 
   const searchParams = useSearchParams();
 
-  const closeNewAllocation = () => {
+  const closeNewAllocation = useCallback(() => {
     setNewAllocationDialog({ open: false, token: null });
-    router.push(ROUTES.ALLOCATE);
-  };
+    clearActionParam();
+  }, [setNewAllocationDialog, clearActionParam]);
 
-  const closeEditAllocation = () => {
+  const closeEditAllocation = useCallback(() => {
     setEditAllocationDialog({ open: false, allocation: null });
-    router.push(ROUTES.ALLOCATE);
-  };
+    clearActionParam();
+  }, [setEditAllocationDialog, clearActionParam]);
 
   useEffect(() => {
     const action = searchParams.get('action');

@@ -3,11 +3,12 @@
 import '@zkmelabs/widget/dist/style.css';
 
 import Dialog from '@/shared/components/Dialog/Dialog';
+import { useClearActionParam } from '@/shared/hooks/useClearActionParam';
+import { getDefaultChainId } from '@/shared/utils/environment.utils';
 import { useAtom, useAtomValue } from 'jotai';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { getDefaultChainId } from '@/shared/utils/environment.utils';
 import { useAccount, useWalletClient } from 'wagmi';
-import { kycDialogAtom, kycRefetchAtom, KycPath } from './kyc.utils';
+import { kycDialogAtom, KycPath, kycRefetchAtom } from './kyc.utils';
 import { KycIntroStep } from './steps/KycIntroStep';
 
 type Step = 'intro' | 'kyc';
@@ -21,6 +22,7 @@ export const KycModal = () => {
   const { address, chain } = useAccount();
   const { data: walletClient } = useWalletClient();
   const refetchKycStatus = useAtomValue(kycRefetchAtom);
+  const clearActionParam = useClearActionParam();
 
   const open = dialog.open;
 
@@ -29,7 +31,8 @@ export const KycModal = () => {
     setStep('intro');
     setMode('kyc');
     setWidgetError(null);
-  }, [setDialog]);
+    clearActionParam();
+  }, [setDialog, clearActionParam]);
 
   const launchKycWidget = useCallback(async (): Promise<boolean> => {
     setWidgetError(null);
@@ -61,16 +64,14 @@ export const KycModal = () => {
         }
         return data.accessToken;
       },
-      delegateTransaction: async (
-        tx: {
-          from?: string;
-          to?: string;
-          data?: string;
-          value?: bigint | string;
-          gas?: bigint | string;
-          gasLimit?: string;
-        }
-      ): Promise<string> => {
+      delegateTransaction: async (tx: {
+        from?: string;
+        to?: string;
+        data?: string;
+        value?: bigint | string;
+        gas?: bigint | string;
+        gasLimit?: string;
+      }): Promise<string> => {
         if (!walletClient?.account) {
           setWidgetError('Wallet not connected');
           throw new Error('Wallet not connected');
@@ -109,15 +110,14 @@ export const KycModal = () => {
         if (
           results.isGrant &&
           (!results.associatedAccount ||
-            (address &&
-              results.associatedAccount === address.toLowerCase()))
+            (address && results.associatedAccount === address.toLowerCase()))
         ) {
           refetchKycStatus?.();
           onClose();
         }
       }
     );
-    widget.on('close', () => {});
+    widget.on('close', () => onClose());
 
     try {
       (kycWidgetRef as React.MutableRefObject<unknown>).current = widget;
