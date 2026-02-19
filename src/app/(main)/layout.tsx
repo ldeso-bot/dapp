@@ -11,11 +11,18 @@ import { WalletConnectionHistoryProvider } from '@/shared/contexts/WalletCookieC
 import '@/shared/css/globals.css';
 import { canaryTokenTrackingScript } from '@/shared/utils/canary-token.utils';
 import { isProduction } from '@/shared/utils/environment.utils';
+import {
+  sharedMetadata,
+  sharedViewport,
+} from '@/shared/constants/metadata.constants';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
-import Head from 'next/head';
 import { cookies } from 'next/headers';
 import Script from 'next/script';
 import { Providers } from '../providers';
+
+export const metadata: Metadata = sharedMetadata;
+export const viewport: Viewport = sharedViewport;
 
 const inter = Inter({
   subsets: ['latin'],
@@ -33,7 +40,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <Head>
+      <body className={inter.className}>
         {isProduction && (
           <Script
             id="canary"
@@ -41,8 +48,6 @@ export default async function RootLayout({
             dangerouslySetInnerHTML={{ __html: canaryTokenTrackingScript }}
           />
         )}
-      </Head>
-      <body className={inter.className}>
         <DisclaimerModal />
         <Providers>
           <WalletConnectionHistoryProvider
