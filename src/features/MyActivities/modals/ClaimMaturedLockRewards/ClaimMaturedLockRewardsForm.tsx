@@ -80,7 +80,7 @@ const ClaimMaturedLogRewardsForm = ({
                 Claim lock
               </span>
               <span className="text-size-16 font-[300] text-gray-900">
-                Matured {formatTimestamp(lock.lockedUntil * 1000, 'short')}
+                Unlocked on {formatTimestamp(lock.lockedUntil * 1000, 'short')}
               </span>
             </div>
             {isNonNullish(kvcmAmount) && isNonNullish(k2Amount) ? (

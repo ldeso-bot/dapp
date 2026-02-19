@@ -66,7 +66,7 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
 
   const lockInfo =
     isKvcm && allocation?.lockedUntil
-      ? `Matures: ${formatDateDDMMYYYY(allocation.lockedUntil)}`
+      ? `Unlocks on: ${formatDateDDMMYYYY(allocation.lockedUntil)}`
       : null;
 
   const analytics = useFormo();
@@ -142,7 +142,7 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
       <div className="space-y-2">
         <p className="text-md text-gray-600">
           Update how much you allocate to this class. Rebalancing doesn’t change
-          kVCM lock maturities.
+          kVCM lock durations.
         </p>
       </div>
       <Form onSubmit={handleSubmit(onSubmit)} className="pt-0">

@@ -19,8 +19,8 @@ export const InfoCardTooltips = {
       </div>
       <div>
         <strong>Claiming.</strong> Locked tokens plus any received kVCM
-        incentives become claimable after the lock&apos;s duration ends.
-        Variable K2 incentives can be claimed anytime.
+        incentives become claimable after the {"lock's"} duration ends. Variable
+        K2 incentives can be claimed anytime.
       </div>
     </div>
   ),

@@ -182,7 +182,7 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
           {isMaturityWithin30Days ? (
             <RootError
               variant="warning"
-              errorMessage="Time to maturity reset is in less than 30 days. Pay attention to short maturity dates; rewards may not accrue for very long."
+              errorMessage="Duration is less than 30 days. Pay attention to short durations; rewards may not accrue for very long."
             />
           ) : null}
         </InputGroup>

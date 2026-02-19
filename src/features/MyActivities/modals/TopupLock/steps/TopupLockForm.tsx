@@ -183,7 +183,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
           />
         )}
         {isValidAmount && isMaturityWithin3Days && (
-          <RootError errorMessage="Time to maturity reset is in less than 3 days. Pay attention to short maturity dates; rewards may be minimal. Consider choosing a later maturity." />
+          <RootError errorMessage="Duration is less than 3 days. Pay attention to short durations; rewards may be minimal. Consider choosing a later duration." />
         )}
         <ButtonGroup className="flex-row">
           <Button colors="primary" context="flow" onClick={() => reset()}>

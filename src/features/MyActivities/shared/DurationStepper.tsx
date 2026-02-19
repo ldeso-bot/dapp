@@ -102,7 +102,7 @@ export const DurationStepper = <T extends DurationFormFields>({
                 disabled={!hasPrevious}
                 onClick={handlePrevious}
                 className="cursor-pointer flex items-center justify-center w-12 h-12 border-2 border-void-20 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none hover:border-void-40 bg-white active:bg-[#EFEFEF] transition-all"
-                aria-label="Previous maturity"
+                aria-label="Previous lock duration"
               >
                 <svg
                   className="w-5 h-5 text-void-60"
@@ -131,7 +131,7 @@ export const DurationStepper = <T extends DurationFormFields>({
                 disabled={!hasNext}
                 onClick={handleNext}
                 className="cursor-pointer flex items-center justify-center w-12 h-12 bg-white border-2 border-void-20 rounded-lg disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-void-40 active:bg-[#EFEFEF] transition-all"
-                aria-label="Next maturity"
+                aria-label="Next lock duration"
               >
                 <svg
                   className="w-5 h-5 text-void-60"
