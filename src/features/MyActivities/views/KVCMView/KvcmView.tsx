@@ -46,7 +46,7 @@ export const KvcmView = () => {
               </>
             }
             tooltipId="kvcm-locks"
-            description="Lock kVCM for a fixed duration to receive variable kVCM incentives when the term ends, and variable K2 incentives at any time. Locked kVCM can also be allocated to carbon classes to influence protocol pricing."
+            description="Lock kVCM for a fixed duration to receive variable kVCM and K2 incentives when the term ends. Locked kVCM can also be allocated to carbon classes to influence protocol pricing."
             onButtonClick={() =>
               openKycOrProceed('lock_kvcm', () =>
                 setLockTokenDialogState({ open: true, token: 'kvcm' })
