@@ -39,7 +39,10 @@ const ClaimMaturedLogRewardsForm = ({
   const [isClaiming, setIsClaiming] = useState(false);
   const tokenSymbol = getTokenSymbol(lock.token);
   const isK2Lock = lock.token === 'k2';
-  const accrual = (isK2Lock ? k2Amount : kvcmAmount) ?? 0;
+  const baseAccrual = (isK2Lock ? k2Amount : kvcmAmount) ?? 0;
+  const baseAccrualTokenSymbol = isK2Lock
+    ? getTokenSymbol('k2')
+    : getTokenSymbol('kvcm');
 
   const handleOnClaim = async () => {
     try {
@@ -99,14 +102,15 @@ const ClaimMaturedLogRewardsForm = ({
                   <div className="flex flex-row justify-between">
                     <span>Base Accrual</span>
                     <span>
-                      + {formatAmountWithCommas(accrual, 'auto')} {tokenSymbol}
+                      + {formatAmountWithCommas(baseAccrual, 'auto')}{' '}
+                      {baseAccrualTokenSymbol}
                     </span>
                   </div>
                   <div className="flex flex-row justify-between font-bold">
                     <span>Total</span>
                     <span>
                       {formatAmountWithCommas(
-                        lock.unlockableLockedAmount + accrual,
+                        lock.unlockableLockedAmount + baseAccrual,
                         'auto'
                       )}{' '}
                       {tokenSymbol}

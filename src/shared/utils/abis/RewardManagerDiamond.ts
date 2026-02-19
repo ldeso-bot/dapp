@@ -3974,7 +3974,7 @@ const abi = [
     ],
     name: 'previewClaimKVCMK2Rewards',
     outputs: [{ internalType: 'uint256', name: 'k2Amount', type: 'uint256' }],
-    stateMutability: 'view',
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {

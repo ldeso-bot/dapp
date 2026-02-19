@@ -55,18 +55,36 @@ const ClaimKvcmLockRewardsForm = ({ lock }: Props) => {
         return executeWithValidation(transaction);
       } else {
         // Claim remaining rewards
-        const unlockKvcmFn = rewardManagerContract?.write.claimKVCMK2Rewards;
-        if (!unlockKvcmFn) {
+        const claimK2RewardsFn =
+          rewardManagerContract?.write.claimKVCMK2Rewards;
+        const claimKvcmRewardsFn =
+          stakingManagerContract?.write.claimRemainingKvcmYield;
+        if (!claimK2RewardsFn || !claimKvcmRewardsFn) {
           return exitWithErrorMessage('Contract is not ready');
         }
         if (isNullish(lock?.maturityId)) {
           return exitWithErrorMessage('Maturity ID is not ready');
         }
-
-        const transaction = () =>
-          unlockKvcmFn([BigInt(lock?.maturityId)], {
-            chainId,
-          });
+        if (isNullish(lock?.contractLockId)) {
+          return exitWithErrorMessage('Lock ID is not ready');
+        }
+        const transaction = async () => {
+          let res = null;
+          if (k2Amount ?? 0 > 0) {
+            res = await claimK2RewardsFn([BigInt(lock?.maturityId)], {
+              chainId,
+            });
+          }
+          if (kvcmAmount ?? 0 > 0) {
+            res = await claimKvcmRewardsFn([BigInt(lock?.contractLockId)], {
+              chainId,
+            });
+          }
+          if (isNullish(res)) {
+            throw new Error('Failed to claim rewards');
+          }
+          return res;
+        };
 
         return executeWithValidation(transaction);
       }
@@ -76,6 +94,8 @@ const ClaimKvcmLockRewardsForm = ({ lock }: Props) => {
       lock,
       executeWithValidation,
       chainId,
+      k2Amount,
+      kvcmAmount,
     ]);
 
   return (

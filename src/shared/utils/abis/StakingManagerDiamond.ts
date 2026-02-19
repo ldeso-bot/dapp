@@ -1236,6 +1236,13 @@ const abi = [
     type: 'function',
   },
   {
+    inputs: [{ internalType: 'uint256', name: 'lockId', type: 'uint256' }],
+    name: 'claimRemainingKvcmYield',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     inputs: [
       { internalType: 'uint256', name: 'lockId_', type: 'uint256' },
       { internalType: 'address', name: 'to', type: 'address' },

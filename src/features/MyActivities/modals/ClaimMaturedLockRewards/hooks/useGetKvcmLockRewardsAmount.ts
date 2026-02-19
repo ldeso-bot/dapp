@@ -6,7 +6,7 @@ import { formatStringToNumber } from '@/shared/utils/subgraph.utils';
 import { useMemo } from 'react';
 import { isNonNullish } from 'remeda';
 import { zeroAddress } from 'viem';
-import { useAccount, useReadContract } from 'wagmi';
+import { useAccount, useReadContract, useSimulateContract } from 'wagmi';
 
 export const useGetKvcmLockRewardsAmount = (lock: Lock) => {
   const {
@@ -42,15 +42,18 @@ export const useGetKvcmLockRewardsAmount = (lock: Lock) => {
       : undefined;
   }, [lock, address]);
 
-  const { data: k2AmountWei, isLoading: isK2AmountLoading } = useReadContract({
-    address: rewardManagerContractAddress,
-    abi: RewardManagerDiamond,
-    functionName: 'previewClaimKVCMK2Rewards',
-    args: k2AmountArgs,
-    query: {
-      enabled: !!lock && !!rewardManagerContractAddress,
-    },
-  });
+  const { data: k2AmountSimulation, isLoading: isK2AmountLoading } =
+    useSimulateContract({
+      address: rewardManagerContractAddress,
+      abi: RewardManagerDiamond,
+      functionName: 'previewClaimKVCMK2Rewards',
+      args: k2AmountArgs,
+      query: {
+        enabled: !!lock && !!rewardManagerContractAddress,
+      },
+    });
+
+  const k2AmountWei = k2AmountSimulation?.result;
 
   const k2Amount = isNonNullish(k2AmountWei)
     ? formatStringToNumber(k2AmountWei, tokens.k2.decimals)

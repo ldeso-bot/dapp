@@ -6,9 +6,10 @@ import { useContract, useContractInfo } from '@/shared/hooks/web3/useContract';
 import { Lock, WalletData } from '@/shared/models/walletData';
 import { exitWithErrorMessage } from '@/shared/utils/web3.utils';
 import { useCallback, useMemo } from 'react';
-import { isNonNullish, isNullish } from 'remeda';
+import { isNullish } from 'remeda';
 import { ExecuteWithValidationResult } from '../../hooks/useTransactionWithValidation';
 import ClaimMaturedLogRewardsForm from './ClaimMaturedLockRewardsForm';
+import { useGetLpLockRewardsAmount } from './hooks/useGetLpLockRewardsAmount';
 
 type Props = {
   lock: Lock;
@@ -29,16 +30,15 @@ const ClaimLpLockRewardsForm = ({ lock }: Props) => {
   const { address: kvcmUsdcAddress } = useContractInfo('KVCM_USDC');
   const { address: kvcmK2Address } = useContractInfo('KVCM_K2');
 
+  const {
+    kvcmAmount,
+    k2Amount,
+    isLoading: isAmountsLoading,
+  } = useGetLpLockRewardsAmount(lock);
+
   const lpTokenAddress = useMemo(() => {
     return lock?.token === 'kvcm-usdc' ? kvcmUsdcAddress : kvcmK2Address;
   }, [lock, kvcmUsdcAddress, kvcmK2Address]);
-
-  // Cannot get the amounts from the blockchain yet
-  const kvcmAmount = isNonNullish(lock)
-    ? lock.claimableRewards.kvcm
-    : undefined;
-
-  const k2Amount = isNonNullish(lock) ? lock.claimableRewards.k2 : undefined;
 
   // Unlock LP
   const { executeWithValidation } = useTransactionAndWaitForWalletUpdate({
@@ -94,7 +94,7 @@ const ClaimLpLockRewardsForm = ({ lock }: Props) => {
 
   return (
     <ClaimMaturedLogRewardsForm
-      isLoading={!lock}
+      isLoading={!lock || isAmountsLoading}
       lock={lock}
       onClaim={unlockLp}
       kvcmAmount={kvcmAmount}

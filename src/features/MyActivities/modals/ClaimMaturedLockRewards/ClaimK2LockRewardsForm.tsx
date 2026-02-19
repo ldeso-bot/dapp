@@ -6,9 +6,9 @@ import { useContract } from '@/shared/hooks/web3/useContract';
 import { Lock, WalletData } from '@/shared/models/walletData';
 import { exitWithErrorMessage } from '@/shared/utils/web3.utils';
 import { useCallback } from 'react';
-import { isNonNullish } from 'remeda';
 import { ExecuteWithValidationResult } from '../../hooks/useTransactionWithValidation';
 import ClaimMaturedLogRewardsForm from './ClaimMaturedLockRewardsForm';
+import { useGetK2LockRewardsAmount } from './hooks/useGetK2LockRewardsAmount';
 
 type Props = {
   lock: Lock;
@@ -22,12 +22,11 @@ const ClaimK2LockRewardsForm = ({ lock }: Props) => {
 
   const chainId = useChainId();
 
-  // Cannot get the amounts from the blockchain yet
-  const kvcmAmount = isNonNullish(lock)
-    ? lock.claimableRewards.kvcm
-    : undefined;
-
-  const k2Amount = isNonNullish(lock) ? lock.claimableRewards.k2 : undefined;
+  const {
+    ryAmount: kvcmAmount,
+    k2Amount,
+    isLoading: isAmountsLoading,
+  } = useGetK2LockRewardsAmount();
 
   // Claim K2
   const { executeWithValidation } = useTransactionAndWaitForWalletUpdate({
@@ -52,7 +51,7 @@ const ClaimK2LockRewardsForm = ({ lock }: Props) => {
 
   return (
     <ClaimMaturedLogRewardsForm
-      isLoading={!lock}
+      isLoading={!lock || isAmountsLoading}
       lock={lock}
       onClaim={claimK2}
       kvcmAmount={kvcmAmount}
