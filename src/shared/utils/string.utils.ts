@@ -119,7 +119,7 @@ export const formatAmountWithCommas = (
     return integerPart;
   }
 
-  decimalPart = decimalPart.replace(/0+$/, '').padEnd(digits, '0');
+  decimalPart = decimalPart.replace(/0+$/, '');
 
   if (decimalPart.length === 0) {
     return integerPart;

@@ -10,6 +10,7 @@ type TokenBalance = {
   deployedBalance: number;
   deployedUsdValue: number;
   lpToken: boolean;
+  longDecimals: number;
 };
 
 export const useTokenBalances = (): TokenBalance[] => {
@@ -39,6 +40,8 @@ export const useTokenBalances = (): TokenBalance[] => {
         deployedUsdValue = holdingsData?.kvcmK2.lockedValue ?? 0;
       }
 
+      const longDecimals = token === 'kvcm-usdc' ? 10 : 2;
+
       return {
         asset: token,
         balance: balance.toString(),
@@ -47,6 +50,7 @@ export const useTokenBalances = (): TokenBalance[] => {
         deployedBalance,
         deployedUsdValue,
         lpToken: isLpToken(token),
+        longDecimals,
       };
     }
   );

@@ -83,7 +83,10 @@ export const BalancesCard = (props: CardProps) => {
                   <TableCell className="text-right">
                     <div className="flex flex-col justify-end gap-1">
                       <div className="text-size-14 font-normal">
-                        {formatAmountWithCommas(Number(balance.balance))}{' '}
+                        {formatAmountWithCommas(
+                          Number(balance.balance),
+                          balance.longDecimals
+                        )}{' '}
                         <small className="text-size-12 text-void-60">
                           ({getTokenSymbol(balance.token as Token)})
                         </small>
@@ -94,7 +97,8 @@ export const BalancesCard = (props: CardProps) => {
                     <div className="flex flex-col justify-end gap-1">
                       <div className="text-size-14 font-normal">
                         {formatAmountWithCommas(
-                          Number(balance.deployedBalance)
+                          Number(balance.deployedBalance),
+                          balance.longDecimals
                         )}{' '}
                         <small className="text-size-12 text-void-60">
                           ({getTokenSymbol(balance.token as Token)})
