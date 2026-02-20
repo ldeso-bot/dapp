@@ -90,7 +90,7 @@ const ClaimMaturedLogRewardsForm = ({
               <>
                 <div className="flex flex-col gap-3 border-void-20 border-1 rounded-2xl p-3">
                   <div className="flex flex-row justify-between">
-                    <span>Principal</span>
+                    <span>Tokens locked</span>
                     <span>
                       {formatAmountWithCommas(
                         lock.unlockableLockedAmount,
@@ -100,7 +100,7 @@ const ClaimMaturedLogRewardsForm = ({
                     </span>
                   </div>
                   <div className="flex flex-row justify-between">
-                    <span>Base Accrual</span>
+                    <span>Incentives</span>
                     <span>
                       + {formatAmountWithCommas(baseAccrual, 'auto')}{' '}
                       {baseAccrualTokenSymbol}
