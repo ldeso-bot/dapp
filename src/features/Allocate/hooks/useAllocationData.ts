@@ -62,7 +62,10 @@ export const useAllocationData = (): UseQueryResult<
       const k2Price = protocolData.metrics.k2.valueUSD || 0;
 
       const kvcmLocks = locks.filter((lock) => lock.token === 'kvcm');
-      const totalKvcm = kvcmLocks.reduce((sum, lock) => sum + lock.lockedAmount, 0);
+      const totalKvcm = kvcmLocks.reduce(
+        (sum, lock) => sum + lock.lockedAmount,
+        0
+      );
       const kvcmAllocations = allocations.filter(
         (alloc) => alloc.token.name === 'kvcm'
       );
@@ -81,7 +84,7 @@ export const useAllocationData = (): UseQueryResult<
         totalKvcm,
         'kvcm'
       );
- 
+
       const k2Stats = computeTokenAllocationStats(
         walletData.allocations,
         totalK2,

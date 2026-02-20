@@ -9,6 +9,7 @@ import { Allocation, Allocations } from '@/shared/models/walletData';
 import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
 import { Allocation_Filter } from '@generated/gql/types/protocol.types';
 import { filter, isNonNullish } from 'remeda';
+import { getProtocolState } from '../protocol/protocol.utils';
 
 export const getAllocations = async (
   chainId: ChainId,
@@ -18,17 +19,26 @@ export const getAllocations = async (
   if (USE_MOCKS) {
     return getMockAllocations();
   }
+  const protocolState = await getProtocolState(sdk);
 
   const [userAllocations, allAllocations] = await Promise.all([
     sdk.protocol.getAllocations({
       where: {
+        lock_: {
+          maturityId_gte: protocolState?.firstActiveMaturityId,
+        },
         account_: {
           id: walletAddress,
         },
-      } as Allocation_Filter,
+      } as unknown as Allocation_Filter,
     }),
+    // TODO: We should not do that, this will cause performance issues
     sdk.protocol.getAllocations({
-      where: {} as Allocation_Filter,
+      where: {
+        lock_: {
+          maturityId_gte: protocolState?.firstActiveMaturityId,
+        },
+      } as unknown as Allocation_Filter,
     }),
   ]);
 
