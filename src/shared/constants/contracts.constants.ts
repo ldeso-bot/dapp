@@ -21,17 +21,17 @@ const contracts = {
     abi: USDC,
   },
   StakingManagerDiamond: {
-    [base.id]: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // TODO: add mainnet address
+    [base.id]: '0x5101a7ca3E8815C0FeeD8976F109EE01D8ED0c3D',
     [baseSepolia.id]: '0xB288c457083B5Cb7C5008CF9e135B370B2206f8B',
     abi: StakingManagerDiamond,
   },
   RewardManagerDiamond: {
-    [base.id]: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // TODO: add mainnet address
+    [base.id]: '0xada87d6f68054d0caB4789b332279b18932e928F',
     [baseSepolia.id]: '0x5CB8440D322Aecd648d010c27dB0AF2C4067d8D8',
     abi: RewardManagerDiamond,
   },
   AAMDiamond: {
-    [base.id]: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // TODO: add mainnet address
+    [base.id]: '0x1C24239309398220883207681602BfF4D10fbde1',
     [baseSepolia.id]: '0x5BC312a85ac0A5d14D5FeDb05B4f96AB256eD14E',
     abi: AAMDiamond,
   },
