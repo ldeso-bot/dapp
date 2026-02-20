@@ -28,5 +28,10 @@ export const DEFAULT_SLIPPAGE = 0.01; // 1%
 
 export const FORMO_WRITE_KEY = process.env.NEXT_PUBLIC_FORMO_WRITE_KEY ?? '';
 
+export const FORMO_DEBUG =
+  IS_DEVELOPMENT ||
+  process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview' ||
+  DEV_MODE;
+
 export const LUCKY_ORANGE_SITE_ID =
   process.env.NEXT_PUBLIC_LUCKY_ORANGE_SITE_ID ?? '';

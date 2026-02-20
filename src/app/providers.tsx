@@ -2,7 +2,10 @@
 
 import { ConnectModalDisclaimer } from '@/shared/components/RainbowKit/ConnectModalDisclaimer';
 import { UnsupportedNetworkModal } from '@/shared/components/RainbowKit/UnsupportedNetworkModal';
-import { FORMO_WRITE_KEY } from '@/shared/constants/config.constants';
+import {
+  FORMO_DEBUG,
+  FORMO_WRITE_KEY,
+} from '@/shared/constants/config.constants';
 import { DOCS_URL } from '@/shared/constants/urls.constants';
 import { createWagmiConfig } from '@/shared/utils/wagmi.utils';
 import { queryClient } from '@/shared/utils/web3.utils';
@@ -39,6 +42,14 @@ export function Providers({ children, initialState }: ProvidersProps) {
               config: wagmiConfig,
               queryClient: client,
             },
+            tracking: FORMO_DEBUG ? true : undefined,
+            flushInterval: FORMO_DEBUG ? 5000 : undefined,
+            logger: FORMO_DEBUG
+              ? {
+                  enabled: true,
+                  levels: ['error', 'warn', 'info'],
+                }
+              : undefined,
           }}
         >
           <RainbowKitProvider
