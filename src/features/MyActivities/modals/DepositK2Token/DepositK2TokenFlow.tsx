@@ -10,10 +10,7 @@ import { DepositK2TokenForm } from './steps/DepositK2TokenForm';
 
 export default function DepositK2TokenFlow() {
   const schema = z.object({
-    amount: z.coerce
-      .number()
-      .gt(0, 'Amount must be a positive integer')
-      .int('Amount must be a positive integer'),
+    amount: z.coerce.number().gt(0, 'Amount must be greater than 0'),
   });
 
   const form = useForm<DepositK2TokenFields>({
