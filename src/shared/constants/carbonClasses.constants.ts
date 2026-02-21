@@ -2,24 +2,29 @@ import { base, baseSepolia } from 'viem/chains';
 import { ChainId } from './networks.constants';
 
 const BASE_CARBON_CLASSES_INFO_MAP = {
-  '0xc83709888c975576c00000000000000000000311': {
-    name: 'Ocean Alkalinity Enhancement (OAE)',
-    category: 'Carbon Dioxide Removals',
+  '0x1b597da36afa2e88c3dca55b4143251d4eb0e3da': {
+    name: 'Ocean Alkalinity Enhancement',
+    category: 'CDR',
     isRegen: false,
   },
-  '0xc83709888c975576c00000000000000000000312': {
-    name: 'Enhanced Rock Weathering (ERW)',
-    category: 'Carbon Dioxide Removals',
+  '0x4d6fce4eb76f093f5948dcb7ff4364427d70bcb8': {
+    name: 'Biochar',
+    category: 'CDR',
     isRegen: false,
   },
-  '0xc83709888c975576c00000000000000000000313': {
-    name: 'Reducint Emissions from Deforestation and Forest Degredation (REDD)',
-    category: 'Forestry',
+  '0xf4699531e0a5f6e9351a36de3753deaad329bf45': {
+    name: 'Regen - CFC',
+    category: 'City Forest Credits',
+    isRegen: true,
+  },
+  '0x1ff9bd464155d32fd2f9d302008d38544c0ae371': {
+    name: 'Solar PV - Small Scale',
+    category: 'Solar Energy',
     isRegen: false,
   },
-  '0xc83709888c975576c00000000000000000000314': {
-    name: 'Mangroves (MNGRV)',
-    category: 'Blue Carbon',
+  '0x0008f35758a4318942ecb5d5414116ce7b1ede2d': {
+    name: 'Wind Energy - Small Scale',
+    category: 'Wind Energy',
     isRegen: false,
   },
 };
