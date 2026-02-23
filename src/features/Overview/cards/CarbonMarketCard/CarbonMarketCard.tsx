@@ -40,7 +40,7 @@ export default function CarbonMarketCard(props: CardProps) {
       tooltip="Execution rates are indicative only and may change at the time of execution due to protocol conditions. Any USD references are illustrative and provided for convenience."
       className="rounded-xl"
     >
-      {carbonClasses && (
+      {carbonClasses && carbonClasses.length > 0 && (
         <div>
           {/* Titles*/}
           <div className="flex flex-row text-size-12 text-void-60 text-center">
@@ -128,6 +128,12 @@ export default function CarbonMarketCard(props: CardProps) {
           </div>
         </div>
       )}
+      {!carbonClasses ||
+        (carbonClasses.length === 0 && (
+          <div className="flex flex-row justify-center items-center h-full">
+            <div className="text-size-14 text-void-50">Coming soon</div>
+          </div>
+        ))}
     </Card>
   );
 }
