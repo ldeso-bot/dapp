@@ -90,6 +90,10 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
       successDescription: `You've successfully topped up ${amount} ${tokenInfo.symbol}! You can manage your positions in the "My Activities" dashboard.`,
       errorDescription: 'Something went wrong with your top up.',
       successLinks: [{ label: 'My Activities', href: ROUTES.MY_ACTIVITIES }],
+      successEvent: {
+        name: 'topup_lock',
+        payload: { amount, token: typedToken },
+      },
       onSuccess: async () => {
         await delay(300);
         setTopupLockDialogState(resetTopupLockDialog());

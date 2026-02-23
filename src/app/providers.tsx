@@ -50,6 +50,13 @@ export function Providers({ children, initialState }: ProvidersProps) {
                   levels: ['error', 'warn', 'info'],
                 }
               : undefined,
+            autocapture: {
+              connect: true,
+              disconnect: true,
+              chain: true,
+              signature: false,
+              transaction: false,
+            },
           }}
         >
           <RainbowKitProvider

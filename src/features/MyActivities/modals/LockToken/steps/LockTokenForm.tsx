@@ -88,6 +88,10 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
       successDescription: `You've successfully ${lockTermed} ${amount} ${tokenInfo.symbol}! You can manage your positions in the "My Activities" dashboard.`,
       errorDescription: `Something went wrong and your ${lockTerm} was not successful.`,
       successLinks: [{ label: 'My Activities', href: ROUTES.MY_ACTIVITIES }],
+      successEvent: {
+        name: isKvcm ? 'lock_kvcm' : 'stake_lp',
+        payload: { amount, token: typedToken },
+      },
       onSuccess: async () => {
         await delay(300);
         setLockTokenDialogState({ open: false, token: null });

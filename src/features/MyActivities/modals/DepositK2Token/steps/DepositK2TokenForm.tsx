@@ -78,6 +78,10 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
       successDescription: `Deposited ${amount} K2. Each deposit becomes unlock-eligible after one full incentives period.`,
       errorDescription:
         'Something went wrong and your deposit was not successful.',
+      successEvent: {
+        name: 'deposit_k2',
+        payload: { amount },
+      },
       onSuccess: async () => {
         await delay(300);
         setDepositK2TokenDialogState({ open: false });

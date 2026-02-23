@@ -1,4 +1,5 @@
 import { alertAtom } from '@/features/Alert/alert.atom';
+import { useFormo } from '@formo/analytics';
 import { useSetAtom } from 'jotai';
 import { useState } from 'react';
 
@@ -9,9 +10,14 @@ type TransactionOptions = {
   errorDescription?: string;
   successLinks?: Array<{ label: string; href: string }>;
   onSuccess?: () => void;
+  successEvent?: {
+    name: string;
+    payload?: Record<string, unknown>;
+  };
 };
 
 export const useTransactionHandler = () => {
+  const analytics = useFormo();
   const setAlert = useSetAtom(alertAtom);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -24,6 +30,12 @@ export const useTransactionHandler = () => {
       const { error } = await transactionFn();
 
       if (!error) {
+        if (options.successEvent?.name && analytics) {
+          analytics.track(
+            options.successEvent.name,
+            options.successEvent.payload ?? {}
+          );
+        }
         setAlert({
           title: options.successTitle ?? 'Success',
           description: options.successDescription,
