@@ -1,7 +1,6 @@
 'use client';
 
 import { TokenInfo } from '@/shared/constants/tokens.constants';
-import { formatDurationFromTimestamp } from '@/shared/utils/date.utils';
 import {
   formatAmountWithCommas,
   formatPercentage,
@@ -18,13 +17,7 @@ type StatsCardProps = {
 };
 
 export const StatsCard: FC<StatsCardProps> = (props) => {
-  const {
-    maturityDate,
-    baseApy,
-    currentLockAmount,
-    totalAccruingRewards,
-    token,
-  } = props;
+  const { maturityDate, baseApy, currentLockAmount, token } = props;
 
   const isKvcm = token.id === 'kvcm';
   const lockTerm = isKvcm ? 'lock' : 'stake';
@@ -40,10 +33,6 @@ export const StatsCard: FC<StatsCardProps> = (props) => {
             {maturityDate
               ? formatTimestamp(maturityDate * 1000, 'short')
               : 'N/A'}
-          </p>
-          <p className="text-size-14 text-gray-600">
-            {maturityDate ? formatDurationFromTimestamp(maturityDate) : 'N/A'}{' '}
-            left
           </p>
         </div>
         <div className="flex flex-col gap-0 items-start">
@@ -65,11 +54,6 @@ export const StatsCard: FC<StatsCardProps> = (props) => {
           <span className="text-gray-600 text-size-14 font-normal">
             {token.symbol}
           </span>{' '}
-          <span className="text-gray-400 text-size-14 font-normal">•</span>{' '}
-          <span className="text-gray-600 text-size-14 font-normal">
-            {formatAmountWithCommas(totalAccruingRewards, 'auto')}{' '}
-            {token.symbol} accruing
-          </span>
         </p>
       </div>
     </div>
