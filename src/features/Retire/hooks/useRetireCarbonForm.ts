@@ -20,7 +20,7 @@ export const useRetireCarbonForm = (
   watch: UseFormWatch<RetireCarbonFields>
 ) => {
   // Wallet data for refetch
-  const { refetch: refetchWalletData } = useWalletData();
+  const { refetch: refetchWalletData, data: walletData } = useWalletData();
 
   // Protocol data
   const {
@@ -94,6 +94,10 @@ export const useRetireCarbonForm = (
     selectedCarbonCredit?.symbol?.startsWith('PURO') ||
     selectedCarbonCredit?.symbol?.startsWith('KLIM');
 
+  const inputTokenBalance =
+    walletData?.balances?.[selectedPaymentOption?.token?.id ?? 'kvcm'] ?? 0;
+  const asSufficientInputToken = inputTokenBalance > priceQuoted;
+
   return {
     carbonClasses,
     carbonCredits,
@@ -109,6 +113,7 @@ export const useRetireCarbonForm = (
     amountWei,
     maxInputTokenInWei,
     isConsumptionInfoRequiredCredit,
+    asSufficientInputToken,
     refetch,
   };
 };

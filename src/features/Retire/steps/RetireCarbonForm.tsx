@@ -32,6 +32,7 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
     carbonCredits,
     priceQuoted,
     isConsumptionInfoRequiredCredit,
+    asSufficientInputToken,
   } = useRetireCarbonForm(watch);
 
   // Update priceQuoted in form when it changes from the quoter
@@ -92,8 +93,18 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
         return;
       }
     }
+    // Validate balance of input token
+    if (!asSufficientInputToken) {
+      form.setError('amountTonnes', {
+        type: 'manual',
+        message: 'Insufficient balance',
+      });
+      return;
+    }
     next();
   };
+
+  const isDisabled = !priceQuotedWei || !asSufficientInputToken;
 
   return (
     <Card
@@ -232,7 +243,7 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
               className="rounded-md"
               colors="secondary"
               context="flow"
-              disabled={!priceQuotedWei}
+              disabled={isDisabled}
               type="submit"
             >
               Retire Carbon
