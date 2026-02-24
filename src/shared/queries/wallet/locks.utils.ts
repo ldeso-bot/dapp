@@ -204,7 +204,10 @@ export const mapKvcmOrLpLock = ({
   // Midnightinfo at the time of the lock maturity
   const lockMaturityMidnightInfo = lock.maturity?.maturityMidnightInfo
     ?.keeperUpdated
-    ? computeMidnightInfoDiffWithPrevious(lock.maturity?.maturityMidnightInfo)
+    ? computeMidnightInfoDiffWithPrevious(
+        lock.maturity?.maturityMidnightInfo,
+        tokenMetrics
+      )
     : null;
 
   // Midnight info relevant to compute yields for this lock

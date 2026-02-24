@@ -3,10 +3,12 @@ import { DAYS_IN_YEAR } from '@/shared/constants/protocol.constants';
 import { Token } from '@/shared/constants/tokens.constants';
 import { SDKMidnightInfo } from '@/shared/models/generated';
 import {
+  AllMetrics,
   ApyInfo,
   ApyMidnightInfo,
   YieldType,
 } from '@/shared/models/ProtocolData';
+import { computeTokenAmountValueUSD } from '@/shared/utils/protocol.utils';
 import { formatStringToNumber, Sdk } from '@/shared/utils/subgraph.utils';
 import { unstable_cache } from 'next/cache';
 import { mapToObj } from 'remeda';
@@ -111,13 +113,27 @@ const EMPTY_APY_INFO: ApyInfo = {
  */
 const computeMidnightInfoDiff = (
   midnightInfo: FormattedMidnightInfo,
-  oldMidnightInfo: FormattedMidnightInfo | undefined
+  oldMidnightInfo: FormattedMidnightInfo | undefined,
+  tokenMetrics: AllMetrics
 ) => {
   // Yearly Percentage yield
   const k2ApyFor = { ...EMPTY_APY_INFO };
   const kvcmApyFor = { ...EMPTY_APY_INFO };
   const k2PyFor = { ...EMPTY_APY_INFO };
   const kvcmPyFor = { ...EMPTY_APY_INFO };
+
+  const kvcmK2LpValueUSD = computeTokenAmountValueUSD(
+    'kvcm-k2',
+    1,
+    tokenMetrics
+  );
+  const kvcmUsdcLpValueUSD = computeTokenAmountValueUSD(
+    'kvcm-usdc',
+    1,
+    tokenMetrics
+  );
+  const kvcmValueUSD = computeTokenAmountValueUSD('kvcm', 1, tokenMetrics);
+  const k2ValueUSD = computeTokenAmountValueUSD('k2', 1, tokenMetrics);
 
   if (oldMidnightInfo) {
     const daysBetweenMidnights =
@@ -131,30 +147,42 @@ const computeMidnightInfoDiff = (
       daysBetweenMidnights
     );
 
-    k2ApyFor['kvcm-k2'] = accumulatorApr(
-      midnightInfo.k2YieldAccumulatorForKVCM_K2_LP,
-      oldMidnightInfo.k2YieldAccumulatorForKVCM_K2_LP,
-      daysBetweenMidnights
-    );
+    k2ApyFor['kvcm-k2'] =
+      (accumulatorApr(
+        midnightInfo.k2YieldAccumulatorForKVCM_K2_LP,
+        oldMidnightInfo.k2YieldAccumulatorForKVCM_K2_LP,
+        daysBetweenMidnights
+      ) *
+        k2ValueUSD) /
+      kvcmK2LpValueUSD;
 
-    k2ApyFor.kvcm = accumulatorApr(
-      midnightInfo.k2YieldAccumulatorForKVCM,
-      oldMidnightInfo.k2YieldAccumulatorForKVCM,
-      daysBetweenMidnights
-    );
+    k2ApyFor.kvcm =
+      (accumulatorApr(
+        midnightInfo.k2YieldAccumulatorForKVCM,
+        oldMidnightInfo.k2YieldAccumulatorForKVCM,
+        daysBetweenMidnights
+      ) *
+        k2ValueUSD) /
+      kvcmValueUSD;
 
     // KVCM
-    kvcmApyFor['kvcm-k2'] = accumulatorApr(
-      midnightInfo.riskyYieldAccumulatorForKVCM_K2_LP,
-      oldMidnightInfo.riskyYieldAccumulatorForKVCM_K2_LP,
-      daysBetweenMidnights
-    );
+    kvcmApyFor['kvcm-k2'] =
+      (accumulatorApr(
+        midnightInfo.riskyYieldAccumulatorForKVCM_K2_LP,
+        oldMidnightInfo.riskyYieldAccumulatorForKVCM_K2_LP,
+        daysBetweenMidnights
+      ) *
+        kvcmValueUSD) /
+      kvcmK2LpValueUSD;
 
-    kvcmApyFor['kvcm-usdc'] = accumulatorApr(
-      midnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP,
-      oldMidnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP,
-      daysBetweenMidnights
-    );
+    kvcmApyFor['kvcm-usdc'] =
+      (accumulatorApr(
+        midnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP,
+        oldMidnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP,
+        daysBetweenMidnights
+      ) *
+        kvcmValueUSD) /
+      kvcmUsdcLpValueUSD;
 
     kvcmApyFor.kvcm = ppsApr(
       midnightInfo.syntheticYieldPps,
@@ -169,31 +197,46 @@ const computeMidnightInfoDiff = (
       oldMidnightInfo.k2YieldAccumulatorForK2
     );
 
-    k2PyFor['kvcm-k2'] = percentageIncrease(
-      midnightInfo.k2YieldAccumulatorForKVCM_K2_LP,
-      oldMidnightInfo.k2YieldAccumulatorForKVCM_K2_LP
-    );
+    k2PyFor['kvcm-k2'] =
+      (percentageIncrease(
+        midnightInfo.k2YieldAccumulatorForKVCM_K2_LP,
+        oldMidnightInfo.k2YieldAccumulatorForKVCM_K2_LP
+      ) *
+        k2ValueUSD) /
+      kvcmK2LpValueUSD;
 
-    k2PyFor.kvcm = percentageIncrease(
-      midnightInfo.k2YieldAccumulatorForKVCM,
-      oldMidnightInfo.k2YieldAccumulatorForKVCM
-    );
+    k2PyFor.kvcm =
+      (percentageIncrease(
+        midnightInfo.k2YieldAccumulatorForKVCM,
+        oldMidnightInfo.k2YieldAccumulatorForKVCM
+      ) *
+        k2ValueUSD) /
+      kvcmValueUSD;
 
     // KVCM
-    kvcmPyFor.k2 = percentageIncrease(
-      midnightInfo.riskyYieldAccumulatorForK2,
-      oldMidnightInfo.riskyYieldAccumulatorForK2
-    );
+    kvcmPyFor.k2 =
+      (percentageIncrease(
+        midnightInfo.riskyYieldAccumulatorForK2,
+        oldMidnightInfo.riskyYieldAccumulatorForK2
+      ) *
+        k2ValueUSD) /
+      kvcmValueUSD;
 
-    kvcmPyFor['kvcm-k2'] = percentageIncrease(
-      midnightInfo.riskyYieldAccumulatorForKVCM_K2_LP,
-      oldMidnightInfo.riskyYieldAccumulatorForKVCM_K2_LP
-    );
+    kvcmPyFor['kvcm-k2'] =
+      (percentageIncrease(
+        midnightInfo.riskyYieldAccumulatorForKVCM_K2_LP,
+        oldMidnightInfo.riskyYieldAccumulatorForKVCM_K2_LP
+      ) *
+        kvcmValueUSD) /
+      kvcmK2LpValueUSD;
 
-    kvcmPyFor['kvcm-usdc'] = percentageIncrease(
-      midnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP,
-      oldMidnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP
-    );
+    kvcmPyFor['kvcm-usdc'] =
+      (percentageIncrease(
+        midnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP,
+        oldMidnightInfo.riskyYieldAccumulatorForKVCM_USDC_LP
+      ) *
+        kvcmValueUSD) /
+      kvcmUsdcLpValueUSD;
 
     kvcmPyFor.kvcm = percentageIncrease(
       midnightInfo.syntheticYieldPps,
@@ -216,7 +259,8 @@ const computeMidnightInfoDiff = (
  * @param midnightInfo
  */
 export const computeMidnightInfoDiffWithPrevious = (
-  midnightInfo: SDKMidnightInfo
+  midnightInfo: SDKMidnightInfo,
+  tokenMetrics: AllMetrics
 ) => {
   if (!midnightInfo.previousMidnightInfo) {
     console.warn(
@@ -226,7 +270,8 @@ export const computeMidnightInfoDiffWithPrevious = (
   }
   return computeMidnightInfoDiff(
     formatMidnightInfo(midnightInfo),
-    formatMidnightInfo(midnightInfo.previousMidnightInfo)
+    formatMidnightInfo(midnightInfo.previousMidnightInfo),
+    tokenMetrics
   );
 };
 
@@ -237,12 +282,15 @@ export const computeMidnightInfoDiffWithPrevious = (
  * @returns Record of maturityId to ComputedMidnightInfo
  */
 export const mapMidnightInfosToComputedDiffs = (
-  midnightInfos: SDKMidnightInfo[]
-): Record<number, ComputedMidnightInfo> => {
+  midnightInfos: SDKMidnightInfo[],
+  tokenMetrics: AllMetrics
+) => {
   if (!midnightInfos || midnightInfos.length === 0) return {};
 
   const computedMidnightInfos = midnightInfos
-    .map((midnightInfo) => computeMidnightInfoDiffWithPrevious(midnightInfo))
+    .map((midnightInfo) =>
+      computeMidnightInfoDiffWithPrevious(midnightInfo, tokenMetrics)
+    )
     .filter((midnightInfo) => midnightInfo !== undefined);
 
   // Map by maturityId for faster lookups
@@ -262,6 +310,7 @@ export const getLatestMidnightInfoDiffs = async (
 ): Promise<Record<number, ComputedMidnightInfo>> => {
   return unstable_cache(
     async () => {
+      const tokenMetrics = await getTokenMetrics(sdk.chain);
       const [midnightInfos] = await Promise.all([
         (await sdk.protocol.getLatestMidnightInfo()).midnightInfos,
         getTokenMetrics(sdk.chain),
@@ -276,7 +325,10 @@ export const getLatestMidnightInfoDiffs = async (
         (midnightInfo) => midnightInfo.midnightIndex === midnightIndex
       );
 
-      return mapMidnightInfosToComputedDiffs(filteredMidnightInfos);
+      return mapMidnightInfosToComputedDiffs(
+        filteredMidnightInfos,
+        tokenMetrics
+      );
     },
     ['latest-midnight-infos-for-active-maturities'],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
