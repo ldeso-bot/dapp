@@ -1,6 +1,7 @@
 import { ApiCreditToken, CarbonClass } from '@/shared/models/shared';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import { useChainId } from '../web3/useChainId';
 import { useApi } from './useApi';
 import { useRefetchOnChainChange } from './useRefetchOnChainChange';
 
@@ -11,9 +12,9 @@ import { useRefetchOnChainChange } from './useRefetchOnChainChange';
  */
 function useCreditTokens(creditTokenIds: string[]) {
   const { get } = useApi();
-
+  const chainId = useChainId();
   const q = useQuery({
-    queryKey: ['credit-tokens', creditTokenIds.sort().join(',')],
+    queryKey: ['credit-tokens', chainId, creditTokenIds.sort().join(',')],
     queryFn: async () =>
       get<ApiCreditToken[]>('/api/carbon-data/credits', {
         ids: creditTokenIds.join(','),
