@@ -38,10 +38,6 @@ export function Providers({ children, initialState }: ProvidersProps) {
         <FormoAnalyticsProvider
           writeKey={FORMO_WRITE_KEY}
           options={{
-            wagmi: {
-              config: wagmiConfig,
-              queryClient: client,
-            },
             tracking: FORMO_DEBUG ? true : undefined,
             flushInterval: FORMO_DEBUG ? 5000 : undefined,
             logger: FORMO_DEBUG
@@ -50,13 +46,7 @@ export function Providers({ children, initialState }: ProvidersProps) {
                   levels: ['error', 'warn', 'info'],
                 }
               : undefined,
-            autocapture: {
-              connect: true,
-              disconnect: true,
-              chain: true,
-              signature: false,
-              transaction: false,
-            },
+            autocapture: true,
           }}
         >
           <RainbowKitProvider
