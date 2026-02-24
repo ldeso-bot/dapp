@@ -65,9 +65,9 @@ export const getAllocations = async (
         6
       );
 
-      const getPriceEffect = (price: number) => {
-        if (price < 10) return 'Low' as const;
-        if (price < 25) return 'Medium' as const;
+      const getPriceEffect = (sharePercent: number) => {
+        if (sharePercent < 0.001) return 'Low' as const;
+        if (sharePercent < 0.1) return 'Medium' as const;
         return 'High' as const;
       };
 
@@ -101,7 +101,7 @@ export const getAllocations = async (
         lockedUntil,
         id: allocation.id,
         carbonClass: carbonClassId,
-        priceEffect: getPriceEffect(priceUSD),
+        priceEffect: getPriceEffect(sharePercent),
         amount: userAmount,
         holder: allocation.account.id,
         token: {
