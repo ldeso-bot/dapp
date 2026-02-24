@@ -18,10 +18,7 @@ export default function EditAllocationFlow() {
   const schema = z.object({
     carbonClass: z.string(),
     allocationId: z.string(),
-    amount: z.coerce
-      .number()
-      .gte(0, 'Amount must be 0 or greater')
-      .int('Amount must be an integer'),
+    amount: z.coerce.number().gte(0, 'Amount must be 0 or greater'),
   });
   const form = useForm<EditAllocationFields>({
     resolver: zodResolver(schema),

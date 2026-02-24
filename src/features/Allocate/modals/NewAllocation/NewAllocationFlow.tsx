@@ -19,10 +19,7 @@ export default function NewAllocationFlow() {
   const schema = z
     .object({
       token: z.string(),
-      amount: z.coerce
-        .number()
-        .gt(0, 'Amount must be a positive integer')
-        .int('Amount must be a positive integer'),
+      amount: z.coerce.number().gt(0, 'Amount must be a positive integer'),
       carbonClass: z.string().min(1, 'Carbon class is required'),
       contractLockId: z.coerce.number().optional(),
     })
@@ -48,7 +45,6 @@ export default function NewAllocationFlow() {
       carbonClass: '',
     },
   });
-
   const parsedForm = useParsedForm(form, schema);
   return (
     <Steps
