@@ -48,12 +48,12 @@ export const InfoCards = (props: InfoCardsProps) => {
                 {card?.cta && (
                   <Link
                     href={`${ROUTES.MY_ACTIVITIES}?activeView=${card?.cta?.activeView ?? 'overview'}`}
-                    className="mt-4 h-10 px-6 gap-3 hover:scale-105 transition-transform bg-gray-50 border-none flex gap-2 items-center justify-center"
+                    className="mt-4 h-10 px-6 hover:scale-105 transition-transform bg-gray-50 border-none inline-flex items-center justify-center gap-2 whitespace-nowrap"
                   >
-                    <span className="text-size-14 font-medium">
+                    <span className="text-size-14 font-medium whitespace-nowrap">
                       {card.cta.text}
                     </span>
-                    <ArrowForwardIcon className="w-4 h-4" />
+                    <ArrowForwardIcon className="w-4 h-4 shrink-0" />
                   </Link>
                 )}
               </div>

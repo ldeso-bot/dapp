@@ -11,19 +11,6 @@ export const FlowItems = (props: FlowItemsProps) => {
   const { flowItems } = props;
   return (
     <div className="relative flex items-start justify-center gap-4 md:gap-12 my-20 max-w-7xl mx-auto">
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div
-          className="w-full h-0.5 bg-gradient-to-r from-transparent via-[#00994a]/20 to-transparent"
-          style={
-            {
-              '--tw-gradient-from': 'transparent',
-              '--tw-gradient-via': `#00994a20`,
-              '--tw-gradient-to': 'transparent',
-            } as React.CSSProperties
-          }
-        />
-      </div>
-
       {flowItems.map((item, i) => {
         const ItemIcon = item.icon;
         const defaultBgColor = `bg-secondary/${20 + i * 20}`;
@@ -56,17 +43,20 @@ export const FlowItems = (props: FlowItemsProps) => {
                 <ItemIcon className="w-9 h-9 md:w-11 md:h-11" />
               </div>
             </div>
+
             <div
               className="text-center"
               style={{ animationDelay: `${0.8 + i * 0.2}s` }}
             >
-              <div className="text-size-18 font-semibold text-foreground mb-2">
+              <div className="text-[2.25rem] md:text-[2rem] font-semibold text-foreground mb-2 leading-[1.25] md:leading-tight">
                 {item.label}
               </div>
-              <div className="text-size-12 text-gray-600 leading-relaxed max-w-[160px]">
+
+              <div className="text-[0.95rem] md:text-[1.3rem] text-gray-600 leading-relaxed max-w-[180px]">
                 {item.sublabel}
               </div>
             </div>
+
             {i < flowItems.length - 1 && (
               <div
                 className="absolute left-[calc(100%+0.5rem)] md:left-[calc(100%+1.5rem)] top-8 md:top-10 animate-fade-in delay-1000"
@@ -83,7 +73,6 @@ export const FlowItems = (props: FlowItemsProps) => {
           </div>
         );
       })}
-      <div className="absolute top-[50%] left-[10%] w-2 h-2 rounded-full animate-particle-flow bg-[#00994a]" />
     </div>
   );
 };
