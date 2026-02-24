@@ -1,4 +1,5 @@
 import { alertAtom } from '@/features/Alert/alert.atom';
+import { ExecuteWithValidationResult } from '@/features/MyActivities/hooks/useTransactionWithValidation';
 import { useFormo } from '@formo/analytics';
 import { useSetAtom } from 'jotai';
 import { useState } from 'react';
@@ -22,19 +23,19 @@ export const useTransactionHandler = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleTransaction = async (
-    transactionFn: () => Promise<{ error: string | null }>,
+    transactionFn: () => Promise<ExecuteWithValidationResult>,
     options: TransactionOptions
   ) => {
     setIsSubmitting(true);
     try {
-      const { error } = await transactionFn();
+      const result = await transactionFn();
 
-      if (!error) {
+      if (result.hash) {
         if (options.successEvent?.name && analytics) {
-          analytics.track(
-            options.successEvent.name,
-            options.successEvent.payload ?? {}
-          );
+          analytics.track(options.successEvent.name, {
+            ...options.successEvent.payload,
+            hash: result.hash,
+          });
         }
         setAlert({
           title: options.successTitle ?? 'Success',
@@ -43,10 +44,8 @@ export const useTransactionHandler = () => {
           links: options.successLinks ?? [],
         });
         options.onSuccess?.();
-        return { success: true, error: null };
-      } else {
-        return { success: false, error };
       }
+      return result;
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : 'An unexpected error occurred';

@@ -16,6 +16,7 @@ import { applySlippage } from '@/shared/utils/math.utils';
 import { formatAddress } from '@/shared/utils/string.utils';
 import { formatStringToNumber } from '@/shared/utils/subgraph.utils';
 import { getTransactionTransferLogs } from '@/shared/utils/web3.utils';
+import { useFormo } from '@formo/analytics';
 import { useSetAtom } from 'jotai';
 import { useAccount } from 'wagmi';
 import { useSellCarbon } from '../hooks/useSellCarbon';
@@ -79,9 +80,18 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
 
   const chainId = useChainId();
 
+  const analytics = useFormo();
+
   const handleSellCarbon = async () => {
     const result = await sellCarbon();
     if (result.hash) {
+      analytics.track('sell_carbon', {
+        hash: result.hash,
+        carbonClass: parsedForm.current?.carbonClass,
+        amount: parsedForm.current?.amountToSellTonnes,
+        creditToken: selectedBalance?.creditToken.symbol,
+      });
+
       // Get the amount of KVCM received
       let amountKvcmReceived = parsedForm.current?.kvcmOutQuoteWei;
 

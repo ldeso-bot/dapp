@@ -1,7 +1,11 @@
+import { ExecuteWithValidationResult } from '@/features/MyActivities/hooks/useTransactionWithValidation';
 import { useTransactionAndWaitForWalletUpdate } from '@/shared/hooks/useTransactionAndWaitForWalletUpdate';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { WalletData } from '@/shared/models/walletData';
-import { handleWeb3Error } from '@/shared/utils/web3.utils';
+import {
+  exitWithErrorMessage,
+  handleWeb3Error,
+} from '@/shared/utils/web3.utils';
 import { useCallback } from 'react';
 import { isAddress } from 'viem';
 import { useAccount } from 'wagmi';
@@ -29,23 +33,25 @@ export const useAllocateKvcm = () => {
   });
 
   const allocate = useCallback(
-    async (params: AllocateKvcmParams): Promise<{ error: string | null }> => {
+    async (
+      params: AllocateKvcmParams
+    ): Promise<ExecuteWithValidationResult> => {
       try {
         const allocateKvcm = contract?.write.allocateKvcm;
         if (!allocateKvcm) {
-          return { error: 'Contract is not ready' };
+          return exitWithErrorMessage('Contract is not ready');
         }
 
         if (!chain) {
-          return { error: 'Chain is not ready' };
+          return exitWithErrorMessage('Chain is not ready');
         }
 
         if (!isAddress(params.carbonClass)) {
-          return { error: 'Invalid carbon class address' };
+          return exitWithErrorMessage('Invalid carbon class address');
         }
 
         if (params.amount <= 0n) {
-          return { error: 'Amount must be greater than 0' };
+          return exitWithErrorMessage('Amount must be greater than 0');
         }
 
         const executeTransaction = () =>
@@ -68,23 +74,25 @@ export const useAllocateKvcm = () => {
   );
 
   const deallocate = useCallback(
-    async (params: DeallocateKvcmParams): Promise<{ error: string | null }> => {
+    async (
+      params: DeallocateKvcmParams
+    ): Promise<ExecuteWithValidationResult> => {
       try {
         const deallocateKvcm = contract?.write.deallocateKvcm;
         if (!deallocateKvcm) {
-          return { error: 'Contract is not ready' };
+          return exitWithErrorMessage('Contract is not ready');
         }
 
         if (!chain) {
-          return { error: 'Chain is not ready' };
+          return exitWithErrorMessage('Chain is not ready');
         }
 
         if (!isAddress(params.carbonClass)) {
-          return { error: 'Invalid carbon class address' };
+          return exitWithErrorMessage('Invalid carbon class address');
         }
 
         if (params.amount <= 0n) {
-          return { error: 'Amount must be greater than 0' };
+          return exitWithErrorMessage('Amount must be greater than 0');
         }
 
         const executeTransaction = () =>

@@ -74,16 +74,19 @@ export const handleWeb3Error = (error: unknown) => {
   if (isViemError(error)) {
     return {
       error: error.shortMessage,
+      hash: null,
     };
   }
   if (error instanceof Error) {
     return {
       error: error.message,
+      hash: null,
     };
   }
   console.warn('Found unknown error type', error, typeof error);
   return {
     error: 'An unknown error occurred',
+    hash: null,
   };
 };
 

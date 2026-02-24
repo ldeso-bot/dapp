@@ -22,6 +22,7 @@ import {
 } from '@/shared/utils/string.utils';
 import { getCarbonmarkReceiptUrl } from '@/shared/utils/urls.utils';
 import { getScanLink } from '@/shared/utils/web3.utils';
+import { useFormo } from '@formo/analytics';
 import { useSetAtom } from 'jotai';
 import Link from 'next/link';
 import { useRetireCarbon } from '../hooks/useRetireCarbon';
@@ -93,10 +94,19 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
     countryCode: parsedForm.current?.country,
   });
 
+  const analytics = useFormo();
+
   const handleRetireCarbon = async () => {
     const result = await retireCarbon();
     if (result.hash) {
+      analytics.track('retire_carbon', {
+        hash: result.hash,
+        carbonClass: parsedForm.current?.carbonClass,
+        amount: parsedForm.current?.amountTonnes,
+        creditToken: selectedCarbonCredit?.symbol,
+      });
       const receiptUrl = getCarbonmarkReceiptUrl(chainId, result.hash, 0);
+
       setAlert({
         title: 'Retirement complete',
         description: (

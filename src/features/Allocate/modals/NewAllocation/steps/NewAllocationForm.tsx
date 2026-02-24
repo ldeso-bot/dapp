@@ -5,6 +5,7 @@ import { useAllocateK2 } from '@/features/Allocate/hooks/useAllocateK2';
 import { useAllocateKvcm } from '@/features/Allocate/hooks/useAllocateKvcm';
 import { CarbonClassSelect } from '@/features/Allocate/shared/CarbonClassSelect';
 import { LockSelect } from '@/features/Allocate/shared/LockSelect';
+import { ExecuteWithValidationResult } from '@/features/MyActivities/hooks/useTransactionWithValidation';
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
 import { DialogHeader } from '@/shared/components/Dialog/DialogHeader';
@@ -21,6 +22,7 @@ import {
 } from '@/shared/constants/tokens.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
+import { useFormo } from '@formo/analytics';
 import { useSetAtom } from 'jotai';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -32,6 +34,7 @@ import { NewAllocationFields } from '../newAllocation.utils';
 const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
   const { form } = data;
   const router = useRouter();
+  const analytics = useFormo();
   const { data: protocolData } = useProtocolData();
   const { allocate: allocateK2 } = useAllocateK2();
   const { allocate: allocateKvcm } = useAllocateKvcm();
@@ -90,7 +93,7 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
       }
 
       const amount = parseUnits(formData.amount.toFixed(18), 18);
-      let result: { error: string | null } = { error: null };
+      let result: ExecuteWithValidationResult = { error: null, hash: null };
 
       if (isKvcm) {
         if (isNullish(formData.contractLockId)) {
@@ -116,6 +119,16 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
       if (result.error) {
         setError('root', { type: 'manual', message: result.error });
       } else {
+        if (analytics && result.hash) {
+          analytics.track('new_allocation', {
+            hash: result.hash,
+            carbonClass: formData.carbonClass,
+            contractLockId: formData.contractLockId,
+            token: typedToken,
+            amount: formData.amount,
+          });
+        }
+
         setAlert({
           title: 'Allocation Successful',
           description: `You've successfully allocated ${formData.amount} ${tokens[typedToken].symbol} to ${formData.carbonClass}! You can edit this allocation at any time.`,

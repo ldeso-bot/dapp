@@ -1,7 +1,11 @@
+import { ExecuteWithValidationResult } from '@/features/MyActivities/hooks/useTransactionWithValidation';
 import { useTransactionAndWaitForWalletUpdate } from '@/shared/hooks/useTransactionAndWaitForWalletUpdate';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { WalletData } from '@/shared/models/walletData';
-import { handleWeb3Error } from '@/shared/utils/web3.utils';
+import {
+  exitWithErrorMessage,
+  handleWeb3Error,
+} from '@/shared/utils/web3.utils';
 import { useCallback } from 'react';
 import { isAddress } from 'viem';
 import { useAccount } from 'wagmi';
@@ -27,23 +31,23 @@ export const useAllocateK2 = () => {
   });
 
   const allocate = useCallback(
-    async (params: AllocateK2Params): Promise<{ error: string | null }> => {
+    async (params: AllocateK2Params): Promise<ExecuteWithValidationResult> => {
       try {
         const allocateK2 = contract?.write.allocateK2;
         if (!allocateK2) {
-          return { error: 'Contract is not ready' };
+          return exitWithErrorMessage('Contract is not ready');
         }
 
         if (!chain) {
-          return { error: 'Chain is not ready' };
+          return exitWithErrorMessage('Chain is not ready');
         }
 
         if (!isAddress(params.carbonClass)) {
-          return { error: 'Invalid carbon class address' };
+          return exitWithErrorMessage('Invalid carbon class address');
         }
 
         if (params.amount <= 0n) {
-          return { error: 'Amount must be greater than 0' };
+          return exitWithErrorMessage('Amount must be greater than 0');
         }
 
         const executeTransaction = () =>
@@ -61,23 +65,25 @@ export const useAllocateK2 = () => {
   );
 
   const deallocate = useCallback(
-    async (params: DeallocateK2Params): Promise<{ error: string | null }> => {
+    async (
+      params: DeallocateK2Params
+    ): Promise<ExecuteWithValidationResult> => {
       try {
         const deallocateK2 = contract?.write.deallocateK2;
         if (!deallocateK2) {
-          return { error: 'Contract is not ready' };
+          return exitWithErrorMessage('Contract is not ready');
         }
 
         if (!chain) {
-          return { error: 'Chain is not ready' };
+          return exitWithErrorMessage('Chain is not ready');
         }
 
         if (!isAddress(params.carbonClass)) {
-          return { error: 'Invalid carbon class address' };
+          return exitWithErrorMessage('Invalid carbon class address');
         }
 
         if (params.amount <= 0n) {
-          return { error: 'Amount must be greater than 0' };
+          return exitWithErrorMessage('Amount must be greater than 0');
         }
 
         const executeTransaction = () =>

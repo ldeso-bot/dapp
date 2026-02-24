@@ -1,8 +1,12 @@
+import { ExecuteWithValidationResult } from '@/features/MyActivities/hooks/useTransactionWithValidation';
 import { Allocation } from '@/shared/models/walletData';
 import { pick } from '@/shared/utils/typescript.utils';
+import { exitWithErrorMessage } from '@/shared/utils/web3.utils';
 import { parseUnits } from 'viem';
 
-type AllocationFunction<T> = (params: T) => Promise<{ error: string | null }>;
+type AllocationFunction<T> = (
+  params: T
+) => Promise<ExecuteWithValidationResult>;
 
 type BaseAllocationParams = {
   carbonClass: string;
@@ -41,7 +45,7 @@ export const executeEditAllocation = async ({
   deallocateKvcm,
   allocateK2,
   deallocateK2,
-}: ExecuteEditAllocationParams) => {
+}: ExecuteEditAllocationParams): Promise<ExecuteWithValidationResult> => {
   const isAllocating = amountDiff > 0;
   const baseParams = {
     lockId: allocation.contractLockId!,
@@ -60,7 +64,7 @@ export const executeEditAllocation = async ({
     return isAllocating ? await allocateK2(params) : await deallocateK2(params);
   }
 
-  return { error: 'Only kVCM and K2 allocations can be edited' };
+  return exitWithErrorMessage('Only kVCM and K2 allocations can be edited');
 };
 
 export const getEditAllocationSuccessMessage = ({

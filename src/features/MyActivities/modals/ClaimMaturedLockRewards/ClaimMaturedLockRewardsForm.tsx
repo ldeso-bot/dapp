@@ -11,6 +11,7 @@ import {
   formatTimestamp,
 } from '@/shared/utils/string.utils';
 import { getTokenSymbol } from '@/shared/utils/token.utils';
+import { useFormo } from '@formo/analytics';
 import { useSetAtom } from 'jotai';
 import { useState } from 'react';
 import { isNonNullish } from 'remeda';
@@ -44,11 +45,21 @@ const ClaimMaturedLogRewardsForm = ({
     ? getTokenSymbol('k2')
     : getTokenSymbol('kvcm');
 
+  const analytics = useFormo();
+
   const handleOnClaim = async () => {
     try {
       setIsClaiming(true);
       const result = await onClaim();
       if (result.hash) {
+        analytics.track('claim_lock_rewards', {
+          hash: result.hash,
+          maturityId: lock.maturityId,
+          unlockedAmount: lock.unlockableLockedAmount,
+          kvcmAmount,
+          k2Amount,
+          tokenSymbol,
+        });
         setClaimMaturedLockRewardsDialog({
           open: false,
           lock: null,

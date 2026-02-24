@@ -71,12 +71,6 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
 
   const analytics = useFormo();
   const onSubmit = async (formData: EditAllocationFields) => {
-    if (analytics) {
-      analytics.track('edit_allocation', {
-        allocationId: allocation?.id,
-        amount: formData.amount,
-      });
-    }
     if (!allocation) {
       setError('root', {
         type: 'manual',
@@ -105,6 +99,16 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
       if (result.error) {
         setError('root', { type: 'manual', message: result.error });
         return;
+      }
+      if (analytics) {
+        analytics.track('edit_allocation', {
+          hash: result.hash,
+          allocationId: allocation?.id,
+          carbonClass: carbonClassName,
+          contractLockId: allocation?.contractLockId,
+          token: allocation?.token.name,
+          amount: formData.amount,
+        });
       }
 
       const successMessage = getEditAllocationSuccessMessage({
