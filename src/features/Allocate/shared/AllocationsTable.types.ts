@@ -5,6 +5,7 @@ import { Allocation } from '@/shared/models/walletData';
 import { ReactNode } from 'react';
 
 export type AllocationsCardProps = CardProps & {
+  ready: boolean;
   data: Allocation[] | undefined;
   tokenInfo: TokenInfo;
   noAllocationComponent: ReactNode;

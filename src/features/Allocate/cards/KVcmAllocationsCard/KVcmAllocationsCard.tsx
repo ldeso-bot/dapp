@@ -28,6 +28,7 @@ export default function KvcmAllocationsCard(props: CardProps) {
       {...props}
       id="kvcm-allocations"
       showCategoryFilter
+      ready={!!allocationData}
       title={
         <div className="flex items-center gap-2">
           <Icon icon={kvcmIcon} alt="kVCM" size={2.4} />

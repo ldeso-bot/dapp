@@ -11,7 +11,14 @@ import { AllocationsTableMobile } from './AllocationsTableMobile';
 import { CategoryFilter } from './CategoryFilter';
 
 export const AllocationsTable: FC<AllocationsCardProps> = (props) => {
-  const { className, data, tokenInfo, showCategoryFilter = false, lockWarning } = props;
+  const {
+    className,
+    data,
+    tokenInfo,
+    showCategoryFilter = false,
+    lockWarning,
+    ready,
+  } = props;
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const isKvcm = tokenInfo.id === 'kvcm';
 
@@ -59,49 +66,53 @@ export const AllocationsTable: FC<AllocationsCardProps> = (props) => {
       skeletonClassName="h-50"
       className={cn('rounded-lg border-gray-300 !shadow-none', className)}
     >
-      <p className="text-size-14 text-gray-600 mt-1">
-        {isKvcm
-          ? `Allocate kVCM to carbon classes to direct which credits the protocol
+      {ready && (
+        <>
+          <p className="text-size-14 text-gray-600 mt-1">
+            {isKvcm
+              ? `Allocate kVCM to carbon classes to direct which credits the protocol
           buys and holds in the portfolio, and at what intensity. Higher
           allocations increase your share of flows in that class and influence
           its indicative price.`
-          : `Allocate K2 to carbon classes to increase the system’s capacity to buy and retire those credits without moving the price. K2 does not represent direct ownership of carbon; it shapes how much activity the system can support at a given price.`}
-      </p>
+              : `Allocate K2 to carbon classes to increase the system’s capacity to buy and retire those credits without moving the price. K2 does not represent direct ownership of carbon; it shapes how much activity the system can support at a given price.`}
+          </p>
 
-      <div className="pt-2">
-        {showCategoryFilter && categories.length > 0 && (
-          <div className="flex items-center gap-2 mb-4">
-            <Icon
-              size={1.8}
-              alt="Filter"
-              icon={filterIcon}
-              className="text-gray-400"
+          <div className="pt-2">
+            {showCategoryFilter && categories.length > 0 && (
+              <div className="flex items-center gap-2 mb-4">
+                <Icon
+                  size={1.8}
+                  alt="Filter"
+                  icon={filterIcon}
+                  className="text-gray-400"
+                />
+                <CategoryFilter
+                  categories={categories}
+                  selectedCategory={selectedCategory}
+                  onCategoryChange={setSelectedCategory}
+                />
+              </div>
+            )}
+            <AllocationsTableDesktop
+              {...props}
+              data={sortedData}
+              sortConfig={sortConfig}
+              onSort={requestSort}
+              className="hidden lg:table"
             />
-            <CategoryFilter
-              categories={categories}
-              selectedCategory={selectedCategory}
-              onCategoryChange={setSelectedCategory}
+            <AllocationsTableMobile
+              {...props}
+              data={sortedData}
+              className="lg:hidden"
             />
+            {!!lockWarning && (
+              <div className="px-6 pb-4 pt-3 text-size-14 font-semibold text-void-60">
+                ⚠️ {lockWarning}
+              </div>
+            )}
           </div>
-        )}
-        <AllocationsTableDesktop
-          {...props}
-          data={sortedData}
-          sortConfig={sortConfig}
-          onSort={requestSort}
-          className="hidden lg:table"
-        />
-        <AllocationsTableMobile
-          {...props}
-          data={sortedData}
-          className="lg:hidden"
-        />
-        {!!lockWarning && (
-          <div className="px-6 pb-4 pt-3 text-size-14 font-semibold text-void-60">
-            ⚠️ {lockWarning}
-          </div>
-        )}
-      </div>
+        </>
+      )}
     </Card>
   );
 };

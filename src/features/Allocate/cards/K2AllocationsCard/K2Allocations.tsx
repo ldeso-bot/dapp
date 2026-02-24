@@ -24,6 +24,7 @@ export default function K2AllocationsCard(props: CardProps) {
       {...props}
       id="k2-allocations"
       showCategoryFilter
+      ready={!!allocationData}
       title={
         <div className="flex items-center gap-2">
           <Icon icon={k2Icon} alt="K2" size={2.4} />

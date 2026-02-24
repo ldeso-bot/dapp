@@ -21,26 +21,40 @@ export const getAllocations = async (
   }
   const protocolState = await getProtocolState(sdk);
 
-  const [userAllocations, allAllocations] = await Promise.all([
-    sdk.protocol.getAllocations({
-      where: {
-        lock_: {
-          maturityId_gte: protocolState?.firstActiveMaturityId,
-        },
-        account_: {
-          id: walletAddress,
-        },
-      } as unknown as Allocation_Filter,
-    }),
-    // TODO: We should not do that, this will cause performance issues
-    sdk.protocol.getAllocations({
-      where: {
-        lock_: {
-          maturityId_gte: protocolState?.firstActiveMaturityId,
-        },
-      } as unknown as Allocation_Filter,
-    }),
-  ]);
+  const [userKvcmAllocations, userK2Allocations, allAllocations] =
+    await Promise.all([
+      sdk.protocol.getAllocations({
+        where: {
+          token_: { symbol: 'KVCM' },
+          lock_: {
+            maturityId_gte: protocolState?.firstActiveMaturityId,
+          },
+          account_: {
+            id: walletAddress,
+          },
+        } as unknown as Allocation_Filter,
+      }),
+      sdk.protocol.getAllocations({
+        where: {
+          token_: { symbol: 'K2' },
+          account_: {
+            id: walletAddress,
+          },
+        } as unknown as Allocation_Filter,
+      }),
+      // TODO: We should not do that, this will cause performance issues
+      sdk.protocol.getAllocations({
+        where: {
+          lock_: {
+            maturityId_gte: protocolState?.firstActiveMaturityId,
+          },
+        } as unknown as Allocation_Filter,
+      }),
+    ]);
+  const userAllocations = [
+    ...userKvcmAllocations.allocations,
+    ...userK2Allocations.allocations,
+  ];
 
   // Calculate total allocation per carbon class and token for sharePercent calculation
   const totalsByClass = new Map<string, number>();
@@ -51,8 +65,7 @@ export const getAllocations = async (
     const amount = formatStringToNumber(allocation.amount, 18);
     totalsByClass.set(key, (totalsByClass.get(key) || 0) + amount);
   });
-
-  const mappedAllocations = (userAllocations?.allocations ?? []).map(
+  const mappedAllocations = userAllocations.map(
     (allocation): Allocation | null => {
       const tokenInfo = tokenInfoFromSubgraphSymbol(allocation.token.symbol);
       if (!tokenInfo || !isAllocatableToken(tokenInfo.id)) {
