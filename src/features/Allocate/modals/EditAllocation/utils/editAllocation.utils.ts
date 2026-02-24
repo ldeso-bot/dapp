@@ -2,8 +2,7 @@ import { Allocation } from '@/shared/models/walletData';
 import { pick } from '@/shared/utils/typescript.utils';
 import { parseUnits } from 'viem';
 
-type AllocationFunction<T> = (params: T) => 
-  Promise<{ error: string | null }>;
+type AllocationFunction<T> = (params: T) => Promise<{ error: string | null }>;
 
 type BaseAllocationParams = {
   carbonClass: string;
@@ -47,12 +46,14 @@ export const executeEditAllocation = async ({
   const baseParams = {
     lockId: allocation.contractLockId!,
     carbonClass: allocation.carbonClass,
-    amount: parseUnits(Math.abs(amountDiff).toString(), 18),
+    amount: parseUnits(Math.abs(amountDiff).toFixed(18), 18),
   };
 
   if (isKvcm) {
     const params = pick(baseParams, ['lockId', 'carbonClass', 'amount']);
-    return isAllocating ? await allocateKvcm(params) : await deallocateKvcm(params);
+    return isAllocating
+      ? await allocateKvcm(params)
+      : await deallocateKvcm(params);
   }
   if (isK2) {
     const params = pick(baseParams, ['carbonClass', 'amount']);
@@ -71,4 +72,3 @@ export const getEditAllocationSuccessMessage = ({
     ? `You've successfully deallocated all ${tokenSymbol} from ${carbonClassName}!`
     : `You've successfully updated your allocation to ${newAmount} ${tokenSymbol} for ${carbonClassName}!`;
 };
-

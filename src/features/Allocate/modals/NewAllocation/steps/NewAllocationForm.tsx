@@ -88,7 +88,7 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
         return;
       }
 
-      const amount = parseUnits(formData.amount.toString(), 18);
+      const amount = parseUnits(formData.amount.toFixed(18), 18);
       let result: { error: string | null } = { error: null };
 
       if (isKvcm) {
@@ -188,6 +188,7 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
                       ? { type: 'manual', message: errorMessage }
                       : undefined)
                   }
+                  step={10 ** -tokens[typedToken].decimals}
                   onFocus={(e) => {
                     if (
                       e.currentTarget.value !== '' &&
