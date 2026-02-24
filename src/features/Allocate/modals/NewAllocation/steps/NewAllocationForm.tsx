@@ -12,6 +12,7 @@ import Input from '@/shared/components/Form/Input';
 import Form from '@/shared/components/Form/layout/Form';
 import { RootError } from '@/shared/components/Form/RootError';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
+import { DEV_MODE } from '@/shared/constants/config.constants';
 import { ROUTES } from '@/shared/constants/route.constants';
 import {
   DEFAULT_ALLOCATION_TOKEN,
@@ -183,10 +184,12 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
                   iconSrc={tokens[typedToken].iconSrc}
                   {...form.register('amount', { valueAsNumber: true })}
                   error={
-                    formState.errors.amount ||
-                    (errorMessage
-                      ? { type: 'manual', message: errorMessage }
-                      : undefined)
+                    DEV_MODE
+                      ? formState.errors.amount ||
+                        (errorMessage
+                          ? { type: 'manual', message: errorMessage }
+                          : undefined)
+                      : undefined
                   }
                   step={10 ** -tokens[typedToken].decimals}
                   onFocus={(e) => {
