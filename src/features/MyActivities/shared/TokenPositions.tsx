@@ -148,7 +148,7 @@ isPartiallyClaimed: ${lock.isPartiallyClaimed}
               className="text-size-12 text-gray-500 font-[400]"
               style={{ lineHeight: '0' }}
             >
-              {isMatured ? 'Rewards' : 'Rewards (accruing)'}
+              {isMatured ? 'Rewards' : 'Incentives (accruing)'}
             </div>
 
             <Tooltip

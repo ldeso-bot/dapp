@@ -85,7 +85,22 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
 
     const result = await handleTransaction(lockToken, {
       successTitle: isKvcm ? 'Lock Successful' : 'Stake Successful',
-      successDescription: `You've successfully ${lockTermed} ${amount} ${tokenInfo.symbol}! You can manage your positions in the "My Activities" dashboard.`,
+      successDescription: (
+        <>
+          <div>
+            You&apos;ve successfully {lockTermed} {amount} {tokenInfo.symbol}!
+            You can manage your positions in the &quot;My Activities&quot;
+            dashboard.
+          </div>
+
+          <div style={{ marginTop: 8 }}>
+            <strong>
+              Your incentives are calculated daily, but they may not show up in
+              the UI for up to 48 hours.
+            </strong>
+          </div>
+        </>
+      ),
       errorDescription: `Something went wrong and your ${lockTerm} was not successful.`,
       successLinks: [{ label: 'My Activities', href: ROUTES.MY_ACTIVITIES }],
       successEvent: {
@@ -167,6 +182,11 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
                 <p>
                   Incentives (kVCM and/or K2) accrue until the end of the chosen
                   duration and then become claimable.
+                </p>
+                <br></br>
+                <p className="text-xl text-black font-bold">
+                  Incentives are calculated daily, but they may not show up in
+                  the UI for up to 48 hours.
                 </p>
               </div>
               {maturity && (

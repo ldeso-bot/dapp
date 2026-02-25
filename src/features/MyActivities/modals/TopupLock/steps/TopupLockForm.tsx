@@ -88,7 +88,22 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
     clearErrors('root');
     const result = await handleTransaction(lockToken, {
       successTitle: 'Top up Successful',
-      successDescription: `You've successfully topped up ${amount} ${tokenInfo.symbol}! You can manage your positions in the "My Activities" dashboard.`,
+      successDescription: (
+        <>
+          <div>
+            You&apos;ve successfully topped up {amount} {tokenInfo.symbol}! You
+            can manage your positions in the &quot;My Activities&quot;
+            dashboard.
+          </div>
+          <div style={{ height: 8 }} />
+          <div>
+            <strong>
+              Incentives are calculated daily, but they may not show up in the
+              UI for up to 48 hours.
+            </strong>
+          </div>
+        </>
+      ),
       errorDescription: 'Something went wrong with your top up.',
       successLinks: [{ label: 'My Activities', href: ROUTES.MY_ACTIVITIES }],
       successEvent: {

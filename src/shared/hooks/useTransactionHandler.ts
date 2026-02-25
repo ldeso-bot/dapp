@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 type TransactionOptions = {
   successTitle?: string;
-  successDescription: string;
+  successDescription: React.ReactNode;
   errorTitle?: string;
   errorDescription?: string;
   successLinks?: Array<{ label: string; href: string }>;

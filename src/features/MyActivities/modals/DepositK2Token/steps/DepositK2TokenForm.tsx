@@ -75,7 +75,21 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
 
     const result = await handleTransaction(deposit, {
       successTitle: 'Deposit K2',
-      successDescription: `Deposited ${amount} K2. Each deposit becomes unlock-eligible after one full incentives period.`,
+      successDescription: (
+        <>
+          <div>
+            Deposited {amount} K2! Each deposit becomes unlock-eligible after
+            one full incentives period.
+          </div>
+
+          <div style={{ marginTop: 8 }}>
+            <strong>
+              Your incentives are calculated daily, but they may not show up in
+              the UI for up to 24 hours.
+            </strong>
+          </div>
+        </>
+      ),
       errorDescription:
         'Something went wrong and your deposit was not successful.',
       successEvent: {
@@ -104,6 +118,10 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
             incentives immediately and becomes eligible for unlocking after 24
             hours and at the next daily cutoff.
           </div>
+          <p className="text-size-14 font-bold text-gray-600">
+            Incentives are calculated daily, but they may not show up in the UI
+            for up to 24 hours.
+          </p>
           <div className="flex flex-col gap-1 pt-3">
             <div className="flex flex-col gap-1">
               <label className="text-size-14 font-medium">
