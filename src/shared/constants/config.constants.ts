@@ -10,6 +10,7 @@ export const IS_DEVELOPMENT =
   !process.env.VERCEL_ENV || process.env.VERCEL_ENV === 'development';
 
 export const PROTOCOL_DATA_CACHE_TIME_SECONDS = IS_DEVELOPMENT ? 1 : 60;
+export const QUOTES_CACHE_TIME_SECONDS = IS_DEVELOPMENT ? 1 : 60;
 export const WALLET_DATA_CACHE_TIME_SECONDS = 1;
 
 export const USE_LOCAL_RPC = process.env.NEXT_PUBLIC_USE_LOCAL_RPC === 'true';

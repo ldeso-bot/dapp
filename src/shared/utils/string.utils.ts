@@ -138,9 +138,10 @@ export const formatTonnesWithSuffix = (totalTonnes: number) => {
 };
 
 export const formatPriceUSDWithCommas = (
-  value: number,
+  value: number | undefined,
   digits?: number | 'auto'
 ): string => {
+  if (isNullish(value)) return '—';
   return `$${formatAmountWithCommas(value, digits)}`;
 };
 

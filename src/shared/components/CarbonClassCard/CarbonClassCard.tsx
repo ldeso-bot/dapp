@@ -1,13 +1,27 @@
 'use client';
 
 import Card from '@/shared/components/Card/Card';
-import ChangePercent from '@/shared/components/ChangePercent/ChangePercent';
+import {
+  useExecutionRates,
+} from '@/shared/hooks/api/useExecutionRates';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { formatPriceUSDWithCommas } from '@/shared/utils/string.utils';
-import clsx from 'clsx';
 
-export default function CarbonClassCard() {
+export enum QuoteType {
+  swap = 'swap',
+  retire = 'retire',
+}
+
+type Props = {
+  quoteType: QuoteType;
+};
+
+export default function CarbonClassCard({ quoteType }: Props) {
   const { data, isLoading } = useProtocolData();
+  const { data: quotes } = useExecutionRates(quoteType);
+
+  const quotesMap = new Map(quotes?.map((q) => [q.carbonClassId, q]) ?? []);
+
   return (
     <div>
       <Card
@@ -18,9 +32,10 @@ export default function CarbonClassCard() {
         skeletonClassName="h-[20rem]"
       >
         {!isLoading && (
-          <>
-            <div className="pt-2">
-              {data?.carbonClasses.map((item, index) => (
+          <div className="pt-2">
+            {data?.carbonClasses.map((item, index) => {
+              const quote = quotesMap.get(item.carbonClassId);
+              return (
                 <div key={index} className="group">
                   <div className="flex items-center justify-between py-2">
                     <div className="flex-1">
@@ -28,32 +43,16 @@ export default function CarbonClassCard() {
                         {item.name}
                       </div>
                     </div>
-                    {/* todo - move out to a shared price badge component??? */}
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col items-end">
                       <div className="text-size-14 text-void-80">
-                        {formatPriceUSDWithCommas(item.valueUSD, 'auto')}
-                      </div>
-                      <div
-                        className={clsx(
-                          'flex items-center gap-1.5 px-2 py-0 rounded-full text-size-12',
-                          {
-                            'text-void-80 bg-void-10':
-                              item.valueUSDChangePercent24h === 0,
-                            'text-green-80 bg-green-10':
-                              item.valueUSDChangePercent24h > 0,
-                            'text-red-60 bg-red-10':
-                              item.valueUSDChangePercent24h < 0,
-                          }
-                        )}
-                      >
-                        <ChangePercent value={item.valueUSDChangePercent24h} />
+                        {formatPriceUSDWithCommas(quote?.usdcPerTonne, 'auto')}
                       </div>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </>
+              );
+            })}
+          </div>
         )}
       </Card>
     </div>

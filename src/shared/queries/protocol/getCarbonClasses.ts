@@ -51,7 +51,7 @@ export const getCarbonClasses = async (
     t,
   ]);
 
-  //Compute carbon classes
+  // Compute carbon classes
   return carbonClasses?.map((c) => {
     const valueUSD = formatStringToNumber(c.priceUsdcPerTon?.priceUsdc, 6);
 

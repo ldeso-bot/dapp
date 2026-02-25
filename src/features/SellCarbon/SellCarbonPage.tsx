@@ -1,6 +1,6 @@
 'use client';
 
-import CarbonClassCard from '@/shared/components/CarbonClassCard/CarbonClassCard';
+import CarbonClassCard, { QuoteType } from '@/shared/components/CarbonClassCard/CarbonClassCard';
 import { PageDescription } from '@/shared/components/PageDescription/PageDescription';
 import { PageTitle } from '@/shared/components/PageTitle/PageTitle';
 import Steps from '@/shared/components/Steps/Steps';
@@ -33,6 +33,13 @@ export default function SellCarbonPage() {
 
   const parsedForm = useParsedForm(form, schema);
 
+  const details = (
+    <>
+      <CarbonClassCard quoteType={QuoteType.swap} />
+      <CarbonSellersHandbookCard />
+    </>
+  );
+
   return (
     <>
       {!account.isConnected ? (
@@ -54,8 +61,7 @@ export default function SellCarbonPage() {
               />
             </div>
             <div className="min-w-0 w-full max-w-full lg:w-[45rem] shrink-0 flex flex-col gap-4">
-              <CarbonClassCard />
-              <CarbonSellersHandbookCard />
+              {details}
             </div>
           </div>
           <div className="flex flex-col gap-4 lg:hidden w-full max-w-full">
@@ -65,8 +71,7 @@ export default function SellCarbonPage() {
                 data={{ form, schema, parsedForm }}
               />
             </div>
-            <CarbonClassCard />
-            <CarbonSellersHandbookCard />
+            {details}
           </div>
         </div>
       )}

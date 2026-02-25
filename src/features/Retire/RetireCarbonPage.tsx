@@ -1,6 +1,6 @@
 'use client';
 
-import CarbonClassCard from '@/shared/components/CarbonClassCard/CarbonClassCard';
+import CarbonClassCard, { QuoteType } from '@/shared/components/CarbonClassCard/CarbonClassCard';
 import { PageDescription } from '@/shared/components/PageDescription/PageDescription';
 import { PageTitle } from '@/shared/components/PageTitle/PageTitle';
 import Steps from '@/shared/components/Steps/Steps';
@@ -40,7 +40,7 @@ export default function RetirePage() {
 
   const details = (
     <>
-      <CarbonClassCard />
+      <CarbonClassCard quoteType={QuoteType.retire} />
       <RegenNetworkCreditsCard
         selectedCarbonClassId={form.watch('carbonClass')}
       />
