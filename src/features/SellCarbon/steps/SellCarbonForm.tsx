@@ -67,7 +67,7 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
   return (
     <Card
       title="Supply Carbon"
-      className="w-[50rem] rounded-xl border border-gray-200 h-fit"
+      className="min-w-0 w-full max-w-full lg:w-[50rem] rounded-xl border border-gray-200 h-fit"
       titleClassName="font-semibold text-gray-800 text-size-20 tracking-tight"
       skeletonClassName="h-[56.6rem]"
     >
@@ -100,18 +100,19 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
                 {...form.register('token')}
                 error={form.formState.errors.token}
               />
-              <div className="flex items-center justify-between text-size-12 ">
-                <div className="flex items-center gap-2">
-                  <AlertIcon className="w-4 h-4" />
-                  <span className="text-gray-600">
-                    No eligible credits detected?
-                  </span>
-                </div>
-                <LinkOpenInNew href={CARBON_SELLERS_HANDBOOK_URL} withoutIcon>
-                  Contact us to whitelist your credit type
-                </LinkOpenInNew>
+              <div className="text-size-12 text-gray-600 flex items-start gap-2">
+                <AlertIcon className="w-4 h-4 mt-0.5 shrink-0" />
+                <span className="min-w-0">
+                  No eligible credits detected?{' '}
+                  <LinkOpenInNew
+                    href={CARBON_SELLERS_HANDBOOK_URL}
+                    withoutIcon
+                    className="font-medium whitespace-nowrap"
+                  >
+                    Contact us to whitelist your credit type.
+                  </LinkOpenInNew>
+                </span>
               </div>
-
               <SelectInput
                 label="Carbon Class"
                 items={Object.values(carbonClasses).map((carbonClass) => ({

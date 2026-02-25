@@ -109,7 +109,7 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
   return (
     <Card
       title="Retire Carbon"
-      className="w-[45rem] rounded-xl border border-gray-200 h-fit"
+      className="w-full max-w-full lg:w-[45rem] rounded-xl border border-gray-200 h-fit"
       titleClassName="font-semibold text-gray-800 text-size-20 tracking-tight"
       skeletonClassName="h-[56.6rem]"
     >

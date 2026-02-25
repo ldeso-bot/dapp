@@ -36,9 +36,16 @@ export default function RetirePage() {
 
   const parsedForm = useParsedForm(form, schema);
 
-  if (showEmptyState) {
-    return <RetireCarbonEmptyState />;
-  }
+  if (showEmptyState) return <RetireCarbonEmptyState />;
+
+  const details = (
+    <>
+      <CarbonClassCard />
+      <RegenNetworkCreditsCard
+        selectedCarbonClassId={form.watch('carbonClass')}
+      />
+    </>
+  );
 
   return (
     <div className="flex flex-col gap-8">
@@ -58,19 +65,25 @@ export default function RetirePage() {
           , our partner in carbon retirements.
         </PageDescription>
       </div>
-
-      <div className="flex gap-4 space-between mx-auto">
-        <Steps
-          components={[RetireCarbonForm, RetireCarbonConfirm]}
-          data={{ form, schema, parsedForm }}
-        />
-
-        <div className="flex flex-col gap-4">
-          <CarbonClassCard />
-          <RegenNetworkCreditsCard
-            selectedCarbonClassId={form.watch('carbonClass')}
+      <div className="hidden lg:flex gap-4 mx-auto w-full max-w-[96rem] justify-center">
+        <div className="min-w-0 w-full max-w-full lg:w-[45rem] shrink-0">
+          <Steps
+            components={[RetireCarbonForm, RetireCarbonConfirm]}
+            data={{ form, schema, parsedForm }}
           />
         </div>
+        <div className="min-w-0 w-full max-w-full lg:w-[45rem] shrink-0 flex flex-col gap-4">
+          {details}
+        </div>
+      </div>
+      <div className="flex flex-col gap-4 lg:hidden w-full max-w-full">
+        <div className="min-w-0">
+          <Steps
+            components={[RetireCarbonForm, RetireCarbonConfirm]}
+            data={{ form, schema, parsedForm }}
+          />
+        </div>
+        {details}
       </div>
     </div>
   );

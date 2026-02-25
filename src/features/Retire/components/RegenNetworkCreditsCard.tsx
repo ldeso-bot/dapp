@@ -27,7 +27,7 @@ export const RegenNetworkCreditsCard: FC<Props> = (props) => {
       target="_blank"
       rel="noopener noreferrer"
       href={REGEN_NETWORK_DOCS_URL}
-      className="block group w-[50rem]"
+      className="block group min-w-0 w-full max-w-full lg:w-[50rem]"
     >
       <div className="p-5 bg-background rounded-xl border border-gray-200 hover:border-green-60 transition-colors">
         <div className="flex items-center gap-4">
