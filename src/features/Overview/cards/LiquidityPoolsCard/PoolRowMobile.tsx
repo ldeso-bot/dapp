@@ -9,18 +9,27 @@ import PoolButtons from './PoolButtons';
 type Props = {
   poolInfo: LiquidityPoolInfo;
 };
+
 export default function PoolRowMobile({ poolInfo }: Props) {
   const tokenInfo = tokens[poolInfo.token];
+
   return (
     <TableCell>
-      <div className="flex flex-col">
-        <Pair token={poolInfo.token} description={tokenInfo.description} />
-        <div className="flex flex-row justify-between">
-          <Metric label="TVL" value={formatPriceUSD(poolInfo.tvlUSD)} />
-          <Metric label="APY" value={formatPercentage(poolInfo.apyYearly)} />
-        </div>
-        <div className="flex flex-col gap-1">
-          <PoolButtons poolInfo={poolInfo} />
+      <div className="rounded-2xl bg-void-2/40 p-3 ring-1 ring-void-6/30">
+        <div className="flex flex-col gap-3">
+          {/* Top: token pair */}
+          <Pair token={poolInfo.token} description={tokenInfo.description} />
+          {/* Middle: TVL/APY metrics */}
+          <div className="flex items-baseline justify-between">
+            <Metric label="TVL" value={formatPriceUSD(poolInfo.tvlUSD)} />
+            <Metric label="APY" value={formatPercentage(poolInfo.apyYearly)} />
+          </div>
+          {/* Bottom: deposit/stake buttons */}
+          <div className="flex gap-2">
+            <div className="flex-1">
+              <PoolButtons poolInfo={poolInfo} />
+            </div>
+          </div>
         </div>
       </div>
     </TableCell>

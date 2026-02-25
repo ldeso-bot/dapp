@@ -17,9 +17,15 @@ export default function PoolButtons({ poolInfo }: Props) {
     poolInfo.token === 'kvcm-usdc'
       ? DEPOSIT_KVCM_USDC_LIQUIDITY_URL
       : DEPOSIT_KVCM_K2_LIQUIDITY_URL;
+
   return (
-    <>
-      <Button href={depositLiquidityUrl} target="_blank" colors="primary">
+    <div style={{ display: 'flex', gap: '8px' }}>
+      <Button
+        href={depositLiquidityUrl}
+        target="_blank"
+        colors="primary"
+        style={{ flex: 1 }}
+      >
         Deposit
         <Icon
           icon={ExternalLink}
@@ -30,9 +36,10 @@ export default function PoolButtons({ poolInfo }: Props) {
       <Button
         href={`${ROUTES.MY_ACTIVITIES}?action=lock_${poolInfo.token}`}
         colors="secondary"
+        style={{ flex: 1 }}
       >
         Stake
       </Button>
-    </>
+    </div>
   );
 }
