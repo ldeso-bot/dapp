@@ -18,9 +18,11 @@ import {
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useTransactionHandler } from '@/shared/hooks/useTransactionHandler';
 import { delay, isMaturityWithinDays } from '@/shared/utils/date.utils';
-import { formatAmountWithCommas } from '@/shared/utils/string.utils';
+import {
+  formatAmountWithCommas,
+  parseAmount,
+} from '@/shared/utils/string.utils';
 import { useAtom } from 'jotai';
-import { parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 import { useLockToken } from '../../LockToken/lockToken.utils';
 import { K2Incentives } from '../components/K2Incentives';
@@ -68,7 +70,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
     : null;
 
   const amountWei = isValidAmount
-    ? parseUnits(String(amount.toFixed(tokenInfo.decimals)), tokenInfo.decimals)
+    ? parseAmount(amount, tokenInfo.decimals)
     : 0n;
 
   const isMaturityWithin3Days =
@@ -134,7 +136,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
         <span className="capitalize">{lockTerm}</span> duration will stay
         unchanged.
       </p>
-      <Form className="gap-4" onSubmit={handleSubmit(onSubmit)}>
+      <Form className="gap-4" onSubmit={handleSubmit(onSubmit)} noValidate>
         <StatsCard
           baseApy={baseApy}
           token={tokenInfo}
@@ -149,7 +151,6 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
             iconSize={isKvcm ? 'sm' : 'md'}
             iconSrc={tokens[typedToken].iconSrc}
             {...form.register('amount', { valueAsNumber: true })}
-            step={10 ** -tokenInfo.decimals}
             error={
               formState.errors.amount ||
               (balanceErrorMessage

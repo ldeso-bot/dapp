@@ -149,7 +149,7 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
           kVCM lock durations.
         </p>
       </div>
-      <Form onSubmit={handleSubmit(onSubmit)} className="pt-0">
+      <Form onSubmit={handleSubmit(onSubmit)} className="pt-0" noValidate>
         {formState.errors.allocationId?.message}
         <InputGroup className="flex flex-col gap-4">
           <Input
@@ -167,7 +167,6 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
               iconSize="sm"
               iconSrc={tokens[allocation.token.name].iconSrc}
               {...form.register('amount', { valueAsNumber: true })}
-              step={10 ** -tokens[allocation.token.name].decimals}
               error={
                 formState.errors.amount ||
                 (errorMessage

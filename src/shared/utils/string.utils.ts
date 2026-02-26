@@ -150,7 +150,7 @@ export const parseAmount = (value?: number, decimals?: number): bigint => {
   if (!decimals || !value) {
     return 0n;
   }
-  return parseUnits(String(value), decimals);
+  return parseUnits(value.toFixed(decimals), decimals);
 };
 
 /**

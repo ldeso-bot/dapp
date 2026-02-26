@@ -1,8 +1,9 @@
 import { ExecuteWithValidationResult } from '@/features/MyActivities/hooks/useTransactionWithValidation';
+import { tokens } from '@/shared/constants/tokens.constants';
 import { Allocation } from '@/shared/models/walletData';
+import { parseAmount } from '@/shared/utils/string.utils';
 import { pick } from '@/shared/utils/typescript.utils';
 import { exitWithErrorMessage } from '@/shared/utils/web3.utils';
-import { parseUnits } from 'viem';
 
 type AllocationFunction<T> = (
   params: T
@@ -50,7 +51,10 @@ export const executeEditAllocation = async ({
   const baseParams = {
     lockId: allocation.contractLockId!,
     carbonClass: allocation.carbonClass,
-    amount: parseUnits(Math.abs(amountDiff).toFixed(18), 18),
+    amount: parseAmount(
+      Math.abs(amountDiff),
+      tokens[allocation.token.name].decimals
+    ),
   };
 
   if (isKvcm) {

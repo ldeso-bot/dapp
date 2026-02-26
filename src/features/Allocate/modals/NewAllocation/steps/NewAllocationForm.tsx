@@ -22,12 +22,12 @@ import {
 } from '@/shared/constants/tokens.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
+import { parseAmount } from '@/shared/utils/string.utils';
 import { useFormo } from '@formo/analytics';
 import { useSetAtom } from 'jotai';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { isNullish } from 'remeda';
-import { parseUnits } from 'viem';
 import { useNewAllocationValidation } from '../hooks/useNewAllocationValidation';
 import { NewAllocationFields } from '../newAllocation.utils';
 
@@ -92,7 +92,7 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
         return;
       }
 
-      const amount = parseUnits(formData.amount.toFixed(18), 18);
+      const amount = parseAmount(formData.amount, tokens[typedToken].decimals);
       let result: ExecuteWithValidationResult = { error: null, hash: null };
 
       if (isKvcm) {
@@ -160,7 +160,7 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
           Allocations affect the protocol’s indicative price for that class.
         </p>
       </div>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="flex flex-col gap-4 pt-3">
           <div className="flex flex-col gap-1">
             <Input
@@ -204,7 +204,6 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
                           : undefined)
                       : undefined
                   }
-                  step={10 ** -tokens[typedToken].decimals}
                   onFocus={(e) => {
                     if (
                       e.currentTarget.value !== '' &&

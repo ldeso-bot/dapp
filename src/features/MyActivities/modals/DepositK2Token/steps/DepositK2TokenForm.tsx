@@ -12,10 +12,12 @@ import { tokens } from '@/shared/constants/tokens.constants';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useTransactionHandler } from '@/shared/hooks/useTransactionHandler';
 import { delay } from '@/shared/utils/date.utils';
-import { formatAmountWithCommas } from '@/shared/utils/string.utils';
+import {
+  formatAmountWithCommas,
+  parseAmount,
+} from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
 import { useEffect } from 'react';
-import { parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 import {
   depositK2TokenDialogAtom,
@@ -41,7 +43,7 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
 
   const isValidAmount = !!(amount && amount > 0);
   const amountWei = isValidAmount
-    ? parseUnits(String(amount), tokenInfo.decimals)
+    ? parseAmount(amount, tokenInfo.decimals)
     : 0n;
 
   useEffect(() => {
@@ -111,7 +113,11 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
   return (
     <Card className="rounded-lg px-6 py-4 max-h-[70vh] overflow-y-auto w-[42rem] mx-auto">
       <h2 className="text-size-20 font-semibold text-gray-900">Deposit K2</h2>
-      <Form className="pt-0 relative" onSubmit={handleSubmit(onSubmit)}>
+      <Form
+        className="pt-0 relative"
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
+      >
         <InputGroup className="pt-1">
           <div className="text-size-14 text-gray-600">
             Lock K2 tokens. Newly deposited K2 begins accruing variable
@@ -134,7 +140,6 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
                 iconSize="sm"
                 iconSrc={tokenInfo.iconSrc}
                 {...form.register('amount', { valueAsNumber: true })}
-                step={10 ** -tokenInfo.decimals}
                 error={formState.errors.amount}
                 onFocus={(e) => {
                   if (

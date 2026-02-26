@@ -23,9 +23,11 @@ import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useTransactionHandler } from '@/shared/hooks/useTransactionHandler';
 import { delay, isMaturityWithinDays } from '@/shared/utils/date.utils';
-import { formatAmountWithCommas } from '@/shared/utils/string.utils';
+import {
+  formatAmountWithCommas,
+  parseAmount,
+} from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
-import { parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 import {
   lockTokenDialogAtom,
@@ -54,7 +56,7 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
 
   const isValidAmount = !!(amount && amount > 0);
   const amountWei = isValidAmount
-    ? parseUnits(String(amount.toFixed(tokenInfo.decimals)), tokenInfo.decimals)
+    ? parseAmount(amount, tokenInfo.decimals)
     : 0n;
 
   const maturity = protocolData?.maturities[maturityId] ?? null;
@@ -126,7 +128,11 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
         title={`${lockTerm} ${tokenInfo.symbol} Tokens`}
         onClose={() => setLockTokenDialogState({ open: false, token: null })}
       />
-      <Form className="pt-0 relative" onSubmit={handleSubmit(onSubmit)}>
+      <Form
+        className="pt-0 relative"
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
+      >
         <InputGroup className="pt-1">
           <div className="flex flex-col gap-1 pt-3">
             <div className="flex flex-col gap-1">
@@ -141,7 +147,6 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
                 iconSrc={tokens[typedToken].iconSrc}
                 {...form.register('amount', { valueAsNumber: true })}
                 error={formState.errors.amount}
-                step={10 ** -tokenInfo.decimals}
                 onFocus={(e) => {
                   if (
                     e.currentTarget.value !== '' &&
