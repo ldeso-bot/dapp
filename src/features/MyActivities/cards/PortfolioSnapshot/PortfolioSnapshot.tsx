@@ -82,13 +82,117 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
           <div>
             <div className="flex items-center gap-2 mb-2 sm:mb-3 md:mb-2">
               <div className="flex items-center gap-2">
-                {/* <WalletCards className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" /> */}
-                <div className="text-size-18 font-medium">
-                  Holdings (estimated USD value)
-                </div>
+                <div className="text-size-18 font-medium">Holdings</div>
+
+                <Tooltip
+                  className="max-w-[35rem] text-size-12 p-3"
+                  content={
+                    <div className="flex flex-col gap-4">
+                      <div className="text-white-70">
+                        USD equivalent estimated value of your current holdings.
+                      </div>
+
+                      <div className="flex flex-col gap-3">
+                        <div className="flex items-start gap-2">
+                          <div>
+                            <div className="font-semibold">Active</div>
+                            <div className="text-white-60 text-size-11">
+                              Portion of your assets allocated to activities in
+                              Klima Protocol.
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-start gap-2">
+                          <div className="flex flex-col gap-2">
+                            <div className="font-semibold">
+                              Status Indicator
+                            </div>
+
+                            <div className="flex flex-col gap-2 text-white-60 text-size-11">
+                              <div className="flex items-start gap-2">
+                                <div className="w-2 aspect-square rounded-full bg-green-400 mt-[5px] shrink-0" />{' '}
+                                <div>
+                                  <span className="text-white-80 font-medium">
+                                    All active: all your positions are active
+                                    and eligible for incentives.
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div className="flex items-start gap-2">
+                                <div className="w-2 aspect-square rounded-full bg-yellow-400 mt-[5px] shrink-0" />{' '}
+                                <div>
+                                  <span className="text-white-80 font-medium">
+                                    Some active: one or more positions are not
+                                    active.
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div className="flex items-start gap-2">
+                                <div className="w-2 aspect-square rounded-full bg-gray-400 mt-[5px] shrink-0" />{' '}
+                                <div>
+                                  <span className="text-white-80 font-medium">
+                                    Not active: no positions active.
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div className="flex items-start gap-2">
+                                <div className="w-2 aspect-square rounded-full bg-gray-500 mt-[5px] shrink-0" />{' '}
+                                <div>
+                                  <span className="text-white-80 font-medium">
+                                    No positions: no positions found.
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                />
               </div>
             </div>
-            <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-start lg:justify-between lg:gap-4">
+            {/* Mobile layout */}
+            <div className="lg:hidden space-y-2">
+              <div className="text-[4rem] leading-[5.5rem] tabular-nums">
+                ~{formatPriceUSDWithCommas(holdingsData.portfolioValue)}
+              </div>
+              <div className="text-size-12 text-gray-500">
+                As of {liveTimestamp}
+              </div>
+              <div className="pt-3 border-t flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className="text-size-12 font-medium text-gray-500 uppercase tracking-wide">
+                    Active
+                  </span>
+                  <span className="text-size-14 font-medium tabular-nums">
+                    {formatPriceUSDWithCommas(holdingsData.lockedValue)}
+                  </span>
+                </div>
+                {shouldShowBadge && (
+                  <div className="flex items-center gap-2 shrink-0">
+                    <StatusCardBadge variant={statusInfo.statusColor} />
+                    <span
+                      className={`text-size-14 whitespace-nowrap ${
+                        statusInfo.statusColor === 'yellow'
+                          ? 'text-yellow-700'
+                          : statusInfo.statusColor === 'gray'
+                            ? 'text-void-60'
+                            : ''
+                      }`}
+                    >
+                      {statusInfo.statusLabel}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* Desktop layout */}
+            <div className="hidden lg:flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-start lg:justify-between lg:gap-4">
               <div className="flex-shrink-0">
                 <div className="text-[4rem] leading-[5.5rem] tabular-nums mb-1">
                   ~{formatPriceUSDWithCommas(holdingsData.portfolioValue)}
@@ -103,10 +207,6 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                     <span className="text-size-12 font-medium text-gray-500 uppercase tracking-wide">
                       Active
                     </span>
-                    <Tooltip
-                      className="max-w-[30rem] text-size-12 p-3"
-                      content="Total amount currently allocated to protocol participation, including voting and liquidity."
-                    />
                   </div>
                   <div className="text-[2.4rem] leading-[2.8rem] font-medium tabular-nums">
                     {formatPriceUSDWithCommas(holdingsData.lockedValue)}
@@ -118,12 +218,7 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                       <span className="text-size-12 font-medium text-gray-500 uppercase tracking-wide">
                         Status
                       </span>
-                      <Tooltip
-                        className="max-w-[35rem] text-size-12 p-3"
-                        content={statusInfo.tooltip}
-                      />
                     </div>
-
                     <div className="flex items-center gap-1.5">
                       <StatusCardBadge variant={statusInfo.statusColor} />
                       <span
