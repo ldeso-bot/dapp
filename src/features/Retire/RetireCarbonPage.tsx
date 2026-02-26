@@ -52,7 +52,7 @@ export default function RetirePage() {
         titleClassName="font-semibold text-void-800 text-size-20 tracking-tight"
       >
         <p className="text-size-14 text-void-80">
-          To see a list of retirements attributed this this wallet, visit{' '}
+          To see a list of retirements attributed to this wallet, visit{' '}
           <a
             href={retirementHistoryUrl}
             target="_blank"

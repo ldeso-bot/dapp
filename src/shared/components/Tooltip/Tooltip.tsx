@@ -30,7 +30,6 @@ function useIsCoarsePointer() {
       return () => mql.removeEventListener('change', update);
     }
 
-    // Legacy Safari support
     const legacyMql = mql as MediaQueryList & {
       addListener: (
         listener: (this: MediaQueryList, ev: MediaQueryListEvent) => void
@@ -42,6 +41,7 @@ function useIsCoarsePointer() {
     legacyMql.addListener(update);
     return () => legacyMql.removeListener(update);
   }, []);
+
   return isCoarse;
 }
 
@@ -84,6 +84,7 @@ export const Tooltip = ({
       </PopoverPrimitive.Root>
     );
   }
+
   return (
     <TooltipPrimitive.Provider delayDuration={0}>
       <TooltipPrimitive.Root>

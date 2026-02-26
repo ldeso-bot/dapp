@@ -17,8 +17,9 @@ export const useTokenBalances = (): TokenBalance[] => {
   const { data: walletData } = useWalletData();
   const { data: holdingsData } = useHoldingsData();
 
-  const balances = Object.entries(walletData?.balances ?? {}).map(
-    ([token, balance]) => {
+  const balances = Object.entries(walletData?.balances ?? {})
+    .filter(([token]) => token !== 'usdc')
+    .map(([token, balance]) => {
       let usdValue = 0;
       let deployedBalance = 0;
       let deployedUsdValue = 0;
@@ -52,8 +53,7 @@ export const useTokenBalances = (): TokenBalance[] => {
         lpToken: isLpToken(token),
         longDecimals,
       };
-    }
-  );
+    });
 
   return balances;
 };
