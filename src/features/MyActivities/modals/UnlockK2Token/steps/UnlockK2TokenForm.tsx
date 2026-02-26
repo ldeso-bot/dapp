@@ -67,7 +67,6 @@ const UnlockK2TokenForm: FormFlowStep<UnlockTokenFields> = ({ data }) => {
               type: 'number',
               'aria-label': 'Token Input',
               placeholder: 'Enter amount',
-              ...form.register('amount'),
               max: lock.availableForUnlockRequestAmount,
               min: 0,
               step: 10 ** -tokens.k2.decimals,

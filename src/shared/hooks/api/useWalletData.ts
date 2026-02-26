@@ -4,14 +4,16 @@ import { useAccount } from 'wagmi';
 import { useChainId } from '../web3/useChainId';
 import { useApi } from './useApi';
 import { useRefetchOnChainChange } from './useRefetchOnChainChange';
+import { getWalletDataQueryKey } from './walletData.queryKey';
 
 export function useWalletData() {
   const { get } = useApi();
   const { address } = useAccount();
   const chainId = useChainId();
+  const queryKey = getWalletDataQueryKey(chainId, address);
 
   const q = useQuery({
-    queryKey: [`wallet-data`, chainId, address],
+    queryKey,
     queryFn: async () =>
       get<WalletData>('/api/wallet-data', {
         walletAddress: address ?? '',

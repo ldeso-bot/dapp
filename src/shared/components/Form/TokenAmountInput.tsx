@@ -17,7 +17,10 @@ import InputWrapper from './layout/InputWrapper';
 type Props<T extends FieldValues> = {
   tokenIconSrc?: StaticImageData;
   errorMessage?: FieldError;
-  inputProps: InputHTMLAttributes<HTMLInputElement>;
+  inputProps?: Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    'name' | 'value' | 'defaultValue' | 'onBlur' | 'onChange'
+  >;
   availableBalance?: number;
   name: Path<T>;
   control: Control<T>;
@@ -56,15 +59,16 @@ export default function TokenAmountInput<T extends FieldValues>(
               iconSize="sm"
               iconSrc={tokenIconSrc}
               {...inputProps}
+              name={field.name}
               value={field.value ?? ''}
               className="h-[4rem] border-r-0 rounded-e-none mr-3"
+              onBlur={field.onBlur}
               onFocus={(e) => {
                 const v = e.currentTarget.value;
                 if (v !== '' && Number(v) === 0) e.currentTarget.select();
               }}
               onChange={(e) => {
-                field.onChange(e);
-                inputProps?.onChange?.(e);
+                field.onChange(e.target.value);
               }}
             />
 

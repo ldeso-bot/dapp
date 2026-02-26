@@ -1,14 +1,14 @@
 import { useRefetchWithRetry } from '@/shared/hooks/useRefetchWithRetry';
 import { useWaitForTransaction } from '@/shared/hooks/web3/useWaitForTransaction';
 import { WalletData } from '@/shared/models/walletData';
-import { useQueryClient } from '@tanstack/react-query';
+import { QueryKey, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { Address } from 'viem';
 
 type ValidationFunction<T = unknown> = (data: T, previousData?: T) => boolean;
 
 type UseTransactionWithValidationParams<T = unknown> = {
-  queryKey: string[];
+  queryKey: QueryKey;
   validate?: ValidationFunction<T>;
 };
 

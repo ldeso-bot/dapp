@@ -8,7 +8,6 @@ import Input from '@/shared/components/Form/Input';
 import InputError from '@/shared/components/Form/layout/InputError';
 import LinkOpenInNew from '@/shared/components/LinkWithIcon';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
-import { ROUTES } from '@/shared/constants/route.constants';
 import { CarbonCreditIconImg } from '@/shared/constants/tokens.constants';
 import { CARBONMARK_URL } from '@/shared/constants/urls.constants';
 import { useAllowance } from '@/shared/hooks/useAllowance';
@@ -139,12 +138,6 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
           </>
         ),
         type: 'success',
-        links: [
-          {
-            label: 'View My Activities',
-            href: ROUTES.MY_ACTIVITIES,
-          },
-        ],
       });
       // Reset form
       form.reset();

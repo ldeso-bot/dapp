@@ -1,5 +1,7 @@
 import { usePermitSignature } from '@/features/MyActivities/hooks/usePermitSignature';
 import { useTransactionWithValidation } from '@/features/MyActivities/hooks/useTransactionWithValidation';
+import { getWalletDataQueryKey } from '@/shared/hooks/api/walletData.queryKey';
+import { useChainId } from '@/shared/hooks/web3/useChainId';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { WalletData } from '@/shared/models/walletData';
 import { handleWeb3Error } from '@/shared/utils/web3.utils';
@@ -16,8 +18,9 @@ export const depositK2TokenDialogAtom = atom({ open: false });
 export const useDepositK2Token = (params: { amount: bigint }) => {
   const { amount } = params;
   const { address: userAddress, chain } = useAccount();
+  const chainId = useChainId();
 
-  const queryKey = [`wallet-data-${userAddress}`];
+  const queryKey = getWalletDataQueryKey(chainId, userAddress);
   const { contract: stakingContract } = useContract('StakingManagerDiamond');
 
   const { getPermitSignature } = usePermitSignature({

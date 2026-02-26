@@ -8,6 +8,36 @@ pnpm run codegen
 pnpm run dev
 ```
 
+## RPC Configuration
+
+The app uses explicit RPC endpoints (QuickNode recommended) for both server-side
+and wagmi/client reads.
+
+Required env vars:
+
+```bash
+BASE_RPC_URL=
+BASE_SEPOLIA_RPC_URL=
+ALCHEMY_API_KEY=
+```
+
+`BASE_*` values are used for RPC operations, while `ALCHEMY_API_KEY` is used
+only for token price lookups.
+
+Optional public overrides (usually not needed because `next.config.ts` mirrors
+`BASE_*` values to client-side vars automatically):
+
+```bash
+NEXT_PUBLIC_BASE_RPC_URL=
+NEXT_PUBLIC_BASE_SEPOLIA_RPC_URL=
+```
+
+For local node development, set:
+
+```bash
+NEXT_PUBLIC_USE_LOCAL_RPC=true
+```
+
 ## Development Mode
 
 Set `NEXT_PUBLIC_DEV_MODE=true` to enable development-only features:

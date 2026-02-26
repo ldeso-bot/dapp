@@ -13,6 +13,7 @@ import {
   USE_LOCAL_RPC,
   WALLETCONNECT_PROJECT_ID,
 } from '../constants/config.constants';
+import { rpcUrls } from '../constants/rpc.constants';
 
 export const createWagmiConfig = () => {
   if (!WALLETCONNECT_PROJECT_ID) {
@@ -48,14 +49,7 @@ export const createWagmiConfig = () => {
     appName: 'Klima v2 dApp',
     projectId: WALLETCONNECT_PROJECT_ID,
     transports: Object.fromEntries(
-      chains.map((chain) => [
-        chain.id,
-        http(
-          USE_LOCAL_RPC
-            ? 'http://localhost:8545'
-            : chain.rpcUrls.default.http[0]
-        ),
-      ])
+      chains.map((chain) => [chain.id, http(rpcUrls[chain.id])])
     ) as Record<(typeof chains)[number]['id'], ReturnType<typeof http>>,
   });
 };

@@ -1,8 +1,8 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { QueryKey, useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 
 type RefetchOptions = {
-  queryKey: string[];
+  queryKey: QueryKey;
   maxRetries?: number;
   retryDelay?: number;
   validate?: (data: unknown) => boolean;

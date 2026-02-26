@@ -14,24 +14,38 @@ export default function Input({
   iconSrc,
   iconSize = 'md',
   addOnButton,
-  ...props
+  label,
+  error,
+  tooltip,
+  addOnLabel,
+  mandatory,
+  ...inputProps
 }: Props) {
   return (
-    <InputWrapper {...props}>
+    <InputWrapper
+      label={label}
+      error={error}
+      tooltip={tooltip}
+      addOnLabel={addOnLabel}
+      mandatory={mandatory}
+    >
       <div className="w-full flex flex-row gap-2">
         <input
-          {...props}
+          {...inputProps}
           className={cn(
             'px-3 py-2 rounded-lg gap-2 w-full h-[4rem] border-gray-300',
-            !props.disabled && !props.readOnly && 'border-1 hover:opacity-80',
-            (props.disabled || props.readOnly) && 'border-1 bg-void-10',
-            props.readOnly &&
+            !inputProps.disabled &&
+              !inputProps.readOnly &&
+              'border-1 hover:opacity-80',
+            (inputProps.disabled || inputProps.readOnly) &&
+              'border-1 bg-void-10',
+            inputProps.readOnly &&
               'select-none cursor-default hover:border-0 border-0',
             {
               'pl-10': !!iconSrc && iconSize === 'sm',
               'pl-12': !!iconSrc && iconSize === 'md',
             },
-            props.className
+            inputProps.className
           )}
           style={{
             backgroundImage: iconSrc ? `url(${iconSrc?.src})` : undefined,

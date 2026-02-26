@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GOLDSKY_API_KEY: ${{ secrets.GOLDSKY_API_KEY }}
+      BASE_RPC_URL: ${{ secrets.BASE_RPC_URL }}
+      BASE_SEPOLIA_RPC_URL: ${{ secrets.BASE_SEPOLIA_RPC_URL }}
     strategy:
       fail-fast: false
       matrix:

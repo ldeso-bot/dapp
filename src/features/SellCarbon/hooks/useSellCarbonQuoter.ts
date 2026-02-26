@@ -1,3 +1,4 @@
+import { useDebouncedValue } from '@/shared/hooks/useDebouncedValue';
 import { useContractInfo } from '@/shared/hooks/web3/useContract';
 import { CouponBurnParams } from '@/shared/models/shared';
 import AAMDiamond from '@/shared/utils/abis/AAMDiamond';
@@ -22,12 +23,19 @@ export const useSellCarbonQuoter = ({
 }) => {
   const contractInfo = useContractInfo('AAMDiamond');
   const [quoteWei, setQuoteWei] = useState<bigint>(BigInt(0));
+  const debouncedAmountToSellWei = useDebouncedValue(amountToSellWei, 400);
+  const amountForQuote =
+    amountToSellWei === BigInt(0) ? BigInt(0) : debouncedAmountToSellWei;
+  const isDebouncing =
+    amountToSellWei > BigInt(0) && amountToSellWei !== debouncedAmountToSellWei;
+  const shouldFetchQuote =
+    !!carbonClass && !!tokenAddress && amountForQuote > BigInt(0);
 
   const args = [
     carbonClass as Address, // TODO: Typecasting is bad
     tokenAddress as Address,
     BigInt(tokenId),
-    amountToSellWei,
+    amountForQuote,
     BigInt(maturityId),
     {
       tonnes: BigInt(couponBurnParams.tonnes),
@@ -42,12 +50,12 @@ export const useSellCarbonQuoter = ({
     args,
     query: {
       staleTime: 0,
-      enabled: !!carbonClass && !!tokenAddress,
+      enabled: shouldFetchQuote,
     },
   });
 
   useEffect(() => {
-    if (amountToSellWei === BigInt(0)) {
+    if (amountForQuote === BigInt(0)) {
       setQuoteWei(BigInt(0));
       return;
     }
@@ -61,10 +69,12 @@ export const useSellCarbonQuoter = ({
     const quoteWei = res.data[1];
 
     setQuoteWei(quoteWei);
-  }, [res, amountToSellWei]);
+  }, [res, amountForQuote]);
 
   return {
     ...res,
-    data: quoteWei,
+    isQuoteLoading: isDebouncing || (shouldFetchQuote && res.isLoading),
+    isError: shouldFetchQuote && !isDebouncing ? res.isError : false,
+    data: isDebouncing ? BigInt(0) : quoteWei,
   };
 };

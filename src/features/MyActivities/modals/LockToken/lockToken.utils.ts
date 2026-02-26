@@ -1,6 +1,8 @@
 import { useTransactionWithValidation } from '@/features/MyActivities/hooks/useTransactionWithValidation';
 import { LockableToken } from '@/shared/constants/tokens.constants';
+import { getWalletDataQueryKey } from '@/shared/hooks/api/walletData.queryKey';
 import { useAllowance } from '@/shared/hooks/useAllowance';
+import { useChainId } from '@/shared/hooks/web3/useChainId';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { WalletData } from '@/shared/models/walletData';
 import { ERC20Abi } from '@/shared/utils/abis/ERC20';
@@ -27,8 +29,9 @@ export const useLockToken = (params: {
 }) => {
   const { token, amount, maturityId } = params;
   const { address: userAddress, chain } = useAccount();
+  const chainId = useChainId();
 
-  const queryKey = [`wallet-data-${userAddress}`];
+  const queryKey = getWalletDataQueryKey(chainId, userAddress);
   const { contract: stakingContract } = useContract('StakingManagerDiamond');
   const { contract: kvcmContract } = useContract<ERC20Abi>('KVCM');
   const { contract: kvcmUsdcContract } = useContract<ERC20Abi>('KVCM_USDC');

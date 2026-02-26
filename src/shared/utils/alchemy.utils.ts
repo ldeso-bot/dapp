@@ -27,9 +27,13 @@ export const getTokenPricesViaAlchemy = async (
   }
 
   try {
-    // Fetch prices
+    const params = new URLSearchParams();
+    for (const symbol of symbols) {
+      params.append('symbols', symbol);
+    }
+
     const response = await fetch(
-      'https://api.g.alchemy.com/prices/v1/tokens/by-symbol?symbols=AERO',
+      `https://api.g.alchemy.com/prices/v1/tokens/by-symbol?${params.toString()}`,
       {
         method: 'GET',
         headers: {
@@ -47,7 +51,6 @@ export const getTokenPricesViaAlchemy = async (
 
     const data = (await response.json()) as AlchemyPriceResponse;
 
-    // Map symbol to prices
     return symbols.map((symbol) => {
       const prices = data.data.find((p) => p.symbol === symbol);
       if (!prices) {

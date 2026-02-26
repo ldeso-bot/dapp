@@ -1,4 +1,6 @@
 import { useTransactionWithValidation } from '@/features/MyActivities/hooks/useTransactionWithValidation';
+import { getWalletDataQueryKey } from '@/shared/hooks/api/walletData.queryKey';
+import { useChainId } from '@/shared/hooks/web3/useChainId';
 import { useAccount } from 'wagmi';
 import { WalletData } from '../models/walletData';
 
@@ -10,7 +12,8 @@ export const useTransactionAndWaitForWalletUpdate = ({
   valueFetcher,
 }: UseTransactionAndWaitForWalletUpdateParams) => {
   const { address: userAddress } = useAccount();
-  const queryKey = [`wallet-data-${userAddress}`];
+  const chainId = useChainId();
+  const queryKey = getWalletDataQueryKey(chainId, userAddress);
 
   return useTransactionWithValidation<WalletData>({
     queryKey,

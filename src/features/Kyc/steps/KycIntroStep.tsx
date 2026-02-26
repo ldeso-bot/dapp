@@ -58,8 +58,10 @@ export const KycIntroStep = ({
         <KycIntroSection title="How it works">
           <p className="text-size-14 text-gray-700">
             zkMe checks liveness, sanctions/PEP, and validates your document. We
-            receive a verification result (pass/flag). We don&apos;t store your
-            document or biometrics.
+            receive a verification result (pass/flag), as well as your email
+            address and citizenship status. We do not have access to your
+            personal documents or biometrics. We do not store any of this
+            information in our own systems; it stays in the zkMe platform.
           </p>
         </KycIntroSection>
         <KycIntroSection title="Eligibility parameters">

@@ -1,3 +1,4 @@
+import { useDebouncedValue } from '@/shared/hooks/useDebouncedValue';
 import RetirementAggregator from '@/shared/utils/abis/RetirementAggregator';
 import { parseAmount } from '@/shared/utils/string.utils';
 import { useEffect, useMemo, useState } from 'react';
@@ -88,19 +89,34 @@ export const useRetireCarbonQuoter = ({
     amountTonnes,
     selectedCarbonCredit?.decimals
   );
-
+  const debouncedAmountForTransaction = useDebouncedValue(
+    amountForTransaction,
+    400
+  );
+  const amountForQuote =
+    amountForTransaction === BigInt(0)
+      ? BigInt(0)
+      : debouncedAmountForTransaction;
+  const isDebouncing =
+    amountForTransaction > BigInt(0) &&
+    amountForTransaction !== debouncedAmountForTransaction;
   const priceQuotedWei = useRetirementQuote({
     form,
-    amount: amountForTransaction,
+    amount: amountForQuote,
   });
   const priceQuotedForOneTonWei = useRetirementQuote({
     form,
     amount: parseAmount(1, selectedCarbonCredit?.decimals),
   });
+  const isQuoteLoading =
+    isDebouncing || (amountForQuote > BigInt(0) && priceQuotedWei.isLoading);
 
   return {
-    priceQuotedWei: priceQuotedWei.data,
+    priceQuotedWei: isDebouncing ? BigInt(0) : priceQuotedWei.data,
     priceQuotedForOneTonWei: priceQuotedForOneTonWei.data,
-    isError: priceQuotedWei.isError || priceQuotedForOneTonWei.isError,
+    isQuoteLoading,
+    isError:
+      (!isDebouncing && priceQuotedWei.isError) ||
+      priceQuotedForOneTonWei.isError,
   };
 };

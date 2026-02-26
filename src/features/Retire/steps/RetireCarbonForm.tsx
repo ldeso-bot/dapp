@@ -11,6 +11,7 @@ import SelectInput from '@/shared/components/Form/SelectInput';
 import { TextArea } from '@/shared/components/Form/TextArea';
 import TokenAmountInput from '@/shared/components/Form/TokenAmountInput';
 import { MandatoryAsterisk } from '@/shared/components/MandatoryAsterisk';
+import Skeleton from '@/shared/components/Skeleton/Skeleton';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { countries } from '@/shared/constants/countries.constants';
 import { formatStringToNumber } from '@/shared/utils/subgraph.utils';
@@ -36,7 +37,7 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
   } = useRetireCarbonForm(watch);
 
   // Update priceQuoted in form when it changes from the quoter
-  const { priceQuotedWei, priceQuotedForOneTonWei, isError } =
+  const { priceQuotedWei, priceQuotedForOneTonWei, isError, isQuoteLoading } =
     useRetireCarbonQuoter({
       form,
     });
@@ -113,145 +114,152 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
       titleClassName="font-semibold text-gray-800 text-size-20 tracking-tight"
       skeletonClassName="h-[56.6rem]"
     >
-      {!isLoading && (
-        <Form className="-mt-1.5" onSubmit={form.handleSubmit(onSubmit)}>
-          <InputGroup>
-            {/* Standard fields */}
+      <Form className="-mt-1.5" onSubmit={form.handleSubmit(onSubmit)}>
+        <InputGroup>
+          {/* Standard fields */}
+          <SelectInput
+            label="Carbon Class"
+            defaultValue={form.getValues('carbonClass')}
+            disabled={isLoading}
+            placeholder="Select from available carbon classes"
+            items={carbonClasses.map((carbonClass) => ({
+              label: carbonClass.name,
+              value: carbonClass.carbonClassId,
+            }))}
+            error={form.formState.errors.carbonClass}
+            {...form.register('carbonClass')}
+          />
+          <SelectInput
+            label="Carbon Credit"
+            value={selectedCarbonCredit?.creditTokenId ?? ''}
+            disabled={isLoading}
+            placeholder="Select from available carbon credits"
+            defaultValue={form.getValues('carbonCredit')}
+            items={
+              carbonCredits?.map((carbonCredit) => ({
+                label: carbonCredit.symbol,
+                value: carbonCredit.creditTokenId,
+              })) ?? []
+            }
+            error={form.formState.errors.carbonCredit}
+            {...form.register('carbonCredit')}
+          />
+          <TokenAmountInput
+            label="Amount (Tonnes)"
+            availableBalance={selectedCarbonCredit?.amount ?? 0}
+            errorMessage={form.formState.errors.amountTonnes}
+            inputProps={{
+              type: 'number',
+              'aria-label': 'Token Input',
+              placeholder: 'Select a token first',
+              min: 0,
+              step: 0.001,
+            }}
+            name="amountTonnes"
+            control={form.control}
+          />
+          <Input
+            mandatory
+            label="Who will this retirement be credited to?"
+            placeholder="Beneficiary name"
+            error={form.formState.errors.beneficiaryName}
+            {...form.register('beneficiaryName')}
+          />
+          <Input
+            label=""
+            placeholder="Beneficiary wallet address (optional)"
+            error={form.formState.errors.beneficiaryAddress}
+            {...form.register('beneficiaryAddress')}
+          />
+          <TextArea
+            mandatory
+            label="Retirement Message"
+            placeholder="Describe the purpose of this retirement"
+            error={form.formState.errors.retirementMessage}
+            {...form.register('retirementMessage')}
+          />
+        </InputGroup>
+        {/* Consumption info required fields */}
+        {isConsumptionInfoRequiredCredit && (
+          <>
             <SelectInput
-              label="Carbon Class"
-              defaultValue={form.getValues('carbonClass')}
-              placeholder="Select from available carbon classes"
-              items={carbonClasses.map((carbonClass) => ({
-                label: carbonClass.name,
-                value: carbonClass.carbonClassId,
-              }))}
-              error={form.formState.errors.carbonClass}
-              {...form.register('carbonClass')}
-            />
-            <SelectInput
-              label="Carbon Credit"
-              value={selectedCarbonCredit?.creditTokenId ?? ''}
-              placeholder="Select from available carbon credits"
-              defaultValue={form.getValues('carbonCredit')}
-              items={
-                carbonCredits?.map((carbonCredit) => ({
-                  label: carbonCredit.symbol,
-                  value: carbonCredit.creditTokenId,
-                })) ?? []
-              }
-              error={form.formState.errors.carbonCredit}
-              {...form.register('carbonCredit')}
-            />
-            <TokenAmountInput
-              label="Amount (Tonnes)"
-              availableBalance={selectedCarbonCredit?.amount ?? 0}
-              errorMessage={form.formState.errors.amountTonnes}
-              inputProps={{
-                type: 'number',
-                'aria-label': 'Token Input',
-                placeholder: 'Select a token first',
-                ...form.register('amountTonnes'),
-              }}
-              name="amountTonnes"
-              control={form.control}
-            />
-            <Input
               mandatory
-              label="Who will this retirement be credited to?"
-              placeholder="Beneficiary name"
-              error={form.formState.errors.beneficiaryName}
-              {...form.register('beneficiaryName')}
+              label="In what country will this certificate be consumed?"
+              placeholder="Select one"
+              items={countries}
+              error={form.formState.errors.country}
+              {...form.register('country')}
             />
-            <Input
-              label=""
-              placeholder="Beneficiary wallet address (optional)"
-              error={form.formState.errors.beneficiaryAddress}
-              {...form.register('beneficiaryAddress')}
-            />
-            <TextArea
-              mandatory
-              label="Retirement Message"
-              placeholder="Describe the purpose of this retirement"
-              error={form.formState.errors.retirementMessage}
-              {...form.register('retirementMessage')}
-            />
-          </InputGroup>
-          {/* Consumption info required fields */}
-          {isConsumptionInfoRequiredCredit && (
-            <>
-              <SelectInput
-                mandatory
-                label="In what country will this certificate be consumed?"
-                placeholder="Select one"
-                items={countries}
-                error={form.formState.errors.country}
-                {...form.register('country')}
-              />
-              <div className="flex flex-col gap-2 w-full">
-                <label className="text-size-14 font-medium">
-                  Consumption period - when will this asset be used?{' '}
-                  <MandatoryAsterisk />
-                </label>
-                <div className="flex gap-2">
-                  <div className="flex-1">
-                    <Input
-                      mandatory
-                      label=""
-                      type="date"
-                      placeholder="Start"
-                      error={form.formState.errors.consumptionPeriodStart}
-                      {...form.register('consumptionPeriodStart')}
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <Input
-                      mandatory
-                      label=""
-                      type="date"
-                      placeholder="End"
-                      error={form.formState.errors.consumptionPeriodEnd}
-                      {...form.register('consumptionPeriodEnd')}
-                    />
-                  </div>
+            <div className="flex flex-col gap-2 w-full">
+              <label className="text-size-14 font-medium">
+                Consumption period - when will this asset be used?{' '}
+                <MandatoryAsterisk />
+              </label>
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <Input
+                    mandatory
+                    label=""
+                    type="date"
+                    placeholder="Start"
+                    error={form.formState.errors.consumptionPeriodStart}
+                    {...form.register('consumptionPeriodStart')}
+                  />
+                </div>
+                <div className="flex-1">
+                  <Input
+                    mandatory
+                    label=""
+                    type="date"
+                    placeholder="End"
+                    error={form.formState.errors.consumptionPeriodEnd}
+                    {...form.register('consumptionPeriodEnd')}
+                  />
                 </div>
               </div>
-            </>
-          )}
-          <PayWithOptions name="paymentMethod" control={form.control} />
-          <div className="flex flex-col gap-4">
-            {priceQuotedPerTonne ? (
-              <div className="flex flex-col gap-2">
-                <div>Price per Tonne</div>
-                <div className="flex gap-2">
-                  {selectedPaymentOption?.token?.icon?.(2)}
-                  <span>{priceQuotedPerTonne}</span>
-                </div>
+            </div>
+          </>
+        )}
+        <PayWithOptions name="paymentMethod" control={form.control} />
+        <div className="flex flex-col gap-4">
+          {priceQuotedPerTonne ? (
+            <div className="flex flex-col gap-2">
+              <div>Price per Tonne</div>
+              <div className="flex gap-2">
+                {selectedPaymentOption?.token?.icon?.(2)}
+                <span>{priceQuotedPerTonne}</span>
               </div>
-            ) : null}
-            {priceQuoted ? (
-              <div className="flex flex-col gap-2">
-                <div>Total</div>
-                <div className="flex gap-2">
+            </div>
+          ) : null}
+          <div className="flex flex-col gap-2 min-h-[3.5rem]">
+            <div>Total</div>
+            <div className="flex gap-2 items-center min-h-6">
+              {isQuoteLoading ? (
+                <Skeleton className="h-5 w-24 rounded-md" />
+              ) : priceQuoted ? (
+                <>
                   {selectedPaymentOption?.token?.icon?.(2)}
                   <span>{priceQuoted}</span>
-                </div>
-              </div>
-            ) : null}
+                </>
+              ) : (
+                <span className="text-gray-400">--</span>
+              )}
+            </div>
           </div>
-          <ButtonGroup className="flex-row w-full">
-            <Button
-              className="rounded-md"
-              colors="secondary"
-              context="flow"
-              disabled={isDisabled}
-              type="submit"
-            >
-              Retire Carbon
-            </Button>
-          </ButtonGroup>
-          <InputError error={{ message: error }} />
-        </Form>
-      )}
+        </div>
+        <ButtonGroup className="flex-row w-full">
+          <Button
+            className="rounded-md"
+            colors="secondary"
+            context="flow"
+            disabled={isDisabled}
+            type="submit"
+          >
+            Retire Carbon
+          </Button>
+        </ButtonGroup>
+        <InputError error={{ message: error }} />
+      </Form>
     </Card>
   );
 };

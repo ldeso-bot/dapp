@@ -1,6 +1,9 @@
 'use client';
 
-import CarbonClassCard, { QuoteType } from '@/shared/components/CarbonClassCard/CarbonClassCard';
+import CarbonClassCard, {
+  QuoteType,
+} from '@/shared/components/CarbonClassCard/CarbonClassCard';
+import Card from '@/shared/components/Card/Card';
 import { PageDescription } from '@/shared/components/PageDescription/PageDescription';
 import { PageTitle } from '@/shared/components/PageTitle/PageTitle';
 import Steps from '@/shared/components/Steps/Steps';
@@ -38,9 +41,28 @@ export default function RetirePage() {
 
   if (showEmptyState) return <RetireCarbonEmptyState />;
 
+  const retirementHistoryUrl = `https://app.carbonmark.com/retirements/${address}`;
+
   const details = (
     <>
       <CarbonClassCard quoteType={QuoteType.retire} />
+      <Card
+        title="Retirement History"
+        className="w-full max-w-full lg:w-[50rem] rounded-xl border border-gray-200"
+        titleClassName="font-semibold text-void-800 text-size-20 tracking-tight"
+      >
+        <p className="text-size-14 text-void-80">
+          To see a list of retirements attributed this this wallet, visit{' '}
+          <a
+            href={retirementHistoryUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-primary-600 hover:underline text-green-600 underline"
+          >
+            carbonmark.com
+          </a>
+        </p>
+      </Card>
       <RegenNetworkCreditsCard
         selectedCarbonClassId={form.watch('carbonClass')}
       />
@@ -65,7 +87,7 @@ export default function RetirePage() {
           , our partner in carbon retirements.
         </PageDescription>
       </div>
-      <div className="hidden lg:flex gap-4 mx-auto w-full max-w-[96rem] justify-center">
+      <div className="flex flex-col gap-4 lg:flex-row mx-auto w-full max-w-[96rem] justify-center">
         <div className="min-w-0 w-full max-w-full lg:w-[45rem] shrink-0">
           <Steps
             components={[RetireCarbonForm, RetireCarbonConfirm]}
@@ -75,15 +97,6 @@ export default function RetirePage() {
         <div className="min-w-0 w-full max-w-full lg:w-[45rem] shrink-0 flex flex-col gap-4">
           {details}
         </div>
-      </div>
-      <div className="flex flex-col gap-4 lg:hidden w-full max-w-full">
-        <div className="min-w-0">
-          <Steps
-            components={[RetireCarbonForm, RetireCarbonConfirm]}
-            data={{ form, schema, parsedForm }}
-          />
-        </div>
-        {details}
       </div>
     </div>
   );

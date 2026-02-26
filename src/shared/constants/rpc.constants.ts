@@ -1,18 +1,28 @@
 import { base, baseSepolia } from 'viem/chains';
 import { ChainId } from './networks.constants';
 
-let rpcUrls: Record<ChainId, string> = {
-  [base.id]: base.rpcUrls.default.http[0],
-  [baseSepolia.id]: baseSepolia.rpcUrls.default.http[0],
-};
+const useLocalRpc = process.env.NEXT_PUBLIC_USE_LOCAL_RPC === 'true';
 
-if (process.env.ALCHEMY_API_KEY) {
-  rpcUrls = {
-    [base.id]: `https://base-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-    [baseSepolia.id]: `https://base-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-  };
-} else {
-  console.warn(`No API key found for ALCHEMY_API_KEY. Using public networks.`);
+const baseRpcUrl =
+  process.env.BASE_RPC_URL || process.env.NEXT_PUBLIC_BASE_RPC_URL;
+const baseSepoliaRpcUrl =
+  process.env.BASE_SEPOLIA_RPC_URL ||
+  process.env.NEXT_PUBLIC_BASE_SEPOLIA_RPC_URL;
+
+if (!useLocalRpc && (!baseRpcUrl || !baseSepoliaRpcUrl)) {
+  throw new Error(
+    'Missing RPC configuration. Set BASE_RPC_URL and BASE_SEPOLIA_RPC_URL (or NEXT_PUBLIC equivalents).'
+  );
 }
+
+const rpcUrls: Record<ChainId, string> = useLocalRpc
+  ? {
+      [base.id]: 'http://localhost:8545',
+      [baseSepolia.id]: 'http://localhost:8545',
+    }
+  : {
+      [base.id]: baseRpcUrl as string,
+      [baseSepolia.id]: baseSepoliaRpcUrl as string,
+    };
 
 export { rpcUrls };
