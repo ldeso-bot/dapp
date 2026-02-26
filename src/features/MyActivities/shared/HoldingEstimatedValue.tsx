@@ -8,22 +8,14 @@ type Props = {
   tooltip?: React.ReactNode | string;
 };
 
-export const HoldingEstimatedValue: FC<Props> = (props) => {
-  const { estimatedValue } = props;
-
+export const HoldingEstimatedValue: FC<Props> = ({ estimatedValue }) => {
   return (
-    <div className="flex justify-between gap-4">
-      <div className="flex items-center gap-2">
-        <div className="flex items-center gap-1">
-          <div className="w-[1.6rem]" />
-          <div>Estimated USD value:</div>
-        </div>
+    <div className="mt-4 pt-4 border-t border-void-20 flex items-start justify-between gap-3">
+      <div className="text-lg sm:text-xl text-gray-500">
+        Estimated USD value
       </div>
-      <div className="flex items-center gap-1">
-        <div>{formatPriceUSDWithCommas(Number(estimatedValue))}</div>
-        <span className="inline-flex items-center ml-1 opacity-0 pointer-events-none select-none">
-          <span className="w-[1.6rem] h-[1.6rem]" />
-        </span>
+      <div className="text-lg sm:text-xl tabular-nums text-right break-words">
+        {formatPriceUSDWithCommas(Number(estimatedValue))}
       </div>
     </div>
   );

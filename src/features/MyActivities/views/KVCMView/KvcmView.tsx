@@ -145,21 +145,25 @@ const KvcmOverview = () => {
           )}
         </StatusCard>
       </div>
-      <div className="flex flex-col gap-2 my-4 mx-auto max-w-[60%]">
-        {kvcmData && (
-          <>
-            <HoldingTotalPosition
-              symbol="kVCM"
-              totalPosition={kvcmData.positionAmount}
-            />
-            <HoldingEstimatedValue estimatedValue={kvcmData.positionValue} />
-          </>
-        )}
+      <div className="my-4 w-full sm:mx-auto sm:max-w-[60%] px-4 sm:px-0">
+        <div className="rounded-2xl bg-white p-5 sm:p-6">
+          {kvcmData && (
+            <>
+              <HoldingTotalPosition
+                symbol="kVCM"
+                totalPosition={kvcmData.positionAmount}
+              />
+              <HoldingEstimatedValue estimatedValue={kvcmData.positionValue} />
+            </>
+          )}
+        </div>
       </div>
-      <TokenPositions
-        token="kvcm"
-        rewardsTooltipContent="Base accrual and K2 incentives accrue while your kVCM is locked. Both are claimable when your tokens unlock. Percent represents current incentive rate."
-      />
+      <div className="w-full px-4 sm:px-0">
+        <TokenPositions
+          token="kvcm"
+          rewardsTooltipContent="Base accrual and K2 incentives accrue while your kVCM is locked. Both are claimable when your tokens unlock. Percent represents current incentive rate."
+        />
+      </div>
     </>
   );
 };

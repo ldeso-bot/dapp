@@ -30,7 +30,7 @@ export const useEditAllocationChangeNotification = ({
 
     const amountDiff = Math.abs(newAmount - originalAmount);
     if (amountDiff < 10 ** -tokens[allocation.token.name].decimals) {
-      return 'The allocation amount has not changeds.';
+      return 'The allocation amount has not changed.';
     }
 
     if (newAmount === 0) {

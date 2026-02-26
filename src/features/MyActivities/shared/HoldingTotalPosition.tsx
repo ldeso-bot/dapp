@@ -10,29 +10,19 @@ type Props = {
   tooltip?: React.ReactNode | string;
 };
 
-export const HoldingTotalPosition: FC<Props> = (props) => {
-  const { totalPosition, symbol } = props;
-
+export const HoldingTotalPosition: FC<Props> = ({ totalPosition, symbol }) => {
   return (
-    <div className="flex justify-between gap-4">
-      <div className="flex items-center gap-2">
-        <div className="flex items-center gap-1">
-          <div className="w-[1.6rem]" />
-          <div className="tabular-nums font-semibold text-3xl">
-            Token locks & incentives:
-          </div>
-        </div>
+    <div className="min-w-0">
+      <div className="flex items-center gap-2 text-lg sm:text-2xl text-gray-500">
+        Token locks &amp; incentives
+        <Tooltip
+          className="max-w-[30rem] text-size-12 p-3"
+          content="Total of your original amount of tokens locked plus incentives. Incentives may accrue while locked and become claimable when tokens unlock."
+        />
       </div>
-      <div className="flex items-center gap-1 tabular-nums font-semibold text-3xl">
-        <div>
-          {formatAmountWithCommas(Number(totalPosition))} {symbol}
-        </div>
-        <span className="inline-flex items-center ml-1 -translate-y-px">
-          <Tooltip
-            className="max-w-[30rem] text-size-12 p-3"
-            content="Total of your original amount of tokens locked plus incentives. Incentives may accrue while locked and become claimable when tokens unlock."
-          />
-        </span>
+
+      <div className="mt-2 text-3xl sm:text-4xl font-bold tabular-nums break-words">
+        {formatAmountWithCommas(Number(totalPosition))} {symbol}
       </div>
     </div>
   );
