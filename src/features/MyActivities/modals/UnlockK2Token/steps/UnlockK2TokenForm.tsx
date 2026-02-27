@@ -55,7 +55,7 @@ const UnlockK2TokenForm: FormFlowStep<UnlockTokenFields> = ({ data }) => {
 
   return (
     <Card title="Request unlock of your K2 tokens" className="w-[42rem]">
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)} noValidate>
         <InputGroup>
           <TokenAmountInput
             name="amount"
@@ -69,7 +69,6 @@ const UnlockK2TokenForm: FormFlowStep<UnlockTokenFields> = ({ data }) => {
               placeholder: 'Enter amount',
               max: lock.availableForUnlockRequestAmount,
               min: 0,
-              step: 10 ** -tokens.k2.decimals,
             }}
             availableBalance={lock.availableForUnlockRequestAmount}
           />

@@ -68,7 +68,7 @@ export default function TokenAmountInput<T extends FieldValues>(
                 if (v !== '' && Number(v) === 0) e.currentTarget.select();
               }}
               onChange={(e) => {
-                field.onChange(e.target.value);
+                field.onChange(Number(e.target.value));
               }}
             />
 
