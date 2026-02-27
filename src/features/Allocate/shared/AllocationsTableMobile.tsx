@@ -1,6 +1,5 @@
 import Icon from '@/shared/components/Icon/Icon';
 import { ProgressWithPercentage } from '@/shared/components/Progress/ProgressWithPercentage';
-import { Separator } from '@/shared/components/Separator/Separator';
 import ArrowDown from '@/shared/images/arrow_down.svg';
 import { Allocation } from '@/shared/models/walletData';
 import {
@@ -25,9 +24,113 @@ type CarbonClassGroupMobileProps = AllocationsCardProps & {
   isKvcm: boolean;
 };
 
+const LabelValue: FC<{ label: ReactNode; value: ReactNode }> = ({
+  label,
+  value,
+}) => (
+  <div className="flex flex-col">
+    <div className="text-void-50 text-size-12">{label}</div>
+    <div className="min-w-0">{value}</div>
+  </div>
+);
+
+const AllocationRow: FC<
+  AllocationsCardProps & { allocation: Allocation; isKvcm: boolean }
+> = (props) => {
+  const { allocation, isKvcm, tokenInfo, totalAmount } = props;
+
+  return (
+    <div className="rounded-lg border border-gray-200 bg-white p-3 flex flex-col gap-3">
+      {!isKvcm ? (
+        <>
+          <div className="flex items-center justify-between gap-3">
+            <div className="text-size-12 text-void-50">
+              <AllocationClass {...props} allocation={allocation} />
+            </div>
+            <AllocationEditButton {...props} allocation={allocation} />
+          </div>
+          <div className="flex">
+            <div className="text-size-14 font-semibold text-gray-700">
+              <AllocationAmount {...props} allocation={allocation} />
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className="truncate">
+              <AllocationClass {...props} allocation={allocation} />
+            </div>
+            <div className="text-size-12 text-void-50 mt-1">
+              <AllocationAmount {...props} allocation={allocation} />
+            </div>
+          </div>
+
+          <AllocationEditButton {...props} allocation={allocation} />
+        </div>
+      )}
+
+      <div className="grid grid-cols-2 gap-y-3">
+        <LabelValue
+          label="Price Effect"
+          value={<AllocationPriceEffect {...props} allocation={allocation} />}
+        />
+        <LabelValue
+          label={
+            tokenInfo.id === 'kvcm' ? 'Indicative Price' : 'Spread Contribution'
+          }
+          value={<AllocationPrice {...props} allocation={allocation} />}
+        />
+      </div>
+
+      {!isKvcm && totalAmount && totalAmount > 0 && (
+        <ProgressWithPercentage
+          progressPercent={allocation.amount / totalAmount}
+        />
+      )}
+    </div>
+  );
+};
+
+const LockGroup: FC<
+  CarbonClassGroupMobileProps & {
+    lockId: number;
+    lockAllocations: Allocation[];
+  }
+> = (props) => {
+  const { lockId, lockAllocations, tokenInfo } = props;
+
+  const lockTotal = lockAllocations.reduce((sum, a) => sum + a.amount, 0);
+  const lockAllocation = lockAllocations[0];
+
+  const lockDate =
+    lockAllocation?.lockedUntil &&
+    formatDateDDMMYYYY(lockAllocation.lockedUntil);
+
+  const editTarget = lockAllocation;
+
+  return (
+    <div className="rounded-lg border border-gray-200 bg-white p-3">
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <div className="text-size-12 text-gray-600">
+            {lockDate ? `Lock until ${lockDate}` : `Lock ${lockId}`}
+          </div>
+          <div className="text-size-14 font-semibold text-gray-700 mt-1">
+            {lockTotal.toLocaleString()} {tokenInfo.symbol}
+          </div>
+        </div>
+
+        {editTarget ? (
+          <AllocationEditButton {...props} allocation={editTarget} />
+        ) : null}
+      </div>
+    </div>
+  );
+};
+
 const CarbonClassGroupMobile: FC<CarbonClassGroupMobileProps> = (props) => {
   const {
-    carbonClass,
     allocations,
     totalAmountForClass,
     firstAllocation,
@@ -35,14 +138,14 @@ const CarbonClassGroupMobile: FC<CarbonClassGroupMobileProps> = (props) => {
     tokenInfo,
     totalAmount,
   } = props;
-  const [isExpanded, setIsExpanded] = useState(true);
+
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const hasLocks = allocations.some((a) => a.contractLockId !== undefined);
   const shouldShowGrouped = allocations.length > 1 || (isKvcm && hasLocks);
 
-  // Group by lock for kVCM
   const allocationsByLock = useMemo(() => {
-    const map = new Map<number | undefined, typeof allocations>();
+    const map = new Map<number | undefined, Allocation[]>();
     allocations.forEach((allocation) => {
       const lockId = allocation.contractLockId;
       const existing = map.get(lockId) ?? [];
@@ -51,135 +154,100 @@ const CarbonClassGroupMobile: FC<CarbonClassGroupMobileProps> = (props) => {
     return map;
   }, [allocations]);
 
-  const labelAndValue = (label: ReactNode, value: ReactNode) => (
-    <div className="flex flex-col">
-      <div className="text-void-50 text-size-12">{label}</div>
-      {value}
-    </div>
-  );
-
   return (
-    <div className="flex flex-col gap-4">
-      {shouldShowGrouped && (
-        <div className="flex flex-col gap-3 bg-gray-50 p-4 rounded-lg">
-          <div
-            className="flex items-center justify-between cursor-pointer"
-            onClick={() => setIsExpanded(!isExpanded)}
-          >
-            <div className="flex-1">
-              <AllocationClass allocation={firstAllocation} {...props} />
-            </div>
-            <Icon
-              className={cn(
-                'transition-transform',
-                isExpanded ? 'rotate-180' : ''
-              )}
-              icon={ArrowDown}
-              size={2.2}
-            />
+    <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 flex flex-col gap-3">
+      <button
+        type="button"
+        onClick={() => setIsExpanded((v) => !v)}
+        className={cn(
+          'w-full rounded-lg border border-gray-200 bg-white px-3 py-3',
+          'flex items-center justify-between gap-3 text-left',
+          'active:scale-[0.99] transition-transform'
+        )}
+        aria-expanded={isExpanded}
+      >
+        <div className="min-w-0 flex-1">
+          <AllocationClass {...props} allocation={firstAllocation} />
+          <div className="text-size-12 text-void-50 mt-1">
+            {totalAmountForClass.toLocaleString()} {tokenInfo.symbol} allocated
           </div>
-          <div className="grid grid-cols-2 gap-y-3">
-            {labelAndValue(
-              'Amount Allocated',
-              <span className="font-semibold">
-                {totalAmountForClass.toLocaleString()} {tokenInfo.symbol}
-              </span>
+        </div>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="text-size-12 font-semibold text-gray-600">
+            {isExpanded ? 'Hide' : 'Show'}
+          </span>
+          <Icon
+            className={cn(
+              'transition-transform',
+              isExpanded ? 'rotate-180' : ''
             )}
-            {labelAndValue(
-              'Price Effect',
-              <AllocationPriceEffect allocation={firstAllocation} {...props} />
-            )}
-            {labelAndValue(
-              tokenInfo.id === 'kvcm'
-                ? 'Indicative Price'
-                : 'Spread Contribution',
-              <AllocationPrice allocation={firstAllocation} {...props} />
-            )}
-          </div>
-          <ProgressWithPercentage
-            progressPercent={
-              totalAmount && totalAmount > 0
-                ? totalAmountForClass / totalAmount
-                : 0
-            }
+            icon={ArrowDown}
+            size={2.6}
           />
         </div>
+      </button>
+
+      <div className="grid grid-cols-2 gap-y-3">
+        <LabelValue
+          label="Price Effect"
+          value={
+            <AllocationPriceEffect {...props} allocation={firstAllocation} />
+          }
+        />
+        <LabelValue
+          label={
+            tokenInfo.id === 'kvcm' ? 'Indicative Price' : 'Spread Contribution'
+          }
+          value={<AllocationPrice {...props} allocation={firstAllocation} />}
+        />
+      </div>
+
+      <ProgressWithPercentage
+        progressPercent={
+          totalAmount && totalAmount > 0 ? totalAmountForClass / totalAmount : 0
+        }
+      />
+
+      {isExpanded && (
+        <div className="mt-1 flex flex-col gap-3">
+          {shouldShowGrouped && isKvcm ? (
+            <>
+              {Array.from(allocationsByLock.entries())
+                .filter(([lockId]) => lockId !== undefined)
+                .map(([lockId, lockAllocations]) => (
+                  <LockGroup
+                    key={String(lockId)}
+                    {...props}
+                    lockId={lockId as number}
+                    lockAllocations={lockAllocations}
+                  />
+                ))}
+
+              {Array.from(allocationsByLock.entries())
+                .filter(([lockId]) => lockId === undefined)
+                .flatMap(([, unLocked]) => unLocked)
+                .map((allocation) => (
+                  <AllocationRow
+                    key={allocation.id}
+                    {...props}
+                    allocation={allocation}
+                    isKvcm={true}
+                  />
+                ))}
+            </>
+          ) : (
+            allocations.map((allocation) => (
+              <AllocationRow
+                key={allocation.id}
+                {...props}
+                allocation={allocation}
+                isKvcm={true}
+              />
+            ))
+          )}
+        </div>
       )}
-      {shouldShowGrouped &&
-        isExpanded &&
-        isKvcm &&
-        Array.from(allocationsByLock.entries())
-          .filter(([lockId]) => lockId !== undefined)
-          .map(([lockId, lockAllocations]) => {
-            const lockTotal = lockAllocations.reduce(
-              (sum, a) => sum + a.amount,
-              0
-            );
-            const lockAllocation = lockAllocations[0];
-            if (!lockAllocation) return null;
-            const lockDate =
-              lockAllocation.lockedUntil &&
-              formatDateDDMMYYYY(lockAllocation.lockedUntil);
-
-            return (
-              <div
-                key={`${carbonClass}-${lockId}`}
-                className="flex flex-col gap-3 pl-8 border-l-2 border-gray-200 ml-2"
-              >
-                <div className="text-size-12 text-gray-600">
-                  {lockDate ? `Lock: ${lockDate}` : 'Lock'}
-                </div>
-                <div className="text-size-14 text-gray-700">
-                  {lockTotal.toLocaleString()} {tokenInfo.symbol}
-                </div>
-                <div className="flex flex-col gap-2">
-                  {lockAllocations.map((allocation) => (
-                    <AllocationEditButton
-                      key={allocation.id}
-                      allocation={allocation}
-                      {...props}
-                    />
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-      {!shouldShowGrouped &&
-        allocations.map((allocation) => (
-          <div key={allocation.id} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-3">
-              <div className="grid grid-cols-2 gap-y-3">
-                {labelAndValue(
-                  'Class',
-                  <AllocationClass allocation={allocation} {...props} />
-                )}
-                {labelAndValue(
-                  'Amount Allocated',
-                  <AllocationAmount allocation={allocation} {...props} />
-                )}
-                {labelAndValue(
-                  'Price Effect',
-                  <AllocationPriceEffect allocation={allocation} {...props} />
-                )}
-                {labelAndValue(
-                  tokenInfo.id === 'kvcm'
-                    ? 'Indicative Price'
-                    : 'Spread Contribution',
-                  <AllocationPrice allocation={allocation} {...props} />
-                )}
-              </div>
-              {!isKvcm && totalAmount && totalAmount > 0 && (
-                <ProgressWithPercentage
-                  progressPercent={allocation.amount / totalAmount}
-                />
-              )}
-              <AllocationEditButton allocation={allocation} {...props} />
-            </div>
-            <Separator />
-          </div>
-        ))}
-
-      {shouldShowGrouped && <Separator />}
     </div>
   );
 };
@@ -187,13 +255,27 @@ const CarbonClassGroupMobile: FC<CarbonClassGroupMobileProps> = (props) => {
 export const AllocationsTableMobile: FC<AllocationsCardProps> = (props) => {
   const { className, data, tokenInfo } = props;
 
-  // Group allocations by carbon class
-  const groupedAllocations = useMemo(() => {
-    if (!data) return new Map<string, Allocation[]>();
-    return getAllocationsByCarbonClass(data);
-  }, [data]);
-
   const isKvcm = tokenInfo.id === 'kvcm';
+
+  const groupedAllocations = useMemo(() => {
+    if (!isKvcm || !data) return new Map<string, Allocation[]>();
+    return getAllocationsByCarbonClass(data);
+  }, [data, isKvcm]);
+
+  if (!isKvcm) {
+    return (
+      <div className={cn('flex flex-col gap-3', className)}>
+        {(data ?? []).map((allocation) => (
+          <AllocationRow
+            key={allocation.id}
+            {...props}
+            allocation={allocation}
+            isKvcm={false}
+          />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className={cn('flex flex-col gap-4', className)}>
@@ -212,7 +294,7 @@ export const AllocationsTableMobile: FC<AllocationsCardProps> = (props) => {
               allocations={allocations}
               totalAmountForClass={totalAmountForClass}
               firstAllocation={firstAllocation}
-              isKvcm={isKvcm}
+              isKvcm={true}
             />
           );
         }

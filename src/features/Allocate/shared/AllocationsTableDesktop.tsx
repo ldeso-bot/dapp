@@ -21,7 +21,6 @@ import {
 import { cn } from '@/shared/utils/component.utils';
 import {
   formatAmountWithCommas,
-  formatPriceUSDWithCommas,
   formatTimestamp,
 } from '@/shared/utils/string.utils';
 import { FC, useMemo, useState } from 'react';
@@ -176,14 +175,6 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
   const hasLocks = allocations.some((a) => a.contractLockId !== undefined);
   const [isExpanded, setIsExpanded] = useState(!hasLocks);
 
-  const usdValue = useMemo(() => {
-    if (!isKvcm && !isK2) return 0;
-    const tokenPrice = isK2
-      ? protocolData?.metrics.k2.valueUSD || 0
-      : protocolData?.metrics.kvcm.valueUSD || 0;
-    return totalAmountForClass * tokenPrice;
-  }, [totalAmountForClass, isK2, isKvcm, protocolData]);
-
   const allocationsByLock = useMemo(() => {
     const map = new Map<number | undefined, Allocation[]>();
     allocations.forEach((allocation) => {
@@ -236,11 +227,6 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
                   {tokenInfo.symbol}
                 </span>
               </div>
-              {(isKvcm || isK2) && (
-                <div className="text-size-12 text-void-50 tabular-nums">
-                  ≈ {formatPriceUSDWithCommas(usdValue)}
-                </div>
-              )}
             </div>
           </TableCell>
           {!isK2 && (
@@ -258,9 +244,7 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
               <AllocationPrice {...props} allocation={firstAllocation} />
             </div>
           </TableCell>
-          <TableCell className="border-0">
-            {/* Edit button removed from main row */}
-          </TableCell>
+          <TableCell className="border-0"></TableCell>
           <TableCell className="border-0" />
         </TableRow>
       )}
@@ -394,14 +378,12 @@ const LockSubRow: FC<LockSubRowProps> = (props) => {
   const {
     lockDate,
     lockTotal,
-    lockUsdValue,
     lockAllocations,
     lockAllocation,
     isK2,
     tokenInfo,
     availableAmount,
   } = props;
-  const isKvcm = tokenInfo.id === 'kvcm';
 
   return (
     <TableRow
@@ -436,11 +418,6 @@ const LockSubRow: FC<LockSubRowProps> = (props) => {
               {tokenInfo.symbol}
             </span>
           </div>
-          {(isKvcm || isK2) && (
-            <span className="text-size-12 text-void-50 tabular-nums">
-              ≈ {formatPriceUSDWithCommas(lockUsdValue)}
-            </span>
-          )}
         </div>
       </TableCell>
       {!isK2 && (

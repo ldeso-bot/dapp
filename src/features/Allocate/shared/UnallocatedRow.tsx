@@ -5,12 +5,8 @@ import Icon from '@/shared/components/Icon/Icon';
 import { ProgressWithPercentage } from '@/shared/components/Progress/ProgressWithPercentage';
 import { TableCell, TableRow } from '@/shared/components/Table/table';
 import { ROUTES } from '@/shared/constants/route.constants';
-import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import CirclePlus from '@/shared/images/circle_plus.svg';
-import {
-  formatAmountWithCommas,
-  formatPriceUSDWithCommas,
-} from '@/shared/utils/string.utils';
+import { formatAmountWithCommas } from '@/shared/utils/string.utils';
 import { FC, useMemo } from 'react';
 
 type UnallocatedRowProps = {
@@ -26,20 +22,10 @@ export const UnallocatedRow: FC<UnallocatedRowProps> = ({
   tokenSymbol,
   isK2 = false,
 }) => {
-  const { data: protocolData } = useProtocolData();
-
   const unallocatedPercent = useMemo(() => {
     if (totalAmount === 0) return 0;
     return Math.min(1, Math.max(0, amount / totalAmount));
   }, [amount, totalAmount]);
-
-  const usdValue = useMemo(() => {
-    const tokenPrice =
-      tokenSymbol === 'kVCM'
-        ? protocolData?.metrics.kvcm.valueUSD || 0
-        : protocolData?.metrics.k2.valueUSD || 0;
-    return amount * tokenPrice;
-  }, [amount, tokenSymbol, protocolData]);
 
   return (
     <TableRow className="border-0 bg-gray-50/30 cursor-pointer hover:bg-gray-50/60 transition-colors">
@@ -62,9 +48,6 @@ export const UnallocatedRow: FC<UnallocatedRowProps> = ({
         <div className="font-medium text-gray-900 tabular-nums">
           {formatAmountWithCommas(amount)}{' '}
           <span className="text-void-50 text-size-12">{tokenSymbol}</span>
-        </div>
-        <div className="text-size-12 text-void-50 tabular-nums">
-          ≈ {formatPriceUSDWithCommas(usdValue)}
         </div>
       </TableCell>
       {!isK2 && (

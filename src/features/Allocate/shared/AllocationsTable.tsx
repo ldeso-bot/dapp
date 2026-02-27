@@ -19,6 +19,7 @@ export const AllocationsTable: FC<AllocationsCardProps> = (props) => {
     lockWarning,
     ready,
   } = props;
+
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const isKvcm = tokenInfo.id === 'kvcm';
 
@@ -49,7 +50,7 @@ export const AllocationsTable: FC<AllocationsCardProps> = (props) => {
             : bToken.localeCompare(aToken);
         },
         priceEffect: (a, b, direction) => {
-          const priceEffectOrder = { High: 3, Medium: 2, Low: 1 };
+          const priceEffectOrder = { High: 3, Medium: 2, Low: 1 } as const;
           const aValue = priceEffectOrder[a.priceEffect];
           const bValue = priceEffectOrder[b.priceEffect];
           return direction === 'asc' ? bValue - aValue : aValue - bValue;
@@ -93,6 +94,7 @@ export const AllocationsTable: FC<AllocationsCardProps> = (props) => {
                 />
               </div>
             )}
+
             <AllocationsTableDesktop
               {...props}
               data={sortedData}
@@ -100,11 +102,13 @@ export const AllocationsTable: FC<AllocationsCardProps> = (props) => {
               onSort={requestSort}
               className="hidden lg:table"
             />
+
             <AllocationsTableMobile
               {...props}
               data={sortedData}
               className="lg:hidden"
             />
+
             {!!lockWarning && (
               <div className="px-6 pb-4 pt-3 text-size-14 font-semibold text-void-60">
                 ⚠️ {lockWarning}
