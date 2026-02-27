@@ -146,11 +146,26 @@ export const formatPriceUSDWithCommas = (
 };
 
 /** A wrapper around parseUnits to handle null values and return a bigint */
-export const parseAmount = (value?: number, decimals?: number): bigint => {
-  if (!decimals || !value) {
+export const parseAmount = (
+  value?: number | string,
+  decimals?: number
+): bigint => {
+  if (!decimals) {
     return 0n;
   }
-  return parseUnits(value.toFixed(decimals), decimals);
+
+  const parsedValue =
+    typeof value === 'number'
+      ? value
+      : typeof value === 'string'
+        ? Number(value)
+        : 0;
+
+  if (!Number.isFinite(parsedValue) || parsedValue <= 0) {
+    return 0n;
+  }
+
+  return parseUnits(parsedValue.toFixed(decimals), decimals);
 };
 
 /**

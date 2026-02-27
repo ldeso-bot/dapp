@@ -40,13 +40,20 @@ export default function TokenAmountInput<T extends FieldValues>(
     label = 'Amount',
   } = props;
 
+  const numericAvailableBalance = Number(availableBalance);
+  const formattedAvailableBalance = Number.isFinite(numericAvailableBalance)
+    ? numericAvailableBalance >= 1
+      ? numericAvailableBalance.toFixed(2)
+      : numericAvailableBalance.toFixed(4)
+    : '0.00';
+
   return (
     <InputWrapper
       label={label ?? 'Amount'}
       error={errorMessage}
       addOnLabel={
         isNonNullish(availableBalance)
-          ? `Available: ${availableBalance.toFixed(2) ?? '0.00'}`
+          ? `Available: ${formattedAvailableBalance}`
           : undefined
       }
     >
