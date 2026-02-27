@@ -166,7 +166,7 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
               type="number"
               iconSize="sm"
               iconSrc={tokens[allocation.token.name].iconSrc}
-              {...form.register('amount', { valueAsNumber: true })}
+              {...form.register('amount')}
               error={
                 formState.errors.amount ||
                 (errorMessage

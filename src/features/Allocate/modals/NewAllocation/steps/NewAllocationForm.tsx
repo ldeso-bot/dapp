@@ -50,6 +50,8 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
   const amount = watch('amount');
   const contractLockId = watch('contractLockId');
 
+  const carbonClass = watch('carbonClass');
+
   const isAmountTouched = formState.touchedFields.amount;
   const typedToken = isToken(token) ? token : DEFAULT_ALLOCATION_TOKEN;
 
@@ -195,7 +197,7 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
                   type="number"
                   iconSize="sm"
                   iconSrc={tokens[typedToken].iconSrc}
-                  {...form.register('amount', { valueAsNumber: true })}
+                  {...form.register('amount')}
                   error={
                     DEV_MODE
                       ? formState.errors.amount ||
@@ -271,7 +273,8 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
             disabled={
               isSubmitting ||
               !!errorMessage ||
-              (isKvcm && !hasKvcmLocksAvailable)
+              (isKvcm && !hasKvcmLocksAvailable) ||
+              !carbonClass
             }
           >
             {isSubmitting ? 'Submitting...' : 'Save Allocation'}
