@@ -49,10 +49,10 @@ function calculateLogTicks(domain: [number, number]): number[] {
   const logMax = Math.ceil(Math.log10(max));
 
   const ticks: number[] = [];
-  // Generate ticks at powers of 10
+  // Generate ticks at powers of 10, capped at the domain max
   for (let i = logMax - 4; i <= logMax; i++) {
     const tickValue = Math.pow(10, i);
-    ticks.push(tickValue);
+    if (tickValue <= max) ticks.push(tickValue);
   }
 
   return ticks;
