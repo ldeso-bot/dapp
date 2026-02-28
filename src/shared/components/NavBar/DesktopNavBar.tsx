@@ -7,7 +7,7 @@ import WalletInfo from './WalletInfo';
 
 export default function DesktopNavBar() {
   return (
-    <div className="hidden lg:flex border-r-1 border-gray-300">
+    <div className="hidden lg:flex border-r-1 border-gray-300 bg-white">
       <div
         className={cn(`relative flex-col h-screen px-3 py-6`, styles.wNavbar)}
       >
