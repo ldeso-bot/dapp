@@ -3,7 +3,6 @@
 import CarbonClassCard, {
   QuoteType,
 } from '@/shared/components/CarbonClassCard/CarbonClassCard';
-import Card from '@/shared/components/Card/Card';
 import { PageDescription } from '@/shared/components/PageDescription/PageDescription';
 import { PageTitle } from '@/shared/components/PageTitle/PageTitle';
 import Steps from '@/shared/components/Steps/Steps';
@@ -13,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useAccount } from 'wagmi';
 import { RegenNetworkCreditsCard } from './components/RegenNetworkCreditsCard';
+import { RetirementHistoryCard } from './components/RetirementHistoryCard';
 import { RetireCarbonEmptyState } from './components/RetireCarbonEmptyState';
 import { RetireCarbonFields, retireCarbonSchema } from './retire.constants';
 import RetireCarbonConfirm from './steps/RetireCarbonConfirm';
@@ -46,23 +46,7 @@ export default function RetirePage() {
   const details = (
     <>
       <CarbonClassCard quoteType={QuoteType.retire} />
-      <Card
-        title="Retirement History"
-        className="w-full max-w-full lg:w-[50rem] rounded-xl border border-gray-200"
-        titleClassName="font-semibold text-void-800 text-size-20 tracking-tight"
-      >
-        <p className="text-size-14 text-void-80">
-          To see a list of retirements attributed to this wallet, visit{' '}
-          <a
-            href={retirementHistoryUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-medium text-primary-600 hover:underline text-green-600 underline"
-          >
-            carbonmark.com
-          </a>
-        </p>
-      </Card>
+      <RetirementHistoryCard retirementHistoryUrl={retirementHistoryUrl} />
       <RegenNetworkCreditsCard
         selectedCarbonClassId={form.watch('carbonClass')}
       />
