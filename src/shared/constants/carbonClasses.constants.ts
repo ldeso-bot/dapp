@@ -13,7 +13,7 @@ const BASE_CARBON_CLASSES_INFO_MAP = {
     isRegen: false,
   },
   '0xf4699531e0a5f6e9351a36de3753deaad329bf45': {
-    name: 'Regen - CFC',
+    name: 'Regen Network - City Forest Credits',
     category: 'City Forest Credits',
     isRegen: true,
   },
