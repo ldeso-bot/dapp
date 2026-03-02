@@ -27,6 +27,7 @@ export const useEditAllocationValidation = (props: ValidationProps) => {
     balance: lockedK2,
     totalAllocated: totalAllocatedK2,
     currentAllocationAmount: isK2 ? originalAmount : 0,
+    requestedForUnlockAmount: allocationData?.k2.requestedForUnlockAmount ?? 0,
   });
 
   const errorMessage = useMemo(() => {

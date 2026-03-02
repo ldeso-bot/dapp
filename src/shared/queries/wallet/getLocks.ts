@@ -5,6 +5,7 @@ import {
   tokenInfoFromSubgraphSymbol,
 } from '@/shared/constants/tokens.constants';
 import { Lock, Locks } from '@/shared/models/walletData';
+import { getUserSdkAllocations } from '@/shared/utils/allocation.utils';
 import { getSdk } from '@/shared/utils/subgraph.utils';
 import { Lock_Filter } from '@generated/gql/types/protocol.types';
 import { filter, isNonNullish } from 'remeda';
@@ -23,7 +24,7 @@ export const getLocks = async (
   }
 
   // Fetch locks
-  const [locks, latestMidnightInfos, protocolState, tokenMetrics] =
+  const [locks, latestMidnightInfos, protocolState, tokenMetrics, allocations] =
     await Promise.all([
       sdk.protocol.getLocks({
         where: {
@@ -35,6 +36,7 @@ export const getLocks = async (
       getLatestMidnightInfoDiffs(sdk),
       getProtocolState(sdk),
       getTokenMetrics(chainId),
+      getUserSdkAllocations(chainId, walletAddress),
     ]);
 
   // Map locks
@@ -51,6 +53,10 @@ export const getLocks = async (
     const isK2Lock = tokenInfo.id === 'k2';
     const latestMidnightInfo = latestMidnightInfos[Number(lock.maturityId)];
 
+    const lockAllocations = allocations.filter(
+      (allocation) => allocation.lock?.contractLockId === lock.contractLockId
+    );
+
     return isK2Lock
       ? mapK2Lock({
           lock,
@@ -58,6 +64,7 @@ export const getLocks = async (
           tokenMetrics,
           latestMidnightInfo,
           tokenInfo,
+          allocations: lockAllocations,
         })
       : mapKvcmOrLpLock({
           lock,
@@ -65,6 +72,7 @@ export const getLocks = async (
           tokenMetrics,
           latestMidnightInfo,
           tokenInfo,
+          allocations: lockAllocations,
         });
   });
 

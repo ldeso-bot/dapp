@@ -1,5 +1,6 @@
 import { GetCreditTokensQuery } from '@generated/gql/types/carbon.types';
 import {
+  GetAllocationsQuery,
   GetLatestMidnightInfoQuery,
   GetLocksQuery,
 } from '@generated/gql/types/protocol.types';
@@ -12,4 +13,7 @@ export type SDKMidnightInfo = NonNullable<
 
 export type SDKCreditToken = NonNullable<
   GetCreditTokensQuery['creditTokens']
+>[number];
+export type SDKAllocation = NonNullable<
+  GetAllocationsQuery['allocations']
 >[number];

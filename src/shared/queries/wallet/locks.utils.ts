@@ -5,7 +5,11 @@ import {
   tokenInfoFromSubgraphSymbol,
   tokens,
 } from '@/shared/constants/tokens.constants';
-import { SDKLock, SDKLockAction } from '@/shared/models/generated';
+import {
+  SDKAllocation,
+  SDKLock,
+  SDKLockAction,
+} from '@/shared/models/generated';
 import { AllMetrics, YieldType } from '@/shared/models/ProtocolData';
 import { EarningStatus, Lock } from '@/shared/models/walletData';
 import { computeTokenAmountValueUSD } from '@/shared/utils/protocol.utils';
@@ -142,6 +146,7 @@ type MapLockProps = {
   tokenMetrics: AllMetrics;
   latestMidnightInfo: ComputedMidnightInfo | undefined;
   tokenInfo: LockableTokenInfo;
+  allocations: SDKAllocation[];
 };
 
 export const mapKvcmOrLpLock = ({
@@ -447,6 +452,7 @@ export const mapK2Lock = ({
   tokenMetrics,
   latestMidnightInfo,
   tokenInfo,
+  allocations,
 }: MapLockProps): Lock | null => {
   const now = new Date().getTime() / 1000;
 
@@ -466,6 +472,11 @@ export const mapK2Lock = ({
   const isPendingUnlock = isUnlockRequested && now < requestUnlockTimestamp;
   const lockedUntil = requestUnlockTimestamp;
   const created = formatStringToNumber(lock.lockActions[0]?.timestamp, 0) ?? 0;
+  const k2Allocated = allocations.reduce(
+    (acc, allocation) =>
+      acc + formatStringToNumber(allocation.amount, tokens.k2.decimals),
+    0
+  );
 
   // Locked amount cannot be fetched from the subgraph because there are no events when the K2 escrow is actually released
   // We sum all LockActions amounts to get the locked amount
@@ -483,15 +494,13 @@ export const mapK2Lock = ({
     }
   );
 
-  const availableForUnlockRequestAmount = sumLockActionsAmounts(
-    lock,
-    (action, daysSinceAction) => {
+  const availableForUnlockRequestAmount =
+    sumLockActionsAmounts(lock, (action, daysSinceAction) => {
       if (action.type === LockActionType.LOCKED && daysSinceAction > 1)
         return 1;
       if (action.type === LockActionType.UNLOCK_REQUESTED) return -1;
       return 0;
-    }
-  );
+    }) - k2Allocated;
 
   const requestedForUnlockAmount = sumLockActionsAmounts(
     lock,

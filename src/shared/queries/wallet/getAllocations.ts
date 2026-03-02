@@ -4,12 +4,12 @@ import { ChainId } from '@/shared/constants/networks.constants';
 import {
   isAllocatableToken,
   tokenInfoFromSubgraphSymbol,
+  tokens,
 } from '@/shared/constants/tokens.constants';
 import { Allocation, Allocations } from '@/shared/models/walletData';
+import { getUserSdkAllocations } from '@/shared/utils/allocation.utils';
 import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
-import { Allocation_Filter } from '@generated/gql/types/protocol.types';
-import { filter, isNonNullish } from 'remeda';
-import { getProtocolState } from '../protocol/protocol.utils';
+import { filter, isNonNullish, mapToObj } from 'remeda';
 
 export const getAllocations = async (
   chainId: ChainId,
@@ -19,52 +19,17 @@ export const getAllocations = async (
   if (USE_MOCKS) {
     return getMockAllocations();
   }
-  const protocolState = await getProtocolState(sdk);
 
-  const [userKvcmAllocations, userK2Allocations, allAllocations] =
-    await Promise.all([
-      sdk.protocol.getAllocations({
-        where: {
-          token_: { symbol: 'KVCM' },
-          lock_: {
-            maturityId_gte: protocolState?.firstActiveMaturityId,
-          },
-          account_: {
-            id: walletAddress,
-          },
-        } as unknown as Allocation_Filter,
-      }),
-      sdk.protocol.getAllocations({
-        where: {
-          token_: { symbol: 'K2' },
-          account_: {
-            id: walletAddress,
-          },
-        } as unknown as Allocation_Filter,
-      }),
-      // TODO: We should not do that, this will cause performance issues
-      sdk.protocol.getAllocations({
-        where: {
-          lock_: {
-            maturityId_gte: protocolState?.firstActiveMaturityId,
-          },
-        } as unknown as Allocation_Filter,
-      }),
-    ]);
-  const userAllocations = [
-    ...userKvcmAllocations.allocations,
-    ...userK2Allocations.allocations,
-  ];
+  const [userAllocations, carbonClasses] = await Promise.all([
+    getUserSdkAllocations(chainId, walletAddress),
+    sdk.protocol.getCarbonClasses(),
+  ]);
 
-  // Calculate total allocation per carbon class and token for sharePercent calculation
-  const totalsByClass = new Map<string, number>();
-  (allAllocations?.allocations ?? []).forEach((allocation) => {
-    const tokenAddress = allocation.token.address.toLowerCase();
-    const carbonClassId = allocation.carbonClass.carbonClassId.toLowerCase();
-    const key = `${tokenAddress}-${carbonClassId}`;
-    const amount = formatStringToNumber(allocation.amount, 18);
-    totalsByClass.set(key, (totalsByClass.get(key) || 0) + amount);
-  });
+  const carbonClassesMap = mapToObj(carbonClasses.carbonClasses, (c) => [
+    c.carbonClassId,
+    c,
+  ]);
+
   const mappedAllocations = userAllocations.map(
     (allocation): Allocation | null => {
       const tokenInfo = tokenInfoFromSubgraphSymbol(allocation.token.symbol);
@@ -85,7 +50,6 @@ export const getAllocations = async (
       };
 
       const userAmount = formatStringToNumber(allocation.amount, 18);
-      const tokenAddress = allocation.token.address.toLowerCase();
       const carbonClassId = allocation.carbonClass.carbonClassId.toLowerCase();
       const carbonClassInfo = getCarbonClassInfo(chainId, carbonClassId);
       const category = carbonClassInfo?.category ?? 'Other';
@@ -99,8 +63,16 @@ export const getAllocations = async (
         ? formatStringToNumber(allocation.lock.maturity.timestamp, 0)
         : undefined;
 
-      const key = `${tokenAddress}-${carbonClassId}`;
-      const totalClassAllocation = totalsByClass.get(key) || 0;
+      const totalClassAllocation =
+        allocation.token.symbol === 'KVCM'
+          ? formatStringToNumber(
+              carbonClassesMap[carbonClassId]?.kvcmAllocated,
+              tokens.kvcm.decimals
+            )
+          : formatStringToNumber(
+              carbonClassesMap[carbonClassId]?.k2Allocated,
+              tokens.k2.decimals
+            );
 
       const sharePercent =
         totalClassAllocation > 0 ? userAmount / totalClassAllocation : 0;

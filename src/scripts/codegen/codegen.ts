@@ -3,7 +3,7 @@ import './init-env';
 import { TypeScriptPluginConfig } from '@graphql-codegen/typescript';
 import { TypeScriptDocumentsPluginConfig } from '@graphql-codegen/typescript-operations';
 
-import { baseSepolia } from 'viem/chains';
+import { base } from 'viem/chains';
 import {
   subgraphHeaders,
   subgraphs,
@@ -15,8 +15,7 @@ const tsConfig: TypeScriptPluginConfig = {
 
 const tsOperationsConfig: TypeScriptDocumentsPluginConfig = {};
 
-//TODO: reading from baseSepolia for now, change to base for production
-const endpoints = subgraphs[baseSepolia.id];
+const endpoints = subgraphs[base.id];
 
 const GENERATED_TYPES_DIR = `.generated/gql/types`;
 const DOCUMENTS_DIR = `src/scripts/codegen`;

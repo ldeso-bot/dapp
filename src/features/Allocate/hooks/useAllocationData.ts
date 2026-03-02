@@ -21,6 +21,7 @@ type AllocationData = {
       category: string;
       sharePercent: number;
     } | null;
+    requestedForUnlockAmount: number;
   };
   k2: {
     allocations: Allocation[];
@@ -34,6 +35,7 @@ type AllocationData = {
       category: string;
       sharePercent: number;
     } | null;
+    requestedForUnlockAmount: number;
   };
 };
 
@@ -80,16 +82,12 @@ export const useAllocationData = (): UseQueryResult<
       );
 
       const kvcmStats = computeTokenAllocationStats(
-        walletData.allocations,
+        walletData,
         totalKvcm,
         'kvcm'
       );
 
-      const k2Stats = computeTokenAllocationStats(
-        walletData.allocations,
-        totalK2,
-        'k2'
-      );
+      const k2Stats = computeTokenAllocationStats(walletData, totalK2, 'k2');
 
       const unallocatedKvcmUSD = kvcmStats.unallocated * kvcmPrice;
       const unallocatedK2USD = k2Stats.unallocated * k2Price;
@@ -109,6 +107,7 @@ export const useAllocationData = (): UseQueryResult<
           unallocatedUSD: unallocatedKvcmUSD,
           classes: kvcmStats.classes,
           allocatedPercent: kvcmAllocatedPercent,
+          requestedForUnlockAmount: kvcmStats.requestedForUnlockAmount,
           highestInfluence:
             kvcmStats.highestInfluence &&
             kvcmStats.highestInfluence.category &&
@@ -127,6 +126,7 @@ export const useAllocationData = (): UseQueryResult<
           unallocatedUSD: unallocatedK2USD,
           classes: k2Stats.classes,
           allocatedPercent: k2AllocatedPercent,
+          requestedForUnlockAmount: k2Stats.requestedForUnlockAmount,
           highestInfluence:
             k2Stats.highestInfluence &&
             k2Stats.highestInfluence.category &&
