@@ -7,9 +7,13 @@ import DesktopNavBar from '@/shared/components/NavBar/DesktopNavBar';
 import MobileNavBar from '@/shared/components/NavBar/MobileNavBar';
 import { UserTracker } from '@/shared/components/UserTracker/UserTracker';
 import { LUCKY_ORANGE_SITE_ID } from '@/shared/constants/config.constants';
+import { JsonLd } from '@/shared/components/JsonLd/JsonLd';
 import {
+  organizationSchema,
   sharedMetadata,
   sharedViewport,
+  webApplicationSchema,
+  webSiteSchema,
 } from '@/shared/constants/metadata.constants';
 import { WALLET_CONNECTION_HISTORY_COOKIE } from '@/shared/constants/storage.constants';
 import { WalletConnectionHistoryProvider } from '@/shared/contexts/WalletCookieContext';
@@ -74,6 +78,9 @@ export default async function RootLayout({
           src={`https://tools.luckyorange.com/core/lo.js?site-id=${LUCKY_ORANGE_SITE_ID}`}
         />
       )}
+      <JsonLd data={organizationSchema} />
+      <JsonLd data={webApplicationSchema} />
+      <JsonLd data={webSiteSchema} />
     </html>
   );
 }

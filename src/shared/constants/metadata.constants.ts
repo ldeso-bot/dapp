@@ -46,3 +46,34 @@ export const sharedViewport: Viewport = {
   initialScale: 1,
   themeColor: '#00cc33',
 };
+
+export const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: `${SITE_URL}/favicon.ico`,
+  sameAs: [
+    'https://twitter.com/KlimaDAO',
+    'https://discord.gg/Zq2HfhVXpB',
+    'https://github.com/KlimaDAO',
+  ],
+};
+
+export const webApplicationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: DEFAULT_DESCRIPTION,
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Web',
+};
+
+export const webSiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: DEFAULT_DESCRIPTION,
+};
