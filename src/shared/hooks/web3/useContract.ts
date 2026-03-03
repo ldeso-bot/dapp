@@ -37,6 +37,7 @@ export const useContractInfo = (contractName: ContractName) => {
   const contractInfo = contracts[contractName];
 
   return {
+    name: contractName,
     address: contractInfo[chainId],
     abi: contractInfo.abi,
   };

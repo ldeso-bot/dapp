@@ -22,8 +22,8 @@ export const paymentOptions: PaymentOption[] = [
   },
   {
     token: tokens.usdc,
-    tooltip: 'Coming soon',
-    disabled: true,
+    tooltip: 'Pay with USDC',
+    disabled: false,
   },
 ];
 

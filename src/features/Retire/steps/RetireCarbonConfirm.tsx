@@ -57,10 +57,15 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
   );
   const { contract: aamContractContract } = useContract('AAMDiamond');
 
+  const spenderAddress =
+    inputTokenInfo?.name === 'KVCM'
+      ? aamContractContract?.address
+      : retirementAggregatorContract?.address;
+
   const { isAllowed, setAllowance, isSettingAllowance } = useAllowance({
     tokenAddress: inputTokenInfo?.address || '',
     tokenStandard: TOKEN_STANDARDS.ERC20,
-    spender: aamContractContract?.address || '',
+    spender: spenderAddress ?? '',
     amount: maxInputTokenInWei,
   });
 
@@ -174,14 +179,14 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
               readOnly
               iconSize="sm"
               iconSrc={selectedPaymentOption?.token?.iconSrc}
-              value={`${formatAmountWithCommas(priceQuoted)} ${selectedPaymentOption?.token?.symbol ?? ''}`}
+              value={`${formatAmountWithCommas(priceQuoted, 'auto')} ${selectedPaymentOption?.token?.symbol ?? ''}`}
             />
             <Input
               label="You are retiring"
               readOnly
               iconSize="sm"
               iconSrc={CarbonCreditIconImg}
-              value={`${formatAmountWithCommas(parsedForm.current?.amountTonnes)} ${selectedCarbonCredit?.symbol} Tonnes`}
+              value={`${formatAmountWithCommas(parsedForm.current?.amountTonnes, 'auto')} ${selectedCarbonCredit?.symbol} Tonnes`}
             />
           </div>
           <div className="flex flex-col gap-3 w-full">

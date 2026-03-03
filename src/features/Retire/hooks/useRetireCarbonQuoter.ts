@@ -48,6 +48,7 @@ const useRetirementQuote = (
       staleTime: 0,
     },
   });
+
   useEffect(() => {
     if (amount === BigInt(0)) {
       setPriceQuotedWei(BigInt(0));
