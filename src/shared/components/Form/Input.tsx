@@ -17,7 +17,7 @@ export default function Input({
   label,
   error,
   tooltip,
-  addOnLabel,
+  addOnLabelTop: addOnLabel,
   mandatory,
   ...inputProps
 }: Props) {
@@ -26,7 +26,7 @@ export default function Input({
       label={label}
       error={error}
       tooltip={tooltip}
-      addOnLabel={addOnLabel}
+      addOnLabelTop={addOnLabel}
       mandatory={mandatory}
     >
       <div className="w-full flex flex-row gap-2">

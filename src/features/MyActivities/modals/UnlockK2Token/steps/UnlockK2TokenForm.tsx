@@ -58,17 +58,14 @@ const UnlockK2TokenForm: FormFlowStep<UnlockTokenFields> = ({ data }) => {
       <Form onSubmit={handleSubmit(onSubmit)} noValidate>
         <InputGroup>
           <TokenAmountInput
-            name="amount"
             control={form.control}
+            name="amount"
             label="Amount to unlock"
-            tokenIconSrc={tokens.k2.iconSrc}
-            errorMessage={formState.errors.amount}
+            iconSrc={tokens.k2.iconSrc}
+            error={formState.errors.amount}
             inputProps={{
-              type: 'number',
               'aria-label': 'Token Input',
               placeholder: 'Enter amount',
-              max: lock.availableForUnlockRequestAmount,
-              min: 0,
             }}
             availableBalance={lock.availableForUnlockRequestAmount}
           />

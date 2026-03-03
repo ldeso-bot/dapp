@@ -7,11 +7,11 @@ import { IncentivesBreakdownCard } from '@/features/MyActivities/shared/YieldBre
 import Button from '@/shared/components/Button/Button';
 import Card from '@/shared/components/Card/Card';
 import { DialogHeader } from '@/shared/components/Dialog/DialogHeader';
-import Input from '@/shared/components/Form/Input';
 import ButtonGroup from '@/shared/components/Form/layout/ButtonGroup';
 import Form from '@/shared/components/Form/layout/Form';
 import InputGroup from '@/shared/components/Form/layout/InputGroup';
 import { RootError } from '@/shared/components/Form/RootError';
+import TokenAmountInput from '@/shared/components/Form/TokenAmountInput';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import {
@@ -23,10 +23,7 @@ import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useWalletData } from '@/shared/hooks/api/useWalletData';
 import { useTransactionHandler } from '@/shared/hooks/useTransactionHandler';
 import { delay, isMaturityWithinDays } from '@/shared/utils/date.utils';
-import {
-  formatAmountWithCommas,
-  parseAmount,
-} from '@/shared/utils/string.utils';
+import { parseAmount } from '@/shared/utils/string.utils';
 import { useSetAtom } from 'jotai';
 import { useAccount } from 'wagmi';
 import {
@@ -135,41 +132,15 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
       >
         <InputGroup className="pt-1">
           <div className="flex flex-col gap-1 pt-3">
-            <div className="flex flex-col gap-1">
-              <label className="text-size-14 font-medium">
-                Amount to {lockTerm}
-              </label>
-            </div>
-            <div className="flex items-start gap-2">
-              <Input
-                type="number"
-                iconSize={isKvcm ? 'sm' : 'md'}
-                iconSrc={tokens[typedToken].iconSrc}
-                {...form.register('amount', { valueAsNumber: true })}
-                error={formState.errors.amount}
-                onFocus={(e) => {
-                  if (
-                    e.currentTarget.value !== '' &&
-                    Number(e.currentTarget.value) === 0
-                  ) {
-                    e.currentTarget.select();
-                  }
-                }}
-              />
-
-              <Button
-                type="button"
-                colors="secondary"
-                className="rounded-xl min-h-[4rem]"
-                onClick={() => form.setValue('amount', Number(tokenBalance))}
-              >
-                Max
-              </Button>
-            </div>
-            <span className="text-size-12 text-gray-500">
-              Balance: {formatAmountWithCommas(Number(tokenBalance), 'auto')}{' '}
-              {tokenInfo.symbol}
-            </span>
+            <TokenAmountInput
+              control={form.control}
+              name="amount"
+              label={`Amount to ${lockTerm}`}
+              iconSize={isKvcm ? 'sm' : 'md'}
+              availableBalance={tokenBalance}
+              iconSrc={tokens[typedToken].iconSrc}
+              error={formState.errors.amount}
+            />
           </div>
           {maturityId !== undefined && (
             <>

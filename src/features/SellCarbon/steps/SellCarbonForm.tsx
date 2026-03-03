@@ -107,7 +107,11 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
             </span>
           </div>
         </div>
-        <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="flex flex-col gap-8"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+        >
           <div className="flex flex-col gap-4 pt-3">
             <SelectInput
               label="Token"
@@ -147,14 +151,11 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
             <TokenAmountInput
               label="Amount (Tonnes)"
               availableBalance={selectedBalance?.balance ?? 0}
-              errorMessage={form.formState.errors.amountToSellTonnes}
+              error={form.formState.errors.amountToSellTonnes}
               inputProps={{
                 type: 'number',
                 'aria-label': 'Token Input',
                 placeholder: 'Select a token first',
-                max: selectedBalance?.balance ?? 0,
-                min: 0,
-                step: 0.001,
               }}
               name="amountToSellTonnes"
               control={form.control}

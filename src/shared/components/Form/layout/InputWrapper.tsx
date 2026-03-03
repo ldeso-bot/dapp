@@ -9,13 +9,22 @@ export type InputWrapperProps = {
   label?: string;
   error?: FieldError;
   tooltip?: string;
-  addOnLabel?: string;
+  addOnLabelTop?: string;
+  addOnLabelBottom?: string;
   mandatory?: boolean;
   children: React.ReactNode;
 };
 
 export default function InputWrapper(props: InputWrapperProps) {
-  const { label, error, tooltip, addOnLabel, mandatory, children } = props;
+  const {
+    label,
+    error,
+    tooltip,
+    addOnLabelTop: addOnLabel,
+    addOnLabelBottom,
+    mandatory,
+    children,
+  } = props;
   return (
     <div className={cn('flex flex-col gap-2 items-start w-full')}>
       {(label || addOnLabel) && (
@@ -38,6 +47,9 @@ export default function InputWrapper(props: InputWrapperProps) {
         </div>
       )}
       {children}
+      {addOnLabelBottom && (
+        <div className="text-size-12 text-gray-500">{addOnLabelBottom}</div>
+      )}
       <InputError error={error} />
     </div>
   );

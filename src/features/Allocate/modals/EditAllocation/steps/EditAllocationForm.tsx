@@ -10,6 +10,7 @@ import Input from '@/shared/components/Form/Input';
 import Form from '@/shared/components/Form/layout/Form';
 import InputGroup from '@/shared/components/Form/layout/InputGroup';
 import { RootError } from '@/shared/components/Form/RootError';
+import TokenAmountInput from '@/shared/components/Form/TokenAmountInput';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
@@ -136,6 +137,11 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
 
   if (!allocation) return null;
 
+  const availableBalance =
+    isKvcm && allocation.contractLockId
+      ? (availableKvcm.get(allocation.contractLockId) ?? 0 + originalAmount)
+      : maxK2ForThisAllocation;
+
   return (
     <Card className="rounded-lg px-6 py-4 overflow-y-auto w-[42rem] mx-auto">
       <DialogHeader
@@ -159,46 +165,19 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
             iconSrc={tokens[allocation.token.name].iconSrc}
             readOnly
           />
-          <div className="flex flex-col gap-1">
-            <Input
-              min="0"
-              label="Amount"
-              type="number"
-              iconSize="sm"
-              iconSrc={tokens[allocation.token.name].iconSrc}
-              {...form.register('amount')}
-              error={
-                formState.errors.amount ||
-                (errorMessage
-                  ? { type: 'manual', message: errorMessage }
-                  : undefined)
-              }
-              onFocus={(e) => {
-                if (
-                  e.currentTarget.value !== '' &&
-                  Number(e.currentTarget.value) === 0
-                ) {
-                  e.currentTarget.select();
-                }
-              }}
-            />
-
-            {isKvcm && allocation.contractLockId && (
-              <small className="text-size-12 text-gray-500">
-                Maximum available:{' '}
-                {(
-                  (availableKvcm.get(allocation.contractLockId) ?? 0) +
-                  originalAmount
-                ).toLocaleString()}{' '}
-                {tokenSymbol}
-              </small>
-            )}
-            {isK2 && (
-              <small className="text-size-12 text-gray-500">
-                Available: {maxK2ForThisAllocation.toLocaleString()} K2
-              </small>
-            )}
-          </div>
+          <TokenAmountInput
+            control={form.control}
+            name="amount"
+            label="Amount"
+            iconSrc={tokens[allocation.token.name].iconSrc}
+            availableBalance={availableBalance}
+            error={
+              formState.errors.amount ||
+              (errorMessage
+                ? { type: 'manual', message: errorMessage }
+                : undefined)
+            }
+          />
           <Input label="Carbon Class" value={carbonClassName} readOnly />
           {lockInfo && <Input label="Lock Info" value={lockInfo} readOnly />}
           {changeNotification && !errorMessage && (

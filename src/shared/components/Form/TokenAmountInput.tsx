@@ -2,6 +2,7 @@
 
 import Button from '@/shared/components/Button/Button';
 import Input from '@/shared/components/Form/Input';
+import { formatAmountWithCommas } from '@/shared/utils/string.utils';
 import type { StaticImageData } from 'next/image';
 import { InputHTMLAttributes } from 'react';
 import {
@@ -15,8 +16,8 @@ import { isNonNullish } from 'remeda';
 import InputWrapper from './layout/InputWrapper';
 
 type Props<T extends FieldValues> = {
-  tokenIconSrc?: StaticImageData;
-  errorMessage?: FieldError;
+  iconSrc?: StaticImageData;
+  error?: FieldError;
   inputProps?: Omit<
     InputHTMLAttributes<HTMLInputElement>,
     'name' | 'value' | 'defaultValue' | 'onBlur' | 'onChange'
@@ -25,6 +26,7 @@ type Props<T extends FieldValues> = {
   name: Path<T>;
   control: Control<T>;
   label?: string;
+  iconSize?: 'sm' | 'md';
 };
 
 export default function TokenAmountInput<T extends FieldValues>(
@@ -32,26 +34,25 @@ export default function TokenAmountInput<T extends FieldValues>(
 ) {
   const {
     inputProps,
-    errorMessage,
-    tokenIconSrc,
+    error: errorMessage,
+    iconSrc: tokenIconSrc,
     availableBalance,
     name,
     control,
     label = 'Amount',
+    iconSize: tokenIconSize = 'sm',
   } = props;
 
-  const numericAvailableBalance = Number(availableBalance);
-  const formattedAvailableBalance = Number.isFinite(numericAvailableBalance)
-    ? numericAvailableBalance >= 1
-      ? numericAvailableBalance.toFixed(2)
-      : numericAvailableBalance.toFixed(4)
-    : '0.00';
+  const formattedAvailableBalance = formatAmountWithCommas(
+    availableBalance,
+    'auto'
+  );
 
   return (
     <InputWrapper
       label={label ?? 'Amount'}
       error={errorMessage}
-      addOnLabel={
+      addOnLabelBottom={
         isNonNullish(availableBalance)
           ? `Available: ${formattedAvailableBalance}`
           : undefined
@@ -61,14 +62,16 @@ export default function TokenAmountInput<T extends FieldValues>(
         name={name}
         control={control}
         render={({ field }) => (
-          <div className="flex w-full items-center">
+          <div className="flex w-full items-center gap-1">
             <Input
-              iconSize="sm"
+              iconSize={tokenIconSize}
               iconSrc={tokenIconSrc}
-              {...inputProps}
+              type="number"
+              min={0}
+              max={availableBalance}
               name={field.name}
               value={field.value ?? ''}
-              className="h-[4rem] border-r-0 rounded-e-none mr-3"
+              className="h-[4rem] rounded-e-none"
               onBlur={field.onBlur}
               onFocus={(e) => {
                 const v = e.currentTarget.value;
@@ -77,18 +80,17 @@ export default function TokenAmountInput<T extends FieldValues>(
               onChange={(e) => {
                 field.onChange(Number(e.target.value));
               }}
+              {...inputProps}
             />
 
-            <div className="flex items-center gap-2 -ml-1">
-              <Button
-                type="button"
-                colors="secondary"
-                className="uppercase py-3 text-md h-[4rem]"
-                onClick={() => field.onChange(Number(availableBalance ?? 0))}
-              >
-                Max
-              </Button>
-            </div>
+            <Button
+              type="button"
+              colors="secondary"
+              className="uppercase text-md h-[4rem]"
+              onClick={() => field.onChange(Number(availableBalance ?? 0))}
+            >
+              Max
+            </Button>
           </div>
         )}
       />

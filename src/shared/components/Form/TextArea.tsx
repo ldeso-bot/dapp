@@ -9,7 +9,7 @@ export const TextArea = ({
   label,
   error,
   tooltip,
-  addOnLabel,
+  addOnLabelTop: addOnLabel,
   mandatory,
   ...textAreaProps
 }: Props) => {
@@ -18,7 +18,7 @@ export const TextArea = ({
       label={label}
       error={error}
       tooltip={tooltip}
-      addOnLabel={addOnLabel}
+      addOnLabelTop={addOnLabel}
       mandatory={mandatory}
     >
       <textarea

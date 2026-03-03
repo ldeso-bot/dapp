@@ -114,7 +114,11 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
       titleClassName="font-semibold text-gray-800 text-size-20 tracking-tight"
       skeletonClassName="h-[56.6rem]"
     >
-      <Form className="-mt-1.5" onSubmit={form.handleSubmit(onSubmit)}>
+      <Form
+        className="-mt-1.5"
+        onSubmit={form.handleSubmit(onSubmit)}
+        noValidate
+      >
         <InputGroup>
           {/* Standard fields */}
           <SelectInput
@@ -147,13 +151,10 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
           <TokenAmountInput
             label="Amount (Tonnes)"
             availableBalance={selectedCarbonCredit?.amount ?? 0}
-            errorMessage={form.formState.errors.amountTonnes}
+            error={form.formState.errors.amountTonnes}
             inputProps={{
-              type: 'number',
               'aria-label': 'Token Input',
               placeholder: 'Select a token first',
-              min: 0,
-              step: 0.001,
             }}
             name="amountTonnes"
             control={form.control}

@@ -12,6 +12,7 @@ import { DialogHeader } from '@/shared/components/Dialog/DialogHeader';
 import Input from '@/shared/components/Form/Input';
 import Form from '@/shared/components/Form/layout/Form';
 import { RootError } from '@/shared/components/Form/RootError';
+import TokenAmountInput from '@/shared/components/Form/TokenAmountInput';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { DEV_MODE } from '@/shared/constants/config.constants';
 import { ROUTES } from '@/shared/constants/route.constants';
@@ -190,63 +191,22 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
             />
           )}
           <div className="flex flex-col gap-1">
-            <div className="flex items-end gap-2">
-              <div className="flex-1">
-                <Input
-                  label="Amount"
-                  type="number"
-                  iconSize="sm"
-                  iconSrc={tokens[typedToken].iconSrc}
-                  {...form.register('amount')}
-                  error={
-                    DEV_MODE
-                      ? formState.errors.amount ||
-                        (errorMessage
-                          ? { type: 'manual', message: errorMessage }
-                          : undefined)
-                      : undefined
-                  }
-                  onFocus={(e) => {
-                    if (
-                      e.currentTarget.value !== '' &&
-                      Number(e.currentTarget.value) === 0
-                    ) {
-                      e.currentTarget.select();
-                    }
-                  }}
-                />
-              </div>
-
-              <Button
-                type="button"
-                colors="secondary"
-                className="rounded-xl min-h-[4rem]"
-                onClick={() =>
-                  form.setValue('amount', Number(maxAmount), {
-                    shouldDirty: true,
-                    shouldValidate: true,
-                  })
-                }
-                disabled={(isKvcm && !contractLockId) || Number(maxAmount) <= 0}
-              >
-                Max
-              </Button>
-            </div>
-
-            {isKvcm && contractLockId && (
-              <small className="text-size-12 text-gray-800">
-                Available:{' '}
-                {(
-                  availableKvcm.get(Number(contractLockId)) ?? 0
-                ).toLocaleString()}{' '}
-                {tokens[typedToken].symbol}
-              </small>
-            )}
-            {isK2 && (
-              <small className="text-size-12 text-gray-800">
-                Available: {availableK2.toLocaleString()} {tokens.k2.symbol}
-              </small>
-            )}
+            <TokenAmountInput
+              label="Amount"
+              iconSize="sm"
+              name="amount"
+              iconSrc={tokens[typedToken].iconSrc}
+              control={form.control}
+              availableBalance={maxAmount}
+              error={
+                DEV_MODE
+                  ? formState.errors.amount ||
+                    (errorMessage
+                      ? { type: 'manual', message: errorMessage }
+                      : undefined)
+                  : undefined
+              }
+            />
           </div>
           {formState.errors.root && (
             <RootError
