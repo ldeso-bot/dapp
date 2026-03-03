@@ -15,6 +15,7 @@ export const RetirementHistoryCard = ({ retirementHistoryUrl }: Props) => {
       href={retirementHistoryUrl}
       className="hover:no-underline block"
       withoutIcon
+      noWrap={false}
     >
       <Card className="min-w-0 w-full max-w-full lg:w-[50rem] rounded-xl border border-gray-200 h-fit">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">

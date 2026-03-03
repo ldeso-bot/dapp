@@ -5,15 +5,23 @@ import { OpenInNewIcon } from './Svg/OpenInNewIcon';
 type Props = AnchorHTMLAttributes<HTMLAnchorElement> & {
   withoutIcon?: boolean;
   className?: string;
+  noWrap?: boolean;
 };
-const LinkOpenInNew = ({ withoutIcon, className, ...props }: Props) => {
+
+const LinkOpenInNew = ({
+  withoutIcon,
+  className,
+  noWrap = true,
+  ...props
+}: Props) => {
   return (
     <a
       {...props}
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        'inline-flex items-center gap-1 text-green-60 hover:underline text-nowrap',
+        'inline-flex items-center gap-1 text-green-60 hover:underline',
+        noWrap ? 'text-nowrap' : 'whitespace-normal',
         className
       )}
     >
