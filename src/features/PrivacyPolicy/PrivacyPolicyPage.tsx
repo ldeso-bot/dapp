@@ -8,7 +8,7 @@ import { PageTitle } from '@/shared/components/PageTitle/PageTitle';
 export const PrivacyPolicyPage = () => (
   <div className="flex flex-col gap-2 overflow-y-auto">
     <PageTitle>Privacy Policy</PageTitle>
-    <p className="text-size-14 text-gray-600">Last updated: February 2026</p>
+    <p className="text-size-14 text-gray-600">Last updated: March 2, 2026</p>
     <p>
       This Privacy Policy explains how personal data may be processed when you
       use Klima Protocol websites and any related verification-gated features.
@@ -18,7 +18,7 @@ export const PrivacyPolicyPage = () => (
     <section className="mt-3">
       <SectionTitle>1) Who we are</SectionTitle>
       <DocumentBody>
-        Controller: Klima Fintech Ltd. (British Virgin Islands)
+        Controller: Klima Fintech Ltd.
       </DocumentBody>
       <DocumentBody>
         Contact:{' '}
@@ -67,15 +67,9 @@ export const PrivacyPolicyPage = () => (
       </DocumentBody>
       <DocumentBody>This information:</DocumentBody>
       <DocumentList>
-        <li>is publicly visible</li>
-        <li>is not controlled by Klima Fintech Ltd.</li>
-        <li>typically cannot be deleted or modified</li>
+        <li>Is publicly visible</li>
+        <li>Is not controlled by Klima Fintech Ltd.</li>
       </DocumentList>
-
-      <DocumentBody>
-        Wallet addresses are pseudonymous but may become identifiable if linked
-        to other information.
-      </DocumentBody>
     </section>
 
     <section>
@@ -104,7 +98,7 @@ export const PrivacyPolicyPage = () => (
         <DocumentBody>
           Learn more:{' '}
           <DocumentLink href="https://docs.zk.me/hub/" target="_blank">
-            https://docs.zk.me/hub/
+            zkMe documentation
           </DocumentLink>
         </DocumentBody>
       </div>
@@ -124,26 +118,31 @@ export const PrivacyPolicyPage = () => (
         </DocumentList>
 
         <DocumentBody>
-          <strong>What we receive and store:</strong>
+          <strong>What we receive from zkMe:</strong>
         </DocumentBody>
         <DocumentList>
-          <li>verification outcome (e.g., pass / flag)</li>
-          <li>verification reference (e.g., verification ID and timestamp)</li>
-          <li>wallet address used for gating</li>
+          <li>Verification outcome (e.g., pass / flag)</li>
+          <li>Verification reference (e.g., verification ID and timestamp)</li>
+          <li>Wallet address used for gating</li>
           <li>
-            proof / gating status (e.g., whether a proof/attestation is present
+            Proof / gating status (e.g., whether a proof/attestation is present
             and recognized)
           </li>
+          <li>Email address</li>
+          <li>Citizenship status</li>
         </DocumentList>
+        <DocumentBody>
+          We do not store any of this information in our own systems; it is held
+          within the zkMe platform.
+        </DocumentBody>
 
         <DocumentBody>
-          <strong>What we do not receive or store:</strong>
+          <strong>What we do not have access to:</strong>
         </DocumentBody>
         <DocumentList>
-          <li>document images</li>
-          <li>raw biometric data</li>
-          <li>full document numbers</li>
-          <li>decrypted identity attributes (e.g., name, DOB, address)</li>
+          <li>Document images</li>
+          <li>Raw biometric data</li>
+          <li>Full document numbers</li>
         </DocumentList>
       </div>
 
@@ -309,11 +308,6 @@ export const PrivacyPolicyPage = () => (
         </li>
       </DocumentList>
 
-      <DocumentBody>
-        <strong>Note:</strong> We are intentionally not describing this as
-        “legal obligation” here, and we are not relying on “contractual
-        necessity” framing for gating.
-      </DocumentBody>
     </section>
 
     <section>
@@ -370,20 +364,16 @@ export const PrivacyPolicyPage = () => (
       <div className="mt-3">
         <SubSectionTitle>10.2 In our systems (off-chain)</SubSectionTitle>
         <DocumentBody>
-          We retain only what we need for security, integrity, and operating
-          verification-gated access:
+          Verification data (including email address and citizenship status) is
+          held within the zkMe platform and is not stored in Klima&apos;s own
+          systems. Refer to zkMe&apos;s terms and policies for their retention
+          practices.
         </DocumentBody>
-        <DocumentList>
-          <li>
-            Verification outcome (pass/flag), verification reference, wallet
-            address, and gating status: retained as needed for audit, abuse
-            prevention, and integrity controls.
-          </li>
-          <li>
-            Access/security logs: typically retained for a limited period
-            appropriate for security operations.
-          </li>
-        </DocumentList>
+        <DocumentBody>
+          We may maintain a wallet-address-to-gating-status mapping for the
+          purpose of operating verification-gated access controls, audit, and
+          abuse prevention.
+        </DocumentBody>
       </div>
 
       <div className="mt-3">
