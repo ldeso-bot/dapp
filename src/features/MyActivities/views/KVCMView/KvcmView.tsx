@@ -67,12 +67,17 @@ const KvcmOverview = () => {
   const allocated = allocationData?.kvcm.allocated ?? 0;
   const unallocated = allocationData?.kvcm.unallocated ?? 0;
 
-  const nextActiveLock = (kvcmData?.activeLocks || []).sort(
-    (a, b) => a.created - b.created
-  )[0];
+  const activeLocks = kvcmData?.activeLocks ?? [];
 
-  const nextUnlockTimestamp = (nextActiveLock?.lockedUntil ?? 0) * 1000;
-  const nextUnlockInDays = daysUntil(nextUnlockTimestamp);
+  const nextActiveLock = activeLocks.length
+    ? activeLocks.reduce((earliest, lock) =>
+        lock.lockedUntil < earliest.lockedUntil ? lock : earliest
+      )
+    : null;
+
+  const nextUnlockInDays = nextActiveLock
+    ? daysUntil(nextActiveLock.lockedUntil * 1000)
+    : null;
 
   const nextUnlockLabel = nextActiveLock ? 'Next Unlock on' : 'No active locks';
 
