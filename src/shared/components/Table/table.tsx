@@ -29,7 +29,7 @@ function TableBody({
     <tbody
       data-slot="table-body"
       className={cn(
-        '*:border-void-20 *:border-b-1',
+        '*:border-void-20 sm:*:border-b-1',
         borders === 'between' && '*:last:border-b-0',
         className
       )}

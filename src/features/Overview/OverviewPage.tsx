@@ -36,7 +36,9 @@ export default function OverviewPage() {
         <K2PriceCard />
       </StackedCards>
       <LiquidityPoolsCard />
-      <CarbonMarketCard />
+      <div className="hidden sm:block">
+        <CarbonMarketCard />
+      </div>
     </div>
   );
 }
