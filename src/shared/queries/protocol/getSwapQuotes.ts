@@ -1,7 +1,9 @@
+import { QUOTES_CACHE_TIME_SECONDS } from '@/shared/constants/config.constants';
 import contracts from '@/shared/constants/contracts.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
 import AAMDiamondAbi from '@/shared/utils/abis/AAMDiamond';
 import { getPublicClient } from '@/shared/utils/web3.utils';
+import { unstable_cache } from 'next/cache';
 import { Address, parseUnits, zeroAddress } from 'viem';
 import {
   CarbonClassQuote,
@@ -19,7 +21,7 @@ type SwapQuote = CarbonClassQuote;
  *
  * maturityId is fixed to 0 (K2), matching the existing sell-carbon flow.
  */
-export const getSwapQuotes = async (
+const getSwapQuotes = async (
   chainId: ChainId,
   tonneSizes: number[] = [1]
 ): Promise<SwapQuote[]> => {
@@ -56,4 +58,17 @@ export const getSwapQuotes = async (
 
   const usdcAmounts = await kvcmWeiAmountsToUsdc(chainId, kvcmWeiAmounts);
   return mapToQuotes(classesWithCredit, kvcmWeiAmounts, usdcAmounts);
+};
+
+export const getSwapQuotesCached = async (
+  chainId: ChainId,
+  sizes: number[] = [1]
+) => {
+  const sortedSizes = [...sizes].sort((a, b) => a - b);
+
+  return unstable_cache(
+    async (chainId: ChainId, sizes: number[]) => getSwapQuotes(chainId, sizes),
+    [`swap-quotes-${chainId}-${sortedSizes.join(',')}`],
+    { revalidate: QUOTES_CACHE_TIME_SECONDS }
+  )(chainId, sortedSizes);
 };

@@ -1,7 +1,9 @@
+import { QUOTES_CACHE_TIME_SECONDS } from '@/shared/constants/config.constants';
 import contracts from '@/shared/constants/contracts.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
 import RetirementAggregatorAbi from '@/shared/utils/abis/RetirementAggregator';
 import { getPublicClient } from '@/shared/utils/web3.utils';
+import { unstable_cache } from 'next/cache';
 import { Address, parseUnits } from 'viem';
 import {
   CarbonClassQuote,
@@ -17,7 +19,7 @@ type RetirementQuote = CarbonClassQuote;
  * registered carbon class, then converts the kVCM amounts to USDC via the
  * Aerodrome KVCM/USDC pool's getAmountOut.
  */
-export const getRetirementQuotes = async (
+const getRetirementQuotes = async (
   chainId: ChainId,
   tonneSizes: number[] = [1]
 ): Promise<RetirementQuote[]> => {
@@ -55,4 +57,18 @@ export const getRetirementQuotes = async (
 
   const usdcAmounts = await kvcmWeiAmountsToUsdc(chainId, kvcmWeiAmounts);
   return mapToQuotes(classesWithCredit, kvcmWeiAmounts, usdcAmounts);
+};
+
+export const getRetirementQuotesCached = async (
+  chainId: ChainId,
+  sizes: number[] = [1]
+) => {
+  const sortedSizes = [...sizes].sort((a, b) => a - b);
+
+  return unstable_cache(
+    async (chainId: ChainId, sizes: number[]) =>
+      getRetirementQuotes(chainId, sizes),
+    [`retirement-quotes-${chainId}-${sortedSizes.join(',')}`],
+    { revalidate: QUOTES_CACHE_TIME_SECONDS }
+  )(chainId, sortedSizes);
 };

@@ -20,7 +20,6 @@ export type ApiCreditToken = {
   };
 };
 
-
 /** Carbon Class */
 export type CarbonClass = {
   carbonClassId: string;
@@ -28,6 +27,8 @@ export type CarbonClass = {
   category: string;
   valueUSD: number;
   supplyTonnes: number;
+  retirementPriceUsdPerTonne: number;
+  swapPriceUsdPerTonne: number;
   valueUSDChangePercent24h: number;
   registeredTokens: {
     creditTokenId: string;

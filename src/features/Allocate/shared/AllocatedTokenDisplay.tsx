@@ -33,18 +33,20 @@ export const AllocatedTokenDisplay: FC<Props> = (props) => {
           progressPercent={allocatedPercent}
         />
       </div>
-      {highestInfluence && highestInfluence.category && highestInfluence.sharePercent > 0 && (
-        <div
-          onClick={() => scrollToAllocationsTable(tokenName)}
-          className="flex items-center justify-center gap-1 mt-1.5 cursor-pointer hover:underline"
-        >
-          <span className="text-size-12 text-gray-500">
-            Highest influence: {highestInfluence.category} ·{' '}
-            {(highestInfluence.sharePercent * 100).toFixed(1)}%
-          </span>
-          <Tooltip content="Your share of this class's total allocation. Click to view." />
-        </div>
-      )}
+      {highestInfluence &&
+        highestInfluence.category &&
+        highestInfluence.sharePercent > 0 && (
+          <div
+            onClick={() => scrollToAllocationsTable(tokenName)}
+            className="flex items-center justify-center gap-1 mt-1.5 cursor-pointer hover:underline"
+          >
+            <span className="text-size-12 text-gray-500 leading-none">
+              Highest influence: {highestInfluence.category} ·{' '}
+              {(highestInfluence.sharePercent * 100).toFixed(1)}%
+            </span>
+            <Tooltip content="Your share of this class's total allocation. Click to view." />
+          </div>
+        )}
     </div>
   );
 };

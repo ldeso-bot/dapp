@@ -9,6 +9,8 @@ import {
   TokenSnapshot_Filter,
 } from '@generated/gql/types/protocol.types';
 import { filter, isNonNullish, mapToObj } from 'remeda';
+import { getRetirementQuotesCached } from './getRetirementQuotes';
+import { getSwapQuotesCached } from './getSwapQuotes';
 import { mockTokenIds } from './mocks';
 import {
   getCreditsTokenMap,
@@ -26,11 +28,16 @@ export const getCarbonClasses = async (
   }
 
   // Get carbon classes
-  const response = await sdk.protocol.getCarbonClasses({
-    where: { isRegistered: true } as CarbonClass_Filter,
-  });
+  const [carbonClassesResponse, swapQuotesResponse, retirementQuotesResponse] =
+    await Promise.all([
+      sdk.protocol.getCarbonClasses({
+        where: { isRegistered: true } as CarbonClass_Filter,
+      }),
+      getSwapQuotesCached(chainId),
+      getRetirementQuotesCached(chainId),
+    ]);
 
-  const carbonClasses = response?.carbonClasses ?? [];
+  const carbonClasses = carbonClassesResponse?.carbonClasses ?? [];
 
   const [tokensMap, ...tokenSnapshotsResponses] = await Promise.all([
     getCreditsTokenMap(sdk),
@@ -100,6 +107,13 @@ export const getCarbonClasses = async (
     // Add up the supply tonnes of all registered tokens
     const supplyTonnes = registeredTokens.reduce((acc, r) => acc + r.amount, 0);
 
+    const swapPriceUsdPerTonne =
+      swapQuotesResponse.find((q) => q.carbonClassId === carbonClassId)
+        ?.usdcPerTonne ?? 0;
+    const retirementPriceUsdPerTonne =
+      retirementQuotesResponse.find((q) => q.carbonClassId === carbonClassId)
+        ?.usdcPerTonne ?? 0;
+
     return {
       carbonClassId,
       name: carbonClassInfo?.name ?? formatAddress(c.carbonClassId),
@@ -107,6 +121,8 @@ export const getCarbonClasses = async (
       valueUSD,
       valueUSDChangePercent24h,
       supplyTonnes,
+      swapPriceUsdPerTonne,
+      retirementPriceUsdPerTonne,
       registeredTokens,
     } satisfies CarbonClass;
   });
@@ -120,6 +136,8 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       category: 'Carbon Dioxide Removals',
       valueUSD: 12.04,
       supplyTonnes: 1000,
+      retirementPriceUsdPerTonne: 12.04,
+      swapPriceUsdPerTonne: 13.04,
       valueUSDChangePercent24h: 0.01,
       registeredTokens: mockTokenIds.map((id) => ({
         creditTokenId: id,
@@ -132,6 +150,8 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       category: 'Carbon Dioxide Removals',
       valueUSD: 3.99,
       supplyTonnes: 1000,
+      retirementPriceUsdPerTonne: 12.04,
+      swapPriceUsdPerTonne: 13.04,
       valueUSDChangePercent24h: -0.01,
       registeredTokens: mockTokenIds.map((id) => ({
         creditTokenId: id,
@@ -144,6 +164,8 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       category: 'Carbon Dioxide Removals',
       valueUSD: 1.02,
       supplyTonnes: 1000,
+      retirementPriceUsdPerTonne: 12.04,
+      swapPriceUsdPerTonne: 13.04,
       valueUSDChangePercent24h: 0.01,
       registeredTokens: mockTokenIds.map((id) => ({
         creditTokenId: id,
@@ -156,6 +178,8 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       category: 'Carbon Dioxide Removals',
       valueUSD: 36.97,
       supplyTonnes: 1000,
+      retirementPriceUsdPerTonne: 12.04,
+      swapPriceUsdPerTonne: 13.04,
       valueUSDChangePercent24h: -0.01,
       registeredTokens: mockTokenIds.map((id) => ({
         creditTokenId: id,
@@ -168,6 +192,8 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       category: 'Forestry',
       valueUSD: 12.04,
       supplyTonnes: 1000,
+      retirementPriceUsdPerTonne: 12.04,
+      swapPriceUsdPerTonne: 13.04,
       valueUSDChangePercent24h: 0.01,
       registeredTokens: mockTokenIds.map((id) => ({
         creditTokenId: id,
@@ -180,6 +206,8 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       category: 'Forestry',
       valueUSD: 3.99,
       supplyTonnes: 1000,
+      retirementPriceUsdPerTonne: 12.04,
+      swapPriceUsdPerTonne: 13.04,
       valueUSDChangePercent24h: -0.01,
       registeredTokens: mockTokenIds.map((id) => ({
         creditTokenId: id,
@@ -192,6 +220,8 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       category: 'Forestry',
       valueUSD: 1.02,
       supplyTonnes: 1000,
+      retirementPriceUsdPerTonne: 12.04,
+      swapPriceUsdPerTonne: 13.04,
       valueUSDChangePercent24h: 0.04,
       registeredTokens: mockTokenIds.map((id) => ({
         creditTokenId: id,
@@ -204,6 +234,8 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       category: 'Blue Carbon',
       valueUSD: 12.04,
       supplyTonnes: 1000,
+      retirementPriceUsdPerTonne: 12.04,
+      swapPriceUsdPerTonne: 13.04,
       valueUSDChangePercent24h: 0.01,
       registeredTokens: mockTokenIds.map((id) => ({
         creditTokenId: id,
@@ -216,6 +248,8 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       category: 'Blue Carbon',
       valueUSD: 3.99,
       supplyTonnes: 1000,
+      retirementPriceUsdPerTonne: 12.04,
+      swapPriceUsdPerTonne: 13.04,
       valueUSDChangePercent24h: -0.01,
       registeredTokens: mockTokenIds.map((id) => ({
         creditTokenId: id,
@@ -228,6 +262,8 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       category: 'Carbon Dioxide Avoidance',
       valueUSD: 12.04,
       supplyTonnes: 1000,
+      retirementPriceUsdPerTonne: 12.04,
+      swapPriceUsdPerTonne: 13.04,
       valueUSDChangePercent24h: -0.03,
       registeredTokens: mockTokenIds.map((id) => ({
         creditTokenId: id,
@@ -240,6 +276,8 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       category: 'Carbon Dioxide Avoidance',
       valueUSD: 3.99,
       supplyTonnes: 1000,
+      retirementPriceUsdPerTonne: 12.04,
+      swapPriceUsdPerTonne: 13.04,
       valueUSDChangePercent24h: -0.01,
       registeredTokens: mockTokenIds.map((id) => ({
         creditTokenId: id,
@@ -252,6 +290,8 @@ const getMockCarbonClasses = (): CarbonClass[] => {
       category: 'Carbon Dioxide Avoidance',
       valueUSD: 1.02,
       supplyTonnes: 1000,
+      retirementPriceUsdPerTonne: 12.04,
+      swapPriceUsdPerTonne: 13.04,
       valueUSDChangePercent24h: 0.1,
       registeredTokens: mockTokenIds.map((id) => ({
         creditTokenId: id,

@@ -71,6 +71,8 @@ const getMockCreditBalances = (): CreditBalance[] => {
           supplyTonnes: 1000,
           valueUSDChangePercent24h: 0.01,
           carbonClassId: '0x1234567890123456789012345678901234567890',
+          retirementPriceUsdPerTonne: 100,
+          swapPriceUsdPerTonne: 100,
           registeredTokens: mockTokenIds.map((id) => ({
             creditTokenId: id,
             amount: 0,

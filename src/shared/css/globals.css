@@ -110,6 +110,11 @@ body {
   line-height: 1.2rem;
 }
 
+/** Added in order to take precedence over the text-size line height */
+.leading-none {
+  line-height: 0;
+}
+
 .box-shadow {
   box-shadow:
     0 0.1rem 0.3rem 0 rgba(0, 0, 0, 0.1),

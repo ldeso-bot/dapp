@@ -1,9 +1,6 @@
-import { QUOTES_CACHE_TIME_SECONDS } from '@/shared/constants/config.constants';
-import { ChainId } from '@/shared/constants/networks.constants';
-import { getRetirementQuotes } from '@/shared/queries/protocol/getRetirementQuotes';
+import { getRetirementQuotesCached } from '@/shared/queries/protocol/getRetirementQuotes';
 import { validateRequestChainId } from '@/shared/utils/request.utils';
 import { isChainId } from '@/shared/utils/typeguards';
-import { unstable_cache } from 'next/cache';
 import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -22,12 +19,7 @@ export async function GET(request: NextRequest) {
   const sortedSizes = [...sizes].sort((a, b) => a - b);
 
   try {
-    const data = await unstable_cache(
-      async (chainId: ChainId, sizes: number[]) =>
-        getRetirementQuotes(chainId, sizes),
-      [`retirement-quotes-${chainId}-${sortedSizes.join(',')}`],
-      { revalidate: QUOTES_CACHE_TIME_SECONDS }
-    )(chainId, sortedSizes);
+    const data = await getRetirementQuotesCached(chainId, sortedSizes);
     return Response.json(data);
   } catch (error) {
     console.error('[retirement-quotes] Failed to fetch quotes:', error);

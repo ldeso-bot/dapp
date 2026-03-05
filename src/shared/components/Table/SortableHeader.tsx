@@ -2,8 +2,8 @@
 
 import Icon from '@/shared/components/Icon/Icon';
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
-import helpIcon from '@/shared/images/help.svg';
 import { SortConfig } from '@/shared/hooks/useSortableData';
+import helpIcon from '@/shared/images/help.svg';
 import { cn } from '@/shared/utils/component.utils';
 import { TableHead } from './table';
 
@@ -56,7 +56,10 @@ export const SortableHeader = <TData,>(props: SortableHeaderProps<TData>) => {
           </span>
         </div>
         {infoIcon && (
-          <div onClick={(e) => e.stopPropagation()}>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center justify-center"
+          >
             <Tooltip
               trigger={
                 <Icon
