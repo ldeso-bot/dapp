@@ -6,7 +6,7 @@ export const usePositionsSummary = () => {
   const totalActions = holdingsData
     ? +!!holdingsData.kvcm.maturedLocks.length +
       +!!holdingsData.liquidityMaturedLocks.length +
-      +!!holdingsData.k2.claimableValue
+      +!!holdingsData.k2.maturedLocks.length
     : 0;
 
   const claimableValue = holdingsData?.claimableValue ?? 0;
