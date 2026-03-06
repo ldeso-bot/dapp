@@ -6,10 +6,8 @@ import Card from '@/shared/components/Card/Card';
 import Dialog from '@/shared/components/Dialog/Dialog';
 import Input from '@/shared/components/Form/Input';
 import InputError from '@/shared/components/Form/layout/InputError';
-import LinkOpenInNew from '@/shared/components/LinkWithIcon';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { CarbonCreditIconImg } from '@/shared/constants/tokens.constants';
-import { CARBONMARK_URL } from '@/shared/constants/urls.constants';
 import { useAllowance } from '@/shared/hooks/useAllowance';
 import { useChainId } from '@/shared/hooks/web3/useChainId';
 import { useContract } from '@/shared/hooks/web3/useContract';
@@ -23,10 +21,11 @@ import { getCarbonmarkReceiptUrl } from '@/shared/utils/urls.utils';
 import { getScanLink } from '@/shared/utils/web3.utils';
 import { useFormo } from '@formo/analytics';
 import { useSetAtom } from 'jotai';
-import Link from 'next/link';
 import { useRetireCarbon } from '../hooks/useRetireCarbon';
 import { useRetireCarbonForm } from '../hooks/useRetireCarbonForm';
 import { RetireCarbonFields } from '../retire.constants';
+import LinkOpenInNew from '@/shared/components/LinkWithIcon';
+import { RetirementReceiptCard } from '../components/RetirementReceiptCard';
 import { retireCarbonDialogAtom } from '../retire.utils';
 
 const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
@@ -114,34 +113,20 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
       setAlert({
         title: 'Retirement complete',
         description: (
-          <>
-            Your carbon credits have been permanently retired. Proof of your
-            climate action can be accessed{' '}
-            <LinkOpenInNew href={getScanLink(chainId, result.hash)}>
-              here
-            </LinkOpenInNew>
-            .
-            <br />
-            <Link
-              href={receiptUrl}
-              target="_blank"
-              className="underline"
-              rel="noopener noreferrer"
-            >
-              View your retirement receipt
-            </Link>{' '}
-            (powered by{' '}
-            <Link
-              target="_blank"
-              className="underline"
-              href={CARBONMARK_URL}
-              rel="noopener noreferrer"
-            >
-              Carbonmark
-            </Link>
-            , our partner in carbon retirements).
-          </>
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-6 mb-2 lg:mb-0">
+            <div className="flex flex-col gap-3">
+              <span>Your carbon credits have been permanently retired.</span>
+              <LinkOpenInNew
+                href={getScanLink(chainId, result.hash)}
+                className="text-size-14 font-bold text-green-80"
+              >
+                Proof of your climate action
+              </LinkOpenInNew>
+            </div>
+            <RetirementReceiptCard receiptUrl={receiptUrl} />
+          </div>
         ),
+        links: [],
         type: 'success',
       });
       // Reset form
