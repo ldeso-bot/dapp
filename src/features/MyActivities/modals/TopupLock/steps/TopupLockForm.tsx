@@ -59,7 +59,10 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
   const totalAccruingRewards = lock?.rewards.kvcm ?? 0;
   const tokenSymbol = tokenInfo.symbol;
   const maturityDate = lock?.lockedUntil ?? null;
-  const baseApy = lock?.riskyYieldApyPercent ?? 0;
+  const baseApy =
+    lock?.token === 'kvcm'
+      ? (lock?.syntheticYieldApyPercent ?? 0)
+      : (lock?.riskyYieldApyPercent ?? 0);
 
   const isValidAmount = !!(amount && amount > 0);
   const availableBalance = Number(walletData?.balances?.[typedToken] ?? 0);

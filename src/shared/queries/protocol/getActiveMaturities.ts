@@ -17,9 +17,24 @@ export const getMaturities = async (chainId: ChainId): Promise<Maturity[]> => {
       index,
       maturityId: Number(maturity.maturityId),
       maturationTimestamp: Number(maturity.timestamp),
-      syntheticYieldZeroCouponYieldCurve:
-        maturity.syntheticYieldZeroCouponYieldCurve,
-      riskyYieldZeroCouponYieldCurve: maturity.riskyYieldZeroCouponYieldCurve,
+      apys: {
+        k2: {
+          kvcmApy: maturity.midnightInfo?.kvcmApyFor.k2 ?? 0,
+          k2Apy: maturity.midnightInfo?.k2ApyFor.k2 ?? 0,
+        },
+        kvcm: {
+          kvcmApy: maturity.liveApys?.kvcm.kvcmApy ?? 0,
+          k2Apy: maturity.midnightInfo?.k2ApyFor.kvcm ?? 0,
+        },
+        'kvcm-k2': {
+          kvcmApy: maturity.midnightInfo?.kvcmApyFor['kvcm-k2'] ?? 0,
+          k2Apy: maturity.midnightInfo?.k2ApyFor['kvcm-k2'] ?? 0,
+        },
+        'kvcm-usdc': {
+          kvcmApy: maturity.midnightInfo?.kvcmApyFor['kvcm-usdc'] ?? 0,
+          k2Apy: maturity.midnightInfo?.k2ApyFor['kvcm-usdc'] ?? 0,
+        },
+      },
     };
   });
 };
@@ -35,8 +50,24 @@ const getMockMaturities = async (): Promise<Maturity[]> => {
       index: i,
       maturityId: i,
       maturationTimestamp: getMockMaturationTimestamp(i),
-      syntheticYieldZeroCouponYieldCurve: 0.01 + getMockYieldPercent(i),
-      riskyYieldZeroCouponYieldCurve: getMockYieldPercent(i),
+      apys: {
+        kvcm: {
+          kvcmApy: getMockYieldPercent(i),
+          k2Apy: getMockYieldPercent(i),
+        },
+        'kvcm-k2': {
+          kvcmApy: getMockYieldPercent(i),
+          k2Apy: getMockYieldPercent(i),
+        },
+        k2: {
+          kvcmApy: getMockYieldPercent(i),
+          k2Apy: getMockYieldPercent(i),
+        },
+        'kvcm-usdc': {
+          kvcmApy: getMockYieldPercent(i),
+          k2Apy: getMockYieldPercent(i),
+        },
+      },
     });
   }
   return maturities;

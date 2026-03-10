@@ -54,7 +54,7 @@ export const DurationSelector = <T extends DurationFormFields>({
         ...preset,
         maturity,
         label: formatDateDDMMYYYY(timestamp),
-        baseAPY: maturity?.syntheticYieldZeroCouponYieldCurve ?? 3,
+        baseAPY: maturity?.apys.kvcm.kvcmApy ?? 3,
         approxDuration: calculateApproxDuration(timestamp),
       };
     }).filter(isNonNullish);

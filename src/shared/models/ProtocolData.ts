@@ -9,7 +9,7 @@ export enum YieldType {
 }
 
 /* Maturity 0 is for K2 */
-type MaturityId = number;
+export type MaturityId = number;
 
 /* Token Metrics */
 export type Metrics = {
@@ -39,12 +39,23 @@ export type LiquidityPoolInfo = {
 
 export type LiquidityPools = LiquidityPoolInfo[];
 
+type Yield = {
+  kvcmApy: number;
+  k2Apy: number;
+};
+
+export type MaturityApys = {
+  k2: Yield;
+  kvcm: Yield;
+  'kvcm-k2': Yield;
+  'kvcm-usdc': Yield;
+};
+
 export type Maturity = {
   index: number;
-  maturityId: MaturityId;
   maturationTimestamp: number;
-  syntheticYieldZeroCouponYieldCurve: number;
-  riskyYieldZeroCouponYieldCurve: number;
+  maturityId: MaturityId;
+  apys: MaturityApys;
 };
 
 export type ApyInfo = {

@@ -10,7 +10,7 @@ import {
   SDKLock,
   SDKLockAction,
 } from '@/shared/models/generated';
-import { AllMetrics, YieldType } from '@/shared/models/ProtocolData';
+import { AllMetrics, Maturity, YieldType } from '@/shared/models/ProtocolData';
 import { EarningStatus, Lock } from '@/shared/models/walletData';
 import { computeTokenAmountValueUSD } from '@/shared/utils/protocol.utils';
 import { formatStringToNumber } from '@/shared/utils/subgraph.utils';
@@ -147,6 +147,7 @@ type MapLockProps = {
   latestMidnightInfo: ComputedMidnightInfo | undefined;
   tokenInfo: LockableTokenInfo;
   allocations: SDKAllocation[];
+  maturity: Maturity;
 };
 
 export const mapKvcmOrLpLock = ({
@@ -155,6 +156,7 @@ export const mapKvcmOrLpLock = ({
   tokenMetrics,
   latestMidnightInfo,
   tokenInfo,
+  maturity,
 }: MapLockProps): Lock | null => {
   // Computing lock maturation
   const lockedUntil = formatStringToNumber(lock.maturity?.timestamp, 0);
@@ -250,7 +252,7 @@ export const mapKvcmOrLpLock = ({
     // Synthetic yield
     if (isSyntheticYieldEligible) {
       kvcmRewards = computeSyntheticYieldRewards(lock, midnightInfo);
-      syntheticYieldApyPercent = midnightInfo.kvcmApyFor.kvcm;
+      syntheticYieldApyPercent = maturity.apys.kvcm.kvcmApy;
       positionAmount += kvcmRewards;
     }
   }

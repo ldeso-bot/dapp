@@ -9,6 +9,7 @@ import { getUserSdkAllocations } from '@/shared/utils/allocation.utils';
 import { getSdk } from '@/shared/utils/subgraph.utils';
 import { Lock_Filter } from '@generated/gql/types/protocol.types';
 import { filter, isNonNullish } from 'remeda';
+import { getMaturities } from '../protocol/getActiveMaturities';
 import { getTokenMetrics } from '../protocol/getTokenMetrics';
 import { getLatestMidnightInfoDiffs } from '../protocol/midnightInfo.utils';
 import { getProtocolState } from '../protocol/protocol.utils';
@@ -24,20 +25,27 @@ export const getLocks = async (
   }
 
   // Fetch locks
-  const [locks, latestMidnightInfos, protocolState, tokenMetrics, allocations] =
-    await Promise.all([
-      sdk.protocol.getLocks({
-        where: {
-          account_: {
-            id: walletAddress,
-          },
-        } as Lock_Filter,
-      }),
-      getLatestMidnightInfoDiffs(sdk),
-      getProtocolState(sdk),
-      getTokenMetrics(chainId),
-      getUserSdkAllocations(chainId, walletAddress),
-    ]);
+  const [
+    locks,
+    latestMidnightInfos,
+    protocolState,
+    tokenMetrics,
+    allocations,
+    maturities,
+  ] = await Promise.all([
+    sdk.protocol.getLocks({
+      where: {
+        account_: {
+          id: walletAddress,
+        },
+      } as Lock_Filter,
+    }),
+    getLatestMidnightInfoDiffs(sdk),
+    getProtocolState(sdk),
+    getTokenMetrics(chainId),
+    getUserSdkAllocations(chainId, walletAddress),
+    getMaturities(chainId),
+  ]);
 
   // Map locks
   const mappedLocks = locks.locks.map((lock): Lock | null => {
@@ -52,7 +60,13 @@ export const getLocks = async (
     }
     const isK2Lock = tokenInfo.id === 'k2';
     const latestMidnightInfo = latestMidnightInfos[Number(lock.maturityId)];
-
+    const maturity = maturities.find(
+      (maturity) => maturity.maturityId === Number(lock.maturityId)
+    );
+    if (!maturity) {
+      console.error('❓ Maturity not found for lock:', lock.maturityId);
+      return null;
+    }
     const lockAllocations = allocations.filter(
       (allocation) => allocation.lock?.contractLockId === lock.contractLockId
     );
@@ -65,6 +79,7 @@ export const getLocks = async (
           latestMidnightInfo,
           tokenInfo,
           allocations: lockAllocations,
+          maturity,
         })
       : mapKvcmOrLpLock({
           lock,
@@ -73,6 +88,7 @@ export const getLocks = async (
           latestMidnightInfo,
           tokenInfo,
           allocations: lockAllocations,
+          maturity,
         });
   });
 

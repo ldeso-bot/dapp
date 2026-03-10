@@ -46,7 +46,7 @@ export const AllocationPrice: FC<AllocationsTableItemProps> = (props) => {
         </div>
       </div>
     );
-  }, [allocation, carbonClass, isKvcm, props]);
+  }, [carbonClass, isKvcm, props]);
 
   return priceDisplay;
 };

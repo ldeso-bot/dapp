@@ -10,7 +10,7 @@ export type DurationFormFields = {
   [key: string]: unknown;
 } & Record<string, unknown>;
 
-export const formatLockDuration = (days: number) => {
+const formatLockDuration = (days: number) => {
   if (days < 30) {
     return `≈ ${days} days`;
   } else if (days < 365) {

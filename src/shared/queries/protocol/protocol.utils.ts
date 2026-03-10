@@ -14,6 +14,7 @@ import { unstable_cache } from 'next/cache';
 import { mapToObj } from 'remeda';
 import { base } from 'viem/chains';
 import { getLatestMidnightInfoDiffs } from './midnightInfo.utils';
+import { getActiveMaturitiesApys } from './yieldCurve.utils';
 
 export const tokensEligibleForIncentives: Record<YieldType, Token[]> = {
   [YieldType.K2]: [
@@ -92,10 +93,12 @@ export type ProtocolState = NonNullable<
 export const getActiveMaturities = async (sdk: Sdk) => {
   return unstable_cache(
     async () => {
-      const [protocolState, midnightInfos] = await Promise.all([
-        getProtocolState(sdk),
-        getLatestMidnightInfoDiffs(sdk),
-      ]);
+      const [protocolState, midnightInfos, activeMaturitiesApys] =
+        await Promise.all([
+          getProtocolState(sdk),
+          getLatestMidnightInfoDiffs(sdk),
+          getActiveMaturitiesApys(sdk),
+        ]);
       if (!protocolState) return [];
       const maturities = await sdk.protocol.getMaturities({
         where: {
@@ -106,16 +109,11 @@ export const getActiveMaturities = async (sdk: Sdk) => {
       return maturities.maturities.map((maturity) => {
         // Add yield curve info to maturity
         const midnightInfo = midnightInfos[Number(maturity.maturityId)];
-        const syntheticYieldZeroCouponYieldCurve = midnightInfo
-          ? midnightInfo.kvcmApyFor.kvcm
-          : 0;
-        const riskyYieldZeroCouponYieldCurve = midnightInfo
-          ? midnightInfo.kvcmApyFor['kvcm-k2']
-          : 0;
+        const liveApys = activeMaturitiesApys[Number(maturity.maturityId)];
         return {
           ...maturity,
-          syntheticYieldZeroCouponYieldCurve,
-          riskyYieldZeroCouponYieldCurve,
+          midnightInfo,
+          liveApys,
         };
       });
     },

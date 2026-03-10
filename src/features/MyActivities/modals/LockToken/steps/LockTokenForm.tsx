@@ -56,7 +56,10 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
     ? parseAmount(amount, tokenInfo.decimals)
     : 0n;
 
-  const maturity = protocolData?.maturities[maturityId] ?? null;
+  const maturity =
+    protocolData?.maturities.find(
+      (maturity) => maturity.maturityId === maturityId
+    ) ?? null;
   const maturityDate = maturity?.maturationTimestamp;
   const isMaturityWithin30Days =
     isValidAmount && isMaturityWithinDays(maturityDate, 30);
@@ -167,7 +170,8 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
               </div>
               {maturity && (
                 <IncentivesBreakdownCard
-                  amount={watch('amount')}
+                  amount={amount}
+                  token={typedToken}
                   maturity={maturity}
                 />
               )}
