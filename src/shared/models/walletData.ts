@@ -64,6 +64,8 @@ export type Lock = {
   unlockableLockedAmount: number;
   /** Amount that is pending unlock (K2 only) */
   requestedForUnlockAmount: number;
+  /** The time when the user can request unlock (K2 only) */
+  availableForUnlockRequestAt: number;
   /** Whether the lock can be requested to be unlocked (K2 only) */
   canRequestUnlock: boolean;
   /** Status of the lock */

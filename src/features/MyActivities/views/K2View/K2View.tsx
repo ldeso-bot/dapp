@@ -170,6 +170,17 @@ const K2Overview = () => {
                     Request unlock
                   </Button>
                 )}
+                {!lock?.canRequestUnlock &&
+                  (lock?.availableForUnlockRequestAt ?? 0) > 0 && (
+                    <span>
+                      Tokens will be available for unlock on{' '}
+                      {formatCurrentTime(
+                        new Date(
+                          (lock?.availableForUnlockRequestAt ?? 0) * 1000
+                        )
+                      )}
+                    </span>
+                  )}
               </div>
             </>
           )}

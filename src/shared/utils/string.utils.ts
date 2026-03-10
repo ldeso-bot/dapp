@@ -72,8 +72,8 @@ export const daysUntil = (timestamp: number): number => {
   return Math.ceil((timestamp - new Date().getTime()) / MILLISECONDS_PER_DAY);
 };
 
-export const formatCurrentTime = (): string =>
-  new Date().toLocaleTimeString('en-US', {
+export const formatCurrentTime = (date: Date = new Date()): string =>
+  date.toLocaleTimeString('en-US', {
     month: 'short',
     day: 'numeric',
     hour: 'numeric',

@@ -59,5 +59,8 @@ fragment LockActionFragment on LockAction {
     ...MidnightInfoFragment
   }
 
+  lockAmount
+
   timestamp
+  blockTimestamp
 }

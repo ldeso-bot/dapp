@@ -36,3 +36,5 @@ export const FORMO_DEBUG =
 
 export const LUCKY_ORANGE_SITE_ID =
   process.env.NEXT_PUBLIC_LUCKY_ORANGE_SITE_ID ?? '';
+
+export const DUST_LEVEL = 0.00000000000001;

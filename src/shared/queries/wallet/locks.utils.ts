@@ -1,3 +1,4 @@
+import { DUST_LEVEL } from '@/shared/constants/config.constants';
 import { ONE_DAY } from '@/shared/constants/protocol.constants';
 import {
   LockableTokenInfo,
@@ -141,6 +142,7 @@ const computeAccumlulatorYieldRewards = (
 };
 
 type MapLockProps = {
+  // TODO: Create a formatted Lock type with preprocessed data
   lock: SDKLock;
   protocolState: ProtocolState;
   tokenMetrics: AllMetrics;
@@ -341,6 +343,7 @@ export const mapKvcmOrLpLock = ({
     availableForUnlockRequestAmount: 0,
     requestedForUnlockAmount: 0,
     canRequestUnlock: isClaimable,
+    availableForUnlockRequestAt: lockedUntil,
     lockedUntil,
     status,
     earningStatus,
@@ -424,6 +427,19 @@ const computeK2LockAccumulatedRewards = ({
   };
 };
 
+const getActionMetrics = (action: SDKLockAction) => {
+  const actionTimestamp = formatStringToNumber(action.timestamp, 0);
+  const actionBlockTimestamp = formatStringToNumber(action.blockTimestamp, 0);
+  const now = new Date().getTime() / 1000;
+  const daysSinceAction =
+    Math.floor(now / ONE_DAY) - Math.floor(actionTimestamp / ONE_DAY);
+  return {
+    actionTimestamp,
+    actionBlockTimestamp,
+    daysSinceAction,
+  };
+};
+
 /**
  * Helper function to sum the amounts of the lock actions witrh weights
  * @param lock
@@ -435,10 +451,7 @@ const sumLockActionsAmounts = (
   multiplierFunction: (action: SDKLockAction, daysSinceAction: number) => number
 ) => {
   return lock.lockActions.reduce((acc, action) => {
-    const actionTimestamp = formatStringToNumber(action.timestamp, 0);
-    const now = new Date().getTime() / 1000;
-    const daysSinceAction =
-      Math.floor(now / ONE_DAY) - Math.floor(actionTimestamp / ONE_DAY);
+    const { daysSinceAction } = getActionMetrics(action);
 
     return (
       acc +
@@ -513,6 +526,38 @@ export const mapK2Lock = ({
         : 0;
     }
   );
+
+  let availableForUnlockRequestAt = 0;
+  // We sort the actions by block timestamp instead of by action timestramp
+  // Because a user could request unlock of all token (resolves at midnight)
+  // then create a deposit (resolves now)
+  // In this case we would not detect that the user had unlocked all of their token *
+  // Because at the time at unlock, we would count the newly deposited tokens
+  const blockTimestampSortedActions = lock.lockActions.sort((a, b) => {
+    const { actionBlockTimestamp: aBlockTimestamp } = getActionMetrics(a);
+    const { actionBlockTimestamp: bBlockTimestamp } = getActionMetrics(b);
+    return aBlockTimestamp - bBlockTimestamp;
+  });
+  blockTimestampSortedActions.forEach((action) => {
+    const { actionTimestamp } = getActionMetrics(action);
+    // The user can unlock one day after the midnight of the first lock action
+    if (
+      action.type === LockActionType.LOCKED &&
+      availableForUnlockRequestAt == 0
+    ) {
+      availableForUnlockRequestAt =
+        (Math.floor(actionTimestamp / ONE_DAY) + 2) * ONE_DAY;
+    }
+    // Reset the counter if the user has unlocked all non allocated tokens
+    if (
+      action.type === LockActionType.UNLOCK_REQUESTED &&
+      formatStringToNumber(action.lockAmount, tokens.k2.decimals) -
+        k2Allocated <=
+        DUST_LEVEL
+    ) {
+      availableForUnlockRequestAt = 0;
+    }
+  });
 
   // A K2 lock can be requested if no unlock request have been made
   // or if the request unlock timestamp has not been reached yet (adds unlock amount to the same midnight)
@@ -645,6 +690,7 @@ export const mapK2Lock = ({
     unlockableLockedAmount,
     availableForUnlockRequestAmount,
     requestedForUnlockAmount,
+    availableForUnlockRequestAt,
     status,
     earningStatus,
     canRequestUnlock,

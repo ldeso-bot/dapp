@@ -1,7 +1,5 @@
 import { usePermitSignature } from '@/features/MyActivities/hooks/usePermitSignature';
-import { useTransactionWithValidation } from '@/features/MyActivities/hooks/useTransactionWithValidation';
-import { getWalletDataQueryKey } from '@/shared/hooks/api/walletData.queryKey';
-import { useChainId } from '@/shared/hooks/web3/useChainId';
+import { useTransactionAndWaitForWalletUpdate } from '@/shared/hooks/useTransactionAndWaitForWalletUpdate';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { WalletData } from '@/shared/models/walletData';
 import { handleWeb3Error } from '@/shared/utils/web3.utils';
@@ -17,10 +15,8 @@ export const depositK2TokenDialogAtom = atom({ open: false });
 
 export const useDepositK2Token = (params: { amount: bigint }) => {
   const { amount } = params;
-  const { address: userAddress, chain } = useAccount();
-  const chainId = useChainId();
+  const { chain } = useAccount();
 
-  const queryKey = getWalletDataQueryKey(chainId, userAddress);
   const { contract: stakingContract } = useContract('StakingManagerDiamond');
 
   const { getPermitSignature } = usePermitSignature({
@@ -29,29 +25,9 @@ export const useDepositK2Token = (params: { amount: bigint }) => {
     tokenName: 'K2',
   });
 
-  const { executeWithValidation } = useTransactionWithValidation<WalletData>({
-    queryKey,
-    validate: (walletData, previousData) => {
-      if (!walletData?.locks) return false;
-      const currentLockCount = previousData?.locks.length ?? 0;
-      // For new deposits: check if the lock count increased
-      if (walletData.locks.length > currentLockCount) {
-        return true;
-      }
-      // For topups: check if the existing lock amount changed
-      const existingLock = walletData.locks.find((lock) => lock.token === 'k2');
-      const previousLock = previousData?.locks.find(
-        (lock) => lock.token === 'k2'
-      );
-      if (
-        existingLock &&
-        previousLock &&
-        existingLock.lockedAmount !== previousLock.lockedAmount
-      ) {
-        return true;
-      }
-      return false;
-    },
+  const { executeWithValidation } = useTransactionAndWaitForWalletUpdate({
+    valueFetcher: (walletData: WalletData) =>
+      walletData?.locks.find((lock) => lock.token === 'k2')?.lockedAmount ?? 0,
   });
 
   const deposit = useCallback(async () => {

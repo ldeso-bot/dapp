@@ -1,19 +1,23 @@
-Summary
-[Brief description of the PR]
-
-Related issues
-Closes #[Issue Number]
-
 ## Summary
 
-[Detailed description of what this PR accomplishes]
+<!--  Brief description of what this PR accomplishes -->
 
 ## Related issues
 
-Closes #[Issue Number]
+<!--
+Closes #
+-->
 
 ## Technical changes
 
+<!--
 - **[Change Area]**: [Description of the technical implementation]
 - **[Change Area]**: [Description of the technical implementation]
 - **[Change Area]**: [Description of the technical implementation]
+-->
+
+## Notes for QA
+
+<!--
+Potential function impacts to help QA to perform the appropriate tests
+-->
