@@ -149,7 +149,6 @@ type MapLockProps = {
   latestMidnightInfo: ComputedMidnightInfo | undefined;
   tokenInfo: LockableTokenInfo;
   allocations: SDKAllocation[];
-  maturity: Maturity;
 };
 
 export const mapKvcmOrLpLock = ({
@@ -159,7 +158,7 @@ export const mapKvcmOrLpLock = ({
   latestMidnightInfo,
   tokenInfo,
   maturity,
-}: MapLockProps): Lock | null => {
+}: MapLockProps & { maturity: Maturity }): Lock | null => {
   // Computing lock maturation
   const lockedUntil = formatStringToNumber(lock.maturity?.timestamp, 0);
   const isMatured = lockedUntil < new Date().getTime() / 1000;

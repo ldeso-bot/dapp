@@ -63,33 +63,34 @@ export const getLocks = async (
     const maturity = maturities.find(
       (maturity) => maturity.maturityId === Number(lock.maturityId)
     );
-    if (!maturity) {
-      console.error('❓ Maturity not found for lock:', lock.maturityId);
-      return null;
-    }
     const lockAllocations = allocations.filter(
       (allocation) => allocation.lock?.contractLockId === lock.contractLockId
     );
 
-    return isK2Lock
-      ? mapK2Lock({
-          lock,
-          protocolState,
-          tokenMetrics,
-          latestMidnightInfo,
-          tokenInfo,
-          allocations: lockAllocations,
-          maturity,
-        })
-      : mapKvcmOrLpLock({
-          lock,
-          protocolState,
-          tokenMetrics,
-          latestMidnightInfo,
-          tokenInfo,
-          allocations: lockAllocations,
-          maturity,
-        });
+    if (isK2Lock) {
+      return mapK2Lock({
+        lock,
+        protocolState,
+        tokenMetrics,
+        latestMidnightInfo,
+        tokenInfo,
+        allocations: lockAllocations,
+      });
+    } else {
+      if (!maturity) {
+        console.error('❓ Maturity not found for lock:', lock.maturityId);
+        return null;
+      }
+      return mapKvcmOrLpLock({
+        lock,
+        protocolState,
+        tokenMetrics,
+        latestMidnightInfo,
+        tokenInfo,
+        allocations: lockAllocations,
+        maturity,
+      });
+    }
   });
 
   // Cull and return locks
