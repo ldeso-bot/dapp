@@ -15,7 +15,7 @@ export const ContentContainer = ({
   const isLoggedOut = !isConnected && !hasPreviouslyConnected;
 
   return (
-    <div className="flex-1 bg-void-10 p-6">
+    <div className="flex-1 bg-surface-3 p-6">
       <div
         className={cn('mx-auto w-full', {
           'max-w-[1200px]': !isLoggedOut,

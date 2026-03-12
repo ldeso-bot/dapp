@@ -56,7 +56,12 @@ export const Tooltip = ({
   if (!content) return trigger ?? null;
 
   const triggerNode = trigger ?? (
-    <Icon icon={helpIcon} alt="Help" size={iconSize} />
+    <Icon
+      icon={helpIcon}
+      alt="Help"
+      size={iconSize}
+      className="bg-text-text1"
+    />
   );
 
   const TriggerButton = (

@@ -22,7 +22,7 @@ export const AllocationsInfoCard = () => {
                 {formatAmountWithCommas(stats?.totalAllocated || 0, 2)}
               </div>
               <div className="flex items-center justify-center gap-1.5">
-                <span className="text-size-12 text-gray-500">
+                <span className="text-size-12 text-text-3">
                   Total allocated
                 </span>
                 <Tooltip

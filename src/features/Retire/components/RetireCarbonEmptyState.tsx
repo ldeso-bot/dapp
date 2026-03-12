@@ -21,9 +21,9 @@ export const RetireCarbonEmptyState = () => {
   return (
     <EmptyState
       title={
-        <>
+        <span className="text-text-1">
           Retire Carbon. <br /> Make It Permanent.
-        </>
+        </span>
       }
       description="Use your kVCM to permanently retire carbon credits and receive a verified certificate via Carbonmark."
       flowItems={retireCarbonFlowItems}

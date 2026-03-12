@@ -23,7 +23,7 @@ export const ProgressWithPercentage: FC<Props> = (props) => {
           progressPercent={progressPercent}
         />
       </div>
-      <span className="text-size-12 text-void-50 tabular-nums shrink-0">
+      <span className="text-size-12 text-text-3 tabular-nums shrink-0">
         {formatPercentage(progressPercent)}
       </span>
     </div>

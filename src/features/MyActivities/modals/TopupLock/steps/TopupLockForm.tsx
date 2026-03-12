@@ -135,7 +135,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
         title={`Top up ${lockTerm}`}
         onClose={reset}
       />
-      <p className="text-size-14 text-gray-500">
+      <p className="text-size-14 text-text-3">
         <span className="capitalize">{lockTerm}</span> duration will stay
         unchanged.
       </p>
@@ -172,17 +172,17 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
               <Button
                 type="button"
                 colors="secondary"
-                className="rounded-xl min-h-[4rem]"
+                className="rounded-xl min-h-[4rem] border-border-strong"
                 onClick={() =>
                   form.setValue('amount', Number(availableBalance))
                 }
               >
-                Max
+                MAX
               </Button>
             }
           />
 
-          <span className="text-size-12 text-gray-600">
+          <span className="text-size-12 text-text-2">
             Balance: {formatAmountWithCommas(availableBalance, 'auto')}{' '}
             {tokenInfo.symbol}
           </span>
@@ -210,12 +210,18 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
           <RootError errorMessage="Duration is less than 3 days. Pay attention to short durations; rewards may be minimal. Consider choosing a later duration." />
         )}
         <ButtonGroup className="flex-row">
-          <Button colors="primary" context="flow" onClick={() => reset()}>
+          <Button
+            colors="primary"
+            className="border-border-strong"
+            context="flow"
+            onClick={() => reset()}
+          >
             Cancel
           </Button>
           <Button
             colors="secondary"
             context="flow"
+            className="border-border-strong"
             type="submit"
             disabled={isSubmitting || !!balanceErrorMessage}
           >

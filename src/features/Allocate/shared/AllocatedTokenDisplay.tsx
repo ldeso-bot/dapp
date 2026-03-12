@@ -21,9 +21,9 @@ export const AllocatedTokenDisplay: FC<Props> = (props) => {
   const { tokenName, allocatedPercent, highestInfluence } = props;
   return (
     <div>
-      <div className="cursor-pointer hover:bg-gray-50/50 transition-colors p-2 rounded-lg -m-2">
+      <div className="cursor-pointer transition-colors p-2 rounded-lg -m-2">
         <div className="text-center mb-1.5">
-          <span className="text-size-12 text-gray-800 tabular-nums">
+          <span className="text-size-12 text-text-1 tabular-nums">
             {tokenName} allocated · {formatPercentage(allocatedPercent)}
           </span>
         </div>
@@ -40,7 +40,7 @@ export const AllocatedTokenDisplay: FC<Props> = (props) => {
             onClick={() => scrollToAllocationsTable(tokenName)}
             className="flex items-center justify-center gap-1 mt-1.5 cursor-pointer hover:underline"
           >
-            <span className="text-size-12 text-gray-500 leading-none">
+            <span className="text-size-12 text-text-3">
               Highest influence: {highestInfluence.category} ·{' '}
               {(highestInfluence.sharePercent * 100).toFixed(1)}%
             </span>

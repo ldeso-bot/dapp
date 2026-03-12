@@ -16,7 +16,8 @@ import { LiquidityPositionsView } from '../views/LiquidityPositionsView/Liquidit
 import { OverviewView } from '../views/OverviewView/OverviewView';
 import { TestView } from '../views/TestView/TestView';
 
-const tabClassName = 'py-4 px-3 text-size-14 font-medium rounded-full';
+const tabClassName =
+  'py-4 px-3 text-size-14 text-text-1 font-medium rounded-full';
 
 export const MyActivitiesTabs = () => {
   const router = useRouter();

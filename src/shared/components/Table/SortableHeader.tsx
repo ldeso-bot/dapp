@@ -38,8 +38,8 @@ export const SortableHeader = <TData,>(props: SortableHeaderProps<TData>) => {
             className={cn(
               'transition-colors',
               isActive && direction === 'asc'
-                ? 'text-gray-500 opacity-100'
-                : 'text-gray-500 opacity-40'
+                ? 'text-text-3 opacity-100'
+                : 'text-text-3 opacity-40'
             )}
           >
             ▲
@@ -48,8 +48,8 @@ export const SortableHeader = <TData,>(props: SortableHeaderProps<TData>) => {
             className={cn(
               'transition-colors -mt-1',
               isActive && direction === 'desc'
-                ? 'text-gray-500 opacity-100'
-                : 'text-gray-500 opacity-40'
+                ? 'text-text-3 opacity-100'
+                : 'text-text-3 opacity-40'
             )}
           >
             ▼
@@ -66,7 +66,7 @@ export const SortableHeader = <TData,>(props: SortableHeaderProps<TData>) => {
                   icon={helpIcon}
                   alt="Info"
                   size={1.6}
-                  className="text-gray-400"
+                  className="text-text-3"
                 />
               }
               content={infoIcon}

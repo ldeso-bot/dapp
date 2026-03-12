@@ -37,11 +37,11 @@ export const PayWithOptions = <T extends FieldValues>(props: Props<T>) => {
                   className={cn(
                     'flex items-center flex-1 justify-center border gap-2 px-3 py-2 cursor-pointer rounded transition-colors duration-150',
                     {
-                      'bg-white border-void-50':
+                      'bg-surface-1 border-border-strong':
                         field.value !== option.token.id,
-                      'bg-green-10 border-green-40':
+                      'bg-positive-bg border-border-strong':
                         field.value === option.token.id,
-                      'bg-void-10 border-void-20 opacity-50 cursor-not-allowed':
+                      'bg-surface-3 border-border-strong opacity-50 cursor-not-allowed':
                         option.disabled,
                     }
                   )}

@@ -13,7 +13,7 @@ type Props = {
 export const HoldingTotalPosition: FC<Props> = ({ totalPosition, symbol }) => {
   return (
     <div className="min-w-0">
-      <div className="flex items-center gap-2 text-lg sm:text-2xl text-gray-500">
+      <div className="flex items-center gap-2 text-lg sm:text-2xl text-text-3">
         Token locks &amp; incentives
         <Tooltip
           className="max-w-[30rem] text-size-12 p-3"
@@ -21,7 +21,7 @@ export const HoldingTotalPosition: FC<Props> = ({ totalPosition, symbol }) => {
         />
       </div>
 
-      <div className="mt-2 text-3xl sm:text-4xl font-bold tabular-nums break-words">
+      <div className="mt-2 text-3xl text-text-1 sm:text-4xl font-bold tabular-nums break-words">
         {formatAmountWithCommas(Number(totalPosition))} {symbol}
       </div>
     </div>

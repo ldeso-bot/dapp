@@ -40,10 +40,12 @@ export const KvcmView = () => {
         <>
           <InfoCard
             title="kVCM Locks"
+            buttonClassName="border-border-strong"
             buttonLabel={
-              <>
-                <Icon icon={Plus} size={1.6} /> Lock
-              </>
+              <span className="flex items-center gap-2 text-text-static-light">
+                <Icon icon={Plus} size={1.6} />
+                Lock
+              </span>
             }
             tooltipId="kvcm-locks"
             description="Lock kVCM for a fixed duration to receive variable kVCM and K2 incentives when the term ends. Locked kVCM can also be allocated to carbon classes to influence protocol pricing."
@@ -89,7 +91,7 @@ const KvcmOverview = () => {
             <>
               <StatusCardTitle badge="green">Ready to unlock</StatusCardTitle>
               <div className="space-y-1">
-                <div className="text-size-18 font-bold text-gray-900 tabular-nums">
+                <div className="text-size-18 font-bold text-text-1 tabular-nums">
                   {formatAmountWithCommas(
                     kvcmData.claimableRewardsPlusPrincipalAmount
                   )}{' '}
@@ -107,13 +109,13 @@ const KvcmOverview = () => {
               </StatusCardTitle>
               {nextActiveLock && (
                 <div className="space-y-1">
-                  <div className="text-size-18 font-bold text-gray-900">
+                  <div className="text-size-18 font-bold text-text-1">
                     {formatTimestamp(
                       nextActiveLock.lockedUntil * 1000,
                       'short'
                     )}
                   </div>
-                  <div className="text-size-14 text-gray-500">
+                  <div className="text-size-14 text-text-3">
                     • {nextUnlockInDays} days
                   </div>
                 </div>
@@ -128,14 +130,14 @@ const KvcmOverview = () => {
                 Original amount locked
               </StatusCardTitle>
               <div className="space-y-1">
-                <div className="text-size-18 font-bold text-gray-900 tabular-nums">
+                <div className="text-size-18 font-bold text-text-1 tabular-nums">
                   {formatAmountWithCommas(kvcmData.lockedAmount)} kVCM
                 </div>
-                <div className="text-size-14 text-gray-500 mt-2 space-y-0.5">
+                <div className="text-size-14 text-text-3 mt-2 space-y-0.5">
                   <div>
                     <Link
                       href={ROUTES.ALLOCATE}
-                      className="underline text-gray-900 hover:text-gray-700"
+                      className="underline text-text-1 hover:text-text-2"
                     >
                       Allocated to carbon classes:
                     </Link>{' '}
@@ -151,7 +153,7 @@ const KvcmOverview = () => {
         </StatusCard>
       </div>
       <div className="my-4 w-full sm:mx-auto sm:max-w-[60%] px-4 sm:px-0">
-        <div className="rounded-2xl bg-white p-5 sm:p-6">
+        <div className="rounded-2xl p-5 sm:p-6">
           {kvcmData && (
             <>
               <HoldingTotalPosition

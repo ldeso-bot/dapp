@@ -33,14 +33,15 @@ export default function Card({
   variant = 'default',
   id,
 }: CardProps) {
-  const border = variant === 'default' ? 'border-gray-300' : 'border-green-300';
-  const background = variant === 'default' ? 'bg-background' : 'bg-green-50';
-  const text = variant === 'default' ? 'text-void-80' : 'text-green-80';
+  const border =
+    variant === 'default' ? 'border-border-default' : 'border-green-300';
+  const background = variant === 'default' ? 'bg-surface-1' : 'bg-green-50';
+  const text = variant === 'default' ? 'text-text-1' : 'text-text-highlight';
   return (
     <div
       id={id}
       className={cn(
-        'flex flex-col rounded-lg border-gray-300 border-1 p-5',
+        'flex flex-col rounded-lg border-border-default border-1 p-5',
         background,
         border,
         className
@@ -60,7 +61,7 @@ export default function Card({
               <div
                 className={cn(
                   text,
-                  'text-[1rem] px-2 py-0 rounded-full border border-gray-200 bg-gray-100',
+                  'text-[1rem] px-2 py-0 rounded-full border border-border-subtle bg-gray-100',
                   titleAddOnBadgeClassName
                 )}
               >

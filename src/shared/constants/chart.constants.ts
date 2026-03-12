@@ -1,10 +1,8 @@
 import { YAxisProps } from 'recharts';
 import { BaseAxisProps } from 'recharts/types/util/types';
 
-const void30 = '#999';
-
 export const BAR_PROPS = {
-  fill: void30,
+  fill: 'var(--text-3)',
   radius: [0, 5, 5, 0] as [number, number, number, number],
   maxBarSize: 16,
 };

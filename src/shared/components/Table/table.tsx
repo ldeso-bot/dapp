@@ -12,7 +12,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
   return (
     <thead
       data-slot="table-header"
-      className={cn('text-size-14 text-void-60 font-normal', className)}
+      className={cn('text-size-14 text-text-2 font-normal', className)}
       {...props}
     />
   );
@@ -29,7 +29,7 @@ function TableBody({
     <tbody
       data-slot="table-body"
       className={cn(
-        '*:border-void-20 sm:*:border-b-1',
+        '*:border-border-default *:border-b-1',
         borders === 'between' && '*:last:border-b-0',
         className
       )}

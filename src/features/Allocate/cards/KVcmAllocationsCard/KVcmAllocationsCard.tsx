@@ -40,11 +40,11 @@ export default function KvcmAllocationsCard(props: CardProps) {
       unallocatedAmount={unallocatedKvcm}
       totalAmount={totalAllocatableKvcm > 0 ? totalAllocatableKvcm : lockedKvcm}
       noAllocationComponent={
-        <div className="bg-void-10 py-3 px-6 w-full">
+        <div className="bg-surface-3 py-3 px-6 w-full">
           You haven&apos;t locked any of your kVCM yet.{' '}
           <a
             href={`${ROUTES.MY_ACTIVITIES}?activeView=kvcm`}
-            className="underline text-black-500"
+            className="underline text-text-1"
           >
             Create a lock
           </a>{' '}
@@ -55,10 +55,12 @@ export default function KvcmAllocationsCard(props: CardProps) {
       titleAddOnFar={
         <Button
           colors="secondary"
-          className="w-fit h-[3.2rem]"
+          className="w-fit h-[3.2rem] border-border-strong"
           href={`${ROUTES.ALLOCATE}?action=new_allocation_kvcm`}
         >
-          <Icon icon={Plus} size={1.6} /> New Allocation
+          <span className="flex gap-2 text-text-static-light">
+            <Icon icon={Plus} size={1.6} /> New Allocation
+          </span>
         </Button>
       }
     />

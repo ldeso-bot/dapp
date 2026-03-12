@@ -6,10 +6,10 @@ import { SubSectionTitle } from '@/shared/components/Document/SubSectionTitle';
 import { PageTitle } from '@/shared/components/PageTitle/PageTitle';
 
 export const PrivacyPolicyPage = () => (
-  <div className="flex flex-col gap-2 overflow-y-auto">
+  <div className="flex flex-col gap-2 overflow-y-auto text-text-1">
     <PageTitle>Privacy Policy</PageTitle>
-    <p className="text-size-14 text-gray-600">Last updated: March 2, 2026</p>
-    <p>
+    <p className="text-size-14 text-text-2">Last updated: March 2, 2026</p>
+    <p className="text-text-2">
       This Privacy Policy explains how personal data may be processed when you
       use Klima Protocol websites and any related verification-gated features.
       Most Klima Protocol activity is on-chain and therefore public by design.
@@ -17,9 +17,7 @@ export const PrivacyPolicyPage = () => (
 
     <section className="mt-3">
       <SectionTitle>1) Who we are</SectionTitle>
-      <DocumentBody>
-        Controller: Klima Fintech Ltd.
-      </DocumentBody>
+      <DocumentBody>Controller: Klima Fintech Ltd.</DocumentBody>
       <DocumentBody>
         Contact:{' '}
         <DocumentLink href="mailto:privacy@klimaprotocol.com">
@@ -307,7 +305,6 @@ export const PrivacyPolicyPage = () => (
           abuse, aligning with counterparty expectations)
         </li>
       </DocumentList>
-
     </section>
 
     <section>

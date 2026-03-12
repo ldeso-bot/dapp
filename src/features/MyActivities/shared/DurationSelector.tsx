@@ -70,10 +70,10 @@ export const DurationSelector = <T extends DurationFormFields>({
           content="Duration is a fixed date. Remaining time shrinks daily until the roll, then dates roll forward."
         />
       </div>
-      <p className="text-size-12 text-void-40">
+      <p className="text-size-12 text-text-3">
         Select one of the following presets or choose a custom duration below.
         Next roll over in{' '}
-        <span className="font-bold text-gray-900">{daysUntilReset} days</span> (
+        <span className="font-bold text-text-1">{daysUntilReset} days</span> (
         {nextResetDate.toLocaleDateString('en-US', {
           month: 'short',
           day: 'numeric',
@@ -98,14 +98,14 @@ export const DurationSelector = <T extends DurationFormFields>({
                       className={cn(
                         'w-full flex flex-col items-center px-3 py-2 border-2 rounded-xl text-center',
                         isSelected
-                          ? 'border-gray-200 bg-green-10 text-green-80'
-                          : 'border-gray-200 hover:border-gray-300'
+                          ? 'border-border-subtle bg-positive-bg text-text-highlight'
+                          : 'border-border-subtle hover:border-border-default'
                       )}
                     >
                       <div className="text-size-14 font-medium">
                         {preset.label}
                       </div>
-                      <div className="text-size-12 text-gray-500">
+                      <div className="text-size-12 text-text-3">
                         {preset.description}
                       </div>
                     </button>

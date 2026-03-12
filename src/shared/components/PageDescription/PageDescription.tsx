@@ -8,5 +8,5 @@ type Props = {
 };
 
 export const PageDescription = ({ children, className }: Props) => (
-  <p className={cn('text-size-14 text-gray-500', className)}>{children}</p>
+  <p className={cn('text-size-14 text-text-3', className)}>{children}</p>
 );

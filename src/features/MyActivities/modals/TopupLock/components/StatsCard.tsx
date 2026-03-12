@@ -23,35 +23,35 @@ export const StatsCard: FC<StatsCardProps> = (props) => {
   const lockTerm = isKvcm ? 'lock' : 'stake';
 
   return (
-    <div className="rounded-lg py-3 px-4 bg-gray-50 border border-gray-200">
+    <div className="rounded-lg py-3 px-4 bg-surface-2 border border-border-default">
       <div className="flex flex-row gap-2 items-start justify-between">
         <div className="flex flex-col gap-0">
-          <div className="text-size-12 font-medium text-gray-600 uppercase">
+          <div className="text-size-12 font-medium text-text-2 uppercase">
             Duration
           </div>
-          <p className="text-size-16 font-semibold text-gray-800">
+          <p className="text-size-16 font-semibold text-text-1">
             {maturityDate
               ? formatTimestamp(maturityDate * 1000, 'short')
               : 'N/A'}
           </p>
         </div>
         <div className="flex flex-col gap-0 items-start">
-          <div className="text-size-12 font-medium text-gray-600 uppercase">
+          <div className="text-size-12 font-medium text-text-2 uppercase">
             Base APY
           </div>
-          <div className="text-size-24 text-gray-800 font-semibold">
+          <div className="text-size-24 text-text-1 font-semibold">
             {formatPercentage(baseApy)}
           </div>
         </div>
       </div>
-      <div className="h-px bg-gray-200 my-3" />
+      <div className="h-px bg-divider my-3" />
       <div className="flex flex-col gap-1">
-        <div className="text-size-12 font-medium text-gray-600 uppercase">
+        <div className="text-size-12 font-medium text-text-2 uppercase">
           Current {lockTerm}
         </div>
-        <p className="text-size-16 font-medium text-gray-800">
+        <p className="text-size-16 font-medium text-text-1">
           {formatAmountWithCommas(currentLockAmount, 'auto')}{' '}
-          <span className="text-gray-600 text-size-14 font-normal">
+          <span className="text-text-2 text-size-14 font-normal">
             {token.symbol}
           </span>{' '}
         </p>

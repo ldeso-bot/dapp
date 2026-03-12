@@ -150,7 +150,7 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
         onClose={() => router.push(ROUTES.ALLOCATE)}
       />
       <div className="space-y-2">
-        <p className="text-md text-gray-600">
+        <p className="text-md text-text-3">
           Update how much you allocate to this class. Rebalancing doesn’t change
           kVCM lock durations.
         </p>
@@ -196,7 +196,7 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
         </InputGroup>
         <div className="flex gap-3 w-full">
           <Button
-            className="rounded-lg"
+            className="rounded-lg border-border-strong"
             colors="primary"
             context="flow"
             type="button"
@@ -205,7 +205,7 @@ const EditAllocationForm: FormFlowStep<EditAllocationFields> = ({ data }) => {
             Cancel
           </Button>
           <Button
-            className="rounded-lg"
+            className="rounded-lg border-border-strong"
             colors="secondary"
             context="flow"
             type="submit"

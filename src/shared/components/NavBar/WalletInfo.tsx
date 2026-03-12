@@ -29,11 +29,11 @@ export default function WalletInfo() {
       <Separator />
       <div className="py-5">
         <div>My Wallet Address:</div>
-        <div className="text-void-40">{`${formatAddress(address)}`}</div>
+        <div className="text-text-3">{`${formatAddress(address)}`}</div>
         {DEV_MODE && (
           <div
             className={cn(
-              'text-void-40 text-size-12',
+              'text-text-3 text-size-12',
               DEV_MODE ? 'cursor-pointer' : ''
             )}
             onClick={handleSwitchChain}

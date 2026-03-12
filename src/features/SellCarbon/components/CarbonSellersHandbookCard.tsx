@@ -13,20 +13,20 @@ export const CarbonSellersHandbookCard = () => {
       className="hover:no-underline block"
       withoutIcon
     >
-      <Card className="min-w-0 w-full max-w-full lg:w-[50rem] rounded-xl border border-gray-200 h-fit">
+      <Card className="min-w-0 w-full max-w-full lg:w-[50rem] rounded-xl border border-border-subtle h-fit">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-10 h-10 rounded-lg bg-green-20 flex items-center justify-center shrink-0">
-              <MenuBookIcon className="w-4 h-4 text-green-80" />
+            <div className="w-10 h-10 rounded-lg bg-icon-bg flex items-center justify-center shrink-0">
+              <MenuBookIcon className="w-4 h-4 text-text-highlight" />
             </div>
             <div className="flex flex-col gap-1 min-w-0">
               <div className="flex items-center gap-2 min-w-0">
-                <span className="text-size-16 font-semibold text-gray-800 whitespace-normal">
+                <span className="text-size-16 font-semibold text-text-1 whitespace-normal">
                   Carbon Suppliers Handbook
                 </span>
-                <OpenInNewIcon className="w-4 h-4 text-green-80 shrink-0" />
+                <OpenInNewIcon className="w-4 h-4 text-text-highlight shrink-0" />
               </div>
-              <span className="text-size-12 text-gray-600">
+              <span className="text-size-12 text-text-2">
                 Whitelisting, pricing, and the supplying process
               </span>
             </div>

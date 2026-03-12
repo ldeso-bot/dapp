@@ -9,5 +9,5 @@ export default function InputError({ error }: Props) {
     return null;
   }
 
-  return <div className="text-red-60 text-size-10">{error.message}</div>;
+  return <div className="text-negative-fg text-size-10">{error.message}</div>;
 }

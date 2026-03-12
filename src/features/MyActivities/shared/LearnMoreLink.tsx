@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export const LearnMoreLink = () => (
   <Link
-    className="flex items-center justify-center gap-1 text-gray-600 hover:text-[#00994a] transition-colors duration-300"
+    className="flex items-center justify-center gap-1 text-text-2 hover:text-[#00994a] transition-colors duration-300"
     href={`${ROUTES.MY_ACTIVITIES}?activeTab=overview`}
   >
     New to Klima? Learn how it all works

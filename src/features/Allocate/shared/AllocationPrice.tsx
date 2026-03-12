@@ -26,16 +26,16 @@ export const AllocationPrice: FC<AllocationsTableItemProps> = (props) => {
     const hasInventory = carbonClass ? carbonClass.supplyTonnes > 0 : false;
 
     if (!hasPrice) {
-      return <div className="text-void-50 text-size-14">Not priced</div>;
+      return <div className="text-text-3 text-size-14">Not priced</div>;
     }
 
     if (!hasInventory || !carbonClass) {
-      return <div className="text-void-50 text-size-14">No inventory</div>;
+      return <div className="text-text-3 text-size-14">No inventory</div>;
     }
 
     return (
       <div className="flex flex-col">
-        <div className="font-medium text-gray-900 text-size-14">
+        <div className="font-medium text-text-1 text-size-14">
           {formatPriceUSDWithCommas(
             carbonClass.retirementPriceUsdPerTonne,
             'auto'

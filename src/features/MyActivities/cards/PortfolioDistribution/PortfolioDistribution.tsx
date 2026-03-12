@@ -68,7 +68,10 @@ export const PortfolioDistributionCard = (props: CardProps) => {
     <Card
       {...props}
       skeletonClassName="h-[18.4rem]"
-      className={cn('rounded-lg border-gray-300 !shadow-none', props.className)}
+      className={cn(
+        'rounded-lg border-border-default !shadow-none',
+        props.className
+      )}
     >
       {holdingsData && (
         <>
@@ -103,14 +106,14 @@ export const PortfolioDistributionCard = (props: CardProps) => {
                     return (
                       <div
                         key={segment.type}
-                        className="flex flex-col gap-1.5 sm:gap-2 cursor-pointer hover:bg-gray-50 p-2 sm:p-3 rounded-md transition-colors duration-150 border border-gray-100"
+                        className="flex flex-col gap-1.5 sm:gap-2 cursor-pointer hover:bg-surface-2 p-2 sm:p-3 rounded-md transition-colors duration-150 border border-border-subtle"
                         onClick={() => navigateToTab(segment.type)}
                       >
                         <div className="flex items-center gap-1.5 sm:gap-2">
                           <div
                             className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-sm flex-shrink-0 ${segment.color}`}
                           />
-                          <div className="text-size-14 font-medium text-gray-900 truncate flex items-center gap-1">
+                          <div className="text-size-14 font-medium text-text-1 truncate flex items-center gap-1">
                             {segmentLabel}
                             {isLiquidity && (
                               <Tooltip
@@ -125,7 +128,7 @@ export const PortfolioDistributionCard = (props: CardProps) => {
                             )}
                           </div>
                         </div>
-                        <div className="text-size-14 text-muted-foreground tabular-nums">
+                        <div className="text-size-14 tabular-nums">
                           <div>{segment.percentage.toFixed(1)}%</div>
                         </div>
                       </div>

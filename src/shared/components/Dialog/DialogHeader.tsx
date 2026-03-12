@@ -13,7 +13,7 @@ export const DialogHeader: FC<Props> = (props) => {
   const { title, showCloseButton, onClose } = props;
   return (
     <div className="flex items-center justify-between">
-      <h2 className="text-size-20 font-semibold text-gray-900 capitalize">
+      <h2 className="text-size-20 font-semibold text-text-1 capitalize">
         {title}
       </h2>
       {showCloseButton && (
@@ -23,7 +23,7 @@ export const DialogHeader: FC<Props> = (props) => {
           aria-label="Close dialog"
           className="cursor-pointer bg-transparent border-none p-0 m-0"
         >
-          <CloseIcon className="text-gray-800 hover:text-gray-500 transition-colors w-5 h-5" />
+          <CloseIcon className="text-text-1 hover:text-text-3 transition-colors w-5 h-5" />
         </button>
       )}
     </div>

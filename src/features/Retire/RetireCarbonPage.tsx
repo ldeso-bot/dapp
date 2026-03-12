@@ -12,8 +12,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useAccount } from 'wagmi';
 import { RegenNetworkCreditsCard } from './components/RegenNetworkCreditsCard';
-import { RetirementHistoryCard } from './components/RetirementHistoryCard';
 import { RetireCarbonEmptyState } from './components/RetireCarbonEmptyState';
+import { RetirementHistoryCard } from './components/RetirementHistoryCard';
 import { RetireCarbonFields, retireCarbonSchema } from './retire.constants';
 import RetireCarbonConfirm from './steps/RetireCarbonConfirm';
 import RetireCarbonForm from './steps/RetireCarbonForm';
@@ -55,7 +55,7 @@ export default function RetirePage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 text-text-1">
         <PageTitle>Retire Carbon</PageTitle>
         <PageDescription>
           Purchase a carbon offset and receive a receipt with proof of

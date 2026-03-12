@@ -14,11 +14,12 @@ export default function Alert() {
   const className = cn(
     'w-full max-w-full absolute top-0 left-0 right-0 p-5 z-50',
     {
-      'bg-green-10': alert.type === 'success',
-      'bg-red-10': alert.type === 'error',
+      'bg-positive-bg': alert.type === 'success',
+      'bg-negative-bg': alert.type === 'error',
     }
   );
-  const textColor = alert.type === 'success' ? 'text-green-80' : 'text-red-60';
+  const textColor =
+    alert.type === 'success' ? 'text-text-highlight' : 'text-negative-fg';
 
   const icon = alert.type === 'success' ? SuccessIcon : FailureIcon;
 
@@ -32,7 +33,7 @@ export default function Alert() {
           <div className={cn('text-size-16 font-bold', textColor)}>
             {alert.title}
           </div>
-          <div className={cn('text-size-14 break-words')}>
+          <div className={cn('text-size-14 break-words text-text-1')}>
             {alert.description}
           </div>
           <div className="flex flex-row gap-4 sm:gap-10 flex-wrap">

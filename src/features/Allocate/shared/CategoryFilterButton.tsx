@@ -18,10 +18,11 @@ export const CategoryFilterButton: FC<Props> = (props) => {
       onClick={onClick}
       colors="secondary"
       className={cn(
-        'px-3 py-1 rounded-lg text-[1.2rem] font-medium border border-gray-300',
+        'px-3 py-1 rounded-lg text-text-static-light text-[1.2rem] font-medium border border-border-default',
         {
-          'bg-white text-void-50 hover:bg-void-10': !isActive,
-          'bg-gray-800 text-white border-void-50': isActive,
+          'bg-surface-1 text-text-1 hover:bg-surface-3': !isActive,
+          'bg-surface-inverse text-text-static-light border-border-strong':
+            isActive,
         }
       )}
     >

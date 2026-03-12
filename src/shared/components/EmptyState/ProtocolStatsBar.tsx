@@ -31,23 +31,22 @@ export const ProtocolStatsBar = () => {
   ];
 
   return (
-    <div className="w-full bg-white/50 py-6 my-12 md:my-16">
+    <div className="w-full bg-surface-1/50 py-6 my-12 md:my-16">
       <div className="max-w-8xl mx-auto px-4 sm:px-6">
         <div className="flex flex-col items-center gap-6 md:flex-row md:flex-wrap md:items-end md:justify-center md:gap-x-12 md:gap-y-2">
           {stats.map(({ value, label }) => (
             <div
               key={label}
               className="
-              flex flex-col items-center text-center
-              md:flex-row md:items-end md:text-left md:gap-1.5
-            "
+            flex flex-col items-center text-center
+            md:flex-row md:items-baseline md:text-left md:gap-1.5
+          "
             >
-              {/* Dynamic values */}
-              <div className="font-semibold text-[2.9rem] md:text-[2.1rem] leading-none">
+              <div className="font-semibold text-[2.9rem] md:text-[2.1rem] leading-[0.95] md:leading-none">
                 {value}
               </div>
-              {/* Fixed labels */}
-              <div className="text-gray-500 text-size-14 md:text-size-16 leading-tight md:leading-none md:ml-1">
+
+              <div className="mt-1 text-text-3 text-size-14 md:mt-0 md:text-size-16 leading-tight md:leading-none">
                 {label}
               </div>
             </div>

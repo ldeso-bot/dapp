@@ -48,11 +48,11 @@ export const FlowItems = (props: FlowItemsProps) => {
               className="text-center"
               style={{ animationDelay: `${0.8 + i * 0.2}s` }}
             >
-              <div className="text-[2.25rem] md:text-[2rem] font-semibold text-foreground mb-2 leading-[1.25] md:leading-tight">
+              <div className="text-[2.25rem] md:text-[2rem] font-semibold text-text-1 mb-2 leading-[1.25] md:leading-tight">
                 {item.label}
               </div>
 
-              <div className="text-[0.95rem] md:text-[1.3rem] text-gray-600 leading-relaxed max-w-[180px]">
+              <div className="text-[0.95rem] md:text-[1.3rem] text-text-2 leading-relaxed max-w-[180px]">
                 {item.sublabel}
               </div>
             </div>

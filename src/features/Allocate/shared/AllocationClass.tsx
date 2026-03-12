@@ -23,7 +23,12 @@ export const AllocationClass: FC<AllocationsTableItemProps> = (props) => {
     formatAddress(allocation.carbonClass);
 
   return (
-    <div className={cn('font-semibold text-size-16', className)}>
+    <div
+      className={cn(
+        'font-semibold text-size-16 border-border-default',
+        className
+      )}
+    >
       {displayName}
     </div>
   );

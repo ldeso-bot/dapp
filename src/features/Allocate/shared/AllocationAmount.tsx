@@ -15,12 +15,12 @@ export const AllocationAmount: FC<AllocationsTableItemProps> = (props) => {
 
     return (
       <div className="text-right">
-        <div className="font-medium text-gray-900 tabular-nums">
+        <div className="font-medium text-text-1 tabular-nums">
           {formatAmountWithCommas(allocation.amount)}{' '}
-          <span className="text-void-50 text-size-12">{tokenSymbol}</span>
+          <span className="text-text-3 text-size-12">{tokenSymbol}</span>
         </div>
         {sharePercent > 0 && (
-          <div className="text-size-12 text-void-50 mt-0.5 tabular-nums">
+          <div className="text-size-12 text-text-3 mt-0.5 tabular-nums">
             Your share of class: {sharePercent.toFixed(1)}%
           </div>
         )}

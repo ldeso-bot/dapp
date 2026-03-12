@@ -1,7 +1,8 @@
 import Card from '@/shared/components/Card/Card';
 import Icon from '@/shared/components/Icon/Icon';
 import { useSortableData } from '@/shared/hooks/useSortableData';
-import filterIcon from '@/shared/images/filter.svg';
+import filterDark from '@/shared/images/filter-dark.svg';
+import filterLight from '@/shared/images/filter-light.svg';
 import { Allocation } from '@/shared/models/walletData';
 import { cn } from '@/shared/utils/component.utils';
 import { type FC, useMemo, useState } from 'react';
@@ -16,7 +17,6 @@ export const AllocationsTable: FC<AllocationsCardProps> = (props) => {
     data,
     tokenInfo,
     showCategoryFilter = false,
-    lockWarning,
     ready,
   } = props;
 
@@ -65,11 +65,11 @@ export const AllocationsTable: FC<AllocationsCardProps> = (props) => {
     <Card
       {...props}
       skeletonClassName="h-50"
-      className={cn('rounded-lg border-gray-300 !shadow-none', className)}
+      className={cn('rounded-lg border-border-default !shadow-none', className)}
     >
       {ready && (
         <>
-          <p className="text-size-14 text-gray-600 mt-1">
+          <p className="text-size-14 text-text-2 mt-1">
             {isKvcm
               ? `Allocate kVCM to carbon classes to direct which credits the protocol
           buys and holds in the portfolio, and at what intensity. Higher
@@ -81,12 +81,14 @@ export const AllocationsTable: FC<AllocationsCardProps> = (props) => {
           <div className="pt-2">
             {showCategoryFilter && categories.length > 0 && (
               <div className="flex items-center gap-2 mb-4">
-                <Icon
-                  size={1.8}
-                  alt="Filter"
-                  icon={filterIcon}
-                  className="text-gray-400"
-                />
+                <span className="dark:hidden">
+                  <Icon size={1.8} alt="Filter" icon={filterLight} />
+                </span>
+
+                <span className="hidden dark:inline-flex">
+                  <Icon size={1.8} alt="Filter" icon={filterDark} />
+                </span>
+
                 <CategoryFilter
                   categories={categories}
                   selectedCategory={selectedCategory}
@@ -108,12 +110,6 @@ export const AllocationsTable: FC<AllocationsCardProps> = (props) => {
               data={sortedData}
               className="lg:hidden"
             />
-
-            {!!lockWarning && (
-              <div className="px-6 pb-4 pt-3 text-size-14 font-semibold text-void-60">
-                ⚠️ {lockWarning}
-              </div>
-            )}
           </div>
         </>
       )}

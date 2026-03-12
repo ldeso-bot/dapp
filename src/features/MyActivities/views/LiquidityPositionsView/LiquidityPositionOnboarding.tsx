@@ -39,14 +39,14 @@ export const LiquidityPositionOnboarding = () => {
         />
       </div>
       <div className="flex flex-col gap-0.5 mx-auto mb-4">
-        <div className="text-size-12 text-center text-gray-900 my-1">
+        <div className="text-size-12 text-center text-text-1 my-1">
           Supported pools
         </div>
         <div className="flex gap-2">
-          <div className="text-size-12 font-medium text-gray-900 bg-[#00994a]/10 rounded-full px-3 py-1">
+          <div className="text-size-12 font-medium text-text-1 bg-[#00994a]/10 rounded-full px-3 py-1">
             kVCM/USDC
           </div>
-          <div className="text-size-12 font-medium text-gray-900 bg-[#00994a]/10 rounded-full px-3 py-1">
+          <div className="text-size-12 font-medium text-text-1 bg-[#00994a]/10 rounded-full px-3 py-1">
             kVCM/K2
           </div>
         </div>

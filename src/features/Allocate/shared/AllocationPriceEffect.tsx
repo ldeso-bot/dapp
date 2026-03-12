@@ -17,14 +17,14 @@ export const AllocationPriceEffect: FC<AllocationsTableItemProps> = (props) => {
   const config = priceEffectConfig[allocation.priceEffect];
 
   return (
-    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[1rem] font-medium bg-white text-gray-900 border border-gray-300 border-solid">
+    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[1rem] font-medium bg-surface-1 text-text-1 border border-border-default border-solid">
       <div className="flex items-center gap-0.5" aria-hidden="true">
         {[1, 2, 3].map((barIndex) => (
           <div
             key={barIndex}
             className={cn('w-[3px] h-3 rounded-full', {
-              'bg-green-40': barIndex <= config?.activeBars,
-              'bg-gray-300': barIndex > config?.activeBars,
+              'bg-indicatorfull-bg': barIndex <= config?.activeBars,
+              'bg-indicatorempty-bg': barIndex > config?.activeBars,
             })}
           />
         ))}

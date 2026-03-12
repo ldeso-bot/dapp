@@ -18,11 +18,11 @@ export const AllocationEmptyState = () => {
   return (
     <EmptyState
       title={
-        <>
+        <span className="text-text-1">
           Govern Carbon
           <br />
           Prices.
-        </>
+        </span>
       }
       description="Allocate your locked kVCM and K2 to influence carbon class execution rates and protocol purchase behavior."
       flowItems={allocationFlowItems}

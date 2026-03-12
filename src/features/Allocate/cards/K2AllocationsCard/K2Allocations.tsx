@@ -36,11 +36,11 @@ export default function K2AllocationsCard(props: CardProps) {
       unallocatedAmount={unallocatedK2}
       totalAmount={totalAllocatableK2 > 0 ? totalAllocatableK2 : totalK2}
       noAllocationComponent={
-        <div className="bg-void-10 py-3 px-6 w-full">
+        <div className="bg-surface-3 py-3 px-6 w-full">
           You haven&apos;t deposited any of your K2 yet.{' '}
           <a
             href={`${ROUTES.MY_ACTIVITIES}?activeView=k2`}
-            className="underline text-black-500"
+            className="underline text-text-1"
           >
             Create a deposit
           </a>{' '}
@@ -51,10 +51,12 @@ export default function K2AllocationsCard(props: CardProps) {
       titleAddOnFar={
         <Button
           colors="secondary"
-          className="w-fit h-[3.2rem]"
+          className="w-fit h-[3.2rem] border-border-strong"
           href={`${ROUTES.ALLOCATE}?action=new_allocation_k2`}
         >
-          <Icon icon={Plus} size={1.6} /> New Allocation
+          <span className="flex gap-2 text-text-static-light">
+            <Icon icon={Plus} size={1.6} /> New Allocation
+          </span>
         </Button>
       }
     />

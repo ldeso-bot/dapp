@@ -18,6 +18,7 @@ export default function KVcmPriceCard(props: CardProps) {
     <StatCard
       {...props}
       title="kVCM Price"
+      className="text-text-1"
       buttonHref={BUY_KVCM_URL}
       buttonTarget="_blank"
       buttonText="Trade kVCM"

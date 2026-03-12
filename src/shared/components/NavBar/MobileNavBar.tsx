@@ -14,12 +14,8 @@ export default function MobileNavBar() {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <div
-        className={cn(
-          `flex lg:hidden relative flex-col  border-void-20 px-3 py-6 box-shadow`
-        )}
-      >
-        <div className="flex flex-col gap-3">
+      <div className={cn(`flex lg:hidden relative flex-col px-3 py-6`)}>
+        <div className="flex flex-col gap-3 text-text-1">
           <div className="flex flex-row justify-between items-center">
             <KlimaProtocolLogo />
             <Image

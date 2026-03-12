@@ -13,8 +13,8 @@ export const AllocationMetric: FC<Props> = (props) => {
   const { title, value, label, className, ...rest } = props;
   return (
     <div className={cn('flex flex-col gap-1 text-center', className)} {...rest}>
-      <div className="text-size-14 font-medium text-gray-900">{title}</div>
-      <div className="text-size-12 text-gray-500">
+      <div className="text-size-14 font-medium text-text-1">{title}</div>
+      <div className="text-size-12 text-text-3">
         {value} {label || (value === 1 ? 'class' : 'classes')}
       </div>
     </div>

@@ -89,7 +89,7 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
       successTitle: isKvcm ? 'Lock Successful' : 'Stake Successful',
       successDescription: (
         <>
-          <div>
+          <div className="text-text-1">
             You&apos;ve successfully {lockTermed} {amount} {tokenInfo.symbol}!
             You can manage your positions in the &quot;My Activities&quot;
             dashboard.
@@ -152,18 +152,18 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
                 <DurationStepper name="maturityId" control={form.control} />
                 <DurationSlider name="maturityId" control={form.control} />
               </div>
-              <div className="text-size-12 text-void-40">
+              <div className="text-size-12 text-text-3">
                 <p>
                   Select a custom duration. Each step represents an increase or
                   decrease of 90 days.
                 </p>
-                <div className="w-full h-[1px] bg-void-20 my-2" />
+                <div className="w-full h-[1px] bg-divider-bar my-2" />
                 <p>
                   Incentives (kVCM and/or K2) accrue until the end of the chosen
                   duration and then become claimable.
                 </p>
                 <br></br>
-                <p className="text-xl text-black font-bold">
+                <p className="text-xl text-text-1 font-bold">
                   Incentives are calculated daily, but they may not show up in
                   the UI for up to 48 hours.
                 </p>
@@ -194,7 +194,7 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
           <Button
             colors="primary"
             context="flow"
-            className="rounded-xl"
+            className="rounded-xl border-border-strong"
             onClick={() =>
               setLockTokenDialogState({ open: false, token: null })
             }
@@ -202,7 +202,7 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
             Cancel
           </Button>
           <Button
-            className="rounded-xl capitalize"
+            className="rounded-xl capitalize border-border-strong text-text-static-light"
             colors="secondary"
             context="flow"
             type="submit"

@@ -20,7 +20,7 @@ const LinkOpenInNew = ({
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        'inline-flex items-center gap-1 text-green-60 hover:underline',
+        'inline-flex items-center gap-1 text-text-highlight hover:underline',
         noWrap ? 'text-nowrap' : 'whitespace-normal',
         className
       )}

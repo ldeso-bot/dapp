@@ -14,7 +14,7 @@ export const DurationSlider = <T extends DurationFormFields>({
 
   return (
     <div className="px-1">
-      <div className="flex justify-between text-size-12 text-void-40 mt-2 mb-1">
+      <div className="flex justify-between text-size-12 text-text-3 mt-2 mb-1">
         <span>Shortest</span>
         <span>Longest</span>
       </div>
@@ -44,10 +44,10 @@ export const DurationSlider = <T extends DurationFormFields>({
               value={[currentMaturityId]}
               onValueChange={handleValueChange}
             >
-              <SliderPrimitive.Track className="relative h-[5px] rounded-full grow bg-void-20">
-                <SliderPrimitive.Range className="absolute h-full rounded-full bg-void-60" />
+              <SliderPrimitive.Track className="relative h-[5px] rounded-full grow bg-divider">
+                <SliderPrimitive.Range className="absolute h-full rounded-full bg-foreground" />
               </SliderPrimitive.Track>
-              <SliderPrimitive.Thumb className="block size-3 rounded-[10px] bg-void-60 hover:transparent focus:none focus:outline-none" />
+              <SliderPrimitive.Thumb className="block size-3 rounded-[10px] bg-foreground hover:transparent focus:none focus:outline-none" />
             </SliderPrimitive.Root>
           );
         }}

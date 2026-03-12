@@ -16,6 +16,7 @@ export default function K2PriceCard(props: CardProps) {
       {...props}
       buttonText="Trade K2"
       buttonHref={BUY_K2_URL}
+      className="text-text-1"
       buttonTarget="_blank"
       title="K2 Price"
       primaryValue={price}

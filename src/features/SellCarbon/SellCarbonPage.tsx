@@ -48,7 +48,7 @@ export default function SellCarbonPage() {
         <SellCarbonEmptyState />
       ) : (
         <div className="flex flex-col gap-8">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 text-text-1">
             <PageTitle>Supply Carbon</PageTitle>
             <PageDescription>
               Exchange tokenized carbon credits for KVCM.

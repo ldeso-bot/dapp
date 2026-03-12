@@ -40,7 +40,7 @@ export const LiquidityPositionStatus = ({
     );
 
   return (
-    <div className="bg-white rounded-lg p-6 pb-0 shadow-sm border border-gray-200">
+    <div className="bg-surface-1 rounded-lg p-6 pb-0 shadow-sm border border-border-subtle">
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <StatusCard skeletonClassName="h-[15.3rem]">
           {tokenData && (
@@ -53,14 +53,14 @@ export const LiquidityPositionStatus = ({
               </StatusCardTitle>
 
               <div className="space-y-1">
-                <div className="text-size-18 font-bold text-gray-900 tabular-nums">
+                <div className="text-size-18 font-bold text-text-1 tabular-nums">
                   {formatAmountWithCommas(
                     tokenData.claimableRewardsPlusPrincipalAmount,
                     'auto'
                   )}
                 </div>
 
-                <div className="text-size-14 text-gray-500 tabular-nums">
+                <div className="text-size-14 text-text-3 tabular-nums">
                   {tokenData.maturedLocks.length > 0 ? (
                     <>
                       {tokenSymbol} • {tokenData.maturedLocks.length} locks
@@ -84,11 +84,11 @@ export const LiquidityPositionStatus = ({
                 Locked Liquidity
               </StatusCardTitle>
               <div className="space-y-1">
-                <div className="text-size-18 font-bold text-gray-900">
+                <div className="text-size-18 font-bold text-text-1">
                   {formatAmountWithCommas(tokenData.lockedAmount, 'auto')}
                 </div>
                 {earliestUnlockTimestamp && (
-                  <div className="text-size-14 text-gray-500">
+                  <div className="text-size-14 text-text-3">
                     {tokenSymbol} • next unlock in{' '}
                     {formatDurationFromTimestamp(earliestUnlockTimestamp)}
                   </div>
@@ -107,15 +107,15 @@ export const LiquidityPositionStatus = ({
                 On Dex
               </StatusCardTitle>
               <div className="space-y-1">
-                <div className="text-size-18 font-bold text-gray-900 tabular-nums">
+                <div className="text-size-18 font-bold text-text-1 tabular-nums">
                   {formatAmountWithCommas(tokenData.balanceAmount, 'auto')}
                 </div>
-                <div className="text-size-14 text-gray-500 tabular-nums">
+                <div className="text-size-14 text-text-3 tabular-nums">
                   {tokenSymbol}
                 </div>
               </div>
               <Button
-                className="mt-3 h-[3.6rem]"
+                className="mt-3 h-[3.6rem] border-border-strong"
                 onClick={handleOpenStakeDialog}
               >
                 Stake in Klima

@@ -35,7 +35,7 @@ export const VariableRewardsCard: FC<RewardsCardProps> = (props) => {
       {...rest}
       skeletonClassName={skeletonClassName ?? 'h-[63.8rem]'}
       className={cn(
-        'rounded-lg border border-gray-300 !shadow-none',
+        'rounded-lg border border-border-default !shadow-none',
         className
       )}
     >
@@ -49,12 +49,10 @@ export const VariableRewardsHeader: FC<HeaderProps> = (props) => {
   return (
     <>
       <div className="flex flex-row gap-3 items-center">
-        <span className="text-gray-900 font-medium">{title}</span>
-        <span className="text-size-12 text-gray-500">{timestamp}</span>
+        <span className="text-text-1 font-medium">{title}</span>
+        <span className="text-size-12 text-text-3">{timestamp}</span>
       </div>
-      {description && (
-        <p className="text-size-12 text-gray-500">{description}</p>
-      )}
+      {description && <p className="text-size-12 text-text-3">{description}</p>}
     </>
   );
 };
@@ -62,7 +60,7 @@ export const VariableRewardsHeader: FC<HeaderProps> = (props) => {
 export const VariableRewardsItem: FC<ItemProps> = (props) => {
   const { children } = props;
   return (
-    <div className="w-full flex flex-row bg-gray-50 rounded-lg px-4 py-3 justify-between gap-10">
+    <div className="w-full flex flex-row bg-surface-2 rounded-lg px-4 py-3 justify-between gap-10">
       {children}
     </div>
   );
@@ -78,7 +76,7 @@ export const VariableRewardsItemTitle = (props: ItemTitleProps) => {
       </div>
       {aprValue && (
         <div className="flex gap-2 items-center">
-          <span className="text-size-14 text-gray-900 font-medium">
+          <span className="text-size-14 text-text-1 font-medium">
             {aprValue}
           </span>
           <Tooltip

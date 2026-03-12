@@ -48,7 +48,7 @@ export default function InputWrapper(props: InputWrapperProps) {
       )}
       {children}
       {addOnLabelBottom && (
-        <div className="text-size-12 text-gray-500">{addOnLabelBottom}</div>
+        <div className="text-size-12 text-text-3">{addOnLabelBottom}</div>
       )}
       <InputError error={error} />
     </div>

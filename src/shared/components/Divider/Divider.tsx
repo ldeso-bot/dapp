@@ -14,8 +14,8 @@ export const Divider: FC<DividerProps> = ({
 }) => {
   const baseClasses =
     orientation === 'vertical'
-      ? 'h-8 w-px bg-gray-200'
-      : 'w-full h-px bg-gray-200';
+      ? 'h-8 w-px bg-divider'
+      : 'w-full h-px bg-divider';
 
   return (
     <div

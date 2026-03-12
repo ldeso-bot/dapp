@@ -1,5 +1,5 @@
 import { cn } from '@/shared/utils/component.utils';
-import { StaticImageData } from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import { InputHTMLAttributes } from 'react';
 import InputWrapper, { InputWrapperProps } from './layout/InputWrapper';
 
@@ -21,6 +21,8 @@ export default function Input({
   mandatory,
   ...inputProps
 }: Props) {
+  const iconClass = iconSize === 'sm' ? 'w-5 h-5 left-3' : 'w-6 h-6 left-3';
+
   return (
     <InputWrapper
       label={label}
@@ -30,31 +32,33 @@ export default function Input({
       mandatory={mandatory}
     >
       <div className="w-full flex flex-row gap-2">
-        <input
-          {...inputProps}
-          className={cn(
-            'px-3 py-2 rounded-lg gap-2 w-full h-[4rem] border-gray-300',
-            !inputProps.disabled &&
-              !inputProps.readOnly &&
-              'border-1 hover:opacity-80',
-            (inputProps.disabled || inputProps.readOnly) &&
-              'border-1 bg-void-10',
-            inputProps.readOnly &&
-              'select-none cursor-default hover:border-0 border-0',
-            {
-              'pl-10': !!iconSrc && iconSize === 'sm',
-              'pl-12': !!iconSrc && iconSize === 'md',
-            },
-            inputProps.className
+        <div className="relative w-full">
+          {iconSrc && (
+            <div className={cn('absolute top-1/2 -translate-y-1/2', iconClass)}>
+              <Image src={iconSrc} alt="" className="w-full h-full" />
+            </div>
           )}
-          style={{
-            backgroundImage: iconSrc ? `url(${iconSrc?.src})` : undefined,
-            backgroundSize: 'auto 2rem',
-            backgroundRepeat: 'no-repeat',
-            backgroundPositionY: 'center',
-            backgroundPositionX: '1.2rem',
-          }}
-        />
+
+          <input
+            {...inputProps}
+            className={cn(
+              'px-3 py-2 rounded-lg gap-2 w-full h-[4rem] border-border-default',
+              !inputProps.disabled &&
+                !inputProps.readOnly &&
+                'border-1 hover:opacity-80',
+              (inputProps.disabled || inputProps.readOnly) &&
+                'border-1 bg-surface-3',
+              inputProps.readOnly &&
+                'select-none cursor-default hover:border-0 border-0',
+              {
+                'pl-10': !!iconSrc && iconSize === 'sm',
+                'pl-12': !!iconSrc && iconSize === 'md',
+              },
+              inputProps.className
+            )}
+          />
+        </div>
+
         {addOnButton}
       </div>
     </InputWrapper>

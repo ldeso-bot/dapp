@@ -10,7 +10,13 @@ import {
 } from '@/shared/components/Select/Select';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
 import { useCarbonClasses } from '@/shared/hooks/web3/useCarbonClasses';
-import { Control, Controller, FieldError, FieldErrors, Path } from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  FieldError,
+  FieldErrors,
+  Path,
+} from 'react-hook-form';
 
 type CarbonClassSelectProps<T extends { carbonClass?: string }> = {
   name: Path<T>;
@@ -18,7 +24,9 @@ type CarbonClassSelectProps<T extends { carbonClass?: string }> = {
   errors?: FieldErrors<T>;
 };
 
-export const CarbonClassSelect = <T extends { carbonClass?: string }>(props: CarbonClassSelectProps<T>) => {
+export const CarbonClassSelect = <T extends { carbonClass?: string }>(
+  props: CarbonClassSelectProps<T>
+) => {
   const { name, control, errors } = props;
   const { data: protocolData, isLoading: isLoadingProtocolData } =
     useProtocolData();
@@ -42,8 +50,8 @@ export const CarbonClassSelect = <T extends { carbonClass?: string }>(props: Car
       name={name}
       control={control}
       render={({ field }) => (
-        <InputWrapper 
-          label="Carbon Class" 
+        <InputWrapper
+          label="Carbon Class"
           error={errors?.carbonClass as FieldError}
         >
           <Select
@@ -64,10 +72,8 @@ export const CarbonClassSelect = <T extends { carbonClass?: string }>(props: Car
             </SelectTrigger>
             <SelectContent>
               {carbonClasses.length === 0 ? (
-                <div className="py-2 px-3 text-size-14 text-gray-500">
-                  {isLoading
-                    ? 'Loading...'
-                    : 'No carbon classes available'}
+                <div className="py-2 px-3 text-size-14 text-text-3">
+                  {isLoading ? 'Loading...' : 'No carbon classes available'}
                 </div>
               ) : (
                 carbonClasses.map((item) => (
@@ -83,4 +89,3 @@ export const CarbonClassSelect = <T extends { carbonClass?: string }>(props: Car
     />
   );
 };
-

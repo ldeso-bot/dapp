@@ -24,18 +24,18 @@ export default function PoolButtons({ poolInfo }: Props) {
         href={depositLiquidityUrl}
         target="_blank"
         colors="primary"
+        className="border-border-strong"
         style={{ flex: 1 }}
       >
         Deposit
-        <Icon
-          icon={ExternalLink}
-          size={1.5}
-          style={{ filter: 'brightness(0) saturate(100%)' }}
-        />
+        <span className="brightness-0 dark:invert">
+          <Icon icon={ExternalLink} size={1.5} />
+        </span>
       </Button>
       <Button
         href={`${ROUTES.MY_ACTIVITIES}?action=lock_${poolInfo.token}`}
         colors="secondary"
+        className="border-border-strong text-text-static-light "
         style={{ flex: 1 }}
       >
         Stake

@@ -7,11 +7,11 @@ import WalletInfo from './WalletInfo';
 
 export default function DesktopNavBar() {
   return (
-    <div className="hidden lg:flex border-r-1 border-gray-300 bg-white">
+    <div className="hidden lg:flex border-r-1 border-border-default bg-surface-1">
       <div
         className={cn(`relative flex-col h-screen px-3 py-6`, styles.wNavbar)}
       >
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 text-text-1">
           <KlimaProtocolLogo />
           <WalletInfo />
           <NavbarItems />

@@ -158,7 +158,7 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
         onClose={() => router.push(ROUTES.ALLOCATE)}
       />
       <div className="space-y-2 pt-2">
-        <p className="text-md text-gray-600">
+        <p className="text-md text-text-2">
           Create an allocation that applies your tokens to a carbon class.
           Allocations affect the protocol’s indicative price for that class.
         </p>
@@ -173,7 +173,7 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
               value={isKvcm ? tokens.kvcm.symbol : tokens.k2.symbol}
               iconSrc={isKvcm ? tokens.kvcm.iconSrc : tokens.k2.iconSrc}
             />
-            <small className="text-size-12 text-gray-500">
+            <small className="text-size-12 text-text-3">
               Allocations influence the indicative price by adding token weight
               to this class.
             </small>
@@ -217,7 +217,7 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
         </div>
         <div className="flex gap-3 w-full">
           <Button
-            className="rounded-lg"
+            className="rounded-lg border-border-strong"
             colors="primary"
             context="flow"
             type="button"
@@ -226,7 +226,7 @@ const NewAllocationForm: FormFlowStep<NewAllocationFields> = ({ data }) => {
             Cancel
           </Button>
           <Button
-            className="rounded-lg"
+            className="rounded-lg border-border-strong"
             colors="secondary"
             context="flow"
             type="submit"

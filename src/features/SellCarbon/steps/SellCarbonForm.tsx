@@ -90,13 +90,13 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
   return (
     <Card
       title="Supply Carbon"
-      className="min-w-0 w-full max-w-full lg:w-[50rem] rounded-xl border border-gray-200 h-fit"
-      titleClassName="font-semibold text-gray-800 text-size-20 tracking-tight"
+      className="min-w-0 w-full text-text-1 max-w-full lg:w-[50rem] rounded-xl border border-border-subtle h-fit"
+      titleClassName="font-semibold text-text-1 text-size-20 tracking-tight"
       skeletonClassName="h-[56.6rem]"
     >
       <>
         <div className="flex-1">
-          <div className="font-base text-gray-500 text-size-14">
+          <div className="font-base text-text-3 text-size-14">
             Quotes are not guaranteed due to ever-changing network conditions.
             Slippage may occur.
             <span className="inline-flex items-center align-middle ml-1.5">
@@ -124,7 +124,7 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
               {...form.register('token')}
               error={form.formState.errors.token}
             />
-            <div className="text-size-12 text-gray-600 flex items-start gap-2">
+            <div className="text-size-12 text-text-2 flex items-start gap-2">
               <AlertIcon className="w-4 h-4 mt-0.5 shrink-0" />
               <span className="min-w-0">
                 No eligible credits detected?{' '}
@@ -167,8 +167,8 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
               readOnly
               addOnButton={
                 isQuoteLoading ? (
-                  <div className="h-[4rem] flex items-center px-3 border-0 bg-void-10 rounded-lg">
-                    <div className="w-4 h-4 rounded-full border-2 border-gray-300 border-t-gray-600 animate-spin" />
+                  <div className="h-[4rem] flex items-center px-3 border-0 bg-surface-3 rounded-lg">
+                    <div className="w-4 h-4 rounded-full border-2 border-border-default border-t-gray-600 animate-spin" />
                   </div>
                 ) : undefined
               }
@@ -184,6 +184,7 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
           <ButtonGroup className="flex-col w-full">
             <Button
               colors="secondary"
+              className="rounded-md border-border-strong text-text-static-light"
               context="flow"
               type="submit"
               disabled={!kvcmOutQuoteWei}

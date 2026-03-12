@@ -24,7 +24,7 @@ export const Header = (props: HeaderProps) => {
       <p
         className="
           text-[1.85rem] sm:text-[2.15rem] md:text-[2.4rem] lg:text-[2.2rem]
-          text-gray-600
+          text-text-2
           max-w-3xl md:max-w-4xl lg:max-w-5xl
           mx-auto
           leading-snug"

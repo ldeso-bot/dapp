@@ -17,7 +17,7 @@ export const NoPositionsInfoCard = (props: Props) => {
         <div className="text-size-14 font-medium font-gray-900 mt-1">
           {title}
         </div>
-        <div className="text-size-12 text-gray-600">{description}</div>
+        <div className="text-size-12 text-text-2">{description}</div>
       </div>
     </Card>
   );

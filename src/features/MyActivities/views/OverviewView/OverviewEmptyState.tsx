@@ -14,11 +14,11 @@ export const OverviewEmptyState = () => {
   return (
     <EmptyState
       title={
-        <div className="pb-2">
+        <span className="pb-2 text-text-1">
           Your Klima Positions
           <br />
           at a Glance.
-        </div>
+        </span>
       }
       description="See your kVCM locks, K2 position, and liquidity — with real-time balances and claimable incentives."
       stats={[]}

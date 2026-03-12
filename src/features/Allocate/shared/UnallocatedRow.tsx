@@ -28,14 +28,14 @@ export const UnallocatedRow: FC<UnallocatedRowProps> = ({
   }, [amount, totalAmount]);
 
   return (
-    <TableRow className="border-0 bg-gray-50/30 cursor-pointer hover:bg-gray-50/60 transition-colors">
+    <TableRow className="border-0 cursor-pointer">
       <TableCell className="text-left border-0">
         <div className="flex flex-col gap-0.5">
           <div className="flex items-center gap-2.5">
-            <Icon size={2} icon={CirclePlus} className="text-void-50" />
+            <Icon size={2} icon={CirclePlus} className="text-text-3" />
             <div className="font-semibold text-size-16">Unallocated</div>
           </div>
-          <div className="text-size-12 text-void-50 italic mt-0.5">
+          <div className="text-size-12 text-text-3 italic mt-0.5">
             No pricing effect
           </div>
           <ProgressWithPercentage
@@ -45,23 +45,23 @@ export const UnallocatedRow: FC<UnallocatedRowProps> = ({
         </div>
       </TableCell>
       <TableCell className="text-right border-0">
-        <div className="font-medium text-gray-900 tabular-nums">
+        <div className="font-medium text-text-1 tabular-nums">
           {formatAmountWithCommas(amount)}{' '}
-          <span className="text-void-50 text-size-12">{tokenSymbol}</span>
+          <span className="text-text-3 text-size-12">{tokenSymbol}</span>
         </div>
       </TableCell>
       {!isK2 && (
         <TableCell className="text-center border-0">
-          <span className="text-size-12 text-void-50">—</span>
+          <span className="text-size-12 text-text-3">—</span>
         </TableCell>
       )}
       <TableCell className="text-center border-0">
-        <span className="text-size-12 text-void-50">—</span>
+        <span className="text-size-12 text-text-3">—</span>
       </TableCell>
       <TableCell colSpan={2} className="border-0 justify-end !pr-6">
         <div className="flex items-center justify-end gap-2">
           <Button
-            className="w-fit"
+            className="w-fit border-border-strong"
             href={`${ROUTES.ALLOCATE}?action=new_allocation_${tokenSymbol.toLowerCase()}`}
           >
             Allocate

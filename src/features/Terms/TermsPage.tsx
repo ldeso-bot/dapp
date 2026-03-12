@@ -4,7 +4,7 @@ import { SectionTitle } from '@/shared/components/Document/SectionTitle';
 import { PageTitle } from '@/shared/components/PageTitle/PageTitle';
 
 export const TermsPage = () => (
-  <div className="flex flex-col gap-2 overflow-y-auto">
+  <div className="flex flex-col gap-2 overflow-y-auto text-text-1">
     <PageTitle>Terms &amp; Conditions</PageTitle>
     <SectionTitle>Nature of the Protocol</SectionTitle>
     <DocumentBody>

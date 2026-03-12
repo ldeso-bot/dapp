@@ -18,7 +18,10 @@ export const PositionsCard = (props: CardProps) => {
     <Card
       {...props}
       skeletonClassName="h-[63.8rem]"
-      className={cn('rounded-lg border-gray-300 !shadow-none', props.className)}
+      className={cn(
+        'rounded-lg border-border-default !shadow-none',
+        props.className
+      )}
     >
       <div>
         <div className="flex gap-2 items-center pb-1">
@@ -28,7 +31,7 @@ export const PositionsCard = (props: CardProps) => {
             content="Summary of protocol-related token balances and allocations. These do not represent ownership of protocol-held carbon assets."
           />
         </div>
-        <p className="text-size-14 text-gray-500">
+        <p className="text-size-14 text-text-3">
           You have {totalActions} {totalActions === 1 ? 'action' : 'actions'}
         </p>
         <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">

@@ -48,7 +48,7 @@ export default function StatCard(props: Props) {
             </div>
           </div>
           <Button
-            className="w-full"
+            className="w-full border-border-strong"
             href={buttonHref}
             onClick={buttonOnClick}
             target={buttonTarget}

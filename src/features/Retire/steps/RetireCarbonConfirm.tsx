@@ -6,6 +6,7 @@ import Card from '@/shared/components/Card/Card';
 import Dialog from '@/shared/components/Dialog/Dialog';
 import Input from '@/shared/components/Form/Input';
 import InputError from '@/shared/components/Form/layout/InputError';
+import LinkOpenInNew from '@/shared/components/LinkWithIcon';
 import { FormFlowStep } from '@/shared/components/Steps/steps.utils';
 import { CarbonCreditIconImg } from '@/shared/constants/tokens.constants';
 import { useAllowance } from '@/shared/hooks/useAllowance';
@@ -21,11 +22,10 @@ import { getCarbonmarkReceiptUrl } from '@/shared/utils/urls.utils';
 import { getScanLink } from '@/shared/utils/web3.utils';
 import { useFormo } from '@formo/analytics';
 import { useSetAtom } from 'jotai';
+import { RetirementReceiptCard } from '../components/RetirementReceiptCard';
 import { useRetireCarbon } from '../hooks/useRetireCarbon';
 import { useRetireCarbonForm } from '../hooks/useRetireCarbonForm';
 import { RetireCarbonFields } from '../retire.constants';
-import LinkOpenInNew from '@/shared/components/LinkWithIcon';
-import { RetirementReceiptCard } from '../components/RetirementReceiptCard';
 import { retireCarbonDialogAtom } from '../retire.utils';
 
 const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
@@ -143,8 +143,8 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
   return (
     <Dialog className="bg-overlay-10" open={true}>
       <Card
-        className="w-[36rem] border-0 rounded-xl"
-        titleClassName="font-bold text-void-80 text-size-18"
+        className="w-[36rem] border-0 rounded-xl text-text-1"
+        titleClassName="font-bold text-size-18"
         title="Confirm your transaction"
       >
         <form
@@ -180,6 +180,7 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
                 colors="secondary"
                 context="flow"
                 type="submit"
+                className="text-text-static-light"
                 onClick={() => handleSetAllowance()}
                 disabled={isSettingAllowance}
               >
@@ -197,7 +198,12 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
                 {isExecuting ? 'Retiring...' : 'Retire Carbon'}
               </Button>
             )}
-            <Button colors="primary" context="flow" onClick={previous}>
+            <Button
+              colors="primary"
+              context="flow"
+              className="border-border-strong"
+              onClick={previous}
+            >
               Cancel
             </Button>
             <InputError error={form.formState.errors.root} />

@@ -54,119 +54,128 @@ export default function CarbonMarketCard(props: CardProps) {
       {...props}
       title="Carbon Market"
       tooltip="Execution rates are indicative only and may change at the time of execution due to protocol conditions. Any USD references are illustrative and provided for convenience."
-      className="rounded-xl"
+      className="rounded-xl text-text-1"
       skeletonClassName="h-[28rem]"
     >
-      {!protocolLoading && (
-        <>
-          <div className="flex flex-row gap-2 mb-3">
-            <Button
-              colors={quoteType === QuoteType.retire ? 'secondary' : 'primary'}
-              onClick={() => setQuoteType(QuoteType.retire)}
-            >
-              Retire Carbon
-            </Button>
-            <Button
-              colors={quoteType === QuoteType.swap ? 'secondary' : 'primary'}
-              onClick={() => setQuoteType(QuoteType.swap)}
-            >
-              Supply Carbon
-            </Button>
+      {/* Retire / Swap toggle */}
+      <div className="flex flex-row gap-2 mb-3">
+        <Button
+          colors="unstyled"
+          onClick={() => setQuoteType(QuoteType.retire)}
+          className={
+            quoteType === QuoteType.retire
+              ? '!bg-black !text-white !border-black hover:!opacity-100'
+              : '!bg-surface-1 !text-text-1 !border-border-strong hover:!opacity-100'
+          }
+        >
+          Retire Carbon
+        </Button>
+
+        <Button
+          colors="unstyled"
+          onClick={() => setQuoteType(QuoteType.swap)}
+          className={
+            quoteType === QuoteType.swap
+              ? '!bg-black !text-white !border-black hover:!opacity-100'
+              : '!bg-surface-1 !text-text-1 !border-border-strong hover:!opacity-100'
+          }
+        >
+          Supply Carbon
+        </Button>
+      </div>
+
+      {filteredClasses.length > 0 && (
+        <div>
+          <div className="flex flex-row text-size-12 text-text-1 text-center">
+            <div className="w-full grow">{priceLabel}</div>
+            <div className="w-[20rem]"></div>
+            <div className="w-full grow">Available Supply (tCO₂e)</div>
           </div>
-
-          {filteredClasses.length > 0 && (
-            <div>
-              <div className="flex flex-row text-size-12 text-void-60 text-center">
-                <div className="w-full grow">{priceLabel}</div>
-                <div className="w-[20rem]"></div>
-                <div className="w-full grow">Available Supply (tCO₂e)</div>
-              </div>
-              <div className="flex flex-row">
-                {/* Price Chart */}
-                <div className="w-full h-[21.2rem] grow">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart layout="vertical" data={filteredClasses}>
-                      <XAxis
-                        type="number"
-                        tickFormatter={(value) =>
-                          formatPriceUSDWithCommas(Number(value), 'auto')
-                        }
-                        ticks={priceChartConfig.ticks}
-                        reversed
-                        scale="log"
-                        domain={priceChartConfig.domain}
-                      />
-                      <YAxis
-                        type="category"
-                        width={1}
-                        orientation="right"
-                        {...Y_AXIS_PROPS}
-                      />
-                      <Bar dataKey={priceKey} {...BAR_PROPS} />
-                      <Tooltip
-                        cursor={{ fill: 'rgba(55, 65, 81, 0)' }}
-                        formatter={(value) => [
-                          `${formatPriceUSDWithCommas(Number(value), 'auto')}`,
-                          priceLabel,
-                        ]}
-                        labelFormatter={() => ''}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-                {/* Class name labels */}
-                <div className="w-[200] h-[21.2rem]">
-                  <BarChart
-                    layout="vertical"
-                    data={filteredClasses}
-                    height={212}
-                    width={200}
-                  >
-                    <YAxis
-                      dataKey="name"
-                      type="category"
-                      width={200}
-                      {...Y_AXIS_PROPS}
-                      axisLine={false}
-                      tick={yAxisLabelsFormatter}
-                    />
-                    <XAxis />
-                  </BarChart>
-                </div>
-                {/* Supply Chart */}
-                <div className="w-full h-[21.2rem] grow">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart layout="vertical" data={filteredClasses}>
-                      <XAxis
-                        type="number"
-                        tickFormatter={(value) => formatAmountWithUnits(value)}
-                        scale="log"
-                        domain={capacityChartConfig.domain}
-                        ticks={capacityChartConfig.ticks}
-                      />
-                      <YAxis type="category" width={1} {...Y_AXIS_PROPS} />
-                      <Bar dataKey="supplyTonnes" {...BAR_PROPS} />
-                      <Tooltip
-                        cursor={{ fill: 'rgba(55, 65, 81, 0)' }}
-                        formatter={(value) => [
-                          `${formatAmountWithUnits(Number(value))}T`,
-                          'Supply',
-                        ]}
-                        labelFormatter={() => ''}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
+          <div className="flex flex-row">
+            {/* Price Chart */}
+            <div className="w-full h-[21.2rem] grow">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart layout="vertical" data={filteredClasses}>
+                  <XAxis
+                    type="number"
+                    tickFormatter={(value) =>
+                      formatPriceUSDWithCommas(Number(value), 'auto')
+                    }
+                    ticks={priceChartConfig.ticks}
+                    tick={{ fill: 'var(--text-1)' }}
+                    reversed
+                    scale="log"
+                    domain={priceChartConfig.domain}
+                  />
+                  <YAxis
+                    type="category"
+                    width={1}
+                    orientation="right"
+                    {...Y_AXIS_PROPS}
+                  />
+                  <Bar dataKey={priceKey} {...BAR_PROPS} />
+                  <Tooltip
+                    cursor={{ fill: 'rgba(55, 65, 81, 0)' }}
+                    formatter={(value) => [
+                      `${formatPriceUSDWithCommas(Number(value), 'auto')}`,
+                      priceLabel,
+                    ]}
+                    labelFormatter={() => ''}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
-          )}
-
-          {!isLoading && filteredClasses.length === 0 && (
-            <div className="flex flex-row justify-center items-center h-full">
-              <div className="text-size-14 text-void-50">Coming soon</div>
+            {/* Class name labels */}
+            <div className="w-[200] h-[21.2rem]">
+              <BarChart
+                layout="vertical"
+                data={filteredClasses}
+                height={212}
+                width={200}
+              >
+                <YAxis
+                  dataKey="name"
+                  type="category"
+                  width={200}
+                  {...Y_AXIS_PROPS}
+                  axisLine={false}
+                  tick={yAxisLabelsFormatter}
+                />
+                <XAxis />
+              </BarChart>
             </div>
-          )}
-        </>
+            {/* Supply Chart */}
+            <div className="w-full h-[21.2rem] grow">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart layout="vertical" data={filteredClasses}>
+                  <XAxis
+                    type="number"
+                    tickFormatter={(value) => formatAmountWithUnits(value)}
+                    scale="log"
+                    domain={capacityChartConfig.domain}
+                    ticks={capacityChartConfig.ticks}
+                    tick={{ fill: 'var(--text-1)' }}
+                  />
+                  <YAxis type="category" width={1} {...Y_AXIS_PROPS} />
+                  <Bar dataKey="supplyTonnes" {...BAR_PROPS} />
+                  <Tooltip
+                    cursor={{ fill: 'rgba(55, 65, 81, 0)' }}
+                    formatter={(value) => [
+                      `${formatAmountWithUnits(Number(value))}T`,
+                      'Supply',
+                    ]}
+                    labelFormatter={() => ''}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </div>
+      )}
+      {!isLoading && filteredClasses.length === 0 && (
+        <div className="flex flex-row justify-center items-center h-full">
+          <div className="text-size-14 text-text-3">Coming soon</div>
+        </div>
       )}
     </Card>
   );
@@ -219,7 +228,7 @@ const yAxisLabelsFormatter = (props: {
         x={props.x + 100}
         y={props.y - centerOffset}
         textAnchor="middle"
-        fill="#666"
+        fill="var(--text-1)"
       >
         {lines.map((line, index) => (
           <tspan key={index} x="204" dy={`${index === 0 ? 0 : 14}px`}>

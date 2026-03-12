@@ -1,48 +1,202 @@
 @import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
   --secondary: 0 0% 98.5%;
-  --spacing: 0.4rem; /* p-3 = 0.12rem padding = 12px padding */
+  --spacing: 0.4rem;
   --font-inter: Inter, Inter Fallback;
-  --primary-text-color: #1e1e1e;
-  --white: #ffffff;
-  --green-10: #e6faeb;
-  --green-20: #d9f5e1;
-  --green-40: #00cc33;
-  --green-60: #00994a;
-  --green-80: #007a1f;
-  --red-10: #ffe2e2;
-  --red-60: #dc2626;
-  --void-10: #efefef;
-  --void-20: #c3c3c3;
-  --void-40: #777777;
-  --void-50: #666666;
-  --void-60: #464646;
-  --void-70: #2c2c2c;
-  --void-80: #1e1e1e;
+
+  --surface-1: #ffffff;
+  --surface-2: #f8f8f8;
+  --surface-3: #efefef;
+  --surface-inverse: #1e1e1e;
+  --tooltip-bg: #1e1e1e;
+  --actionbutton-bg: #bbf7d0;
+
+  --text-1: #1e1e1e;
+  --text-2: #504f4f;
+  --text-3: #777777;
+  --text-highlight: #007a1f;
+  --text-inverse: #ffffff;
+  --text-static-light: #ffffff;
+  --text-static-dark: #1e1e1e;
+
+  --border-subtle: #e5e7eb;
+  --border-default: #d1d5db;
+  --border-strong: #777777;
+
+  --divider: #c3c3c3;
+
+  --negative-bg: #ffe2e2;
+  --negative-fg: #dc2626;
+  --positive-bg: #e6faeb;
+  --icon-bg: #d9f5e1;
+
+  --indicatorempty-bg: #dedede;
+  --indicatorfull-bg: #00cc33;
+
+  --link: var(--indicatorfull-bg);
+  --skeleton-loader: var(--divider);
+
   --overlay: rgba(0 0 0 / 0.5);
 }
 
+:root[data-theme='light'] {
+  --background: #ffffff;
+  --foreground: #171717;
+  --secondary: 0 0% 98.5%;
+  --spacing: 0.4rem;
+  --font-inter: Inter, Inter Fallback;
+
+  /* Surfaces */
+  --surface-1: #ffffff;
+  --surface-2: #f8f8f8;
+  --surface-3: #efefef;
+  --surface-inverse: #1e1e1e;
+  --tooltip-bg: #1e1e1e;
+  --actionbutton-bg: #bbf7d0;
+
+  /* Text */
+  --text-1: #1e1e1e;
+  --text-2: #504f4f;
+  --text-3: #777777;
+  --text-highlight: #007a1f;
+  --text-inverse: #ffffff;
+  --text-static-light: #ffffff;
+  --text-static-dark: #1e1e1e;
+
+  /* Borders */
+  --border-subtle: #e5e7eb;
+  --border-default: #d1d5db;
+  --border-strong: #777777;
+
+  /* Divider */
+  --divider: #c3c3c3;
+
+  /* Negative events */
+  --negative-bg: #ffe2e2;
+  --negative-fg: #dc2626;
+
+  /* Positive events */
+  --positive-bg: #e6faeb;
+
+  /* Icon backgrounds */
+  --icon-bg: #d9f5e1;
+
+  /* Progress indicators */
+  --indicatorempty-bg: #dedede;
+  --indicatorfull-bg: #00cc33;
+
+  /* Aliases */
+  --link: var(--indicatorfull-bg);
+  --skeleton-loader: var(--divider);
+
+  /* Overlay */
+  --overlay: rgba(0 0 0 / 0.5);
+}
+
+:root[data-theme='dark'] {
+  /* Core */
+  --background: #0f1720;
+  --foreground: #e6f1f4;
+  --secondary: 195 22% 20%;
+  --spacing: 0.4rem;
+  --font-inter: Inter, Inter Fallback;
+
+  /* Surfaces */
+  --surface-1: #1a242d;
+  --surface-2: #141d25;
+  --surface-3: #0f1720;
+  --surface-inverse: #1e1e1e;
+  --tooltip-bg: #141d25;
+  --actionbutton-bg: #86efac;
+
+  /* Text */
+  --text-1: #e6f1f4;
+  --text-2: #b9ccd4;
+  --text-3: #7f9aa6;
+  --text-highlight: #4ade80;
+  --text-inverse: #0b1116;
+  --text-static-light: #ffffff;
+  --text-static-dark: #1e1e1e;
+
+  /* Borders */
+  --border-subtle: #25323c;
+  --border-default: #314250;
+  --border-strong: #6b8795;
+
+  /* Divider */
+  --divider: #25323c;
+
+  /* Negative events */
+  --negative-bg: #4a2327;
+  --negative-fg: #ff8a80;
+
+  /* Positive events */
+  --positive-bg: #1b4d3c;
+
+  /* Icon backgrounds */
+  --icon-bg: #1f3f35;
+
+  /* Progress indicators */
+  --indicatorempty-bg: #4a5a66;
+  --indicatorfull-bg: #32bc4b;
+
+  /* Aliases */
+  --link: var(--indicatorfull-bg);
+  --skeleton-loader: var(--divider);
+
+  /* Overlay */
+  --overlay: rgba(0 0 0 / 0.65);
+}
+
 @theme {
-  --color-foreground: var(--foreground);
   --color-background: var(--background);
+  --color-foreground: var(--foreground);
   --color-secondary: hsl(var(--secondary));
-  --color-green-10: var(--green-10);
-  --color-green-20: var(--green-20);
-  --color-green-40: var(--green-40);
-  --color-green-60: var(--green-60);
-  --color-green-80: var(--green-80);
-  --color-red-10: var(--red-10);
-  --color-red-60: var(--red-60);
-  --color-void-10: var(--void-10);
-  --color-void-20: var(--void-20);
-  --color-void-40: var(--void-40);
-  --color-void-50: var(--void-50);
-  --color-void-60: var(--void-60);
-  --color-void-80: var(--void-80);
-  --color-white: var(--white);
+
+  /* Surfaces */
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-surface-inverse: var(--surface-inverse);
+  --color-tooltip-bg: var(--tooltip-bg);
+  --color-actionbutton-bg: var(--actionbutton-bg);
+
+  /* Text */
+  --color-text-1: var(--text-1);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-text-highlight: var(--text-highlight);
+  --color-text-inverse: var(--text-inverse);
+  --color-text-static-light: var(--text-static-light);
+  --color-text-static-dark: var(--text-static-dark);
+
+  /* Borders / dividers */
+  --color-border-subtle: var(--border-subtle);
+  --color-border-default: var(--border-default);
+  --color-border-strong: var(--border-strong);
+  --color-divider: var(--divider);
+
+  /* Semantic */
+  --color-negative-bg: var(--negative-bg);
+  --color-negative-fg: var(--negative-fg);
+  --color-positive-bg: var(--positive-bg);
+
+  /* Icon backgrounds */
+  --color-icon-bg: var(--icon-bg);
+
+  /* Progress indicators */
+  --color-indicatorempty-bg: var(--indicatorempty-bg);
+  --color-indicatorfull-bg: var(--indicatorfull-bg);
+
+  /* Aliases */
+  --color-link: var(--link);
+  --color-skeleton-loader: var(--skeleton-loader);
+
+  /* Overlay */
   --color-overlay: var(--overlay);
 }
 
@@ -52,7 +206,6 @@ html {
 
 body {
   background: var(--background);
-  color: var(--primary-text-color);
   font-family: var(--font-inter);
   font-style: normal;
   font-size: 1.4rem;

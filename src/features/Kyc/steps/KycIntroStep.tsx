@@ -30,7 +30,7 @@ export const KycIntroStep = ({
 
   return (
     <div
-      className="w-[92%] max-w-[600px] bg-white rounded-lg border border-gray-200 max-h-[80vh] overflow-y-auto"
+      className="w-[92%] max-w-[600px] bg-surface-1 rounded-lg border border-border-subtle max-h-[80vh] overflow-y-auto"
       aria-labelledby="kyc-title"
       aria-describedby="kyc-subhead"
     >
@@ -43,7 +43,7 @@ export const KycIntroStep = ({
           />
         )}
         <KycIntroSection title="Why">
-          <ul className="list-disc pl-3.5 space-y-1.5 text-size-14 text-gray-700">
+          <ul className="list-disc pl-3.5 space-y-1.5 text-size-14 text-text-2">
             <li>Meet AML/abuse-prevention requirements.</li>
             <li>
               Align with carbon market integrity standards and counterparty
@@ -56,7 +56,7 @@ export const KycIntroStep = ({
           </ul>
         </KycIntroSection>
         <KycIntroSection title="How it works">
-          <p className="text-size-14 text-gray-700">
+          <p className="text-size-14 text-text-2">
             zkMe checks liveness, sanctions/PEP, and validates your document. We
             receive a verification result (pass/flag), as well as your email
             address and citizenship status. We do not have access to your
@@ -65,7 +65,7 @@ export const KycIntroStep = ({
           </p>
         </KycIntroSection>
         <KycIntroSection title="Eligibility parameters">
-          <ul className="list-disc pl-3.5 space-y-1.5 text-size-14 text-gray-700">
+          <ul className="list-disc pl-3.5 space-y-1.5 text-size-14 text-text-2">
             <li>
               <strong>Age:</strong> 18+ required.
             </li>
@@ -75,7 +75,7 @@ export const KycIntroStep = ({
           </ul>
         </KycIntroSection>
         <KycIntroSection title="On-chain">
-          <ul className="list-disc pl-3.5 space-y-1.5 text-size-14 text-gray-700">
+          <ul className="list-disc pl-3.5 space-y-1.5 text-size-14 text-text-2">
             <li>
               A <strong>non-identifying</strong> proof will be minted; on-chain
               data is public.
@@ -95,7 +95,7 @@ export const KycIntroStep = ({
           </KycIntroExpandable>
         </KycIntroSection>
         <KycIntroSection title="Privacy & contact">
-          <p className="text-size-14 text-gray-700">
+          <p className="text-size-14 text-text-2">
             Controller: Klima Fintech Ltd. •{' '}
             <strong>privacy@klimaprotocol.com</strong>
           </p>

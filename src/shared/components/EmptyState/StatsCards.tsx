@@ -13,7 +13,7 @@ export const StatsCards = (props: StatsCardsProps) => {
             {stat.value}
           </div>
 
-          <div className="text-[1.2rem] md:text-[1.5rem] text-gray-600 mt-2 leading-snug">
+          <div className="text-[1.2rem] md:text-[1.5rem] text-text-2 mt-2 leading-snug">
             {stat.label}
           </div>
         </div>

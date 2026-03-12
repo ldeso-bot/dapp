@@ -75,7 +75,7 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
   return (
     <Card
       skeletonClassName="h-[63.8rem]"
-      className={cn('rounded-lg border-gray-300 !shadow-none', className)}
+      className={cn('rounded-lg border-border-default !shadow-none', className)}
     >
       {holdingsData && (
         <>
@@ -88,7 +88,7 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                   className="max-w-[35rem] text-size-12 p-3"
                   content={
                     <div className="flex flex-col gap-4">
-                      <div className="text-white-70">
+                      <div className="text-text-static-light">
                         USD equivalent estimated value of your current holdings.
                       </div>
 
@@ -96,7 +96,7 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                         <div className="flex items-start gap-2">
                           <div>
                             <div className="font-semibold">Active</div>
-                            <div className="text-white-60 text-size-11">
+                            <div className="text-text-static-light text-size-11">
                               Portion of your assets allocated to activities in
                               Klima Protocol.
                             </div>
@@ -109,11 +109,11 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                               Status Indicator
                             </div>
 
-                            <div className="flex flex-col gap-2 text-white-60 text-size-11">
+                            <div className="flex flex-col gap-2 text-text-static-light text-size-11">
                               <div className="flex items-start gap-2">
                                 <div className="w-2 aspect-square rounded-full bg-green-400 mt-[5px] shrink-0" />{' '}
                                 <div>
-                                  <span className="text-white-80 font-medium">
+                                  <span className="text-text-static-light font-medium">
                                     All active: all your positions are active
                                     and eligible for incentives.
                                   </span>
@@ -123,7 +123,7 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                               <div className="flex items-start gap-2">
                                 <div className="w-2 aspect-square rounded-full bg-yellow-400 mt-[5px] shrink-0" />{' '}
                                 <div>
-                                  <span className="text-white-80 font-medium">
+                                  <span className="text-text-static-light font-medium">
                                     Some active: one or more positions are not
                                     active.
                                   </span>
@@ -131,9 +131,9 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                               </div>
 
                               <div className="flex items-start gap-2">
-                                <div className="w-2 aspect-square rounded-full bg-gray-400 mt-[5px] shrink-0" />{' '}
+                                <div className="w-2 aspect-square rounded-full bg-surface-3 mt-[5px] shrink-0" />{' '}
                                 <div>
-                                  <span className="text-white-80 font-medium">
+                                  <span className="text-text-static-light font-medium">
                                     Not active: no positions active.
                                   </span>
                                 </div>
@@ -142,7 +142,7 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                               <div className="flex items-start gap-2">
                                 <div className="w-2 aspect-square rounded-full bg-gray-500 mt-[5px] shrink-0" />{' '}
                                 <div>
-                                  <span className="text-white-80 font-medium">
+                                  <span className="text-text-static-light font-medium">
                                     No positions: no positions found.
                                   </span>
                                 </div>
@@ -161,12 +161,12 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
               <div className="text-[4rem] leading-[5.5rem] tabular-nums">
                 ~{formatPriceUSDWithCommas(holdingsData.portfolioValue)}
               </div>
-              <div className="text-size-12 text-gray-500">
+              <div className="text-size-12 text-text-3">
                 As of {liveTimestamp}
               </div>
               <div className="pt-3 border-t flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 min-w-0">
-                  <span className="text-size-12 font-medium text-gray-500 uppercase tracking-wide">
+                  <span className="text-size-12 font-medium text-text-3 uppercase tracking-wide">
                     Active
                   </span>
                   <span className="text-size-14 font-medium tabular-nums">
@@ -181,7 +181,7 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                         statusInfo.statusColor === 'yellow'
                           ? 'text-yellow-700'
                           : statusInfo.statusColor === 'gray'
-                            ? 'text-void-60'
+                            ? 'text-text-3'
                             : ''
                       }`}
                     >
@@ -197,14 +197,14 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                 <div className="text-[4rem] leading-[5.5rem] tabular-nums mb-1">
                   ~{formatPriceUSDWithCommas(holdingsData.portfolioValue)}
                 </div>
-                <div className="text-size-12 text-gray-500">
+                <div className="text-size-12 text-text-3">
                   As of {liveTimestamp}
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-2 sm:gap-4 lg:flex lg:flex-row lg:items-center lg:gap-6">
                 <div>
                   <div className="flex items-center gap-1.5 mb-1">
-                    <span className="text-size-12 font-medium text-gray-500 uppercase tracking-wide">
+                    <span className="text-size-12 font-medium text-text-3 uppercase tracking-wide">
                       Active
                     </span>
                   </div>
@@ -215,7 +215,7 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                 {shouldShowBadge && (
                   <div className="relative -top-[4px]">
                     <div className="flex items-center gap-1.5 mb-1">
-                      <span className="text-size-12 font-medium text-gray-500 uppercase tracking-wide">
+                      <span className="text-size-12 font-medium text-text-3 uppercase tracking-wide">
                         Status
                       </span>
                     </div>
@@ -226,7 +226,7 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                           statusInfo.statusColor === 'yellow'
                             ? 'text-yellow-700'
                             : statusInfo.statusColor === 'gray'
-                              ? 'text-void-60'
+                              ? 'text-text-3'
                               : ''
                         }`}
                       >
@@ -245,7 +245,7 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                     className="flex items-center gap-2"
                   >
                     <StatusCardBadge variant={row.statusColor} />
-                    <span className="text-gray-900 font-medium">
+                    <span className="text-text-1 font-medium">
                       {row.tokenInfo.lockDescription}:
                     </span>
                     <span className="px-2 py-0.5 font-medium bg-yellow-50 text-yellow-700 border border-yellow-200 rounded">
@@ -253,11 +253,11 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                     </span>
                     {row.nextUpdate && (
                       <>
-                        <span className="text-gray-400">•</span>
-                        <span className="text-gray-600">{row.nextUpdate}</span>
+                        <span className="text-text-3">•</span>
+                        <span className="text-text-2">{row.nextUpdate}</span>
                       </>
                     )}
-                    <span className="text-gray-400">•</span>
+                    <span className="text-text-3">•</span>
                     <span
                       className="h-auto p-0 text-12 font-normal cursor-pointer"
                       onClick={() => navigateToTab(row.tokenInfo.activitiesTab)}

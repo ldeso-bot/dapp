@@ -32,7 +32,7 @@ export const UnsupportedNetworkModal = () => {
     <Dialog open={isUnsupportedNetwork} closeOnOutsideClick>
       <div className="p-6 max-w-md">
         <h2 className="text-xl font-semibold mb-4">Unsupported Network</h2>
-        <p className="mb-6 text-void-60">
+        <p className="mb-6 text-text-1">
           You’re connected to {chain?.name || 'an unsupported network'}. Please
           switch to Base Mainnet to continue.
         </p>

@@ -21,7 +21,7 @@ export const EmptyState = ({
   docsCallout,
   customCalloutSection,
 }: EmptyStateProps) => (
-  <div className="min-h-screen -m-2">
+  <div className="min-h-screen -m-2 text-text-1">
     <div className="relative">
       <AnimatedLines />
       <div className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 pt-14 pb-12 md:pt-24 md:pb-16">

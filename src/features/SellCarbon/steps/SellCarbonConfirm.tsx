@@ -130,7 +130,7 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
     <Dialog className="bg-overlay-10" open={true}>
       <Card
         className="w-[36rem] border-0 rounded-xl"
-        titleClassName="font-bold text-void-80 text-size-18"
+        titleClassName="font-bold text-text-1 text-size-18"
         title="Confirm your transaction"
       >
         <form
@@ -164,6 +164,7 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
               <Button
                 colors="secondary"
                 context="flow"
+                className="text-text-static-light"
                 type="submit"
                 onClick={() => handleSetAllowance()}
                 disabled={isSettingAllowance}
@@ -182,7 +183,12 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
                 {isExecuting ? 'Supplying Carbon...' : 'Supply Carbon'}
               </Button>
             )}
-            <Button colors="primary" context="flow" onClick={previous}>
+            <Button
+              colors="primary"
+              context="flow"
+              className="border-border-strong"
+              onClick={previous}
+            >
               Cancel
             </Button>
             {form.formState.errors.root && (

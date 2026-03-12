@@ -90,16 +90,16 @@ const ClaimMaturedLogRewardsForm = ({
         <>
           <div className="flex flex-col gap-6">
             <div className="flex flex-col">
-              <span className="text-size-20 font-semibold text-gray-900">
+              <span className="text-size-20 font-semibold text-text-1">
                 Claim lock
               </span>
-              <span className="text-size-16 font-[300] text-gray-900">
+              <span className="text-size-16 font-[300] text-text-1">
                 Unlocked on {formatTimestamp(lock.lockedUntil * 1000, 'short')}
               </span>
             </div>
             {isNonNullish(kvcmAmount) && isNonNullish(k2Amount) ? (
               <>
-                <div className="flex flex-col gap-3 border-void-20 border-1 rounded-2xl p-3">
+                <div className="flex flex-col gap-3 border-border-default border-1 rounded-2xl p-3">
                   <div className="flex flex-row justify-between">
                     <span>Tokens locked</span>
                     <span>
@@ -128,7 +128,7 @@ const ClaimMaturedLogRewardsForm = ({
                     </span>
                   </div>
                 </div>
-                <div className="flex flex-col gap-3 border-void-20 border-1 rounded-2xl p-3">
+                <div className="flex flex-col gap-3 border-border-default border-1 rounded-2xl p-3">
                   <div className="flex flex-row justify-between">
                     {isK2Lock ? (
                       <>
@@ -155,6 +155,7 @@ const ClaimMaturedLogRewardsForm = ({
               <Button
                 colors="primary"
                 context="flow"
+                className="border-border-strong"
                 onClick={() =>
                   setClaimMaturedLockRewardsDialog({
                     open: false,

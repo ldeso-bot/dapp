@@ -21,7 +21,7 @@ export const K2Incentives: FC<K2IncentivesProps> = (props) => {
     <Accordion
       collapsible
       type="single"
-      className="rounded-lg bg-gray-50 border border-gray-200"
+      className="rounded-lg bg-surface-2 border border-border-subtle"
     >
       <AccordionItem value="locks">
         <AccordionTrigger
@@ -29,17 +29,17 @@ export const K2Incentives: FC<K2IncentivesProps> = (props) => {
           className="px-4 hover:no-underline flex items-center justify-start rounded-none gap-1"
         >
           <div className="flex items-center gap-2">
-            <div className="text-size-14 text-gray-900 font-[400]">
+            <div className="text-size-14 text-text-1 font-[400]">
               K2 incentives (variable)
             </div>
           </div>
         </AccordionTrigger>
-        <AccordionContent className="border-t border-gray-200 px-4 py-3">
+        <AccordionContent className="border-t border-border-subtle px-4 py-3">
           <div className="flex flex-col gap-3">
-            <div className="text-size-14 text-gray-800">
+            <div className="text-size-14 text-text-1">
               ~ {k2Incentives} K2 / kVCM / epoch
             </div>
-            <p className="text-size-12 text-gray-500">
+            <p className="text-size-12 text-text-3">
               Indicative rate of K2 incentives earned by your time-locked{' '}
               {token}. These amounts are are variable, non-guaranteed, and may
               be zero.

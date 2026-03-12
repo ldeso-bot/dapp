@@ -1,13 +1,26 @@
 import { ROUTES } from '@/shared/constants/route.constants';
 import { StaticImageData } from 'next/image';
-import allocateIcon from './images/allocate.svg';
-import burnCarbonIcon from './images/burn-carbon.svg';
-import myHoldingsIcon from './images/my-holdings.svg';
-import protocolOverviewIcon from './images/protocol-overview.svg';
-import sellCarbonIcon from './images/sell-carbon.svg';
+
+import allocateDarkIcon from './images/allocate-dark.svg';
+import allocateLightIcon from './images/allocate-light.svg';
+
+import burnCarbonDarkIcon from './images/burn-carbon-dark.svg';
+import burnCarbonLightIcon from './images/burn-carbon-light.svg';
+
+import myHoldingsDarkIcon from './images/my-holdings-dark.svg';
+import myHoldingsLightIcon from './images/my-holdings-light.svg';
+
+import protocolOverviewDarkIcon from './images/protocol-overview-dark.svg';
+import protocolOverviewLightIcon from './images/protocol-overview-light.svg';
+
+import sellCarbonDarkIcon from './images/sell-carbon-dark.svg';
+import sellCarbonLightIcon from './images/sell-carbon-light.svg';
 
 export type NavItem = {
-  icon: StaticImageData;
+  icon: {
+    light: StaticImageData;
+    dark: StaticImageData;
+  };
   label: string;
   href: string;
   isDisabled?: boolean;
@@ -15,27 +28,42 @@ export type NavItem = {
 
 export const navItems: NavItem[] = [
   {
-    icon: protocolOverviewIcon,
+    icon: {
+      light: protocolOverviewDarkIcon,
+      dark: protocolOverviewLightIcon,
+    },
     label: 'Protocol Overview',
     href: ROUTES.OVERVIEW,
   },
   {
-    icon: myHoldingsIcon,
+    icon: {
+      light: myHoldingsDarkIcon,
+      dark: myHoldingsLightIcon,
+    },
     label: 'My Activities',
     href: ROUTES.MY_ACTIVITIES,
   },
   {
-    icon: burnCarbonIcon,
+    icon: {
+      light: burnCarbonDarkIcon,
+      dark: burnCarbonLightIcon,
+    },
     label: 'Retire Carbon',
     href: ROUTES.RETIRE,
   },
   {
-    icon: sellCarbonIcon,
+    icon: {
+      light: sellCarbonDarkIcon,
+      dark: sellCarbonLightIcon,
+    },
     label: 'Supply Carbon',
     href: ROUTES.SELL_CARBON,
   },
   {
-    icon: allocateIcon,
+    icon: {
+      light: allocateDarkIcon,
+      dark: allocateLightIcon,
+    },
     label: 'Allocate',
     href: ROUTES.ALLOCATE,
   },

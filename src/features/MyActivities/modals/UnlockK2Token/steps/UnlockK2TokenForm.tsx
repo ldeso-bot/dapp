@@ -54,7 +54,10 @@ const UnlockK2TokenForm: FormFlowStep<UnlockTokenFields> = ({ data }) => {
   if (!lock) return null;
 
   return (
-    <Card title="Request unlock of your K2 tokens" className="w-[42rem]">
+    <Card
+      title="Request unlock of your K2 tokens"
+      className="w-[42rem] text-text-1"
+    >
       <Form onSubmit={handleSubmit(onSubmit)} noValidate>
         <InputGroup>
           <TokenAmountInput
@@ -78,7 +81,7 @@ const UnlockK2TokenForm: FormFlowStep<UnlockTokenFields> = ({ data }) => {
               onClick={() =>
                 setUnlockTokenDialogState({ open: false, lock: null })
               }
-              className="flex-1"
+              className="flex-1 border-border-strong"
             >
               Cancel
             </Button>
@@ -87,7 +90,7 @@ const UnlockK2TokenForm: FormFlowStep<UnlockTokenFields> = ({ data }) => {
               context="flow"
               type="submit"
               disabled={isExecuting || !formState.isValid}
-              className="flex-1"
+              className="flex-1 text-text-static-light"
             >
               {isExecuting ? 'Unlocking...' : `Unlock ${tokens.k2.symbol}`}
             </Button>

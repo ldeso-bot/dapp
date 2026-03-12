@@ -25,7 +25,7 @@ export const KycIntroExpandable = ({
       {label} {expanded ? '▾' : '▸'}
     </button>
     {expanded && (
-      <p className="text-size-14 text-gray-700 mt-2 mt-3 pl-4 border-l-2 space-y-1.5 text-sm border-green-300">
+      <p className="text-size-14 text-text-2 mt-2 mt-3 pl-4 border-l-2 space-y-1.5 text-sm border-green-300">
         {children}
       </p>
     )}

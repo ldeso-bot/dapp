@@ -60,7 +60,7 @@ export const DurationStepper = <T extends DurationFormFields>({
           if (lockableMaturities.length === 0) {
             return (
               <div className="flex items-center justify-center space-x-4 p-4 bg-[#EFEFEF] rounded-lg">
-                <div className="flex-1 text-center text-size-14 text-void-40">
+                <div className="flex-1 text-center text-size-14 text-text-3">
                   No durations available
                 </div>
               </div>
@@ -96,16 +96,16 @@ export const DurationStepper = <T extends DurationFormFields>({
           );
 
           return (
-            <div className="flex items-center justify-center space-x-4 p-4 bg-[#EFEFEF] rounded-lg">
+            <div className="flex items-center bg-surface-3 justify-center space-x-4 p-4 bg-[#EFEFEF] rounded-lg">
               <button
                 type="button"
                 disabled={!hasPrevious}
                 onClick={handlePrevious}
-                className="cursor-pointer flex items-center justify-center w-12 h-12 border-2 border-void-20 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none hover:border-void-40 bg-white active:bg-[#EFEFEF] transition-all"
+                className="cursor-pointer flex items-center justify-center w-12 h-12 border-2 border-border-default rounded-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none hover:border-border-strong bg-surface-1 active:bg-[#EFEFEF] transition-all"
                 aria-label="Previous lock duration"
               >
                 <svg
-                  className="w-5 h-5 text-void-60"
+                  className="w-5 h-5 text-text-1"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -119,10 +119,10 @@ export const DurationStepper = <T extends DurationFormFields>({
                 </svg>
               </button>
               <div className="flex-1 text-center">
-                <div className="text-size-16 font-bold text-black">
+                <div className="text-size-16 font-bold text-text-1">
                   {displayDate}
                 </div>
-                <div className="text-size-12 text-void-40">
+                <div className="text-size-12 text-text-3">
                   {displayDuration}
                 </div>
               </div>
@@ -130,11 +130,11 @@ export const DurationStepper = <T extends DurationFormFields>({
                 type="button"
                 disabled={!hasNext}
                 onClick={handleNext}
-                className="cursor-pointer flex items-center justify-center w-12 h-12 bg-white border-2 border-void-20 rounded-lg disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-void-40 active:bg-[#EFEFEF] transition-all"
+                className="cursor-pointer flex items-center justify-center w-12 h-12 bg-surface-1 border-2 border-border-default rounded-lg disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed hover:border-border-strong active:bg-[#EFEFEF] transition-all"
                 aria-label="Next lock duration"
               >
                 <svg
-                  className="w-5 h-5 text-void-60"
+                  className="w-5 h-5 text-text-1"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"

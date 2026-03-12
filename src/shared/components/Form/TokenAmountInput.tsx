@@ -86,7 +86,7 @@ export default function TokenAmountInput<T extends FieldValues>(
             <Button
               type="button"
               colors="secondary"
-              className="uppercase text-md h-[4rem]"
+              className="uppercase text-md h-[4rem] text-text-static-light border-border-strong"
               onClick={() => field.onChange(Number(availableBalance ?? 0))}
             >
               Max

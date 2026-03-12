@@ -221,9 +221,9 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
           </TableCell>
           <TableCell className="text-right border-0">
             <div className="flex flex-col items-end">
-              <div className="font-medium text-gray-900 tabular-nums">
+              <div className="font-medium text-text-1 tabular-nums">
                 {formatAmountWithCommas(totalAmountForClass)}{' '}
-                <span className="text-void-50 text-size-12">
+                <span className="text-text-3 text-size-12">
                   {tokenInfo.symbol}
                 </span>
               </div>
@@ -305,25 +305,25 @@ const CarbonClassGroup: FC<CarbonClassGroupProps> = (props) => {
           );
 
           return (
-            <TableRow className="bg-white">
+            <TableRow className="bg-surface-1">
               <TableCell className="text-left border-0 pl-16">
                 <div className="flex flex-col gap-1">
-                  <span className="text-size-14 text-gray-600">No Lock</span>
+                  <span className="text-size-14 text-text-2">No Lock</span>
                 </div>
               </TableCell>
               <TableCell className="text-right border-0">
-                <span className="text-size-14 text-gray-600">
+                <span className="text-size-14 text-text-2">
                   {formatAmountWithCommas(totalWithoutLocks)} {tokenInfo.symbol}
                 </span>
               </TableCell>
               {!isK2 && (
                 <TableCell className="text-center border-0">
-                  <span className="text-size-12 text-void-50">—</span>
+                  <span className="text-size-12 text-text-3">—</span>
                 </TableCell>
               )}
               <TableCell className="text-left border-0">
                 <div className="flex justify-center">
-                  <span className="text-size-12 text-void-50">—</span>
+                  <span className="text-size-12 text-text-3">—</span>
                 </div>
               </TableCell>
               <TableCell className="border-0">
@@ -388,21 +388,21 @@ const LockSubRow: FC<LockSubRowProps> = (props) => {
   return (
     <TableRow
       key={`lock-${lockAllocation.contractLockId}`}
-      className="bg-white border-b border-gray-200/30"
+      className="bg-surface-1 border-b border-border-subtle/30"
     >
       <TableCell className="text-left border-0">
         <div className="flex items-center pl-[25px] gap-[10px]">
           <Icon
             size={2.4}
             icon={LockIcon}
-            className="text-gray-400 flex-shrink-0"
+            className="text-text-3 flex-shrink-0"
           />
           <div className="flex flex-col gap-0.5 flex-1">
             <div className="flex flex-col gap-0 flex-1">
-              <span className="text-size-14 text-gray-600 font-medium">
+              <span className="text-size-14 text-text-2 font-medium">
                 {lockDate ? `Lock: ${lockDate}` : 'Lock'}
               </span>
-              <span className="text-size-12 text-gray-500 font-normal">
+              <span className="text-size-12 text-text-3 font-normal">
                 {formatAmountWithCommas(availableAmount)} {tokenInfo.symbol}{' '}
                 available
               </span>
@@ -412,22 +412,20 @@ const LockSubRow: FC<LockSubRowProps> = (props) => {
       </TableCell>
       <TableCell className="text-right border-0">
         <div className="flex flex-col items-end">
-          <div className="font-medium text-gray-900 tabular-nums">
+          <div className="font-medium text-text-1 tabular-nums">
             {formatAmountWithCommas(lockTotal)}{' '}
-            <span className="text-void-50 text-size-12">
-              {tokenInfo.symbol}
-            </span>
+            <span className="text-text-3 text-size-12">{tokenInfo.symbol}</span>
           </div>
         </div>
       </TableCell>
       {!isK2 && (
         <TableCell className="text-center border-0">
-          <span className="text-size-12 text-void-50">—</span>
+          <span className="text-size-12 text-text-3">—</span>
         </TableCell>
       )}
       <TableCell className="text-left border-0">
         <div className="flex justify-center">
-          <span className="text-size-12 text-void-50">—</span>
+          <span className="text-size-12 text-text-3">—</span>
         </div>
       </TableCell>
       <TableCell colSpan={2} className="border-0 justify-end !pr-6">

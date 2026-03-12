@@ -7,7 +7,7 @@ import { AllocationsTableItemProps } from './AllocationsTable.types';
 export const AllocationCategory: FC<AllocationsTableItemProps> = (props) => {
   const { allocation, className } = props;
   return (
-    <div className={cn('text-gray-500 text-[1.3rem]', className)}>
+    <div className={cn('text-text-3 text-[1.3rem]', className)}>
       {allocation.category}
     </div>
   );

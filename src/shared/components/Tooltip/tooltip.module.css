@@ -7,7 +7,7 @@
   font-size: 1.4rem;
   line-height: 1.25;
   color: white;
-  background-color: var(--void-80);
+  background-color: var(--tooltip-bg);
   box-shadow:
     hsl(206 22% 7% / 35%) 0px 1rem 3.8rem -1rem,
     hsl(206 22% 7% / 20%) 0px 1rem 2rem -1.5rem;
@@ -28,10 +28,6 @@
 }
 .TooltipContent[data-state='delayed-open'][data-side='left'] {
   animation-name: slideRightAndFade;
-}
-
-.TooltipArrow {
-  fill: var(--void-70);
 }
 
 @keyframes slideUpAndFade {

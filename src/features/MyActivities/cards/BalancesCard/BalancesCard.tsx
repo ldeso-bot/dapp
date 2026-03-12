@@ -37,7 +37,10 @@ export const BalancesCard = (props: CardProps) => {
     <Card
       {...props}
       skeletonClassName="h-[41.8rem]"
-      className={cn('rounded-lg border-gray-200 !shadow-none', props.className)}
+      className={cn(
+        'rounded-lg border-border-default !shadow-none',
+        props.className
+      )}
     >
       {holdingsData && (
         <>
@@ -46,16 +49,16 @@ export const BalancesCard = (props: CardProps) => {
             <Tooltip
               content={
                 <div className="flex flex-col gap-4">
-                  <div className="text-white-70">
+                  <div className="text-text-static-light">
                     Balances across all protocol activities.
                   </div>
 
                   <div className="flex flex-col gap-3">
                     <div className="flex items-start gap-2">
-                      <div className="mt-1 h-2 w-2 rounded-full bg-gray-400" />
+                      <div className="mt-1 h-2 w-2 rounded-full bg-surface-3" />
                       <div>
                         <div className="font-semibold">Wallet</div>
-                        <div className="text-white-60 text-size-11">
+                        <div className="text-text-static-light text-size-11">
                           Unallocated assets in your wallet, not eligible for
                           incentives.
                         </div>
@@ -66,7 +69,7 @@ export const BalancesCard = (props: CardProps) => {
                       <div className="mt-1 h-2 w-2 rounded-full bg-green-400" />
                       <div>
                         <div className="font-semibold">Deployed</div>
-                        <div className="text-white-60 text-size-11">
+                        <div className="text-text-static-light text-size-11">
                           Assets allocated in Klima Protocol, eligible for
                           incentives.
                         </div>
@@ -87,8 +90,8 @@ export const BalancesCard = (props: CardProps) => {
                 className={cn(
                   'flex-1 rounded-md border px-3 py-2 text-size-12',
                   mobileView === 'wallet'
-                    ? 'border-gray-300 bg-gray-100 font-medium'
-                    : 'border-gray-200 bg-white text-void-60'
+                    ? 'border-border-default bg-surface-2 font-medium'
+                    : 'border-border-subtle bg-surface-1 text-text-3'
                 )}
               >
                 Wallet
@@ -99,15 +102,15 @@ export const BalancesCard = (props: CardProps) => {
                 className={cn(
                   'flex-1 rounded-md border px-3 py-2 text-size-12',
                   mobileView === 'deployed'
-                    ? 'border-gray-300 bg-gray-100 font-medium'
-                    : 'border-gray-200 bg-white text-void-60'
+                    ? 'border-border-default bg-surface-2 font-medium'
+                    : 'border-border-subtle bg-surface-1 text-text-3'
                 )}
               >
                 Deployed
               </button>
             </div>
 
-            <div className="mt-2 flex flex-col divide-y divide-gray-200 border-y border-gray-200">
+            <div className="mt-2 flex flex-col divide-y divide-gray-200 border-y border-border-subtle">
               {rows.map((balance) => {
                 const symbol = getTokenSymbol(balance.token as Token);
                 const value =
@@ -173,20 +176,23 @@ export const BalancesCard = (props: CardProps) => {
             <Table className="w-full table-auto">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-2/8 text-left border-b border-gray-200 py-2">
+                  <TableHead className="w-2/8 text-left border-b border-border-subtle py-2">
                     Asset
                   </TableHead>
-                  <TableHead className="text-right border-b border-gray-200 py-2">
+                  <TableHead className="text-right border-b border-border-subtle py-2">
                     Wallet
                   </TableHead>
-                  <TableHead className="text-right border-b border-gray-200 py-2">
+                  <TableHead className="text-right border-b border-border-subtle py-2">
                     Deployed
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody borders="between">
                 {rows.map((balance) => (
-                  <TableRow className="!border-gray-200" key={balance.asset}>
+                  <TableRow
+                    className="!border-border-subtle"
+                    key={balance.asset}
+                  >
                     <TableCell>
                       <div className="flex flex-row gap-3 items-center">
                         {balance.lpToken ? (
@@ -218,7 +224,7 @@ export const BalancesCard = (props: CardProps) => {
                           Number(balance.balance),
                           balance.longDecimals
                         )}{' '}
-                        <small className="text-size-12 text-void-60">
+                        <small className="text-size-12 text-text-3">
                           ({getTokenSymbol(balance.token as Token)})
                         </small>
                       </div>
@@ -229,7 +235,7 @@ export const BalancesCard = (props: CardProps) => {
                           Number(balance.deployedBalance),
                           balance.longDecimals
                         )}{' '}
-                        <small className="text-size-12 text-void-60">
+                        <small className="text-size-12 text-text-3">
                           ({getTokenSymbol(balance.token as Token)})
                         </small>
                       </div>

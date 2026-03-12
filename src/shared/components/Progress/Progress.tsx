@@ -25,14 +25,14 @@ export const Progress: FC<Props> = (props) => {
         max={1}
         value={progressPercent}
         className={cn(
-          'w-[90%] relative h-[0.4rem] bg-gray-200 overflow-hidden rounded-full',
+          'w-[90%] relative h-[0.4rem] bg-indicatorempty-bg overflow-hidden rounded-full',
           className
         )}
       >
         <ProgressPrimitive.Indicator
           className={cn(
             'w-full h-full rounded-full',
-            indeterminate ? '' : 'bg-green-40'
+            indeterminate ? '' : 'bg-indicatorfull-bg'
           )}
           style={{
             transform: `translateX(-${Math.floor((1 - progressPercent) * 100)}%)`,
@@ -45,7 +45,7 @@ export const Progress: FC<Props> = (props) => {
         />
       </ProgressPrimitive.Root>
       {showProgressLabel && (
-        <div className="w-[10%] text-size-10 text-gray-500 font-medium">
+        <div className="w-[10%] text-size-10 text-text-3 font-medium">
           {(progressPercent * 100).toFixed(2)}%
         </div>
       )}

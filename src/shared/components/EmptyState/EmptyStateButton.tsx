@@ -18,7 +18,7 @@ export const EmptyStateButton = ({ cta }: { cta: CtaConfig }) => {
               <Button
                 onClick={() => onClick?.(openConnectModal)}
                 className={cn(
-                  'h-14 px-6 gap-3 hover:scale-105 transition-transform bg-foreground text-white',
+                  'h-14 px-6 gap-3 hover:scale-105 transition-transform bg-foreground text-text-inverse',
                   className
                 )}
                 href={href}
@@ -33,9 +33,7 @@ export const EmptyStateButton = ({ cta }: { cta: CtaConfig }) => {
         </RainbowConnectButton.Custom>
       </div>
       {description && (
-        <p className="text-size-14 text-gray-600 text-center">
-          {description}
-        </p>
+        <p className="text-size-14 text-text-2 text-center">{description}</p>
       )}
     </>
   );

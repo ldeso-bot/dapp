@@ -8,7 +8,7 @@ export default function ChartFact(props: Props) {
   return (
     <div className="flex flex-row gap-2 items-center">
       <div className="text-size-20 font-bold">{value}</div>
-      <div className="text-size-14 text-void-60">{label}</div>
+      <div className="text-size-14 text-text-1">{label}</div>
     </div>
   );
 }

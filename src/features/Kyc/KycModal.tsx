@@ -159,10 +159,10 @@ export const KycModal = () => {
   if (step === 'kyc') {
     return (
       <Dialog open={open} onClose={onClose}>
-        <div className="w-[42rem] mx-auto p-6 text-center text-gray-600">
+        <div className="w-[42rem] mx-auto p-6 text-center text-text-2">
           <p>
             If the zk.me KYC window did not open, ensure{' '}
-            <code className="text-size-12 bg-gray-100 px-1 rounded">
+            <code className="text-size-12 bg-surface-2 px-1 rounded">
               NEXT_PUBLIC_ZKME_KYC_APP_ID
             </code>{' '}
             is set and KYC token API is configured.
@@ -170,7 +170,7 @@ export const KycModal = () => {
           <button
             type="button"
             onClick={onClose}
-            className="mt-4 text-size-14 underline text-gray-900 hover:text-gray-700"
+            className="mt-4 text-size-14 underline text-text-1 hover:text-text-2"
           >
             Close
           </button>

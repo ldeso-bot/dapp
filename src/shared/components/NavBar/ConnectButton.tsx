@@ -1,17 +1,16 @@
 'use client';
 
 import { useWalletConnectionCookie } from '@/shared/hooks/useWalletConnectionCookie';
-import logoutIcon from '@/shared/images/logout.svg';
 import { ConnectButton as RainbowConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useDisconnect } from 'wagmi';
 import Button from '../Button/Button';
-import Icon from '../Icon/Icon';
+import ThemeToggle from '../NavBar/ThemeToggle';
 
 type Props = {
   className?: string;
 };
 
-export default function ConnectButton({ className }: Props) {
+export default function ConnectButton({}: Props) {
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
   const { clearWalletCookie } = useWalletConnectionCookie(address);
@@ -23,10 +22,16 @@ export default function ConnectButton({ className }: Props) {
 
   if (address) {
     return (
-      <Button onClick={handleLogout} className={className}>
-        <Icon icon={logoutIcon} alt={'Logout'} size={1.6} />
-        Logout
-      </Button>
+      <div className="flex gap-2 items-center">
+        <Button
+          onClick={handleLogout}
+          className="flex-1 h-10 border-border-strong"
+        >
+          <span className="flex gap-1 text-text-1">Logout</span>
+        </Button>
+
+        <ThemeToggle />
+      </div>
     );
   }
 
@@ -34,10 +39,18 @@ export default function ConnectButton({ className }: Props) {
     <RainbowConnectButton.Custom>
       {({ openConnectModal, mounted }) => {
         if (!mounted) return null;
+
         return (
-          <Button onClick={openConnectModal} className={className}>
-            Connect wallet
-          </Button>
+          <div className="flex gap-2 items-center">
+            <Button
+              onClick={openConnectModal}
+              className="flex-1 h-10 border-border-strong"
+            >
+              Connect wallet
+            </Button>
+
+            <ThemeToggle />
+          </div>
         );
       }}
     </RainbowConnectButton.Custom>

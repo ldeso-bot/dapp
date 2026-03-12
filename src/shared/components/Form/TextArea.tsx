@@ -24,12 +24,12 @@ export const TextArea = ({
       <textarea
         {...textAreaProps}
         className={cn(
-          'px-3 py-2 rounded-lg gap-2 w-full min-h-[8rem] border-gray-300 resize-y',
+          'px-3 py-2 rounded-lg gap-2 w-full min-h-[8rem] border-border-default resize-y',
           !textAreaProps.disabled &&
             !textAreaProps.readOnly &&
             'border-1 hover:opacity-80',
           (textAreaProps.disabled || textAreaProps.readOnly) &&
-            'border-1 bg-void-10',
+            'border-1 bg-surface-3',
           textAreaProps.className
         )}
       />

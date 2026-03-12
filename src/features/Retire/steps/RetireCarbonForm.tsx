@@ -110,8 +110,8 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
   return (
     <Card
       title="Retire Carbon"
-      className="w-full max-w-full lg:w-[45rem] rounded-xl border border-gray-200 h-fit"
-      titleClassName="font-semibold text-gray-800 text-size-20 tracking-tight"
+      className="w-full text-text-1 max-w-full lg:w-[45rem] rounded-xl border border-border-subtle h-fit"
+      titleClassName="font-semibold text-text-1 text-size-20 tracking-tight"
       skeletonClassName="h-[56.6rem]"
     >
       <Form
@@ -243,14 +243,14 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
                   <span>{priceQuoted}</span>
                 </>
               ) : (
-                <span className="text-gray-400">--</span>
+                <span className="text-text-3">--</span>
               )}
             </div>
           </div>
         </div>
         <ButtonGroup className="flex-row w-full">
           <Button
-            className="rounded-md"
+            className="rounded-md border-border-strong text-text-static-light"
             colors="secondary"
             context="flow"
             disabled={isDisabled}

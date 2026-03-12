@@ -29,7 +29,7 @@ const LabelValue: FC<{ label: ReactNode; value: ReactNode }> = ({
   value,
 }) => (
   <div className="flex flex-col">
-    <div className="text-void-50 text-size-12">{label}</div>
+    <div className="text-text-3 text-size-12">{label}</div>
     <div className="min-w-0">{value}</div>
   </div>
 );
@@ -40,17 +40,17 @@ const AllocationRow: FC<
   const { allocation, isKvcm, tokenInfo, totalAmount } = props;
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-3 flex flex-col gap-3">
+    <div className="rounded-lg border border-border-subtle bg-surface-1 p-3 flex flex-col gap-3">
       {!isKvcm ? (
         <>
           <div className="flex items-center justify-between gap-3">
-            <div className="text-size-12 text-void-50">
+            <div className="text-size-12 text-text-3">
               <AllocationClass {...props} allocation={allocation} />
             </div>
             <AllocationEditButton {...props} allocation={allocation} />
           </div>
           <div className="flex">
-            <div className="text-size-14 font-semibold text-gray-700">
+            <div className="text-size-14 font-semibold text-text-2">
               <AllocationAmount {...props} allocation={allocation} />
             </div>
           </div>
@@ -61,7 +61,7 @@ const AllocationRow: FC<
             <div className="truncate">
               <AllocationClass {...props} allocation={allocation} />
             </div>
-            <div className="text-size-12 text-void-50 mt-1">
+            <div className="text-size-12 text-text-3 mt-1">
               <AllocationAmount {...props} allocation={allocation} />
             </div>
           </div>
@@ -110,13 +110,13 @@ const LockGroup: FC<
   const editTarget = lockAllocation;
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-3">
+    <div className="rounded-lg border border-border-subtle bg-surface-1 p-3">
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <div className="text-size-12 text-gray-600">
+          <div className="text-size-12 text-text-2">
             {lockDate ? `Lock until ${lockDate}` : `Lock ${lockId}`}
           </div>
-          <div className="text-size-14 font-semibold text-gray-700 mt-1">
+          <div className="text-size-14 font-semibold text-text-2 mt-1">
             {lockTotal.toLocaleString()} {tokenInfo.symbol}
           </div>
         </div>
@@ -155,12 +155,12 @@ const CarbonClassGroupMobile: FC<CarbonClassGroupMobileProps> = (props) => {
   }, [allocations]);
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 flex flex-col gap-3">
+    <div className="rounded-lg border border-border-subtle bg-surface-2 p-4 flex flex-col gap-3">
       <button
         type="button"
         onClick={() => setIsExpanded((v) => !v)}
         className={cn(
-          'w-full rounded-lg border border-gray-200 bg-white px-3 py-3',
+          'w-full rounded-lg border border-border-subtle bg-surface-1 px-3 py-3',
           'flex items-center justify-between gap-3 text-left',
           'active:scale-[0.99] transition-transform'
         )}
@@ -168,13 +168,13 @@ const CarbonClassGroupMobile: FC<CarbonClassGroupMobileProps> = (props) => {
       >
         <div className="min-w-0 flex-1">
           <AllocationClass {...props} allocation={firstAllocation} />
-          <div className="text-size-12 text-void-50 mt-1">
+          <div className="text-size-12 text-text-3 mt-1">
             {totalAmountForClass.toLocaleString()} {tokenInfo.symbol} allocated
           </div>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          <span className="text-size-12 font-semibold text-gray-600">
+          <span className="text-size-12 font-semibold text-text-2">
             {isExpanded ? 'Hide' : 'Show'}
           </span>
           <Icon

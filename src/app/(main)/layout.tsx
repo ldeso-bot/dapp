@@ -3,11 +3,11 @@ import { KycModal } from '@/features/Kyc/KycModal';
 import { ContentContainer } from '@/shared/components/ContentContainer/ContentContainer';
 import { DisclaimerModal } from '@/shared/components/Disclaimer/Disclaimer';
 import Footer from '@/shared/components/Footer/Footer';
+import { JsonLd } from '@/shared/components/JsonLd/JsonLd';
 import DesktopNavBar from '@/shared/components/NavBar/DesktopNavBar';
 import MobileNavBar from '@/shared/components/NavBar/MobileNavBar';
 import { UserTracker } from '@/shared/components/UserTracker/UserTracker';
 import { LUCKY_ORANGE_SITE_ID } from '@/shared/constants/config.constants';
-import { JsonLd } from '@/shared/components/JsonLd/JsonLd';
 import {
   organizationSchema,
   sharedMetadata,
@@ -44,7 +44,33 @@ export default async function RootLayout({
   );
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+      (() => {
+        try {
+          const themes = ['light', 'dark'];
+          const darkThemes = ['dark'];
+
+          const storedTheme = localStorage.getItem('theme');
+          const theme = themes.includes(storedTheme)
+            ? storedTheme
+            : 'light';
+
+          document.documentElement.setAttribute('data-theme', theme);
+          document.documentElement.classList.toggle(
+            'dark',
+            darkThemes.includes(theme)
+          );
+        } catch {}
+      })();
+    `,
+          }}
+        />
+      </head>
+
       <body className={inter.className}>
         {isProduction && (
           <Script
@@ -72,6 +98,7 @@ export default async function RootLayout({
           </WalletConnectionHistoryProvider>
         </Providers>
       </body>
+
       {LUCKY_ORANGE_SITE_ID && (
         <Script
           strategy="afterInteractive"

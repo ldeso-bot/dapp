@@ -51,10 +51,12 @@ export const K2View = () => {
           <InfoCard
             title="K2 Activities"
             tooltipId="k2-position"
+            buttonClassName="border-border-strong"
             buttonLabel={
-              <>
-                <Icon icon={Plus} size={1.6} /> Deposit
-              </>
+              <span className="flex items-center gap-2 text-text-static-light">
+                <Icon icon={Plus} size={1.6} />
+                Deposit
+              </span>
             }
             onButtonClick={() =>
               openKycOrProceed('deposit_k2', () =>
@@ -94,7 +96,7 @@ const K2Overview = () => {
                   Claimable tokens & incentives
                 </StatusCardTitle>
                 <div className="space-y-1">
-                  <div className="text-size-18 font-bold text-gray-900 tabular-nums">
+                  <div className="text-size-18 font-bold text-text-1 tabular-nums">
                     {formatAmountWithCommas(
                       k2Data?.claimableRewardsPlusPrincipalAmount
                     )}{' '}
@@ -111,7 +113,7 @@ const K2Overview = () => {
                     })
                   }
                   colors="positive"
-                  className="mt-3 text-size-14"
+                  className="mt-3 text-size-14 bg-actionbutton-bg text-text-static-dark"
                 >
                   Claim
                 </Button>
@@ -126,7 +128,7 @@ const K2Overview = () => {
                 Requested for unlock
               </StatusCardTitle>
               <div className="space-y-1">
-                <div className="text-size-18 font-bold text-gray-900 tabular-nums">
+                <div className="text-size-18 font-bold text-text-1 tabular-nums">
                   {formatAmountWithCommas(lock?.requestedForUnlockAmount)} K2
                 </div>
               </div>
@@ -139,17 +141,17 @@ const K2Overview = () => {
               <StatusCardTitle badge="gray">Tokens locked</StatusCardTitle>
               <div className="space-y-1">
                 <div className="flex flex-col items-center space-between">
-                  <span className="text-size-18 font-bold text-gray-900 w-full">
+                  <span className="text-size-18 font-bold text-text-1 w-full">
                     {formatAmountWithCommas(k2Data.lockedAmount)} K2
                   </span>
-                  <span className="text-size-16 text-void-80 w-full">
+                  <span className="text-size-16 text-text-3 w-full">
                     {formatPriceUSDWithCommas(k2Data.lockedValue)}
                   </span>
-                  <div className="text-size-14 text-gray-500 mt-2 space-y-0.5 w-full">
+                  <div className="text-size-14 text-text-3 mt-2 space-y-0.5 w-full">
                     <div>
                       <Link
                         href={ROUTES.ALLOCATE}
-                        className="underline text-gray-900 hover:text-gray-700"
+                        className="underline text-text-1 hover:text-gray-700"
                       >
                         Allocated to carbon classes:
                       </Link>{' '}
@@ -165,7 +167,7 @@ const K2Overview = () => {
                     onClick={() =>
                       setUnlockK2TokenDialogAtom({ open: true, lock: lock })
                     }
-                    className="w-full"
+                    className="w-full border-border-strong"
                   >
                     Request unlock
                   </Button>
@@ -225,10 +227,10 @@ const K2VariableRewards = () => {
             />
             <VariableRewardsItemContent>
               <div className="flex flex-1 flex-col">
-                <span className="text-gray-900 font-medium">
+                <span className="text-text-1 font-medium">
                   {formatAmountWithCommas(k2Data.k2ClaimableAmount, 'auto')} K2
                 </span>
-                <span className="text-size-12 text-gray-500">
+                <span className="text-size-12 text-text-3">
                   Accrued to date:{' '}
                   {formatAmountWithCommas(
                     k2Data.k2AccruedClaimableAmount,
@@ -246,11 +248,11 @@ const K2VariableRewards = () => {
             />
             <VariableRewardsItemContent>
               <div className="flex flex-1 flex-col">
-                <span className="text-gray-900 font-medium">
+                <span className="text-text-1 font-medium">
                   {formatAmountWithCommas(k2Data.kvcmClaimableAmount, 'auto')}{' '}
                   kVCM
                 </span>
-                <span className="text-size-12 text-gray-500">
+                <span className="text-size-12 text-text-3">
                   Accrued to date:{' '}
                   {formatAmountWithCommas(
                     k2Data.kvcmAccruedClaimableAmount,

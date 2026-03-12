@@ -26,13 +26,13 @@ export const RootError: FC<Props> = ({
         <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0">
           <AlertIcon
             size={15}
-            className={cn(isWarning ? 'text-amber-600' : 'text-red-60')}
+            className={cn(isWarning ? 'text-amber-600' : 'text-negative-fg')}
           />
         </div>
         <div
           className={cn(
             'text-size-14',
-            isWarning ? 'text-amber-800' : 'text-red-60'
+            isWarning ? 'text-amber-800' : 'text-negative-fg'
           )}
         >
           {errorMessage}
