@@ -7,7 +7,10 @@ import StatCard from '../../shared/StatCard/StatCard';
 
 export default function K2PriceCard(props: CardProps) {
   const { data } = useProtocolData();
-  const price = formatPriceUSDWithCommas(data?.metrics.k2.valueUSD ?? 0);
+  const price = formatPriceUSDWithCommas(
+    data?.metrics.k2.valueUSD ?? 0,
+    'auto'
+  );
   return (
     <StatCard
       {...props}
