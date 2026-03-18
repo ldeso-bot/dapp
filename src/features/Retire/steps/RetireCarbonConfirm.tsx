@@ -80,6 +80,7 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
   const { retireCarbon, isExecuting } = useRetireCarbon({
     creditTokenAddress: selectedCarbonCredit?.address ?? '',
     creditTokenId: selectedCarbonCredit?.tokenId ?? 0,
+    batchId: selectedCarbonCredit?.batchId ?? 0,
     amount: amountWei,
     carbonClassId: parsedForm.current?.carbonClass ?? '',
     inputTokenAddress: inputTokenInfo?.address ?? '',

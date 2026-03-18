@@ -11,6 +11,7 @@ export const TOKEN_STANDARDS: Record<TokenStandard, TokenStandard> = {
 export type ApiCreditToken = {
   creditTokenId: string;
   tokenId: number;
+  batchId: number;
   address: string;
   symbol: string;
   decimals: number;

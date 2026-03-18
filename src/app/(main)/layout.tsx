@@ -97,6 +97,15 @@ export default async function RootLayout({
             </div>
           </WalletConnectionHistoryProvider>
         </Providers>
+        {LUCKY_ORANGE_SITE_ID && (
+          <Script
+            strategy="afterInteractive"
+            src={`https://tools.luckyorange.com/core/lo.js?site-id=${LUCKY_ORANGE_SITE_ID}`}
+          />
+        )}
+        <JsonLd data={organizationSchema} />
+        <JsonLd data={webApplicationSchema} />
+        <JsonLd data={webSiteSchema} />
       </body>
 
       {LUCKY_ORANGE_SITE_ID && (

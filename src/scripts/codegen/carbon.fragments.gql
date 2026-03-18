@@ -1,6 +1,7 @@
 fragment CreditTokenFragment on CreditToken {
   id
   creditTokenId
+  batchId
   creditId
   chainId
   decimals

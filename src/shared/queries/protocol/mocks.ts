@@ -14,6 +14,7 @@ export const getMockYieldPercent = (index: number) => {
 export const mockTokens: ApiCreditToken[] = [
   {
     creditTokenId: '0x1234567890123456789012345678901234567901',
+    batchId: 0,
     tokenId: 0,
     address: '0x1234567890123456789012345678901234567901',
     symbol: 'CMARK-0-2025',

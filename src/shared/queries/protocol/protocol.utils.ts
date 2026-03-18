@@ -178,6 +178,7 @@ export const mapToApiCreditToken = (
     return {
       creditTokenId: creditTokenId,
       tokenId: 0,
+      batchId: 0,
       address,
       symbol,
       decimals: 18,
@@ -194,6 +195,7 @@ export const mapToApiCreditToken = (
   return {
     creditTokenId: token.creditTokenId,
     tokenId: token.tokenId,
+    batchId: parseInt(token.batchId),
     address: token.tokenAddress,
     symbol: creditSymbol,
     decimals: token.decimals,

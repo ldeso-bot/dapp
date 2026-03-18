@@ -16,6 +16,7 @@ import RetirementAggregatorAbi from '@/shared/utils/abis/RetirementAggregator';
 type RetireCarbonParams = {
   creditTokenAddress: string;
   creditTokenId: number;
+  batchId: number;
   amount: bigint;
   carbonClassId: string;
   inputTokenAddress: string;
@@ -103,7 +104,7 @@ export const useRetireCarbon = (params: RetireCarbonParams) => {
         const retireParams = [
           params.creditTokenAddress, // creditToken
           BigInt(params.creditTokenId), // tokenId
-          BigInt(0), // batchId
+          BigInt(params.batchId), // batchId
           params.amount, // amount
           params.inputTokenAddress, // inputTokenAddress
           params.carbonClassId, // carbonClass
