@@ -31,19 +31,22 @@ export const RegenNetworkCreditsCard: FC<Props> = (props) => {
     >
       <div className="p-5 bg-surface-1 rounded-xl border border-border-subtle transition-colors">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-lg bg-icon-bg flex items-center justify-center transition-colors shrink-0">
-            <InfoIcon className="w-5 h-5 text-text-highlight" />
+          <div className="w-10 h-10 rounded-lg bg-icon-bg flex items-center justify-center shrink-0">
+            <InfoIcon className="w-4 h-4 text-text-highlight" />
           </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="font-semibold tracking-tight text-text-1 group-hover:text-text-highlight transition-colors text-size-16">
-              Regen Network credits
-            </h3>
-            <p className="text-size-14 text-text-3 mt-0.5">
+          <div className="flex flex-col gap-1 min-w-0">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="text-size-16 font-semibold text-text-1 whitespace-normal">
+                Regen Network credits
+              </span>
+              <OpenInNewIcon className="w-4 h-4 text-text-highlight shrink-0" />
+            </div>
+
+            <span className="text-size-12 text-text-2">
               Retirements are bridged through Regen Network. To learn more see
               the documentation.
-            </p>
+            </span>
           </div>
-          <OpenInNewIcon className="w-4.5 h-4.5 text-text-3 group-hover:text-text-highlight transition-colors shrink-0" />
         </div>
       </div>
     </a>
