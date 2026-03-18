@@ -19,7 +19,9 @@ export const RootError: FC<Props> = ({
       className={cn(
         'border rounded-lg p-3',
         sticky ? 'sticky bottom-0 z-10' : '',
-        isWarning ? 'bg-amber-50 border-amber-200' : 'bg-red-50 border-red-200'
+        isWarning
+          ? 'bg-amber-50 border-amber-200'
+          : 'bg-negative-bg border-border-strong'
       )}
     >
       <div className="flex items-start items-center gap-2">
