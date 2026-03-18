@@ -172,7 +172,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
               <Button
                 type="button"
                 colors="secondary"
-                className="rounded-xl min-h-[4rem] border-border-strong"
+                className="rounded-xl text-text-static-light min-h-[4rem] border-border-strong"
                 onClick={() =>
                   form.setValue('amount', Number(availableBalance))
                 }
@@ -221,7 +221,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
           <Button
             colors="secondary"
             context="flow"
-            className="border-border-strong"
+            className="border-border-strong text-text-static-light"
             type="submit"
             disabled={isSubmitting || !!balanceErrorMessage}
           >
