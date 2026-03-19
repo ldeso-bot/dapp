@@ -10,9 +10,9 @@ import {
 } from '@/shared/models/ProtocolData';
 import { computeTokenAmountValueUSD } from '@/shared/utils/protocol.utils';
 import { formatStringToNumber, Sdk } from '@/shared/utils/subgraph.utils';
-import { unstable_cache } from 'next/cache';
 import { mapToObj } from 'remeda';
 import { getTokenMetrics } from './getTokenMetrics';
+import { cached } from '@/shared/utils/cache.utils';
 
 const percentageIncrease = (newValue: number, oldValue: number) =>
   oldValue > 0 ? (newValue - oldValue) / oldValue : 0;
@@ -308,7 +308,7 @@ export const mapMidnightInfosToComputedDiffs = (
 export const getLatestMidnightInfoDiffs = async (
   sdk: Sdk
 ): Promise<Record<number, ComputedMidnightInfo>> => {
-  return unstable_cache(
+  return cached(
     async () => {
       const tokenMetrics = await getTokenMetrics(sdk.chain);
       const [midnightInfos] = await Promise.all([
@@ -330,7 +330,7 @@ export const getLatestMidnightInfoDiffs = async (
         tokenMetrics
       );
     },
-    ['latest-midnight-infos-for-active-maturities'],
+    ['latest-midnight-infos-for-active-maturities', sdk.chain],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
   )();
 };

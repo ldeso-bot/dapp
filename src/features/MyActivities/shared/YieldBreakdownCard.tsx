@@ -4,6 +4,7 @@ import {
   useIncentivesBreakdown,
   UseIncentivesBreakdownParams,
 } from '@/features/MyActivities/hooks/useIncentivesBreakdown';
+import Skeleton from '@/shared/components/Skeleton/Skeleton';
 import { Tooltip } from '@/shared/components/Tooltip/Tooltip';
 import { DEV_MODE } from '@/shared/constants/config.constants';
 
@@ -12,12 +13,17 @@ export const IncentivesBreakdownCard = ({
   maturity,
   token,
 }: UseIncentivesBreakdownParams) => {
-  const { kvcmYieldFormatted, kvcmApyFormatted, k2ApyFormatted, lockDuration } =
-    useIncentivesBreakdown({
-      amount,
-      maturity,
-      token,
-    });
+  const {
+    kvcmYieldFormatted,
+    kvcmApyFormatted,
+    k2ApyFormatted,
+    lockDuration,
+    isLoadingMaturities,
+  } = useIncentivesBreakdown({
+    amount,
+    maturity,
+    token,
+  });
 
   if (!DEV_MODE) return null;
 
@@ -34,7 +40,11 @@ export const IncentivesBreakdownCard = ({
                 kVCM incentives (variable) kVCM
               </div>
               <div className="text-size-16 text-text-1 tracking-tight font-semibold inline-flex items-center">
-                <span>~ {kvcmApyFormatted}</span>
+                {isLoadingMaturities ? (
+                  <Skeleton className="h-5 w-16" />
+                ) : (
+                  <span>~ {kvcmApyFormatted}</span>
+                )}
                 <span className="inline-flex items-center ml-1 -translate-y-px">
                   <Tooltip content="The annual percentage rate of the variable rewards. This is an estimate, is not guaranteed, can change, and may be zero." />
                 </span>
@@ -54,7 +64,11 @@ export const IncentivesBreakdownCard = ({
                   K2 incentives (variable)
                 </div>
                 <div className="text-size-12 text-text-1 space-y-1 tracking-tight">
-                  ~ {k2ApyFormatted}
+                  {isLoadingMaturities ? (
+                    <Skeleton className="h-4 w-12" />
+                  ) : (
+                    <>~ {k2ApyFormatted}</>
+                  )}
                 </div>
               </div>
               <div className="text-size-12 text-text-3">
@@ -72,7 +86,12 @@ export const IncentivesBreakdownCard = ({
               </div>
               <div className="text-size-12 text-text-3 text-center">
                 Lock duration - {lockDuration} days • Indicative kVCM
-                incentives: {kvcmYieldFormatted}
+                incentives:{' '}
+                {isLoadingMaturities ? (
+                  <Skeleton className="h-4 w-12" />
+                ) : (
+                  <span>{kvcmYieldFormatted}</span>
+                )}
               </div>
             </div>
           </div>

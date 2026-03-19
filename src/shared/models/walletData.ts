@@ -32,10 +32,8 @@ export type Lock = {
   maturityId: number;
   /** Locked token */
   token: LockableToken;
-  /** Risky yield APY */
-  riskyYieldApyPercent: number;
-  /** Synthetic yield APY */
-  syntheticYieldApyPercent: number;
+  /** Risky or syntheric yield APY */
+  kvcmYieldApyPercent: number;
   /** K2 yield APY */
   k2YieldApyPercent: number;
   /** Accrued rewards */

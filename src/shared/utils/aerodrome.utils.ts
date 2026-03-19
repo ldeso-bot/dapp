@@ -1,10 +1,10 @@
 import { getContract, getPublicClient } from '@/shared/utils/web3.utils';
-import { unstable_cache } from 'next/cache';
 import { base, baseSepolia } from 'viem/chains';
 import { IS_DEVELOPMENT } from '../constants/config.constants';
 import contracts from '../constants/contracts.constants';
 import { AERODROME_LIQUIDITY_DECIMALS } from '../constants/tokens.constants';
 import { formatStringToNumber } from './subgraph.utils';
+import { cached } from '@/shared/utils/cache.utils';
 
 type Pool = {
   lp: string;
@@ -159,7 +159,7 @@ export const getAerodromePoolInfoByIndex = async (index: number) => {
     emissions = formatStringToNumber(pool.emissions, pool.decimals);
   }
 
-  return unstable_cache(
+  return cached(
     async () => {
       return {
         reserve0: formatStringToNumber(
@@ -177,7 +177,7 @@ export const getAerodromePoolInfoByIndex = async (index: number) => {
         ),
       };
     },
-    [`aerodrome-pool-by-index-${index}`],
+    ['aerodrome-pool-by-index', index],
     {
       revalidate: IS_DEVELOPMENT ? 1 : 3600,
     }

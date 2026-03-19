@@ -186,8 +186,7 @@ export const mapKvcmOrLpLock = ({
     tokenMetrics
   );
   let k2YieldApyPercent = 0;
-  let riskyYieldApyPercent = 0;
-  let syntheticYieldApyPercent = 0;
+  let kvcmYieldApyPercent = 0;
   let k2Rewards = 0;
   let kvcmRewards = 0;
   let k2ClaimableRewards = 0;
@@ -248,12 +247,12 @@ export const mapKvcmOrLpLock = ({
         midnightInfo,
         YieldType.RISKY
       );
-      riskyYieldApyPercent = midnightInfo.kvcmApyFor[tokenInfo.id];
+      kvcmYieldApyPercent = midnightInfo.kvcmApyFor[tokenInfo.id];
     }
     // Synthetic yield
     if (isSyntheticYieldEligible) {
       kvcmRewards = computeSyntheticYieldRewards(lock, midnightInfo);
-      syntheticYieldApyPercent = maturity.apys.kvcm.kvcmApy;
+      kvcmYieldApyPercent = maturity.apys.kvcm.kvcmApy;
       positionAmount += kvcmRewards;
     }
   }
@@ -318,8 +317,7 @@ export const mapKvcmOrLpLock = ({
     positionAmount,
     positionValueUSD,
     k2YieldApyPercent,
-    riskyYieldApyPercent,
-    syntheticYieldApyPercent,
+    kvcmYieldApyPercent,
     token: tokenInfo.id,
     maturityId: formatStringToNumber(lock.maturityId, 0),
     rewards: {
@@ -576,13 +574,11 @@ export const mapK2Lock = ({
   const positionValueUSD = lockedValueUSD;
 
   // Computing rewards information
-  const syntheticYieldApyPercent = 0;
   let k2ClaimableRewards = 0;
   let kvcmClaimableRewards = 0;
   let k2AccruingRewards = 0;
   let kvcmAccruingRewards = 0;
-  const riskyYieldApyPercent =
-    latestMidnightInfo?.kvcmApyFor[tokenInfo.id] ?? 0;
+  const kvcmYieldApyPercent = latestMidnightInfo?.kvcmApyFor[tokenInfo.id] ?? 0;
   const k2YieldApyPercent = latestMidnightInfo?.k2ApyFor[tokenInfo.id] ?? 0;
 
   // Compute earning status
@@ -665,8 +661,7 @@ export const mapK2Lock = ({
     positionAmount,
     positionValueUSD,
     k2YieldApyPercent,
-    riskyYieldApyPercent,
-    syntheticYieldApyPercent,
+    kvcmYieldApyPercent,
     token: tokenInfo.id,
     maturityId: formatStringToNumber(lock.maturityId, 0),
     rewards: {

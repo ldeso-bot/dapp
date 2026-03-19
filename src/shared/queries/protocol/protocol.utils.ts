@@ -9,12 +9,14 @@ import { YieldType } from '@/shared/models/ProtocolData';
 import { ApiCreditToken, TOKEN_STANDARDS } from '@/shared/models/shared';
 import { formatStringToNumber, Sdk } from '@/shared/utils/subgraph.utils';
 import { GetCreditTokensQuery } from '@generated/gql/types/carbon.types';
-import { Maturity_Filter } from '@generated/gql/types/protocol.types';
-import { unstable_cache } from 'next/cache';
+import {
+  CarbonClass_Filter,
+  Maturity_Filter,
+} from '@generated/gql/types/protocol.types';
 import { mapToObj } from 'remeda';
 import { base } from 'viem/chains';
 import { getLatestMidnightInfoDiffs } from './midnightInfo.utils';
-import { getActiveMaturitiesApys } from './yieldCurve.utils';
+import { cached } from '@/shared/utils/cache.utils';
 
 export const tokensEligibleForIncentives: Record<YieldType, Token[]> = {
   [YieldType.K2]: [
@@ -38,7 +40,7 @@ export const tokensEligibleForIncentives: Record<YieldType, Token[]> = {
  * @returns
  */
 export const getProtocolState = async (sdk: Sdk) => {
-  return unstable_cache(
+  return cached(
     async () => {
       const [protocolStates, lastestMidnightInfos] = await Promise.all([
         sdk.protocol.getProtocolState(),
@@ -81,7 +83,7 @@ export const getProtocolState = async (sdk: Sdk) => {
 
       return res;
     },
-    ['protocol-state'],
+    ['protocol-state', sdk.chain],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
   )();
 };
@@ -91,14 +93,9 @@ export type ProtocolState = NonNullable<
 >;
 
 export const getActiveMaturities = async (sdk: Sdk) => {
-  return unstable_cache(
+  return cached(
     async () => {
-      const [protocolState, midnightInfos, activeMaturitiesApys] =
-        await Promise.all([
-          getProtocolState(sdk),
-          getLatestMidnightInfoDiffs(sdk),
-          getActiveMaturitiesApys(sdk),
-        ]);
+      const protocolState = await getProtocolState(sdk);
       if (!protocolState) return [];
       const maturities = await sdk.protocol.getMaturities({
         where: {
@@ -106,18 +103,9 @@ export const getActiveMaturities = async (sdk: Sdk) => {
           maturityId_lte: protocolState.lastActiveMaturityId,
         } as unknown as Maturity_Filter,
       });
-      return maturities.maturities.map((maturity) => {
-        // Add yield curve info to maturity
-        const midnightInfo = midnightInfos[Number(maturity.maturityId)];
-        const liveApys = activeMaturitiesApys[Number(maturity.maturityId)];
-        return {
-          ...maturity,
-          midnightInfo,
-          liveApys,
-        };
-      });
+      return maturities.maturities;
     },
-    ['active-maturities'],
+    ['active-maturities', sdk.chain],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
   )();
 };
@@ -139,7 +127,7 @@ export const getHoursSinceEpoch24HoursAgo = () => {
  * @returns
  */
 export const getCreditsTokenMap = async (sdk: Sdk) => {
-  return unstable_cache(
+  return cached(
     async () => {
       const credits = await sdk.carbon.getCreditTokens();
       return mapToObj(credits.creditTokens, (credit: SDKCreditToken) => [
@@ -147,7 +135,7 @@ export const getCreditsTokenMap = async (sdk: Sdk) => {
         credit,
       ]);
     },
-    ['credits-map'],
+    ['credits-map', sdk.chain],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
   )();
 };
@@ -205,4 +193,17 @@ export const mapToApiCreditToken = (
       name: projectName,
     },
   };
+};
+
+export const getSdkCarbonClasses = async (sdk: Sdk) => {
+  return cached(
+    async () => {
+      const carbonClasses = await sdk.protocol.getCarbonClasses({
+        where: { isRegistered: true } as CarbonClass_Filter,
+      });
+      return carbonClasses.carbonClasses;
+    },
+    ['carbon-classes', sdk.chain],
+    { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
+  )();
 };

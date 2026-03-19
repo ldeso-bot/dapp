@@ -1,9 +1,9 @@
 import { PROTOCOL_DATA_CACHE_TIME_SECONDS } from '@/shared/constants/config.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
 import { getCreditTokensByIds } from '@/shared/queries/protocol/getCreditTokensByIds';
+import { cached } from '@/shared/utils/cache.utils';
 import { validateRequestChainId } from '@/shared/utils/request.utils';
 import { isChainId } from '@/shared/utils/typeguards';
-import { unstable_cache } from 'next/cache';
 import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -32,10 +32,10 @@ export async function GET(request: NextRequest) {
       { status: 400 }
     );
   }
-  const data = await unstable_cache(
+  const data = await cached(
     async (chainId: ChainId, creditTokenIds: string[]) =>
       getCreditTokensByIds(chainId, creditTokenIds),
-    [`credit-tokens-${chainId}-${creditTokenIds.sort().join(',')}`],
+    ['credit-tokens', chainId, ...creditTokenIds.sort()],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
   )(chainId, creditTokenIds);
 

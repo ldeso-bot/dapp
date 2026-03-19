@@ -10,81 +10,63 @@ import {
 } from '@/shared/constants/tokens.constants';
 import { AllMetrics, Metrics } from '@/shared/models/ProtocolData';
 import { getAerodromePoolInfoByIndex } from '@/shared/utils/aerodrome.utils';
+import { cached } from '@/shared/utils/cache.utils';
 import {
   formatStringToNumber,
   getSdk,
   Sdk,
 } from '@/shared/utils/subgraph.utils';
+import { getContract, getPublicClient } from '@/shared/utils/web3.utils';
 import { TokenSnapshot_Filter } from '@generated/gql/types/protocol.types';
-import { unstable_cache } from 'next/cache';
 import { mapToObj } from 'remeda';
-import { base } from 'viem/chains';
 import { getHoursSinceEpoch24HoursAgo } from './protocol.utils';
 
 export const getTokenMetrics = async (
   chainId: ChainId
 ): Promise<AllMetrics> => {
   const sdk = getSdk(chainId);
-  return unstable_cache(
+  return cached(
     async () => getTokenMetricsUncached(sdk),
-    [`token-metrics-${chainId}`],
+    ['token-metrics', chainId],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
   )();
 };
 
-const getMainnetKvcmPrice = async (): Promise<number> => {
-  try {
-    const mainnetSdk = getSdk(base.id);
-    const tokensResponse = await mainnetSdk.protocol.getTokens();
-    const kvcmToken = tokensResponse.tokens.find((t) => t?.symbol === 'KVCM');
-    if (kvcmToken?.priceUsdc?.priceUsdc) {
-      return formatStringToNumber(
-        kvcmToken.priceUsdc.priceUsdc,
-        tokens.usdc.decimals
-      );
-    }
-    return 0;
-  } catch (error) {
-    console.error('Failed to fetch mainnet KVCM price:', error);
-    return 0;
-  }
-};
+const getK2Supply = async (chainId: ChainId): Promise<number> => {
+  const publicClient = getPublicClient(chainId);
+  const contract = getContract(chainId, 'ProtocolOracle', publicClient);
 
-const getMainnetK2Price = async (): Promise<number> => {
-  try {
-    const mainnetSdk = getSdk(base.id);
-    const tokensResponse = await mainnetSdk.protocol.getTokens();
-    const k2Token = tokensResponse.tokens.find((t) => t?.symbol === 'K2');
-    if (k2Token?.priceUsdc?.priceUsdc) {
-      return formatStringToNumber(
-        k2Token.priceUsdc.priceUsdc,
-        tokens.usdc.decimals
-      );
-    }
-    return 0;
-  } catch (error) {
-    console.error('Failed to fetch mainnet K2 price:', error);
-    return 0;
+  if (!contract.read.getK2Supply) {
+    throw new Error('getK2Supply function not found on contract');
   }
+
+  const result = (await contract.read.getK2Supply()) as bigint;
+  return formatStringToNumber(result, 18);
 };
 
 const getTokenMetricsUncached = async (sdk: Sdk): Promise<AllMetrics> => {
-  const [kvcmUsdcPool, k2UsdcPool, tokensResponse, ...tokenSnapshotsResponses] =
-    await Promise.all([
-      getAerodromePoolInfoByIndex(AERODROME_KVCM_USDC_POOL_INDEX),
-      getAerodromePoolInfoByIndex(AERODROME_K2_USDC_POOL_INDEX),
-      sdk.protocol.getTokens(),
-      ...['KVCM', 'K2', 'KVCM_K2_LP', 'KVCM_USDC_LP'].map((symbol) =>
-        sdk.protocol
-          .getTokenSnapshots({
-            where: {
-              hoursSinceEpoch_lte: getHoursSinceEpoch24HoursAgo().toString(),
-              symbol,
-            } as TokenSnapshot_Filter,
-          })
-          .then((response) => response.tokenSnapshots[0])
-      ),
-    ]);
+  const [
+    kvcmUsdcPool,
+    kvcmK2Pool,
+    k2Supply,
+    tokensResponse,
+    ...tokenSnapshotsResponses
+  ] = await Promise.all([
+    getAerodromePoolInfoByIndex(AERODROME_KVCM_USDC_POOL_INDEX),
+    getAerodromePoolInfoByIndex(AERODROME_K2_USDC_POOL_INDEX),
+    getK2Supply(sdk.chain),
+    sdk.protocol.getTokens(),
+    ...['KVCM', 'K2', 'KVCM_K2_LP', 'KVCM_USDC_LP'].map((symbol) =>
+      sdk.protocol
+        .getTokenSnapshots({
+          where: {
+            hoursSinceEpoch_lte: getHoursSinceEpoch24HoursAgo().toString(),
+            symbol,
+          } as TokenSnapshot_Filter,
+        })
+        .then((response) => response.tokenSnapshots[0])
+    ),
+  ]);
 
   // Create maps for faster lookups
   const tokensMap = mapToObj(tokensResponse.tokens, (t) => [
@@ -104,7 +86,8 @@ const getTokenMetricsUncached = async (sdk: Sdk): Promise<AllMetrics> => {
     const snapshot = tokenSnapshotsMap[symbol];
 
     // Supply
-    const supply = formatStringToNumber(token?.totalSupply, 18);
+    const supply =
+      symbol === 'K2' ? k2Supply : formatStringToNumber(token?.totalSupply, 18);
 
     const snapshotSupply = snapshot?.supply
       ? formatStringToNumber(snapshot.supply, 18)
@@ -125,20 +108,16 @@ const getTokenMetricsUncached = async (sdk: Sdk): Promise<AllMetrics> => {
         ? (supplyLocked - snapshotSupplyLocked) / snapshotSupplyLocked
         : 0;
 
-    let tokenPriceUSD = formatStringToNumber(
+    const tokenPriceUSD = formatStringToNumber(
       token?.priceUsdc?.priceUsdc,
       tokens.usdc.decimals
     );
+    let k2Locked = 0;
+    let kvcmLocked = 0;
     if (symbol === 'KVCM') {
-      const mainnetPrice = await getMainnetKvcmPrice();
-      if (mainnetPrice > 0) {
-        tokenPriceUSD = mainnetPrice;
-      }
+      kvcmLocked = supplyLocked;
     } else if (symbol === 'K2') {
-      const mainnetPrice = await getMainnetK2Price();
-      if (mainnetPrice > 0) {
-        tokenPriceUSD = mainnetPrice;
-      }
+      k2Locked = supplyLocked;
     }
     const valueUSD = tokenPriceUSD;
 
@@ -165,6 +144,8 @@ const getTokenMetricsUncached = async (sdk: Sdk): Promise<AllMetrics> => {
       supplyLockedChangePercent24h,
       address,
       valueLockedUSD,
+      k2Locked,
+      kvcmLocked,
     };
   };
 
@@ -174,7 +155,20 @@ const getTokenMetricsUncached = async (sdk: Sdk): Promise<AllMetrics> => {
     token1PriceUSD: number
   ): Metrics => {
     const token = tokensMap[symbol];
-    const pool = symbol === 'KVCM_K2_LP' ? k2UsdcPool : kvcmUsdcPool;
+    const getKvcmUsdcSpecifics = () => ({
+      pool: kvcmUsdcPool,
+      k2Locked: 0,
+      kvcmLocked: kvcmUsdcPool.reserve0,
+    });
+
+    const getKvcmK2Specifics = () => ({
+      pool: kvcmK2Pool,
+      k2Locked: kvcmK2Pool.reserve1,
+      kvcmLocked: kvcmK2Pool.reserve0,
+    });
+
+    const { pool, k2Locked, kvcmLocked } =
+      symbol === 'KVCM_K2_LP' ? getKvcmK2Specifics() : getKvcmUsdcSpecifics();
 
     // Supply
     const supply = pool.liquidity;
@@ -198,6 +192,8 @@ const getTokenMetricsUncached = async (sdk: Sdk): Promise<AllMetrics> => {
       supplyLockedChangePercent24h: 0,
       valueLockedUSD,
       address,
+      k2Locked,
+      kvcmLocked,
     };
   };
 

@@ -3,7 +3,7 @@ import contracts from '@/shared/constants/contracts.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
 import RetirementAggregatorAbi from '@/shared/utils/abis/RetirementAggregator';
 import { getPublicClient } from '@/shared/utils/web3.utils';
-import { unstable_cache } from 'next/cache';
+import { cached } from '@/shared/utils/cache.utils';
 import { Address, parseUnits } from 'viem';
 import {
   CarbonClassQuote,
@@ -65,10 +65,10 @@ export const getRetirementQuotesCached = async (
 ) => {
   const sortedSizes = [...sizes].sort((a, b) => a - b);
 
-  return unstable_cache(
+  return cached(
     async (chainId: ChainId, sizes: number[]) =>
       getRetirementQuotes(chainId, sizes),
-    [`retirement-quotes-${chainId}-${sortedSizes.join(',')}`],
+    ['retirement-quotes', chainId, ...sortedSizes],
     { revalidate: QUOTES_CACHE_TIME_SECONDS }
   )(chainId, sortedSizes);
 };

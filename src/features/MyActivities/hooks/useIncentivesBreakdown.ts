@@ -2,6 +2,8 @@
 
 import { DAYS_IN_YEAR } from '@/shared/constants/protocol.constants';
 import { LockableToken } from '@/shared/constants/tokens.constants';
+import { useMaturities } from '@/shared/hooks/api/useMaturities';
+import { useDebouncedValue } from '@/shared/hooks/useDebouncedValue';
 import { Maturity } from '@/shared/models/ProtocolData';
 import { getDaysFromTimestamp } from '@/shared/utils/date.utils';
 import {
@@ -20,9 +22,23 @@ export const useIncentivesBreakdown = ({
   maturity,
   token,
 }: UseIncentivesBreakdownParams) => {
-  const lockDuration = getDaysFromTimestamp(maturity.maturationTimestamp);
-  const kvcmApy = maturity.apys[token].kvcmApy;
-  const k2Apy = maturity.apys[token].k2Apy;
+  const debouncedAmount = useDebouncedValue(amount, 300);
+  const debouncedMaturityId = useDebouncedValue(maturity.maturityId, 300);
+
+  const { data: maturities, isLoading: isLoadingMaturities } = useMaturities({
+    token,
+    // Event if the user enters 0, we still want to show some API information
+    // Even if no locks exists for this maturity
+    amount: debouncedAmount || 1,
+    maturityId: debouncedMaturityId,
+  });
+
+  const activeMaturity =
+    maturities?.find((m) => m.maturityId === maturity.maturityId) ?? maturity;
+
+  const lockDuration = getDaysFromTimestamp(activeMaturity.maturationTimestamp);
+  const kvcmApy = activeMaturity.apys[token].kvcmApy;
+  const k2Apy = activeMaturity.apys[token].k2Apy;
 
   // Compute daily percentage increase from Apys
   // We have to take into account that synthetic yield is exponential
@@ -53,5 +69,6 @@ export const useIncentivesBreakdown = ({
     kvcmApyFormatted,
     k2ApyFormatted,
     lockDuration,
+    isLoadingMaturities,
   };
 };

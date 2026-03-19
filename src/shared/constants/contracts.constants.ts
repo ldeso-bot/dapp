@@ -1,4 +1,5 @@
 import AAMDiamond from '@/shared/utils/abis/AAMDiamond';
+import ProtocolOracle from '@/shared/utils/abis/ProtocolOracle';
 import RetirementAggregator from '@/shared/utils/abis/RetirementAggregator';
 import StakingManagerDiamond from '@/shared/utils/abis/StakingManagerDiamond';
 import USDC from '@/shared/utils/abis/USDC.json';
@@ -79,6 +80,11 @@ const contracts = {
     [base.id]: '0x8c81bbc5cC9B6cdbb5c0e5DD8b9D5bfaF3575710',
     [baseSepolia.id]: '0xF58De9599C57bBAD68Fea0F39b73913daFcf0976',
     abi: ZKMEVerifyUpgradeable,
+  },
+  ProtocolOracle: {
+    [base.id]: '0x71b700743A059007CD86C985DD1A3E639676329d',
+    [baseSepolia.id]: '0xDF8029d7Ce267aDA1685aF63507D4140fC68FA15',
+    abi: ProtocolOracle,
   },
 } satisfies Record<string, contractInfo>;
 

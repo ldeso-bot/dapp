@@ -19,3 +19,4 @@ You carefully provide accurate, factual, thoughtful answers, and are a genius at
 - Be concise. Minimize any other prose.
 - If you think there might not be a correct answer, you say so. If you don't know the answer, say so instead of guessing.
 - Do not use default exports
+- Do not use the any type. Use unknown instead if really necessary.

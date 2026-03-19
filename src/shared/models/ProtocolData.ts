@@ -21,6 +21,8 @@ export type Metrics = {
   supplyLockedChangePercent24h: number;
   valueLockedUSD: number;
   address: string;
+  k2Locked: number; // For Lp pools amount of K2 locked in the pool
+  kvcmLocked: number; // For Lp pools amount of KVCM locked in the pool
 };
 
 export type AllMetrics = {
@@ -39,12 +41,16 @@ export type LiquidityPoolInfo = {
 
 export type LiquidityPools = LiquidityPoolInfo[];
 
-type Yield = {
+export type Yield = {
   kvcmApy: number;
   k2Apy: number;
+  kvcmEquivalentLocked: number;
+  k2EquivalentLocked: number;
+  k2Distributed: number;
+  kvcmDistributed: number;
 };
 
-export type MaturityApys = {
+type MaturityApys = {
   k2: Yield;
   kvcm: Yield;
   'kvcm-k2': Yield;
@@ -52,9 +58,11 @@ export type MaturityApys = {
 };
 
 export type Maturity = {
-  index: number;
   maturationTimestamp: number;
   maturityId: MaturityId;
+  kvcmUsdcLPLocked: number;
+  kvcmK2LPLocked: number;
+  kvcmLocked: number;
   apys: MaturityApys;
 };
 

@@ -112,8 +112,7 @@ const getMockLocks = (): Locks => {
       originalLockedValueUSD: 3000,
       positionAmount: 1031.25,
       positionValueUSD: 3093.25,
-      riskyYieldApyPercent: 0.06,
-      syntheticYieldApyPercent: 0.07,
+      kvcmYieldApyPercent: 0.06,
       k2YieldApyPercent: 0.12,
       token: 'kvcm',
       rewards: {
@@ -153,8 +152,7 @@ const getMockLocks = (): Locks => {
       originalLockedValueUSD: 36.75,
       positionAmount: 50.9375,
       positionValueUSD: 152.8125,
-      riskyYieldApyPercent: 0.06,
-      syntheticYieldApyPercent: 0.17,
+      kvcmYieldApyPercent: 0.06,
       k2YieldApyPercent: 0.06,
       token: 'kvcm',
       rewards: {

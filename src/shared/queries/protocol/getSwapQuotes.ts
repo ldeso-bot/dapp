@@ -3,7 +3,7 @@ import contracts from '@/shared/constants/contracts.constants';
 import { ChainId } from '@/shared/constants/networks.constants';
 import AAMDiamondAbi from '@/shared/utils/abis/AAMDiamond';
 import { getPublicClient } from '@/shared/utils/web3.utils';
-import { unstable_cache } from 'next/cache';
+import { cached } from '@/shared/utils/cache.utils';
 import { Address, parseUnits, zeroAddress } from 'viem';
 import {
   CarbonClassQuote,
@@ -66,9 +66,9 @@ export const getSwapQuotesCached = async (
 ) => {
   const sortedSizes = [...sizes].sort((a, b) => a - b);
 
-  return unstable_cache(
+  return cached(
     async (chainId: ChainId, sizes: number[]) => getSwapQuotes(chainId, sizes),
-    [`swap-quotes-${chainId}-${sortedSizes.join(',')}`],
+    ['swap-quotes', chainId, ...sortedSizes],
     { revalidate: QUOTES_CACHE_TIME_SECONDS }
   )(chainId, sortedSizes);
 };

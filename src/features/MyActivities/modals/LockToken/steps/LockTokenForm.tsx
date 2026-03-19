@@ -206,7 +206,7 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
             colors="secondary"
             context="flow"
             type="submit"
-            disabled={isSubmitting || !isValidAmount}
+            disabled={isSubmitting || !form.formState.isValid}
           >
             {buttonText}
           </Button>

@@ -13,7 +13,11 @@ export function useApi() {
       query.set('chainId', chainId.toString());
       const url = `${path}?${query.toString()}`;
       const response = await fetch(url);
-      return response.json();
+      const json = await response.json();
+      if (!response.ok) {
+        throw new Error(json.error);
+      }
+      return json;
     },
     [chainId]
   );

@@ -92,8 +92,7 @@ export const DurationSelector = <T extends DurationFormFields>({
               return (
                 <Tooltip
                   trigger={
-                    <button
-                      type="button"
+                    <div
                       onClick={() => field.onChange(preset.maturity.maturityId)}
                       className={cn(
                         'w-full flex flex-col items-center px-3 py-2 border-2 rounded-xl text-center',
@@ -108,7 +107,7 @@ export const DurationSelector = <T extends DurationFormFields>({
                       <div className="text-size-12 text-text-3">
                         {preset.description}
                       </div>
-                    </button>
+                    </div>
                   }
                   content={preset.approxDuration}
                   className="text-size-12 p-2"

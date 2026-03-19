@@ -6,7 +6,7 @@ import { validateRequestChainId } from '@/shared/utils/request.utils';
 import { getSdk } from '@/shared/utils/subgraph.utils';
 import { isChainId } from '@/shared/utils/typeguards';
 import { MidnightInfo_Filter } from '@generated/gql/types/protocol.types';
-import { unstable_cache } from 'next/cache';
+import { cached } from '@/shared/utils/cache.utils';
 import { NextRequest } from 'next/server';
 
 type Params = { params: Promise<{ index: string }> };
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest, { params }: Params) {
     return Response.json({ error: 'Invalid maturity id' }, { status: 400 });
   }
 
-  const data = await unstable_cache(
+  const data = await cached(
     async (
       chainId: ChainId,
       midnightIndex: number,
@@ -54,7 +54,7 @@ export async function GET(request: NextRequest, { params }: Params) {
         tokenMetrics
       );
     },
-    [`midnight-info-${chainId}-${midnightIndex}-${maturityId ?? 'all'}`],
+    ['midnight-info', chainId, midnightIndex, maturityId ?? 'all'],
     { revalidate: PROTOCOL_DATA_CACHE_TIME_SECONDS }
   )(chainId, midnightIndex, maturityId);
 

@@ -59,6 +59,11 @@ query getMaturities($where: Maturity_filter) {
     timestamp
     maturityId
 
+    kvcmUsdcLockedAmount
+    kvcmK2LockedAmount
+    kvcmLockedAmount
+    k2LockedAmount
+
     maturityMidnightInfo {
       ...MidnightInfoFragment
     }

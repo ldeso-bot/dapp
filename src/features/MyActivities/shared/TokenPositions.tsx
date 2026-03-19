@@ -88,12 +88,7 @@ isPartiallyClaimed: ${lock.isPartiallyClaimed}
     `
     : '';
 
-  const token = lock.token;
-
-  const baseApy =
-    token === 'kvcm'
-      ? lock.syntheticYieldApyPercent
-      : lock.riskyYieldApyPercent;
+  const baseApy = lock.kvcmYieldApyPercent;
 
   const baseRewardAmount = isMatured
     ? lock.rewards.kvcm

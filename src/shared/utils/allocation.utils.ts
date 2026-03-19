@@ -1,6 +1,6 @@
 import { ChainId } from '@/shared/constants/networks.constants';
 import { Allocation_Filter } from '@generated/gql/types/protocol.types';
-import { unstable_cache } from 'next/cache';
+import { cached } from '@/shared/utils/cache.utils';
 import { WALLET_DATA_CACHE_TIME_SECONDS } from '../constants/config.constants';
 import { AllocatableToken } from '../constants/tokens.constants';
 import { SDKAllocation } from '../models/generated';
@@ -12,7 +12,7 @@ export const getUserSdkAllocations = async (
   chainId: ChainId,
   walletAddress: string
 ): Promise<SDKAllocation[]> => {
-  return unstable_cache(
+  return cached(
     async () => {
       const sdk = getSdk(chainId);
       const protocolState = await getProtocolState(sdk);
@@ -43,7 +43,7 @@ export const getUserSdkAllocations = async (
       ];
       return userAllocations;
     },
-    ['user-allocations', walletAddress, String(chainId)],
+    ['user-allocations', chainId, walletAddress],
     { revalidate: WALLET_DATA_CACHE_TIME_SECONDS }
   )();
 };

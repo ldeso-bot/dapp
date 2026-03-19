@@ -4,10 +4,7 @@ import { ChainId } from '@/shared/constants/networks.constants';
 import { CarbonClass } from '@/shared/models/shared';
 import { formatAddress } from '@/shared/utils/string.utils';
 import { formatStringToNumber, getSdk } from '@/shared/utils/subgraph.utils';
-import {
-  CarbonClass_Filter,
-  TokenSnapshot_Filter,
-} from '@generated/gql/types/protocol.types';
+import { TokenSnapshot_Filter } from '@generated/gql/types/protocol.types';
 import { filter, isNonNullish, mapToObj } from 'remeda';
 import { getRetirementQuotesCached } from './getRetirementQuotes';
 import { getSwapQuotesCached } from './getSwapQuotes';
@@ -15,6 +12,7 @@ import { mockTokenIds } from './mocks';
 import {
   getCreditsTokenMap,
   getHoursSinceEpoch24HoursAgo,
+  getSdkCarbonClasses,
   mapToApiCreditToken,
 } from './protocol.utils';
 
@@ -28,16 +26,12 @@ export const getCarbonClasses = async (
   }
 
   // Get carbon classes
-  const [carbonClassesResponse, swapQuotesResponse, retirementQuotesResponse] =
+  const [carbonClasses, swapQuotesResponse, retirementQuotesResponse] =
     await Promise.all([
-      sdk.protocol.getCarbonClasses({
-        where: { isRegistered: true } as CarbonClass_Filter,
-      }),
+      getSdkCarbonClasses(sdk),
       getSwapQuotesCached(chainId),
       getRetirementQuotesCached(chainId),
     ]);
-
-  const carbonClasses = carbonClassesResponse?.carbonClasses ?? [];
 
   const [tokensMap, ...tokenSnapshotsResponses] = await Promise.all([
     getCreditsTokenMap(sdk),

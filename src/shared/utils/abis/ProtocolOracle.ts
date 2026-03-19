@@ -1,0 +1,232 @@
+const abi = [
+  { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
+  {
+    inputs: [{ internalType: 'address', name: 'target', type: 'address' }],
+    name: 'AddressEmptyCode',
+    type: 'error',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'implementation', type: 'address' },
+    ],
+    name: 'ERC1967InvalidImplementation',
+    type: 'error',
+  },
+  { inputs: [], name: 'ERC1967NonPayable', type: 'error' },
+  { inputs: [], name: 'FailedCall', type: 'error' },
+  { inputs: [], name: 'InvalidAccessManagerAddress', type: 'error' },
+  { inputs: [], name: 'InvalidInitialization', type: 'error' },
+  { inputs: [], name: 'InvalidK2TokenAddress', type: 'error' },
+  { inputs: [], name: 'InvalidKVCMTokenAddress', type: 'error' },
+  { inputs: [], name: 'InvalidStakingManagerAddress', type: 'error' },
+  { inputs: [], name: 'InvalidTreasuryAddress', type: 'error' },
+  { inputs: [], name: 'NotInitializing', type: 'error' },
+  { inputs: [], name: 'NotSystemAdmin', type: 'error' },
+  { inputs: [], name: 'ReentrancyGuardReentrantCall', type: 'error' },
+  { inputs: [], name: 'UUPSUnauthorizedCallContext', type: 'error' },
+  {
+    inputs: [{ internalType: 'bytes32', name: 'slot', type: 'bytes32' }],
+    name: 'UUPSUnsupportedProxiableUUID',
+    type: 'error',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint64',
+        name: 'version',
+        type: 'uint64',
+      },
+    ],
+    name: 'Initialized',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'kvcmToken', type: 'address' },
+          { internalType: 'address', name: 'k2Token', type: 'address' },
+          { internalType: 'address', name: 'rewardManager', type: 'address' },
+          { internalType: 'address', name: 'rewardsEscrow', type: 'address' },
+          { internalType: 'address', name: 'stakingManager', type: 'address' },
+          { internalType: 'address', name: 'accessManager', type: 'address' },
+          { internalType: 'address', name: 'aam', type: 'address' },
+        ],
+        indexed: false,
+        internalType: 'struct IProtocolSupplyOracle.ProtocolSupplyOracleConfig',
+        name: 'newConfig',
+        type: 'tuple',
+      },
+      {
+        components: [
+          { internalType: 'address', name: 'kvcmToken', type: 'address' },
+          { internalType: 'address', name: 'k2Token', type: 'address' },
+          { internalType: 'address', name: 'rewardManager', type: 'address' },
+          { internalType: 'address', name: 'rewardsEscrow', type: 'address' },
+          { internalType: 'address', name: 'stakingManager', type: 'address' },
+          { internalType: 'address', name: 'accessManager', type: 'address' },
+          { internalType: 'address', name: 'aam', type: 'address' },
+        ],
+        indexed: false,
+        internalType: 'struct IProtocolSupplyOracle.ProtocolSupplyOracleConfig',
+        name: 'prevConfig',
+        type: 'tuple',
+      },
+    ],
+    name: 'SupplyOracleConfigurationUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'treasury',
+        type: 'address',
+      },
+    ],
+    name: 'TreasuryUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'implementation',
+        type: 'address',
+      },
+    ],
+    name: 'Upgraded',
+    type: 'event',
+  },
+  {
+    inputs: [],
+    name: 'UPGRADE_INTERFACE_VERSION',
+    outputs: [{ internalType: 'string', name: '', type: 'string' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getConfiguration',
+    outputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'kvcmToken', type: 'address' },
+          { internalType: 'address', name: 'k2Token', type: 'address' },
+          { internalType: 'address', name: 'rewardManager', type: 'address' },
+          { internalType: 'address', name: 'rewardsEscrow', type: 'address' },
+          { internalType: 'address', name: 'stakingManager', type: 'address' },
+          { internalType: 'address', name: 'accessManager', type: 'address' },
+          { internalType: 'address', name: 'aam', type: 'address' },
+        ],
+        internalType: 'struct IProtocolSupplyOracle.ProtocolSupplyOracleConfig',
+        name: '',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getK2Supply',
+    outputs: [
+      { internalType: 'uint256', name: 'effectiveSupply', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getKvcmSupply',
+    outputs: [
+      { internalType: 'uint256', name: 'effectiveSupply', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getTreasury',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'kvcmToken', type: 'address' },
+          { internalType: 'address', name: 'k2Token', type: 'address' },
+          { internalType: 'address', name: 'rewardManager', type: 'address' },
+          { internalType: 'address', name: 'rewardsEscrow', type: 'address' },
+          { internalType: 'address', name: 'stakingManager', type: 'address' },
+          { internalType: 'address', name: 'accessManager', type: 'address' },
+          { internalType: 'address', name: 'aam', type: 'address' },
+        ],
+        internalType: 'struct IProtocolSupplyOracle.ProtocolSupplyOracleConfig',
+        name: 'config_',
+        type: 'tuple',
+      },
+    ],
+    name: 'initialize',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'proxiableUUID',
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'kvcmToken', type: 'address' },
+          { internalType: 'address', name: 'k2Token', type: 'address' },
+          { internalType: 'address', name: 'rewardManager', type: 'address' },
+          { internalType: 'address', name: 'rewardsEscrow', type: 'address' },
+          { internalType: 'address', name: 'stakingManager', type: 'address' },
+          { internalType: 'address', name: 'accessManager', type: 'address' },
+          { internalType: 'address', name: 'aam', type: 'address' },
+        ],
+        internalType: 'struct IProtocolSupplyOracle.ProtocolSupplyOracleConfig',
+        name: 'config_',
+        type: 'tuple',
+      },
+    ],
+    name: 'setConfiguration',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'treasury_', type: 'address' }],
+    name: 'setTreasury',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'newImplementation', type: 'address' },
+      { internalType: 'bytes', name: 'data', type: 'bytes' },
+    ],
+    name: 'upgradeToAndCall',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+] as const;
+
+export default abi;
