@@ -3,6 +3,7 @@
 import klimaProtocolDark from '@/shared/components/NavBar/images/klimaProtocol-dark.svg';
 import klimaProtocolLight from '@/shared/components/NavBar/images/klimaProtocol-light.svg';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function KlimaProtocolLogo() {
@@ -27,11 +28,13 @@ export default function KlimaProtocolLogo() {
   }, []);
 
   return (
-    <Image
-      src={isDark ? klimaProtocolLight : klimaProtocolDark}
-      alt="klimaProtocol Logo"
-      height={36}
-      priority
-    />
+    <Link href="/">
+      <Image
+        src={isDark ? klimaProtocolLight : klimaProtocolDark}
+        alt="klimaProtocol Logo"
+        height={36}
+        priority
+      />
+    </Link>
   );
 }
