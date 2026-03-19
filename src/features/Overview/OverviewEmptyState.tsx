@@ -2,7 +2,7 @@
 
 import { EmptyState } from '@/shared/components/EmptyState/EmptyState';
 import { ProtocolStatsBar } from '@/shared/components/EmptyState/ProtocolStatsBar';
-import { ArrowForwardIcon } from '@/shared/components/Svg/ArrowForwardIcon';
+import { HomeIcon } from '@/shared/components/Svg/HomeIcon';
 import { WalletIcon } from '@/shared/components/Svg/WalletIcon';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { useEmptyStateButton } from '@/shared/hooks/useEmptyStateButton';
@@ -25,7 +25,7 @@ export const OverviewEmptyState = () => {
 
   const protocolOverviewCta: CtaConfig = {
     text: 'Go to Protocol Overview',
-    icon: ArrowForwardIcon,
+    icon: HomeIcon,
     href: ROUTES.OVERVIEW,
     description: 'View real-time protocol metrics and insights.',
   };
