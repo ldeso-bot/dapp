@@ -91,7 +91,7 @@ export const useRetireCarbonForm = (
 
   // Check if selected credit symbol starts with PURO
   const isConsumptionInfoRequiredCredit =
-    selectedCarbonCredit?.symbol?.startsWith('PURO') ||
+    selectedCarbonCredit?.symbol?.startsWith('PUR') ||
     selectedCarbonCredit?.symbol?.startsWith('KLIM');
 
   const inputTokenBalance =
