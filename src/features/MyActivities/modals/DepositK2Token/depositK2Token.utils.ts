@@ -1,7 +1,8 @@
-import { usePermitSignature } from '@/features/MyActivities/hooks/usePermitSignature';
+import { useAllowance } from '@/shared/hooks/useAllowance';
 import { useTransactionAndWaitForWalletUpdate } from '@/shared/hooks/useTransactionAndWaitForWalletUpdate';
 import { useContract } from '@/shared/hooks/web3/useContract';
 import { WalletData } from '@/shared/models/walletData';
+import { ERC20Abi } from '@/shared/utils/abis/ERC20';
 import { handleWeb3Error } from '@/shared/utils/web3.utils';
 import { atom } from 'jotai';
 import { useCallback } from 'react';
@@ -18,11 +19,13 @@ export const useDepositK2Token = (params: { amount: bigint }) => {
   const { chain } = useAccount();
 
   const { contract: stakingContract } = useContract('StakingManagerDiamond');
+  const { contract: k2Contract } = useContract<ERC20Abi>('K2');
 
-  const { getPermitSignature } = usePermitSignature({
+  const { isAllowed, setAllowance } = useAllowance({
+    tokenAddress: k2Contract?.address || '',
+    tokenStandard: 'ERC20',
+    spender: stakingContract?.address || '',
     amount,
-    spenderName: 'StakingManagerDiamond',
-    tokenName: 'K2',
   });
 
   const { executeWithValidation } = useTransactionAndWaitForWalletUpdate({
@@ -32,16 +35,23 @@ export const useDepositK2Token = (params: { amount: bigint }) => {
 
   const deposit = useCallback(async () => {
     try {
-      const lockK2WithPermit = stakingContract?.write.lockK2WithPermit;
-      if (!lockK2WithPermit || !chain) {
+      const lockK2 = stakingContract?.write.lockK2;
+      if (!lockK2 || !chain) {
         throw new Error('Contract or chain not ready');
       }
-      const signature = await getPermitSignature();
-      const { deadline, r, s, v } = signature;
+
+      if (!isAllowed) {
+        const approved = await setAllowance();
+        if (!approved) {
+          throw new Error('Failed to approve K2');
+        }
+      }
+
       const executeTransaction = () =>
-        lockK2WithPermit([amount, deadline, v, r, s], {
+        lockK2([amount], {
           chain,
         });
+
       return await executeWithValidation(executeTransaction);
     } catch (error) {
       console.error('❌ Deposit error:', error);
@@ -50,9 +60,10 @@ export const useDepositK2Token = (params: { amount: bigint }) => {
   }, [
     stakingContract,
     chain,
-    getPermitSignature,
     amount,
     executeWithValidation,
+    isAllowed,
+    setAllowance,
   ]);
 
   return {

@@ -150,7 +150,7 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
             Cancel
           </Button>
           <Button
-            className="rounded-xl"
+            className="rounded-xl capitalize border-border-strong text-text-static-light"
             colors="secondary"
             context="flow"
             type="submit"

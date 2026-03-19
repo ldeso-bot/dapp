@@ -19,7 +19,7 @@ export const useRefetchWithRetry = () => {
     async (options: RefetchOptions): Promise<boolean> => {
       const {
         queryKey,
-        maxRetries = 10,
+        maxRetries = 600,
         retryDelay = 1000,
         validate,
       } = options;

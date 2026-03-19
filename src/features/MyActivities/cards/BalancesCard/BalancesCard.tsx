@@ -222,7 +222,7 @@ export const BalancesCard = (props: CardProps) => {
                       <div className="text-size-14 font-normal">
                         {formatAmountWithCommas(
                           Number(balance.balance),
-                          balance.longDecimals
+                          'auto'
                         )}{' '}
                         <small className="text-size-12 text-text-3">
                           ({getTokenSymbol(balance.token as Token)})
@@ -233,7 +233,7 @@ export const BalancesCard = (props: CardProps) => {
                       <div className="text-size-14 font-normal">
                         {formatAmountWithCommas(
                           Number(balance.deployedBalance),
-                          balance.longDecimals
+                          'auto'
                         )}{' '}
                         <small className="text-size-12 text-text-3">
                           ({getTokenSymbol(balance.token as Token)})

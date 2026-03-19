@@ -2,13 +2,9 @@ import ERC20 from '@/shared/utils/abis/ERC20';
 import { useCallback, useState } from 'react';
 import { isNullish } from 'remeda';
 import { Address, isAddress, maxUint256 } from 'viem';
-import {
-  useAccount,
-  usePublicClient,
-  useReadContract,
-  useWalletClient,
-} from 'wagmi';
+import { useAccount, useReadContract, useWalletClient } from 'wagmi';
 import { TokenStandard } from '../models/shared';
+import { useRefetchWithRetry } from './useRefetchWithRetry';
 
 type ApprovedAmountOptions = {
   tokenAddress: string;
@@ -31,7 +27,7 @@ export const useAllowance = ({
 }: ApprovedAmountOptions) => {
   const { address: owner } = useAccount();
   const { data: walletClient } = useWalletClient();
-  const publicClient = usePublicClient();
+  const { refetchWithRetry } = useRefetchWithRetry();
 
   const [isSettingAllowance, setIsSettingAllowance] = useState<boolean>(false);
 
@@ -58,7 +54,7 @@ export const useAllowance = ({
    * Set the allowance for a token
    * @param amount - The amount to set the allowance to. If not provided, will set infinite allowance
    * @returns True if the allowance was set successfully, false otherwise
-   * @throws Error if the address is invalid, the wallet client is not found, the public client is not found, or the allowance is not set
+   * @throws Error if the address is invalid, the wallet client is not found, or the allowance is not set
    */
   const setAllowance = useCallback(
     async (amount?: bigint) => {
@@ -70,28 +66,23 @@ export const useAllowance = ({
         console.error('Wallet client not found');
         return;
       }
-      if (!publicClient) {
-        console.error('Wallet client not found');
-        return;
-      }
       if (isNullish(amount)) {
         amount = maxUint256;
       }
 
       try {
         setIsSettingAllowance(true);
-        const hash = await walletClient.writeContract({
+        await walletClient.writeContract({
           chain: walletClient.chain,
           address,
           abi: ERC20,
           functionName: 'approve',
           args: [spender as Address, amount],
         });
-        await publicClient.waitForTransactionReceipt({
-          hash,
-          confirmations: 2,
+        await refetchWithRetry({
+          queryKey: query.queryKey,
+          validate: (data) => BigInt(String(data ?? 0)) >= amount,
         });
-        query.refetch({});
         return true;
       } catch (error) {
         console.error('Error setting allowance', error);
@@ -100,7 +91,7 @@ export const useAllowance = ({
         setIsSettingAllowance(false);
       }
     },
-    [walletClient, address, spender, query, publicClient]
+    [walletClient, address, spender, query, refetchWithRetry]
   );
 
   return { allowance, setAllowance, isAllowed, isSettingAllowance };

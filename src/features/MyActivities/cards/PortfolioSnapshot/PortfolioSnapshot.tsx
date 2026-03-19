@@ -209,7 +209,7 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                     </span>
                   </div>
                   <div className="text-[2.4rem] leading-[2.8rem] font-medium tabular-nums">
-                    {formatPriceUSDWithCommas(holdingsData.lockedValue)}
+                    {formatPriceUSDWithCommas(holdingsData.lockedValue, 'auto')}
                   </div>
                 </div>
                 {shouldShowBadge && (
