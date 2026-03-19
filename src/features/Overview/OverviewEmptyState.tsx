@@ -2,7 +2,7 @@
 
 import { EmptyState } from '@/shared/components/EmptyState/EmptyState';
 import { ProtocolStatsBar } from '@/shared/components/EmptyState/ProtocolStatsBar';
-import { HomeIcon } from '@/shared/components/Svg/HomeIcon';
+import { MyActivitiesIcon } from '@/shared/components/Svg/MyActivitiesIcon';
 import { WalletIcon } from '@/shared/components/Svg/WalletIcon';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { useEmptyStateButton } from '@/shared/hooks/useEmptyStateButton';
@@ -23,11 +23,11 @@ export const OverviewEmptyState = () => {
     onClick: (openConnectModal) => openConnectModal(),
   });
 
-  const protocolOverviewCta: CtaConfig = {
-    text: 'Go to Protocol Overview',
-    icon: HomeIcon,
-    href: ROUTES.OVERVIEW,
-    description: 'View real-time protocol metrics and insights.',
+  const myActivitiesCta: CtaConfig = {
+    text: 'My Activities',
+    icon: MyActivitiesIcon,
+    href: ROUTES.MY_ACTIVITIES,
+    description: 'View and manage your positions.',
   };
 
   return (
@@ -39,7 +39,7 @@ export const OverviewEmptyState = () => {
       }
       description="Lock kVCM and K2 into incentivized Klima strategies to support carbon markets."
       flowItems={overviewFlowItems}
-      cta={isConnected ? protocolOverviewCta : connectWalletCta}
+      cta={isConnected ? myActivitiesCta : connectWalletCta}
       protocolStatsBar={<ProtocolStatsBar />}
       stats={overviewCarbonStats}
       infoCards={overviewInfoCards}

@@ -4,7 +4,7 @@ type Props = {
   className?: string;
 };
 
-export const HomeIcon = ({ className }: Props) => (
+export const MyActivitiesIcon = ({ className }: Props) => (
   <svg
     className={className}
     focusable="false"
@@ -12,6 +12,6 @@ export const HomeIcon = ({ className }: Props) => (
     viewBox="0 0 24 24"
     fill="currentColor"
   >
-    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+    <path d="M3 13h8V3H3zm0 8h8v-6H3zm10 0h8V11h-8zm0-18v6h8V3z" />
   </svg>
 );
