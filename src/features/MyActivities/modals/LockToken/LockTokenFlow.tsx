@@ -30,7 +30,7 @@ export default function LockTokenFlow() {
 
   const form = useForm<LockTokenFields>({
     resolver: zodResolver(schema),
-    mode: 'onBlur',
+    mode: 'onTouched',
     defaultValues: {
       token,
       amount: 0,

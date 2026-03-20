@@ -28,7 +28,7 @@ export default function TopupLockFlow() {
 
   const form = useForm<TopupLockFields>({
     resolver: zodResolver(schema),
-    mode: 'onBlur',
+    mode: 'onTouched',
     defaultValues: {
       amount: 0,
       token: topupLockDialog.lock?.token ?? 'kvcm',

@@ -32,7 +32,7 @@ export default function UnlockK2TokenFlow() {
   const form = useForm<UnlockTokenFields>({
     resolver: zodResolver(schema),
     defaultValues,
-    mode: 'onChange',
+    mode: 'onTouched',
   });
 
   const parsedForm = useParsedForm(form, schema);
