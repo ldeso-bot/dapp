@@ -4,7 +4,6 @@ import { CardProps } from '@/shared/components/Card/Card';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
-import { useConnectAndRedirect } from '@/shared/hooks/useConnectAndRedirect';
 import {
   formatAmountWithCommas,
   formatPriceUSDWithCommas,
@@ -13,17 +12,13 @@ import StatCard from '../../shared/StatCard/StatCard';
 
 export default function TotalK2LockedCard(props: CardProps) {
   const { data } = useProtocolData();
-  const handleButtonClick = useConnectAndRedirect(
-    `${ROUTES.MY_ACTIVITIES}?activeView=k2`
-  );
-
   const price = data?.metrics.k2.valueUSD ?? 0;
   const amount = data?.metrics.k2.supplyLocked ?? 0;
 
   return (
     <StatCard
       {...props}
-      buttonOnClick={handleButtonClick}
+      buttonHref={`${ROUTES.MY_ACTIVITIES}?activeView=k2`}
       buttonText="Lock K2"
       title="K2 TVL"
       className="text-text-1"

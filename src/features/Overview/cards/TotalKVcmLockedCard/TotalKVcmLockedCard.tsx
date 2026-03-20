@@ -4,7 +4,6 @@ import { CardProps } from '@/shared/components/Card/Card';
 import { ROUTES } from '@/shared/constants/route.constants';
 import { tokens } from '@/shared/constants/tokens.constants';
 import { useProtocolData } from '@/shared/hooks/api/useProtocolData';
-import { useConnectAndRedirect } from '@/shared/hooks/useConnectAndRedirect';
 import {
   formatAmountWithCommas,
   formatPriceUSDWithCommas,
@@ -13,11 +12,6 @@ import StatCard from '../../shared/StatCard/StatCard';
 
 export default function TotalKVcmLockedCard(props: CardProps) {
   const { data } = useProtocolData();
-
-  const handleButtonClick = useConnectAndRedirect(
-    `${ROUTES.MY_ACTIVITIES}?activeView=kvcm`
-  );
-
   const price = data?.metrics?.kvcm?.valueUSD ?? 0;
   const amount = data?.metrics?.kvcm?.supplyLocked ?? 0;
 
@@ -25,7 +19,7 @@ export default function TotalKVcmLockedCard(props: CardProps) {
     <StatCard
       {...props}
       buttonText="Lock kVCM"
-      buttonOnClick={handleButtonClick}
+      buttonHref={`${ROUTES.MY_ACTIVITIES}?activeView=kvcm`}
       title="kVCM TVL"
       className="text-text-1"
       tooltip="This represents the total amount of kVCM locked in the Protocol by all users."
