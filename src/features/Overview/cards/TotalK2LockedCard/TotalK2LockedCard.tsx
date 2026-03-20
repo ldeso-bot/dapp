@@ -14,7 +14,7 @@ import StatCard from '../../shared/StatCard/StatCard';
 export default function TotalK2LockedCard(props: CardProps) {
   const { data } = useProtocolData();
   const handleButtonClick = useConnectAndRedirect(
-    `${ROUTES.MY_ACTIVITIES}?activeView=k2&action=lock_k2`
+    `${ROUTES.MY_ACTIVITIES}?activeView=k2`
   );
 
   const price = data?.metrics.k2.valueUSD ?? 0;
