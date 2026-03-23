@@ -14,17 +14,17 @@ export const SellCarbonGettingStarted = () => {
             <AlertIcon className="w-4 h-4" />
           </div>
           <div className="text-size-16 font-semibold text-text-1 whitespace-normal">
-            Getting Started
+            Getting Started [t189]
           </div>
         </div>
         <div className="text-size-14 text-text-1 min-w-0">
           Only whitelisted carbon credits are currently supported. Credits must
-          be tokenized and present in your wallet.
+          be tokenized and present in your wallet. [t190]
         </div>
         <div className="flex lg:justify-end">
           <LinkOpenInNew href={CARBON_SELLERS_HANDBOOK_URL}>
             <span className="text-size-14 font-medium  text-text-2">
-              Suppliers Handbook
+              Suppliers Handbook [t191]
             </span>
           </LinkOpenInNew>
         </div>

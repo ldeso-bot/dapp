@@ -105,12 +105,12 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
 
       // Show success message
       setAlert({
-        title: 'Sale complete',
+        title: 'Sale complete [t212]',
         description: `You’ve successfully sold ${parsedForm.current?.amountToSellTonnes} ${selectedBalance?.creditToken.symbol} to Klima Protocol for ${formatStringToNumber(amountKvcmReceived, 18)} KVCM! Stake your new kVCM tokens now to receive more incentives`,
         type: 'success',
         links: [
           {
-            label: 'Stake KVCM',
+            label: 'Stake KVCM [t213]',
             href: ROUTES.MY_ACTIVITIES,
           },
         ],
@@ -131,7 +131,7 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
       <Card
         className="w-[36rem] border-0 rounded-xl"
         titleClassName="font-bold text-text-1 text-size-18"
-        title="Confirm your transaction"
+        title="Confirm your transaction [t204]"
       >
         <form
           className="flex flex-col gap-8"
@@ -139,21 +139,21 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
         >
           <div className="flex flex-col gap-4 pt-3">
             To complete this transaction, please allow our smart contract to
-            transfer tokens on your behalf.
+            transfer tokens on your behalf. [t205]
             <Input
-              label="Contract Address"
+              label="Contract Address [t206]"
               value={formatAddress(contract?.address)}
               readOnly
             />
             <Input
-              label="You are sending"
+              label="You are sending [t207]"
               readOnly
               iconSize="sm"
               iconSrc={CarbonCreditIconImg}
               value={`${parsedForm.current?.amountToSellTonnes} ${selectedBalance?.creditToken.symbol}`}
             />
             <Input
-              label="You are receiving"
+              label="You are receiving [t208]"
               readOnly
               iconSize="sm"
               value={kvcmOutString}
@@ -169,7 +169,7 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
                 onClick={() => handleSetAllowance()}
                 disabled={isSettingAllowance}
               >
-                {isSettingAllowance ? 'Approving...' : 'Approve'}
+                {isSettingAllowance ? 'Approving...' : 'Approve [t209]'}
               </Button>
             )}
             {isAllowed && (
@@ -180,7 +180,7 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
                 onClick={handleSellCarbon}
                 disabled={isExecuting}
               >
-                {isExecuting ? 'Supplying Carbon...' : 'Supply Carbon'}
+                {isExecuting ? 'Supplying Carbon...' : 'Supply Carbon [t210]'}
               </Button>
             )}
             <Button
@@ -189,7 +189,7 @@ const SellCarbonConfirm: FormFlowStep<SellCarbonFields> = ({
               className="border-border-strong"
               onClick={previous}
             >
-              Cancel
+              Cancel [t211]
             </Button>
             {form.formState.errors.root && (
               <p className="text-red-500 text-size-14">

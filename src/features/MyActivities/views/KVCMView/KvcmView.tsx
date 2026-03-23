@@ -39,16 +39,16 @@ export const KvcmView = () => {
       ) : (
         <>
           <InfoCard
-            title="kVCM Locks"
+            title="kVCM Locks [t287]"
             buttonClassName="border-border-strong"
             buttonLabel={
               <span className="flex items-center gap-2 text-text-static-light">
                 <Icon icon={Plus} size={1.6} />
-                Lock
+                Lock [t289]
               </span>
             }
             tooltipId="kvcm-locks"
-            description="Lock kVCM for a fixed duration to receive variable kVCM and K2 incentives when the term ends. Locked kVCM can also be allocated to carbon classes to influence protocol pricing."
+            description="Lock kVCM for a fixed duration to receive variable kVCM and K2 incentives when the term ends. Locked kVCM can also be allocated to carbon classes to influence protocol pricing. [t288]"
             onButtonClick={() =>
               openKycOrProceed('lock_kvcm', () =>
                 setLockTokenDialogState({ open: true, token: 'kvcm' })
@@ -89,7 +89,7 @@ const KvcmOverview = () => {
         <StatusCard skeletonClassName="h-[13.5rem]">
           {kvcmData && (
             <>
-              <StatusCardTitle badge="green">Ready to unlock</StatusCardTitle>
+              <StatusCardTitle badge="green">Ready to unlock [t290]</StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-text-1 tabular-nums">
                   {formatAmountWithCommas(
@@ -127,7 +127,7 @@ const KvcmOverview = () => {
           {kvcmData && (
             <>
               <StatusCardTitle badge="gray">
-                Original amount locked
+                Original amount locked [t291]
               </StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-text-1 tabular-nums">
@@ -139,7 +139,7 @@ const KvcmOverview = () => {
                       href={ROUTES.ALLOCATE}
                       className="underline text-text-1 hover:text-text-2"
                     >
-                      Allocated to carbon classes:
+                      Allocated to carbon classes: [t292]
                     </Link>{' '}
                     {formatAmountWithCommas(allocated)} kVCM
                   </div>

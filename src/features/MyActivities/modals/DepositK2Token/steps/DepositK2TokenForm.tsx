@@ -109,7 +109,7 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
 
   return (
     <Card className="rounded-lg px-6 py-4 max-h-[70vh] overflow-y-auto w-[42rem] mx-auto">
-      <h2 className="text-size-20 font-semibold text-text-1">Deposit K2</h2>
+      <h2 className="text-size-20 font-semibold text-text-1">Deposit K2 [t357]</h2>
       <Form
         className="pt-0 relative"
         onSubmit={handleSubmit(onSubmit)}
@@ -119,16 +119,16 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
           <div className="text-size-14 text-text-2">
             Lock K2 tokens. Newly deposited K2 begins accruing variable
             incentives immediately and becomes eligible for unlocking after 24
-            hours and at the next daily cutoff.
+            hours and at the next daily cutoff. [t358]
           </div>
           <p className="text-size-14 font-bold text-text-2">
             Incentives are calculated daily, but they may not show up in the UI
-            for up to 24 hours.
+            for up to 24 hours. [t359]
           </p>
           <TokenAmountInput
             control={form.control}
             name="amount"
-            label="Amount to deposit"
+            label="Amount to deposit [t360]"
             iconSrc={tokenInfo.iconSrc}
             error={formState.errors.amount}
             availableBalance={tokenBalance}
@@ -147,7 +147,7 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
             className="rounded-xl border-border-strong"
             onClick={() => setDepositK2TokenDialogState({ open: false })}
           >
-            Cancel
+            Cancel [t361]
           </Button>
           <Button
             className="rounded-xl capitalize border-border-strong text-text-static-light"
@@ -160,7 +160,7 @@ export const DepositK2TokenForm: FormFlowStep<DepositK2TokenFields> = ({
               !!(amount && amount > tokenBalance)
             }
           >
-            {isSubmitting ? 'Depositing...' : 'Confirm Deposit'}
+            {isSubmitting ? 'Depositing...' : 'Confirm Deposit [t362]'}
           </Button>
         </ButtonGroup>
       </Form>

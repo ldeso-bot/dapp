@@ -13,35 +13,35 @@ import { OnboardingContainer } from '../../shared/OnboardingContainer';
 
 export const KvcmOnboarding = () => {
   const emptyStateButtonConfig = useEmptyStateButton({
-    description: 'View and manage your kVCM locks.',
+    description: 'View and manage your kVCM locks. [t235]',
     onClick: (openConnectModal) => openConnectModal(),
   });
 
   return (
     <OnboardingContainer
-      title="kVCM Locks"
-      description="Lock kVCM for a fixed term to receive incentives when the term ends. Locked kVCM can also be allocated to carbon classes to influence protocol pricing. Incentives (K2) accrue on locked kVCM and are claimable anytime."
+      title="kVCM Locks [t236]"
+      description="Lock kVCM for a fixed term to receive incentives when the term ends. Locked kVCM can also be allocated to carbon classes to influence protocol pricing. Incentives (K2) accrue on locked kVCM and are claimable anytime. [t237]"
     >
       <NoPositionsHeader
-        title="No active locks"
+        title="No active locks [t238]"
         icon={<LockIcon className="w-10 h-10 fill-[#00994a]" />}
-        description="Create your first kVCM lock to participate in carbon class allocation and receive incentives."
+        description="Create your first kVCM lock to participate in carbon class allocation and receive incentives. [t239]"
       />
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:w-2xl w-full mx-auto my-4">
         <NoPositionsInfoCard
-          title="Fixed terms"
+          title="Fixed terms [t240]"
           icon={<CalendarIcon className="w-5 h-5 fill-[#00994a]" />}
-          description="Choose your lock duration"
+          description="Choose your lock duration [t241]"
         />
         <NoPositionsInfoCard
-          title="Dual incentives"
+          title="Dual incentives [t242]"
           icon={<TrendingUpIcon className="w-5 h-5 fill-[#00994a]" />}
-          description="kVCM + K2 incentives"
+          description="kVCM + K2 incentives [t243]"
         />
         <NoPositionsInfoCard
-          title="Allocate to carbon"
+          title="Allocate to carbon [t244]"
           icon={<AllocateIcon className="w-5 h-5 fill-[#00994a]" />}
-          description="Influence carbon class pricing"
+          description="Influence carbon class pricing [t245]"
         />
       </div>
       <div className="mb-2">

@@ -91,7 +91,7 @@ const ClaimMaturedLogRewardsForm = ({
           <div className="flex flex-col gap-6">
             <div className="flex flex-col">
               <span className="text-size-20 font-semibold text-text-1">
-                Claim lock
+                Claim lock [t369]
               </span>
               <span className="text-size-16 font-[300] text-text-1">
                 Unlocked on {formatTimestamp(lock.lockedUntil * 1000, 'short')}
@@ -101,7 +101,7 @@ const ClaimMaturedLogRewardsForm = ({
               <>
                 <div className="flex flex-col gap-3 border-border-default border-1 rounded-2xl p-3">
                   <div className="flex flex-row justify-between">
-                    <span>Tokens locked</span>
+                    <span>Tokens locked [t370]</span>
                     <span>
                       {formatAmountWithCommas(
                         lock.unlockableLockedAmount,
@@ -111,14 +111,14 @@ const ClaimMaturedLogRewardsForm = ({
                     </span>
                   </div>
                   <div className="flex flex-row justify-between">
-                    <span>Incentives</span>
+                    <span>Incentives [t371]</span>
                     <span>
                       + {formatAmountWithCommas(baseAccrual, 'auto')}{' '}
                       {baseAccrualTokenSymbol}
                     </span>
                   </div>
                   <div className="flex flex-row justify-between font-bold">
-                    <span>Total</span>
+                    <span>Total [t372]</span>
                     <span>
                       {formatAmountWithCommas(
                         lock.unlockableLockedAmount + baseAccrual,
@@ -132,14 +132,14 @@ const ClaimMaturedLogRewardsForm = ({
                   <div className="flex flex-row justify-between">
                     {isK2Lock ? (
                       <>
-                        <span>Protocol distribution (kVCM)</span>
+                        <span>Protocol distribution (kVCM) [t373]</span>
                         <span className="font-bold">
                           + {formatAmountWithCommas(kvcmAmount, 'auto')} KVCM
                         </span>
                       </>
                     ) : (
                       <>
-                        <span>K2 incentives</span>
+                        <span>K2 incentives [t374]</span>
                         <span className="font-bold">
                           + {formatAmountWithCommas(k2Amount, 'auto')} K2
                         </span>
@@ -163,7 +163,7 @@ const ClaimMaturedLogRewardsForm = ({
                   })
                 }
               >
-                Cancel
+                Cancel [t375]
               </Button>
               <Button
                 colors="secondary"
@@ -172,7 +172,7 @@ const ClaimMaturedLogRewardsForm = ({
                 disabled={isLoading || isClaiming}
                 onClick={handleOnClaim}
               >
-                {isClaiming ? 'Claiming...' : 'Claim All'}
+                {isClaiming ? 'Claiming...' : 'Claim All [t376]'}
               </Button>
             </ButtonGroup>
           </div>

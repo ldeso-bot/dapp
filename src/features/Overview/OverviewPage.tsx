@@ -24,9 +24,9 @@ export default function OverviewPage() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2 text-text-1">
-        <PageTitle>Protocol Overview</PageTitle>
+        <PageTitle>Protocol Overview [t001]</PageTitle>
         <PageDescription>
-          Real-time metrics and insights into Klima Protocol.
+          Real-time metrics and insights into Klima Protocol. [t002]
         </PageDescription>
       </div>
       <StackedCards>

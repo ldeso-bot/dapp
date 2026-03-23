@@ -11,7 +11,7 @@ type Props = {
 export const HoldingEstimatedValue: FC<Props> = ({ estimatedValue }) => {
   return (
     <div className="mt-4 pt-4 border-t border-divider flex items-start justify-between gap-3">
-      <div className="text-lg sm:text-xl text-text-3">Estimated USD value</div>
+      <div className="text-lg sm:text-xl text-text-3">Estimated USD value [t338]</div>
       <div className="text-lg sm:text-xl text-text-3 tabular-nums text-right break-words">
         {formatPriceUSDWithCommas(Number(estimatedValue))}
       </div>

@@ -5,7 +5,7 @@ import type { DisclaimerComponent } from '@rainbow-me/rainbowkit';
 
 export const ConnectModalDisclaimer: DisclaimerComponent = ({ Text, Link }) => (
   <Text>
-    By connecting, you agree to the{' '}
+    By connecting, you agree to the [t394]{' '}
     <Link href={`${DOCS_URL}/terms`}>Terms</Link> and acknowledge the{' '}
     <Link href={`${DOCS_URL}/protocol`}>Protocol docs</Link>.
   </Text>

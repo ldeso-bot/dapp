@@ -89,7 +89,7 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
 
   return (
     <Card
-      title="Supply Carbon"
+      title="Supply Carbon [t194]"
       className="min-w-0 w-full text-text-1 max-w-full lg:w-[50rem] rounded-xl border border-border-subtle h-fit"
       titleClassName="font-semibold text-text-1 text-size-20 tracking-tight"
       skeletonClassName="h-[56.6rem]"
@@ -98,11 +98,11 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
         <div className="flex-1">
           <div className="font-base text-text-3 text-size-14">
             Quotes are not guaranteed due to ever-changing network conditions.
-            Slippage may occur.
+            Slippage may occur. [t195]
             <span className="inline-flex items-center align-middle ml-1.5">
               <Tooltip
                 className="max-w-[30rem] text-size-12 p-3"
-                content="Slippage in blockchain-enabled transactions is the difference between the price you expect (or are quoted) when you submit a swap and the actual price you get when the trade executes on-chain. Slippage occurs due to small time delays when executing a transaction on the blockchain and can range from 0.2%-1% (trending toward the lower value). The quoted kVCM includes an extra 1% to account for slippage."
+                content="Slippage in blockchain-enabled transactions is the difference between the price you expect (or are quoted) when you submit a swap and the actual price you get when the trade executes on-chain. Slippage occurs due to small time delays when executing a transaction on the blockchain and can range from 0.2%-1% (trending toward the lower value). The quoted kVCM includes an extra 1% to account for slippage. [t196]"
               />
             </span>
           </div>
@@ -114,7 +114,7 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
         >
           <div className="flex flex-col gap-4 pt-3">
             <SelectInput
-              label="Token"
+              label="Token [t197]"
               items={Object.values(creditBalances).map((balance) => ({
                 label: balance.creditToken.symbol,
                 value: balance.creditToken.creditTokenId,
@@ -127,18 +127,18 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
             <div className="text-size-12 text-text-2 flex items-start gap-2">
               <AlertIcon className="w-4 h-4 mt-0.5 shrink-0" />
               <span className="min-w-0">
-                No eligible credits detected?{' '}
+                No eligible credits detected? [t198]{' '}
                 <LinkOpenInNew
                   href={CARBON_SELLERS_HANDBOOK_URL}
                   withoutIcon
                   className="font-medium whitespace-nowrap"
                 >
-                  Contact us to whitelist your credit type.
+                  Contact us to whitelist your credit type. [t199]
                 </LinkOpenInNew>
               </span>
             </div>
             <SelectInput
-              label="Carbon Class"
+              label="Carbon Class [t200]"
               items={Object.values(carbonClasses).map((carbonClass) => ({
                 label: carbonClass.name,
                 value: carbonClass.carbonClassId,
@@ -149,7 +149,7 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
               error={form.formState.errors.carbonClass}
             />
             <TokenAmountInput
-              label="Amount (Tonnes)"
+              label="Amount (Tonnes) [t201]"
               availableBalance={selectedBalance?.balance ?? 0}
               error={form.formState.errors.amountToSellTonnes}
               inputProps={{
@@ -163,7 +163,7 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
 
             <Input
               className="h-[4rem] pointer-events-none"
-              label="Receive"
+              label="Receive [t202]"
               readOnly
               addOnButton={
                 isQuoteLoading ? (
@@ -189,7 +189,7 @@ const SellCarbonForm: FormFlowStep<SellCarbonFields> = ({ next, data }) => {
               type="submit"
               disabled={!kvcmOutQuoteWei}
             >
-              Supply Carbon
+              Supply Carbon [t203]
             </Button>
           </ButtonGroup>
           <InputError error={{ message: error }} />

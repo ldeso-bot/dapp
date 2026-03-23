@@ -55,7 +55,7 @@ const UnlockK2TokenForm: FormFlowStep<UnlockTokenFields> = ({ data }) => {
 
   return (
     <Card
-      title="Request unlock of your K2 tokens"
+      title="Request unlock of your K2 tokens [t363]"
       className="w-[42rem] text-text-1"
     >
       <Form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -63,7 +63,7 @@ const UnlockK2TokenForm: FormFlowStep<UnlockTokenFields> = ({ data }) => {
           <TokenAmountInput
             control={form.control}
             name="amount"
-            label="Amount to unlock"
+            label="Amount to unlock [t364]"
             iconSrc={tokens.k2.iconSrc}
             error={formState.errors.amount}
             inputProps={{
@@ -83,7 +83,7 @@ const UnlockK2TokenForm: FormFlowStep<UnlockTokenFields> = ({ data }) => {
               }
               className="flex-1 border-border-strong"
             >
-              Cancel
+              Cancel [t365]
             </Button>
             <Button
               colors="secondary"

@@ -11,7 +11,7 @@ import {
 
 export const AllocationEmptyState = () => {
   const emptyStateButtonConfig = useEmptyStateButton({
-    description: 'View and manage your allocations.',
+    description: 'View and manage your allocations. [t049]',
     onClick: (openConnectModal) => openConnectModal(),
   });
 
@@ -19,12 +19,12 @@ export const AllocationEmptyState = () => {
     <EmptyState
       title={
         <span className="text-text-1">
-          Govern Carbon
+          Govern Carbon [t050]
           <br />
           Prices.
         </span>
       }
-      description="Allocate your locked kVCM and K2 to influence carbon class execution rates and protocol purchase behavior."
+      description="Allocate your locked kVCM and K2 to influence carbon class execution rates and protocol purchase behavior. [t051]"
       flowItems={allocationFlowItems}
       cta={emptyStateButtonConfig}
       stats={allocationStats}

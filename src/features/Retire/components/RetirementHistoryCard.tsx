@@ -26,12 +26,12 @@ export const RetirementHistoryCard = ({ retirementHistoryUrl }: Props) => {
             <div className="flex flex-col gap-1 min-w-0">
               <div className="flex items-center gap-2 min-w-0">
                 <span className="text-size-16 font-semibold text-text-1 whitespace-normal">
-                  Retirement History
+                  Retirement History [t129]
                 </span>
                 <OpenInNewIcon className="w-4 h-4 text-text-highlight shrink-0" />
               </div>
               <span className="text-size-12 text-text-2">
-                View retirements attributed to this wallet on Carbonmark
+                View retirements attributed to this wallet on Carbonmark [t130]
               </span>
             </div>
           </div>

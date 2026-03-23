@@ -12,9 +12,9 @@ import {
 
 export const RetireCarbonEmptyState = () => {
   const emptyStateButtonConfig: CtaConfig = {
-    text: 'Connect wallet to start',
+    text: 'Connect wallet to start [t114]',
     icon: WalletIcon,
-    description: 'You choose the credits and set the beneficiary details.',
+    description: 'You choose the credits and set the beneficiary details. [t115]',
     onClick: (openConnectModal) => openConnectModal(),
   };
 
@@ -22,10 +22,10 @@ export const RetireCarbonEmptyState = () => {
     <EmptyState
       title={
         <span className="text-text-1">
-          Retire Carbon. <br /> Make It Permanent.
+          Retire Carbon. [t116] <br /> Make It Permanent. [t117]
         </span>
       }
-      description="Use your kVCM to permanently retire carbon credits and receive a verified certificate via Carbonmark."
+      description="Use your kVCM to permanently retire carbon credits and receive a verified certificate via Carbonmark. [t118]"
       flowItems={retireCarbonFlowItems}
       cta={emptyStateButtonConfig}
       stats={retireCarbonStats}

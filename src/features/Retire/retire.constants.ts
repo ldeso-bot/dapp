@@ -17,12 +17,12 @@ type PaymentOption = {
 export const paymentOptions: PaymentOption[] = [
   {
     token: tokens.kvcm,
-    tooltip: 'Pay with kVCM',
+    tooltip: 'Pay with kVCM [t092]',
     disabled: false,
   },
   {
     token: tokens.usdc,
-    tooltip: 'Pay with USDC',
+    tooltip: 'Pay with USDC [t093]',
     disabled: false,
   },
 ];
@@ -50,58 +50,58 @@ export const retireCarbonSchema = z.object({
 export type RetireCarbonFields = z.infer<typeof retireCarbonSchema>;
 
 export const retireCarbonFlowItems = [
-  createFlowItem(KvcmIcon, 'Your kVCM', 'kVCM tokens in your wallet.', 0),
+  createFlowItem(KvcmIcon, 'Your kVCM [t094]', 'kVCM tokens in your wallet. [t095]', 0),
   createFlowItem(
     BadgeIcon,
-    'Retire credits',
-    'Select and retire carbon credits.',
+    'Retire credits [t096]',
+    'Select and retire carbon credits. [t097]',
     1
   ),
   createFlowItem(
     GlobeIcon,
-    'Climate impact',
-    'Verifiable proof of your contribution.',
+    'Climate impact [t098]',
+    'Verifiable proof of your contribution. [t099]',
     2
   ),
 ];
 
 export const retireCarbonStats: StatItem[] = [
   {
-    value: 'Permanent',
-    label: 'Credits are permanently retired, never resold.',
+    value: 'Permanent [t100]',
+    label: 'Credits are permanently retired, never resold. [t101]',
   },
   {
-    value: 'Verifiable',
-    label: 'Blockchain-secured proof via Carbonmark.',
+    value: 'Verifiable [t102]',
+    label: 'Blockchain-secured proof via Carbonmark. [t103]',
   },
   {
-    value: 'Impactful',
-    label: 'Real climate action with verified impact.',
+    value: 'Impactful [t104]',
+    label: 'Real climate action with verified impact. [t105]',
   },
 ];
 
 export const retireCarbonInfoCards = {
-  title: 'Why retire with Klima?',
+  title: 'Why retire with Klima? [t106]',
   description:
-    'Retire carbon credits to permanently offset emissions and receive verifiable proof of your climate action.',
+    'Retire carbon credits to permanently offset emissions and receive verifiable proof of your climate action. [t107]',
   cards: [
     {
       icon: BadgeIcon,
-      title: 'Blockchain-verified',
+      title: 'Blockchain-verified [t108]',
       description:
-        'Receive a proof-of-retirement certificate that is publicly verifiable and blockchain-secured via Carbonmark.',
+        'Receive a proof-of-retirement certificate that is publicly verifiable and blockchain-secured via Carbonmark. [t109]',
     },
     {
       icon: DocIcon,
-      title: 'Public beneficiary details',
+      title: 'Public beneficiary details [t110]',
       description:
-        'Connect the certificate to yourself or your enterprise by publishing public beneficiary details.',
+        'Connect the certificate to yourself or your enterprise by publishing public beneficiary details. [t111]',
     },
     {
       icon: CarbonCreditsIcon,
-      title: 'Diverse selection',
+      title: 'Diverse selection [t112]',
       description:
-        'Choose from a wide selection of carbon credits, vintages, and methodologies.',
+        'Choose from a wide selection of carbon credits, vintages, and methodologies. [t113]',
     },
   ],
 };

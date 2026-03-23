@@ -11,23 +11,23 @@ export default function FooterLinks() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          klimaprotocol.com
+          klimaprotocol.com [t379]
         </a>
 
         <a href={ROUTES.RESOURCES} target="_blank" rel="noopener noreferrer">
-          Documentation
+          Documentation [t380]
         </a>
 
         <a href={ROUTES.AUDIT} target="_blank" rel="noopener noreferrer">
-          Audit
+          Audit [t381]
         </a>
 
-        <Link href={ROUTES.TERMS}>Terms</Link>
+        <Link href={ROUTES.TERMS}>Terms [t382]</Link>
 
-        <Link href={ROUTES.PRIVACY_POLICY}>Privacy Policy</Link>
+        <Link href={ROUTES.PRIVACY_POLICY}>Privacy Policy [t383]</Link>
 
         <a href={ROUTES.CONTACT_US} target="_blank" rel="noopener noreferrer">
-          Contact
+          Contact [t384]
         </a>
       </div>
     </div>

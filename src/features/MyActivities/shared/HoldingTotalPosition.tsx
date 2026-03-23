@@ -14,10 +14,10 @@ export const HoldingTotalPosition: FC<Props> = ({ totalPosition, symbol }) => {
   return (
     <div className="min-w-0">
       <div className="flex items-center gap-2 text-lg sm:text-2xl text-text-3">
-        Token locks &amp; incentives
+        Token locks &amp; incentives [t339]
         <Tooltip
           className="max-w-[30rem] text-size-12 p-3"
-          content="Total of your original amount of tokens locked plus incentives. Incentives may accrue while locked and become claimable when tokens unlock."
+          content="Total of your original amount of tokens locked plus incentives. Incentives may accrue while locked and become claimable when tokens unlock. [t340]"
         />
       </div>
 

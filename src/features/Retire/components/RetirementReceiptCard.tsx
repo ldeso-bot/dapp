@@ -19,14 +19,14 @@ export const RetirementReceiptCard = ({ receiptUrl }: Props) => (
         </div>
         <div className="flex items-center gap-2">
           <span className="text-size-14 font-semibold text-gray-800 whitespace-nowrap">
-            View your retirement receipt
+            View your retirement receipt [t131]
           </span>
           <OpenInNewIcon className="w-4 h-4 text-green-80 shrink-0" />
         </div>
       </div>
       <div className="flex items-center gap-2 pl-1">
         <span className="text-size-12 text-gray-500 whitespace-nowrap">
-          Powered by
+          Powered by [t132]
         </span>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img

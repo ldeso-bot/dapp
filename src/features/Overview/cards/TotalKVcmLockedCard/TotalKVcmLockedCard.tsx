@@ -24,11 +24,11 @@ export default function TotalKVcmLockedCard(props: CardProps) {
   return (
     <StatCard
       {...props}
-      buttonText="Lock kVCM"
+      buttonText="Lock kVCM [t028]"
       buttonOnClick={handleButtonClick}
-      title="kVCM TVL"
+      title="kVCM TVL [t029]"
       className="text-text-1"
-      tooltip="This represents the total amount of kVCM locked in the Protocol by all users."
+      tooltip="This represents the total amount of kVCM locked in the Protocol by all users. [t030]"
       tooltipPosition="far"
       primaryValue={formatAmountWithCommas(amount, 0)}
       secondaryValue={formatPriceUSDWithCommas(price * amount, 2)}

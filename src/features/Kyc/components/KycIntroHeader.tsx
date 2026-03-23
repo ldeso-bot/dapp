@@ -10,7 +10,7 @@ export const KycIntroHeader = ({ onClose }: Props) => (
     <div className="flex items-start justify-between gap-4">
       <div className="flex-1 space-y-2">
         <h3 id="kyc-title" className="text-size-18 font-semibold text-text-1">
-          KYC with zkMe
+          KYC with zkMe [t395]
         </h3>
         <p
           id="kyc-subhead"
@@ -18,7 +18,7 @@ export const KycIntroHeader = ({ onClose }: Props) => (
           tabIndex={-1}
         >
           We verify your identity with zkMe. Here&apos;s what we access—and what
-          we don&apos;t.
+          we don&apos;t. [t396]
         </p>
         <p className="text-size-12 text-text-3 mt-1">
           Controller: <strong>Klima Fintech Ltd.</strong> • Processor:{' '}

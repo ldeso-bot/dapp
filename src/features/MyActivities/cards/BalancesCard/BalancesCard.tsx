@@ -45,22 +45,22 @@ export const BalancesCard = (props: CardProps) => {
       {holdingsData && (
         <>
           <div className="flex gap-2 items-center pb-1">
-            <div className="text-size-18 font-medium">Balances</div>
+            <div className="text-size-18 font-medium">Balances [t306]</div>
             <Tooltip
               content={
                 <div className="flex flex-col gap-4">
                   <div className="text-text-static-light">
-                    Balances across all protocol activities.
+                    Balances across all protocol activities. [t307]
                   </div>
 
                   <div className="flex flex-col gap-3">
                     <div className="flex items-start gap-2">
                       <div className="mt-1 h-2 w-2 rounded-full bg-surface-3" />
                       <div>
-                        <div className="font-semibold">Wallet</div>
+                        <div className="font-semibold">Wallet [t308]</div>
                         <div className="text-text-static-light text-size-11">
                           Unallocated assets in your wallet, not eligible for
-                          incentives.
+                          incentives. [t309]
                         </div>
                       </div>
                     </div>
@@ -68,10 +68,10 @@ export const BalancesCard = (props: CardProps) => {
                     <div className="flex items-start gap-2">
                       <div className="mt-1 h-2 w-2 rounded-full bg-green-400" />
                       <div>
-                        <div className="font-semibold">Deployed</div>
+                        <div className="font-semibold">Deployed [t310]</div>
                         <div className="text-text-static-light text-size-11">
                           Assets allocated in Klima Protocol, eligible for
-                          incentives.
+                          incentives. [t311]
                         </div>
                       </div>
                     </div>
@@ -94,7 +94,7 @@ export const BalancesCard = (props: CardProps) => {
                     : 'border-border-subtle bg-surface-1 text-text-3'
                 )}
               >
-                Wallet
+                Wallet [t312]
               </button>
               <button
                 type="button"
@@ -106,7 +106,7 @@ export const BalancesCard = (props: CardProps) => {
                     : 'border-border-subtle bg-surface-1 text-text-3'
                 )}
               >
-                Deployed
+                Deployed [t313]
               </button>
             </div>
 
@@ -177,13 +177,13 @@ export const BalancesCard = (props: CardProps) => {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-2/8 text-left border-b border-border-subtle py-2">
-                    Asset
+                    Asset [t314]
                   </TableHead>
                   <TableHead className="text-right border-b border-border-subtle py-2">
-                    Wallet
+                    Wallet [t315]
                   </TableHead>
                   <TableHead className="text-right border-b border-border-subtle py-2">
-                    Deployed
+                    Deployed [t316]
                   </TableHead>
                 </TableRow>
               </TableHeader>

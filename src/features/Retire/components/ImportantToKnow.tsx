@@ -16,10 +16,10 @@ export const ImportantToKnow = () => (
           </div>
           <div>
             <h3 className="text-4xl font-bold mb-2 group-hover:text-[#00994a] transition-colors">
-              Important to know
+              Important to know [t119]
             </h3>
             <p className="text-2xl text-text-2 leading-relaxed">
-              Before you retire, hereʼs what to expect.
+              Before you retire, hereʼs what to expect. [t120]
             </p>
           </div>
         </div>
@@ -29,7 +29,7 @@ export const ImportantToKnow = () => (
               <strong className="text-2xl text-text-1">Certificate:</strong> The
               certificate provides a blockchain transaction hash proof that the
               credit was permanently consumed and can never be transferred or
-              resold.
+              resold. [t121]
             </span>
           </li>
           <li className="text-[#00994a] pl-2">
@@ -38,20 +38,20 @@ export const ImportantToKnow = () => (
               some credit types (e.g. EcoRegistry & Puro.Earth), you receive a
               certificate from the originating registry in addition to
               Carbonmark. This is possible due to strong interoperability
-              frameworks in place at these registry providers.
+              frameworks in place at these registry providers. [t122]
             </span>
           </li>
           <li className="text-[#00994a] pl-2">
             <span className="text-2xl text-text-2">
               <strong className="text-2xl text-text-1">Permanent:</strong>{' '}
               Retirements are permanent and irreversible once successful—refunds
-              are not possible.
+              are not possible. [t123]
             </span>
           </li>
         </ul>
         <div className="mt-8 pt-6 border-t border-[#f0f0f0]/60">
           <LinkOpenInNew href={CARBONMARK_URL}>
-            Learn more about Carbonmark
+            Learn more about Carbonmark [t124]
           </LinkOpenInNew>
         </div>
       </div>

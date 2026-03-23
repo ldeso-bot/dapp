@@ -27,7 +27,7 @@ export default function ConnectButton({}: Props) {
           onClick={handleLogout}
           className="flex-1 h-10 border-border-strong"
         >
-          <span className="flex gap-1 text-text-1">Logout</span>
+          <span className="flex gap-1 text-text-1">Logout [t377]</span>
         </Button>
 
         <ThemeToggle />
@@ -46,7 +46,7 @@ export default function ConnectButton({}: Props) {
               onClick={openConnectModal}
               className="flex-1 h-10 border-border-strong"
             >
-              Connect wallet
+              Connect wallet [t378]
             </Button>
 
             <ThemeToggle />

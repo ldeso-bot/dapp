@@ -141,7 +141,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
         />
         <div className="flex flex-col gap-1">
           <Input
-            label="Amount to add"
+            label="Amount to add [t366]"
             type="number"
             iconSize={isKvcm ? 'sm' : 'md'}
             iconSrc={tokens[typedToken].iconSrc}
@@ -203,7 +203,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
             context="flow"
             onClick={() => reset()}
           >
-            Cancel
+            Cancel [t367]
           </Button>
           <Button
             colors="secondary"
@@ -212,7 +212,7 @@ export const TopupLockForm: FormFlowStep<TopupLockFields> = ({ data }) => {
             type="submit"
             disabled={isSubmitting || !form.formState.isValid}
           >
-            {isSubmitting ? 'Topping up...' : 'Confirm top up'}
+            {isSubmitting ? 'Topping up...' : 'Confirm top up [t368]'}
           </Button>
         </ButtonGroup>
       </Form>

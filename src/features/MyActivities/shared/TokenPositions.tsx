@@ -97,10 +97,10 @@ isPartiallyClaimed: ${lock.isPartiallyClaimed}
   const k2RewardAmount = isMatured ? lock.rewards.k2 : lock.accruingRewards.k2;
 
   const statusText = lock.isPartiallyClaimed
-    ? 'Partially claimed'
+    ? 'Partially claimed [t345]'
     : isMatured
-      ? 'Ready to unlock'
-      : 'Unlocks on';
+      ? 'Ready to unlock [t346]'
+      : 'Unlocks on [t347]';
 
   const showTopUp = lock.canTopUp;
 
@@ -129,7 +129,7 @@ isPartiallyClaimed: ${lock.isPartiallyClaimed}
         <div className="flex flex-col gap-2 sm:col-span-4 min-w-0">
           <div className="flex flex-col gap-1">
             <div className="text-size-12 text-text-3 font-[400]">
-              Original amount locked
+              Original amount locked [t344]
             </div>
 
             <div className="text-size-16 text-text-1 font-bold break-words">
@@ -146,7 +146,7 @@ isPartiallyClaimed: ${lock.isPartiallyClaimed}
         <div className="flex flex-col gap-2 sm:col-span-5 min-w-0">
           <div className="flex items-center gap-1 min-w-0">
             <div className="text-size-12 text-text-3 font-[400] leading-tight">
-              {isMatured ? 'Rewards' : 'Incentives (accruing)'}
+              {isMatured ? 'Rewards [t348]' : 'Incentives (accruing) [t349]'}
             </div>
 
             <Tooltip
@@ -204,7 +204,7 @@ isPartiallyClaimed: ${lock.isPartiallyClaimed}
                 }
               }}
             >
-              Claim
+              Claim [t350]
             </Button>
 
             {showTopUp && (
@@ -224,7 +224,7 @@ isPartiallyClaimed: ${lock.isPartiallyClaimed}
                   }
                 }}
               >
-                Top up
+                Top up [t351]
               </Button>
             )}
           </div>

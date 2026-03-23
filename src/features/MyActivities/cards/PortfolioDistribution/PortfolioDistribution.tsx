@@ -77,10 +77,10 @@ export const PortfolioDistributionCard = (props: CardProps) => {
         <>
           <div className="flex flex-col pb-1">
             <div className="flex gap-2 items-center pb-1">
-              <div className="text-size-18 font-medium">Activity Overview</div>
+              <div className="text-size-18 font-medium">Activity Overview [t304]</div>
               <Tooltip
                 className="max-w-[35rem] text-size-12 p-3"
-                content="Overview of token allocations within the Klima protocol interface. Excludes assets held externally."
+                content="Overview of token allocations within the Klima protocol interface. Excludes assets held externally. [t305]"
               />
             </div>
             {formattedData && (

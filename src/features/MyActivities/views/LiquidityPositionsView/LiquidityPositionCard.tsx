@@ -40,7 +40,7 @@ export const LiquidityPositionCard = ({
         >
           <span className="flex items-center gap-2 text-text-static-light">
             <Icon icon={Plus} size={1.6} />
-            Deposit
+            Deposit [t295]
           </span>
         </Button>
       </div>

@@ -82,14 +82,14 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
           <div>
             <div className="flex items-center gap-2 mb-2 sm:mb-3 md:mb-2">
               <div className="flex items-center gap-2">
-                <div className="text-size-18 font-medium">Holdings</div>
+                <div className="text-size-18 font-medium">Holdings [t321]</div>
 
                 <Tooltip
                   className="max-w-[35rem] text-size-12 p-3"
                   content={
                     <div className="flex flex-col gap-4">
                       <div className="text-text-static-light">
-                        USD equivalent estimated value of your current holdings.
+                        USD equivalent estimated value of your current holdings. [t322]
                       </div>
 
                       <div className="flex flex-col gap-3">
@@ -167,7 +167,7 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
               <div className="pt-3 border-t flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 min-w-0">
                   <span className="text-size-12 font-medium text-text-3 uppercase tracking-wide">
-                    Active
+                    Active [t323]
                   </span>
                   <span className="text-size-14 font-medium tabular-nums">
                     {formatPriceUSDWithCommas(holdingsData.lockedValue)}
@@ -216,7 +216,7 @@ export const PortfolioSnapshot = ({ className }: PortfolioSnapshotProps) => {
                   <div className="relative -top-[4px]">
                     <div className="flex items-center gap-1.5 mb-1">
                       <span className="text-size-12 font-medium text-text-3 uppercase tracking-wide">
-                        Status
+                        Status [t324]
                       </span>
                     </div>
                     <div className="flex items-center gap-1.5">

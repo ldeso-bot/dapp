@@ -20,13 +20,13 @@ export const ProtocolStatsBar = () => {
   const stats = [
     {
       value: formatTonnesWithSuffix(totalTonnes),
-      label: 'tonnes in curated carbon classes',
+      label: 'tonnes in curated carbon classes [t416]',
     },
-    { value: formatPriceUSD(kvcmLockedUSD), label: 'kVCM locked' },
-    { value: formatPriceUSD(k2LockedUSD), label: 'K2 deposited' },
+    { value: formatPriceUSD(kvcmLockedUSD), label: 'kVCM locked [t417]' },
+    { value: formatPriceUSD(k2LockedUSD), label: 'K2 deposited [t418]' },
     {
       value: String(carbonClasses.length),
-      label: 'active carbon classes',
+      label: 'active carbon classes [t419]',
     },
   ];
 

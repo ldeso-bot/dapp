@@ -12,42 +12,42 @@ import { OnboardingContainer } from '../../shared/OnboardingContainer';
 
 export const LiquidityPositionOnboarding = () => {
   const emptyStateButtonConfig = useEmptyStateButton({
-    description: 'View and manage your liquidity positions.',
+    description: 'View and manage your liquidity positions. [t257]',
     onClick: (openConnectModal) => openConnectModal(),
   });
 
   return (
     <OnboardingContainer
-      title="Liquidity Pools"
-      description="Deposit liquidity to benefit from trading fees. Stake your liquidity in Klima Protocol for a fixed duration to become eligible for a variable share of kVCM incentives and K2 incentives. Unstake once your chosen term ends."
+      title="Liquidity Pools [t258]"
+      description="Deposit liquidity to benefit from trading fees. Stake your liquidity in Klima Protocol for a fixed duration to become eligible for a variable share of kVCM incentives and K2 incentives. Unstake once your chosen term ends. [t259]"
     >
       <NoPositionsHeader
-        title="No staked positions"
+        title="No staked positions [t260]"
         icon={<WaterDropIcon className="w-10 h-10 fill-[#00994a]" />}
-        description="Deposit liquidity tokens to become eligible for protocol incentives."
+        description="Deposit liquidity tokens to become eligible for protocol incentives. [t261]"
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:w-2xl w-full mx-auto my-4">
         <NoPositionsInfoCard
-          title="Dual rewards"
+          title="Dual rewards [t262]"
           icon={<TrendingUpIcon className="w-5 h-5 fill-[#00994a]" />}
-          description="DEX fees + variable kVCM & K2 incentives"
+          description="DEX fees + variable kVCM & K2 incentives [t263]"
         />
         <NoPositionsInfoCard
-          title="Fixed terms"
+          title="Fixed terms [t264]"
           icon={<CalendarIcon className="w-5 h-5 fill-[#00994a]" />}
-          description="Choose your own deposit duration"
+          description="Choose your own deposit duration [t265]"
         />
       </div>
       <div className="flex flex-col gap-0.5 mx-auto mb-4">
         <div className="text-size-12 text-center text-text-1 my-1">
-          Supported pools
+          Supported pools [t266]
         </div>
         <div className="flex gap-2">
           <div className="text-size-12 font-medium text-text-1 bg-[#00994a]/10 rounded-full px-3 py-1">
-            kVCM/USDC
+            kVCM/USDC [t267]
           </div>
           <div className="text-size-12 font-medium text-text-1 bg-[#00994a]/10 rounded-full px-3 py-1">
-            kVCM/K2
+            kVCM/K2 [t268]
           </div>
         </div>
       </div>

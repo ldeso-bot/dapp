@@ -29,7 +29,7 @@ export const PayWithOptions = <T extends FieldValues>(props: Props<T>) => {
       render={({ field }) => {
         return (
           <div className="flex flex-col gap-1">
-            <label className="mb-1 font-medium">Pay With</label>
+            <label className="mb-1 font-medium">Pay With [t125]</label>
             <div className="flex gap-2">
               {paymentOptions.map((option) => (
                 <label
@@ -63,7 +63,7 @@ export const PayWithOptions = <T extends FieldValues>(props: Props<T>) => {
             </div>
             {selectedPaymentOption && selectedPaymentOption.token && (
               <div className="flex gap-2">
-                <span className="font-medium">Available Balance:</span>
+                <span className="font-medium">Available Balance: [t126]</span>
                 <span>
                   {selectedPaymentOption.balance?.toFixed(2)}{' '}
                   {selectedPaymentOption.token.symbol}

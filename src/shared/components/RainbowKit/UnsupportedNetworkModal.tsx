@@ -31,14 +31,14 @@ export const UnsupportedNetworkModal = () => {
   return (
     <Dialog open={isUnsupportedNetwork} closeOnOutsideClick>
       <div className="p-6 max-w-md">
-        <h2 className="text-xl font-semibold mb-4">Unsupported Network</h2>
+        <h2 className="text-xl font-semibold mb-4">Unsupported Network [t391]</h2>
         <p className="mb-6 text-text-1">
           You’re connected to {chain?.name || 'an unsupported network'}. Please
-          switch to Base Mainnet to continue.
+          switch to Base Mainnet to continue. [t392]
         </p>
         <div className="flex gap-3">
           <Button onClick={handleSwitchChain} className="flex-1">
-            Switch Network
+            Switch Network [t393]
           </Button>
         </div>
       </div>

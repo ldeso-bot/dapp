@@ -27,14 +27,14 @@ export const PositionStatusCard: FC<Props> = (props) => {
         <StatusCardTitle>{title}</StatusCardTitle>
         <div className="flex flex-col gap-5">
           <div className="space-y-1">
-            <div className="text-size-12 text-text-3">Units</div>
+            <div className="text-size-12 text-text-3">Units [t341]</div>
             <div className="text-[2.2rem] font-bold text-text-1 tabular-nums">
               {units}
             </div>
           </div>
           <div className="space-y-1">
             <div className="text-size-12 text-text-3">
-              Estimated value in USD
+              Estimated value in USD [t342]
             </div>
             <div className="text-size-14 text-text-1 tabular-nums">
               {formatPriceUSDWithCommas(totalValue)}
@@ -43,7 +43,7 @@ export const PositionStatusCard: FC<Props> = (props) => {
 
           {actionBadges.length > 0 && (
             <div className="space-y-1">
-              <div className="text-size-12 text-text-3">Actions</div>
+              <div className="text-size-12 text-text-3">Actions [t343]</div>
               <div className="flex flex-wrap gap-2">
                 {actionBadges.map((badge, index) => (
                   <Link key={index} href={badge.href}>

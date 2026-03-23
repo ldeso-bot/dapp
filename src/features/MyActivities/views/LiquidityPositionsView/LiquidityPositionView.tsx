@@ -17,9 +17,9 @@ export const LiquidityPositionsView = () => {
       ) : (
         <div className="flex flex-col gap-4">
           <InfoCard
-            title="Liquidity Positions"
+            title="Liquidity Positions [t293]"
             tooltipId="liquidity-positions"
-            description="Deposit liquidity to become eligible for trading fees. Stake your liquidity in Klima Protocol for a fixed duration to receive an additional variable share of kVCM incentives and K2 incentives. Unstake when your term ends."
+            description="Deposit liquidity to become eligible for trading fees. Stake your liquidity in Klima Protocol for a fixed duration to receive an additional variable share of kVCM incentives and K2 incentives. Unstake when your term ends. [t294]"
             content={
               <div className="flex flex-col gap-4 pb-5">
                 <LiquidityPositionCard token="kvcm-usdc" />

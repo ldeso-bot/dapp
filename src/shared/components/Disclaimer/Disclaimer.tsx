@@ -24,32 +24,32 @@ export const DisclaimerModal = () => {
     >
       <DialogHeader
         onClose={() => {}}
-        title="Notice to Users"
+        title="Notice to Users [t409]"
         showCloseButton={false}
       />
       <div className="py-6 flex flex-col gap-4 overflow-y-auto flex-1 min-h-0">
         <p className="text-size-14 text-text-2">
           Klima Protocol is open-source, experimental software for coordinating
-          on-chain carbon market activity.
+          on-chain carbon market activity. [t410]
         </p>
         <p className="text-size-14 text-text-2">
           It is not an investment product or asset-management service, and it
           does not offer profit-sharing or guaranteed outcomes. Tokens are used
           to participate in protocol coordination and carbon retirement within
-          predefined rules.
+          predefined rules. [t411]
         </p>
         <p className="text-size-14 text-text-2">
           Smart contracts may change or fail, and token availability/prices can
           fluctuate — you may lose funds. Use only if you understand these
-          risks.
+          risks. [t412]
         </p>
         <p className="text-size-14 text-text-2">
           Nothing here is financial, investment, tax, or legal advice. By
           proceeding, you acknowledge you&apos;re interacting with decentralised
-          software — not an intermediary.
+          software — not an intermediary. [t413]
         </p>
         <p className="text-size-14 text-text-2">
-          To learn more, click on the Terms link in the footer.
+          To learn more, click on the Terms link in the footer. [t414]
         </p>
       </div>
       <div className="flex items-center justify-end sm:justify-between shrink-0">
@@ -59,7 +59,7 @@ export const DisclaimerModal = () => {
           onClick={handleAccept}
           className="w-full min-h-[4.2rem] py-2 px-6 text-text-static-light"
         >
-          Acknowledge and Accept
+          Acknowledge and Accept [t415]
         </Button>
       </div>
     </Dialog>

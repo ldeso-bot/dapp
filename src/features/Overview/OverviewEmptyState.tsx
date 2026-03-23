@@ -12,7 +12,7 @@ import {
 
 export const OverviewEmptyState = () => {
   const emptyStateButtonConfig = useEmptyStateButton({
-    description: 'View and manage your positions.',
+    description: 'View and manage your positions. [t003]',
     onClick: (openConnectModal) => openConnectModal(),
   });
 
@@ -20,10 +20,10 @@ export const OverviewEmptyState = () => {
     <EmptyState
       title={
         <span className="pb-2 text-text-1">
-          Open Infrastructure for Carbon Markets.
+          Open Infrastructure for Carbon Markets. [t004]
         </span>
       }
-      description="Lock kVCM and K2 into incentivized Klima strategies to support carbon markets."
+      description="Lock kVCM and K2 into incentivized Klima strategies to support carbon markets. [t005]"
       flowItems={overviewFlowItems}
       cta={emptyStateButtonConfig}
       protocolStatsBar={<ProtocolStatsBar />}

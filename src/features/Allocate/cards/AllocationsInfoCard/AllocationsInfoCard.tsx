@@ -23,11 +23,11 @@ export const AllocationsInfoCard = () => {
               </div>
               <div className="flex items-center justify-center gap-1.5">
                 <span className="text-size-12 text-text-3">
-                  Total allocated
+                  Total allocated [t074]
                 </span>
                 <Tooltip
                   iconSize={1.4}
-                  content="Total amount of your locked kVCM and deposited K2 currently allocated to carbon classes. Unallocated tokens remain in your position but don't influence protocol decisions."
+                  content="Total amount of your locked kVCM and deposited K2 currently allocated to carbon classes. Unallocated tokens remain in your position but don't influence protocol decisions. [t075]"
                 />
               </div>
             </div>
@@ -37,7 +37,7 @@ export const AllocationsInfoCard = () => {
                 amount={stats?.kvcm.unallocated || 0}
                 usdValue={stats?.kvcm.unallocatedUSD || 0}
                 tokenSymbol="kVCM"
-                label="Unallocated kVCM"
+                label="Unallocated kVCM [t076]"
               />
             </div>
             <Divider className="hidden sm:block order-4 sm:order-none" />
@@ -46,20 +46,20 @@ export const AllocationsInfoCard = () => {
                 amount={stats?.k2.unallocated || 0}
                 usdValue={stats?.k2.unallocatedUSD || 0}
                 tokenSymbol="K2"
-                label="Unallocated K2"
+                label="Unallocated K2 [t077]"
               />
             </div>
             <Divider className="hidden sm:block order-6 sm:order-none" />
             <div className="order-7 sm:order-none w-[calc(50%-0.75rem)] sm:w-auto">
               <AllocationMetric
-                title="Pricing on"
+                title="Pricing on [t078]"
                 value={stats?.kvcm.classes ?? 0}
               />
             </div>
             <Divider className="hidden sm:block order-8 sm:order-none" />
             <div className="order-9 sm:order-none w-[calc(50%-0.75rem)] sm:w-auto">
               <AllocationMetric
-                title="K2 allocated"
+                title="K2 allocated [t079]"
                 value={stats?.k2.classes ?? 0}
               />
             </div>

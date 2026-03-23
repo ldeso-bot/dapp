@@ -44,16 +44,16 @@ export const MyActivitiesTabs = () => {
     <Tabs value={currentTab} onValueChange={handleTabChange}>
       <TabsList>
         <TabsTrigger className={tabClassName} value="overview">
-          Overview
+          Overview [t214]
         </TabsTrigger>
         <TabsTrigger className={tabClassName} value="kvcm">
-          kVCM
+          kVCM [t215]
         </TabsTrigger>
         <TabsTrigger className={tabClassName} value="k2">
-          K2
+          K2 [t216]
         </TabsTrigger>
         <TabsTrigger className={tabClassName} value="liquidity">
-          Liquidity
+          Liquidity [t217]
         </TabsTrigger>
         {DEV_MODE && (
           <TabsTrigger className={tabClassName} value="test">

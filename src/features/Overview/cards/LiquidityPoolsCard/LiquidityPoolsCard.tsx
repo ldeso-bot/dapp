@@ -14,8 +14,8 @@ export default function LiquidityPoolsCard(props: CardProps) {
   return (
     <Card
       {...props}
-      title="Liquidity Pools"
-      tooltip="Liquidity pools facilitate the the trade of two tokens via a smart contract. More tokens locked typically enables more efficient execution, with less slippage for users."
+      title="Liquidity Pools [t038]"
+      tooltip="Liquidity pools facilitate the the trade of two tokens via a smart contract. More tokens locked typically enables more efficient execution, with less slippage for users. [t039]"
       skeletonClassName="h-[21.4rem]"
       className="rounded-xl text-text-1"
     >
@@ -25,7 +25,7 @@ export default function LiquidityPoolsCard(props: CardProps) {
           <div>
             Users may opt to provide liquidity to support Klima’s infrastructure
             and facilitate carbon execution. Doing so may make participants
-            eligible for programmatic protocol incentives.
+            eligible for programmatic protocol incentives. [t040]
           </div>
 
           <Table>

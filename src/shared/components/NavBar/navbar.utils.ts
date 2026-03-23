@@ -32,7 +32,7 @@ export const navItems: NavItem[] = [
       light: protocolOverviewDarkIcon,
       dark: protocolOverviewLightIcon,
     },
-    label: 'Protocol Overview',
+    label: 'Protocol Overview [t386]',
     href: ROUTES.OVERVIEW,
   },
   {
@@ -40,7 +40,7 @@ export const navItems: NavItem[] = [
       light: myHoldingsDarkIcon,
       dark: myHoldingsLightIcon,
     },
-    label: 'My Activities',
+    label: 'My Activities [t387]',
     href: ROUTES.MY_ACTIVITIES,
   },
   {
@@ -48,7 +48,7 @@ export const navItems: NavItem[] = [
       light: burnCarbonDarkIcon,
       dark: burnCarbonLightIcon,
     },
-    label: 'Retire Carbon',
+    label: 'Retire Carbon [t388]',
     href: ROUTES.RETIRE,
   },
   {
@@ -56,7 +56,7 @@ export const navItems: NavItem[] = [
       light: sellCarbonDarkIcon,
       dark: sellCarbonLightIcon,
     },
-    label: 'Supply Carbon',
+    label: 'Supply Carbon [t389]',
     href: ROUTES.SELL_CARBON,
   },
   {
@@ -64,7 +64,7 @@ export const navItems: NavItem[] = [
       light: allocateDarkIcon,
       dark: allocateLightIcon,
     },
-    label: 'Allocate',
+    label: 'Allocate [t390]',
     href: ROUTES.ALLOCATE,
   },
 ];

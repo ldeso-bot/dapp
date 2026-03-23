@@ -33,11 +33,11 @@ function AllocatePage() {
       {!displayOnboarding && (
         <div className="flex flex-col gap-4 lg:flex-row-reverse">
           <div className="flex flex-col gap-2 grow-1 text-text-1">
-            <PageTitle>Allocations</PageTitle>
+            <PageTitle>Allocations [t047]</PageTitle>
             <PageDescription>
               Allocations are your carbon-class preferences. Allocating tokens
               towards carbon classes may influence the execution parameters of
-              carbon across the ecosystem.
+              carbon across the ecosystem. [t048]
             </PageDescription>
             <AllocationsInfoCard />
             <KvcmAllocationsCard className="solo-card" />

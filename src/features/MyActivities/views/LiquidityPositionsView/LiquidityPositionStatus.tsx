@@ -47,9 +47,9 @@ export const LiquidityPositionStatus = ({
             <>
               <StatusCardTitle
                 badge="green"
-                tooltip="Liquidity locks which reached their terms' end and can be unstaked. Incentives are claimable."
+                tooltip="Liquidity locks which reached their terms' end and can be unstaked. Incentives are claimable. [t297]"
               >
-                Claimable
+                Claimable [t296]
               </StatusCardTitle>
 
               <div className="space-y-1">
@@ -66,7 +66,7 @@ export const LiquidityPositionStatus = ({
                       {tokenSymbol} • {tokenData.maturedLocks.length} locks
                     </>
                   ) : (
-                    'No claimable locks'
+                    'No claimable locks [t298]'
                   )}
                 </div>
               </div>
@@ -79,9 +79,9 @@ export const LiquidityPositionStatus = ({
             <>
               <StatusCardTitle
                 badge="yellow"
-                tooltip="Locks which are accruing incentives. Cannot be unstaked early."
+                tooltip="Locks which are accruing incentives. Cannot be unstaked early. [t300]"
               >
-                Locked Liquidity
+                Locked Liquidity [t299]
               </StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-text-1">
@@ -102,9 +102,9 @@ export const LiquidityPositionStatus = ({
             <>
               <StatusCardTitle
                 badge="blue"
-                tooltip="LP tokens deposited on Aerodrome but not staked in Klima Protocol and not accruing protocol incentives."
+                tooltip="LP tokens deposited on Aerodrome but not staked in Klima Protocol and not accruing protocol incentives. [t302]"
               >
-                On Dex
+                On Dex [t301]
               </StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-text-1 tabular-nums">
@@ -118,7 +118,7 @@ export const LiquidityPositionStatus = ({
                 className="mt-3 h-[3.6rem] border-border-strong"
                 onClick={handleOpenStakeDialog}
               >
-                Stake in Klima
+                Stake in Klima [t303]
               </Button>
             </>
           )}

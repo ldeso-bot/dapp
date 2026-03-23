@@ -27,7 +27,7 @@ export default function PoolButtons({ poolInfo }: Props) {
         className="border-border-strong"
         style={{ flex: 1 }}
       >
-        Deposit
+        Deposit [t041]
         <span className="brightness-0 dark:invert">
           <Icon icon={ExternalLink} size={1.5} />
         </span>
@@ -38,7 +38,7 @@ export default function PoolButtons({ poolInfo }: Props) {
         className="border-border-strong text-text-static-light "
         style={{ flex: 1 }}
       >
-        Stake
+        Stake [t042]
       </Button>
     </div>
   );

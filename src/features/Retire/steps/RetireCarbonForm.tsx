@@ -109,7 +109,7 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
 
   return (
     <Card
-      title="Retire Carbon"
+      title="Retire Carbon [t133]"
       className="w-full text-text-1 max-w-full lg:w-[45rem] rounded-xl border border-border-subtle h-fit"
       titleClassName="font-semibold text-text-1 text-size-20 tracking-tight"
       skeletonClassName="h-[56.6rem]"
@@ -122,10 +122,10 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
         <InputGroup>
           {/* Standard fields */}
           <SelectInput
-            label="Carbon Class"
+            label="Carbon Class [t134]"
             defaultValue={form.getValues('carbonClass')}
             disabled={isLoading}
-            placeholder="Select from available carbon classes"
+            placeholder="Select from available carbon classes [t135]"
             items={carbonClasses.map((carbonClass) => ({
               label: carbonClass.name,
               value: carbonClass.carbonClassId,
@@ -134,10 +134,10 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
             {...form.register('carbonClass')}
           />
           <SelectInput
-            label="Carbon Credit"
+            label="Carbon Credit [t136]"
             value={selectedCarbonCredit?.creditTokenId ?? ''}
             disabled={isLoading}
-            placeholder="Select from available carbon credits"
+            placeholder="Select from available carbon credits [t137]"
             defaultValue={form.getValues('carbonCredit')}
             items={
               carbonCredits?.map((carbonCredit) => ({
@@ -149,7 +149,7 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
             {...form.register('carbonCredit')}
           />
           <TokenAmountInput
-            label="Amount (Tonnes)"
+            label="Amount (Tonnes) [t138]"
             availableBalance={selectedCarbonCredit?.amount ?? 0}
             error={form.formState.errors.amountTonnes}
             inputProps={{
@@ -161,21 +161,21 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
           />
           <Input
             mandatory
-            label="Who will this retirement be credited to?"
-            placeholder="Beneficiary name"
+            label="Who will this retirement be credited to? [t139]"
+            placeholder="Beneficiary name [t140]"
             error={form.formState.errors.beneficiaryName}
             {...form.register('beneficiaryName')}
           />
           <Input
             label=""
-            placeholder="Beneficiary wallet address (optional)"
+            placeholder="Beneficiary wallet address (optional) [t141]"
             error={form.formState.errors.beneficiaryAddress}
             {...form.register('beneficiaryAddress')}
           />
           <TextArea
             mandatory
-            label="Retirement Message"
-            placeholder="Describe the purpose of this retirement"
+            label="Retirement Message [t142]"
+            placeholder="Describe the purpose of this retirement [t143]"
             error={form.formState.errors.retirementMessage}
             {...form.register('retirementMessage')}
           />
@@ -185,7 +185,7 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
           <>
             <SelectInput
               mandatory
-              label="In what country will this certificate be consumed?"
+              label="In what country will this certificate be consumed? [t144]"
               placeholder="Select one"
               items={countries}
               error={form.formState.errors.country}
@@ -193,7 +193,7 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
             />
             <div className="flex flex-col gap-2 w-full">
               <label className="text-size-14 font-medium">
-                Consumption period - when will this asset be used?{' '}
+                Consumption period - when will this asset be used? [t145]{' '}
                 <MandatoryAsterisk />
               </label>
               <div className="flex gap-2">
@@ -225,7 +225,7 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
         <div className="flex flex-col gap-4">
           {priceQuotedPerTonne ? (
             <div className="flex flex-col gap-2">
-              <div>Price per Tonne</div>
+              <div>Price per Tonne [t146]</div>
               <div className="flex gap-2">
                 {selectedPaymentOption?.token?.icon?.(2)}
                 <span>{priceQuotedPerTonne}</span>
@@ -233,7 +233,7 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
             </div>
           ) : null}
           <div className="flex flex-col gap-2 min-h-[3.5rem]">
-            <div>Total</div>
+            <div>Total [t147]</div>
             <div className="flex gap-2 items-center min-h-6">
               {isQuoteLoading ? (
                 <Skeleton className="h-5 w-24 rounded-md" />
@@ -256,7 +256,7 @@ const RetireCarbonForm: FormFlowStep<RetireCarbonFields> = ({ next, data }) => {
             disabled={isDisabled}
             type="submit"
           >
-            Retire Carbon
+            Retire Carbon [t148]
           </Button>
         </ButtonGroup>
         <InputError error={{ message: error }} />

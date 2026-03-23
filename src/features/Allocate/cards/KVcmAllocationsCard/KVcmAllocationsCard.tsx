@@ -32,7 +32,7 @@ export default function KvcmAllocationsCard(props: CardProps) {
       title={
         <div className="flex items-center gap-2">
           <Icon icon={kvcmIcon} alt="kVCM" size={2.4} />
-          <span>kVCM Allocations</span>
+          <span>kVCM Allocations [t085]</span>
         </div>
       }
       titleClassName="text-size-18 font-medium"
@@ -41,14 +41,14 @@ export default function KvcmAllocationsCard(props: CardProps) {
       totalAmount={totalAllocatableKvcm > 0 ? totalAllocatableKvcm : lockedKvcm}
       noAllocationComponent={
         <div className="bg-surface-3 py-3 px-6 w-full">
-          You haven&apos;t locked any of your kVCM yet.{' '}
+          You haven&apos;t locked any of your kVCM yet. [t086]{' '}
           <a
             href={`${ROUTES.MY_ACTIVITIES}?activeView=kvcm`}
             className="underline text-text-1"
           >
-            Create a lock
+            Create a lock [t087]
           </a>{' '}
-          to get started.
+          to get started. [t088]
         </div>
       }
       tokenInfo={tokens.kvcm}
@@ -59,7 +59,7 @@ export default function KvcmAllocationsCard(props: CardProps) {
           href={`${ROUTES.ALLOCATE}?action=new_allocation_kvcm`}
         >
           <span className="flex gap-2 text-text-static-light">
-            <Icon icon={Plus} size={1.6} /> New Allocation
+            <Icon icon={Plus} size={1.6} /> New Allocation [t089]
           </span>
         </Button>
       }

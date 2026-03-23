@@ -13,35 +13,35 @@ import { OnboardingContainer } from '../../shared/OnboardingContainer';
 
 export const K2Onboarding = () => {
   const emptyStateButtonConfig = useEmptyStateButton({
-    description: 'View and manage your K2 deposits.',
+    description: 'View and manage your K2 deposits. [t246]',
     onClick: (openConnectModal) => openConnectModal(),
   });
 
   return (
     <OnboardingContainer
-      title="K2 Position"
-      description="Lock K2 and allocate your tokens to influence carbon class execution rates. Participation is incentivized via variable kVCM and K2 rewards. Unlock your tokens after 24 hours."
+      title="K2 Position [t247]"
+      description="Lock K2 and allocate your tokens to influence carbon class execution rates. Participation is incentivized via variable kVCM and K2 rewards. Unlock your tokens after 24 hours. [t248]"
     >
       <NoPositionsHeader
-        title="No K2 position"
+        title="No K2 position [t249]"
         icon={<SaveAltIcon className="w-10 h-10 fill-[#00994a]" />}
-        description="Deposit K2 to earn variable rewards and allocate to carbon classes."
+        description="Deposit K2 to earn variable rewards and allocate to carbon classes. [t250]"
       />
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:w-2xl w-full mx-auto my-4">
         <NoPositionsInfoCard
-          title="Variable rewards"
+          title="Variable rewards [t251]"
           icon={<TrendingUpIcon className="w-5 h-5 fill-[#00994a]" />}
-          description="K2 incentives + kVCM incentives"
+          description="K2 incentives + kVCM incentives [t252]"
         />
         <NoPositionsInfoCard
-          title="Unlock after 24 hours"
+          title="Unlock after 24 hours [t253]"
           icon={<ClockIcon className="w-5 h-5 fill-[#00994a]" />}
-          description="Request unlock, claim at cutoff"
+          description="Request unlock, claim at cutoff [t254]"
         />
         <NoPositionsInfoCard
-          title="Allocate to carbon"
+          title="Allocate to carbon [t255]"
           icon={<AllocateIcon className="w-5 h-5 fill-[#00994a]" />}
-          description="Shape carbon class execution rates."
+          description="Shape carbon class execution rates. [t256]"
         />
       </div>
       <div className="mb-2">

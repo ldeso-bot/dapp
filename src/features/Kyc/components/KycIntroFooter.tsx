@@ -15,7 +15,7 @@ export const KycIntroFooter = ({ onContinue, acknowledged }: Props) => (
       href={ROUTES.TERMS}
       className="text-size-14 underline min-h-[44px] flex items-center hover:opacity-80 transition-opacity text-text-2"
     >
-      Full privacy notice
+      Full privacy notice [t407]
     </Link>
     <Button
       colors="secondary"
@@ -24,7 +24,7 @@ export const KycIntroFooter = ({ onContinue, acknowledged }: Props) => (
       onClick={onContinue}
       disabled={!acknowledged}
     >
-      Continue
+      Continue [t408]
     </Button>
   </div>
 );

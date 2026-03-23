@@ -37,14 +37,14 @@ export const RegenNetworkCreditsCard: FC<Props> = (props) => {
           <div className="flex flex-col gap-1 min-w-0">
             <div className="flex items-center gap-2 min-w-0">
               <span className="text-size-16 font-semibold text-text-1 whitespace-normal">
-                Regen Network credits
+                Regen Network credits [t127]
               </span>
               <OpenInNewIcon className="w-4 h-4 text-text-highlight shrink-0" />
             </div>
 
             <span className="text-size-12 text-text-2">
               Retirements are bridged through Regen Network. To learn more see
-              the documentation.
+              the documentation. [t128]
             </span>
           </div>
         </div>

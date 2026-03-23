@@ -42,12 +42,12 @@ export const KycIntroStep = ({
             onDismiss={onDismissError}
           />
         )}
-        <KycIntroSection title="Why">
+        <KycIntroSection title="Why [t397]">
           <ul className="list-disc pl-3.5 space-y-1.5 text-size-14 text-text-2">
-            <li>Meet AML/abuse-prevention requirements.</li>
+            <li>Meet AML/abuse-prevention requirements. [t398]</li>
             <li>
               Align with carbon market integrity standards and counterparty
-              requirements.
+              requirements. [t399]
             </li>
             <li>
               Legal bases: legal obligation (where applicable) + legitimate
@@ -55,7 +55,7 @@ export const KycIntroStep = ({
             </li>
           </ul>
         </KycIntroSection>
-        <KycIntroSection title="How it works">
+        <KycIntroSection title="How it works [t400]">
           <p className="text-size-14 text-text-2">
             zkMe checks liveness, sanctions/PEP, and validates your document. We
             receive a verification result (pass/flag), as well as your email
@@ -64,7 +64,7 @@ export const KycIntroStep = ({
             information in our own systems; it stays in the zkMe platform.
           </p>
         </KycIntroSection>
-        <KycIntroSection title="Eligibility parameters">
+        <KycIntroSection title="Eligibility parameters [t401]">
           <ul className="list-disc pl-3.5 space-y-1.5 text-size-14 text-text-2">
             <li>
               <strong>Age:</strong> 18+ required.
@@ -74,7 +74,7 @@ export const KycIntroStep = ({
             </li>
           </ul>
         </KycIntroSection>
-        <KycIntroSection title="On-chain">
+        <KycIntroSection title="On-chain [t402]">
           <ul className="list-disc pl-3.5 space-y-1.5 text-size-14 text-text-2">
             <li>
               A <strong>non-identifying</strong> proof will be minted; on-chain
@@ -85,7 +85,7 @@ export const KycIntroStep = ({
             </li>
           </ul>
           <KycIntroExpandable
-            label="What goes on-chain?"
+            label="What goes on-chain? [t403]"
             expanded={onChainExpanded}
             onToggle={() => setOnChainExpanded((v) => !v)}
           >
@@ -94,13 +94,13 @@ export const KycIntroStep = ({
             delete.
           </KycIntroExpandable>
         </KycIntroSection>
-        <KycIntroSection title="Privacy & contact">
+        <KycIntroSection title="Privacy & contact [t404]">
           <p className="text-size-14 text-text-2">
             Controller: Klima Fintech Ltd. •{' '}
             <strong>privacy@klimaprotocol.com</strong>
           </p>
           <KycIntroExpandable
-            label="Read full privacy notice"
+            label="Read full privacy notice [t405]"
             expanded={privacyExpanded}
             onToggle={() => setPrivacyExpanded((v) => !v)}
           >

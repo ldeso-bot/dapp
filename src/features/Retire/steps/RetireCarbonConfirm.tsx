@@ -112,16 +112,16 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
       const receiptUrl = getCarbonmarkReceiptUrl(chainId, result.hash, 0);
 
       setAlert({
-        title: 'Retirement complete',
+        title: 'Retirement complete [t157]',
         description: (
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-6 mb-2 lg:mb-0">
             <div className="flex flex-col gap-3">
-              <span>Your carbon credits have been permanently retired.</span>
+              <span>Your carbon credits have been permanently retired. [t158]</span>
               <LinkOpenInNew
                 href={getScanLink(chainId, result.hash)}
                 className="text-size-14 font-bold text-green-80"
               >
-                Proof of your climate action
+                Proof of your climate action [t159]
               </LinkOpenInNew>
             </div>
             <RetirementReceiptCard receiptUrl={receiptUrl} />
@@ -146,7 +146,7 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
       <Card
         className="w-[36rem] border-0 rounded-xl text-text-1"
         titleClassName="font-bold text-size-18"
-        title="Confirm your transaction"
+        title="Confirm your transaction [t149]"
       >
         <form
           className="flex flex-col gap-8"
@@ -154,21 +154,21 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
         >
           <div className="flex flex-col gap-4 pt-3">
             To complete this transaction, please allow our smart contract to
-            transfer tokens on your behalf.
+            transfer tokens on your behalf. [t150]
             <Input
-              label="Contract Address"
+              label="Contract Address [t151]"
               value={formatAddress(retirementAggregatorContract?.address)}
               readOnly
             />
             <Input
-              label="You are sending"
+              label="You are sending [t152]"
               readOnly
               iconSize="sm"
               iconSrc={selectedPaymentOption?.token?.iconSrc}
               value={`${formatAmountWithCommas(priceQuoted, 'auto')} ${selectedPaymentOption?.token?.symbol ?? ''}`}
             />
             <Input
-              label="You are retiring"
+              label="You are retiring [t153]"
               readOnly
               iconSize="sm"
               iconSrc={CarbonCreditIconImg}
@@ -185,7 +185,7 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
                 onClick={() => handleSetAllowance()}
                 disabled={isSettingAllowance}
               >
-                {isSettingAllowance ? 'Approving...' : 'Approve'}
+                {isSettingAllowance ? 'Approving...' : 'Approve [t154]'}
               </Button>
             )}
             {isAllowed && (
@@ -196,7 +196,7 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
                 onClick={handleRetireCarbon}
                 disabled={isExecuting}
               >
-                {isExecuting ? 'Retiring...' : 'Retire Carbon'}
+                {isExecuting ? 'Retiring...' : 'Retire Carbon [t155]'}
               </Button>
             )}
             <Button
@@ -205,7 +205,7 @@ const RetireCarbonConfirm: FormFlowStep<RetireCarbonFields> = ({
               className="border-border-strong"
               onClick={previous}
             >
-              Cancel
+              Cancel [t156]
             </Button>
             <InputError error={form.formState.errors.root} />
           </div>

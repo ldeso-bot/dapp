@@ -25,10 +25,10 @@ export const PositionsCard = (props: CardProps) => {
     >
       <div>
         <div className="flex gap-2 items-center pb-1">
-          <div className="text-size-18 font-medium">Activity</div>
+          <div className="text-size-18 font-medium">Activity [t317]</div>
           <Tooltip
             className="max-w-[35rem] text-size-12 p-3"
-            content="Summary of protocol-related token balances and allocations. These do not represent ownership of protocol-held carbon assets."
+            content="Summary of protocol-related token balances and allocations. These do not represent ownership of protocol-held carbon assets. [t318]"
           />
         </div>
         <p className="text-size-14 text-text-3">
@@ -53,13 +53,13 @@ export const PositionsCard = (props: CardProps) => {
                 actionBadges={createKvcmActionBadges(holdingsData)}
               />
               <PositionStatusCard
-                title="Liquidity"
+                title="Liquidity [t319]"
                 totalValue={holdingsData.liquidityLockedValue}
                 units={`Across ${holdingsData.nbPoolsWithLocks} pools`}
                 actionBadges={createLiquidityActionBadges(holdingsData)}
               />
               <PositionStatusCard
-                title="K2 Locks"
+                title="K2 Locks [t320]"
                 totalValue={holdingsData.k2.lockedValue}
                 units={
                   <>{formatAmountWithCommas(holdingsData.k2.lockedAmount)} K2</>

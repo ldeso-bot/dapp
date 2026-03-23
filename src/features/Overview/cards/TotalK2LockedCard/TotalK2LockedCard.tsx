@@ -24,10 +24,10 @@ export default function TotalK2LockedCard(props: CardProps) {
     <StatCard
       {...props}
       buttonOnClick={handleButtonClick}
-      buttonText="Lock K2"
-      title="K2 TVL"
+      buttonText="Lock K2 [t033]"
+      title="K2 TVL [t034]"
       className="text-text-1"
-      tooltip="This represents the total amount of K2 locked in the Protocol by all users."
+      tooltip="This represents the total amount of K2 locked in the Protocol by all users. [t035]"
       tooltipPosition="far"
       primaryValue={formatAmountWithCommas(amount, 0)}
       secondaryValue={formatPriceUSDWithCommas(price * amount, 2)}

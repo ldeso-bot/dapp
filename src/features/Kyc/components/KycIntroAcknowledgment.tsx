@@ -19,7 +19,7 @@ export const KycIntroAcknowledgment = ({ checked, onChange }: Props) => (
       className="text-size-14 leading-relaxed cursor-pointer text-text-2"
     >
       I&apos;ve read and understand how Klima Fintech Ltd. uses verification
-      results to grant access.
+      results to grant access. [t406]
     </label>
   </div>
 );

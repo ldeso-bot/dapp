@@ -28,7 +28,7 @@ export default function K2AllocationsCard(props: CardProps) {
       title={
         <div className="flex items-center gap-2">
           <Icon icon={k2Icon} alt="K2" size={2.4} />
-          <span>K2 Allocations</span>
+          <span>K2 Allocations [t080]</span>
         </div>
       }
       titleClassName="text-size-18 font-medium"
@@ -37,14 +37,14 @@ export default function K2AllocationsCard(props: CardProps) {
       totalAmount={totalAllocatableK2 > 0 ? totalAllocatableK2 : totalK2}
       noAllocationComponent={
         <div className="bg-surface-3 py-3 px-6 w-full">
-          You haven&apos;t deposited any of your K2 yet.{' '}
+          You haven&apos;t deposited any of your K2 yet. [t081]{' '}
           <a
             href={`${ROUTES.MY_ACTIVITIES}?activeView=k2`}
             className="underline text-text-1"
           >
-            Create a deposit
+            Create a deposit [t082]
           </a>{' '}
-          to get started.
+          to get started. [t083]
         </div>
       }
       tokenInfo={tokens.k2}
@@ -55,7 +55,7 @@ export default function K2AllocationsCard(props: CardProps) {
           href={`${ROUTES.ALLOCATE}?action=new_allocation_k2`}
         >
           <span className="flex gap-2 text-text-static-light">
-            <Icon icon={Plus} size={1.6} /> New Allocation
+            <Icon icon={Plus} size={1.6} /> New Allocation [t084]
           </span>
         </Button>
       }

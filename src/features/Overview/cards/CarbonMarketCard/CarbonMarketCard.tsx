@@ -52,8 +52,8 @@ export default function CarbonMarketCard(props: CardProps) {
   return (
     <Card
       {...props}
-      title="Carbon Market"
-      tooltip="Execution rates are indicative only and may change at the time of execution due to protocol conditions. Any USD references are illustrative and provided for convenience."
+      title="Carbon Market [t043]"
+      tooltip="Execution rates are indicative only and may change at the time of execution due to protocol conditions. Any USD references are illustrative and provided for convenience. [t044]"
       className="rounded-xl text-text-1"
       skeletonClassName="h-[28rem]"
     >
@@ -68,7 +68,7 @@ export default function CarbonMarketCard(props: CardProps) {
               : '!bg-surface-1 !text-text-1 !border-border-strong hover:!opacity-100'
           }
         >
-          Retire Carbon
+          Retire Carbon [t043a]
         </Button>
 
         <Button
@@ -80,7 +80,7 @@ export default function CarbonMarketCard(props: CardProps) {
               : '!bg-surface-1 !text-text-1 !border-border-strong hover:!opacity-100'
           }
         >
-          Supply Carbon
+          Supply Carbon [t043b]
         </Button>
       </div>
 
@@ -89,7 +89,7 @@ export default function CarbonMarketCard(props: CardProps) {
           <div className="flex flex-row text-size-12 text-text-1 text-center">
             <div className="w-full grow">{priceLabel}</div>
             <div className="w-[20rem]"></div>
-            <div className="w-full grow">Available Supply (tCO₂e)</div>
+            <div className="w-full grow">Available Supply (tCO₂e) [t045]</div>
           </div>
           <div className="flex flex-row">
             {/* Price Chart */}
@@ -174,7 +174,7 @@ export default function CarbonMarketCard(props: CardProps) {
       )}
       {!isLoading && filteredClasses.length === 0 && (
         <div className="flex flex-row justify-center items-center h-full">
-          <div className="text-size-14 text-text-3">Coming soon</div>
+          <div className="text-size-14 text-text-3">Coming soon [t046]</div>
         </div>
       )}
     </Card>

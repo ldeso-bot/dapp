@@ -155,17 +155,17 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
               <div className="text-size-12 text-text-3">
                 <p>
                   Select a custom duration. Each step represents an increase or
-                  decrease of 90 days.
+                  decrease of 90 days. [t352]
                 </p>
                 <div className="w-full h-[1px] bg-divider-bar my-2" />
                 <p>
                   Incentives (kVCM and/or K2) accrue until the end of the chosen
-                  duration and then become claimable.
+                  duration and then become claimable. [t353]
                 </p>
                 <br></br>
                 <p className="text-xl text-text-1 font-bold">
                   Incentives are calculated daily, but they may not show up in
-                  the UI for up to 48 hours.
+                  the UI for up to 48 hours. [t354]
                 </p>
               </div>
               {maturity && (
@@ -186,7 +186,7 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
           {isMaturityWithin30Days ? (
             <RootError
               variant="warning"
-              errorMessage="Duration is less than 30 days. Pay attention to short durations; rewards may not accrue for very long."
+              errorMessage="Duration is less than 30 days. Pay attention to short durations; rewards may not accrue for very long. [t356]"
             />
           ) : null}
         </InputGroup>
@@ -199,7 +199,7 @@ export const LockTokenForm: FormFlowStep<LockTokenFields> = ({ data }) => {
               setLockTokenDialogState({ open: false, token: null })
             }
           >
-            Cancel
+            Cancel [t355]
           </Button>
           <Button
             className="rounded-xl capitalize border-border-strong text-text-static-light"

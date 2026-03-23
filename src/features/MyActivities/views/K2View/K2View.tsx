@@ -49,13 +49,13 @@ export const K2View = () => {
       ) : (
         <>
           <InfoCard
-            title="K2 Activities"
+            title="K2 Activities [t270]"
             tooltipId="k2-position"
             buttonClassName="border-border-strong"
             buttonLabel={
               <span className="flex items-center gap-2 text-text-static-light">
                 <Icon icon={Plus} size={1.6} />
-                Deposit
+                Deposit [t272]
               </span>
             }
             onButtonClick={() =>
@@ -63,7 +63,7 @@ export const K2View = () => {
                 setDepositK2TokenDialog({ open: true })
               )
             }
-            description="Lock K2 to become eligible for variable K2 incentives and a share of kVCM incentives. After 24 hours, you can request an unlock. Your requested tokens become claimable at the daily cutoff. You can also allocate locked K2 tokens to carbon classes."
+            description="Lock K2 to become eligible for variable K2 incentives and a share of kVCM incentives. After 24 hours, you can request an unlock. Your requested tokens become claimable at the daily cutoff. You can also allocate locked K2 tokens to carbon classes. [t271]"
             content={<K2Overview />}
           />
           <K2VariableRewards />
@@ -93,7 +93,7 @@ const K2Overview = () => {
             <div className="flex flex-col justify-between h-full">
               <div>
                 <StatusCardTitle badge="green">
-                  Claimable tokens & incentives
+                  Claimable tokens & incentives [t273]
                 </StatusCardTitle>
                 <div className="space-y-1">
                   <div className="text-size-18 font-bold text-text-1 tabular-nums">
@@ -115,7 +115,7 @@ const K2Overview = () => {
                   colors="positive"
                   className="mt-3 text-size-14 bg-actionbutton-bg text-text-static-dark"
                 >
-                  Claim
+                  Claim [t274]
                 </Button>
               )}
             </div>
@@ -125,7 +125,7 @@ const K2Overview = () => {
           {k2Data && (
             <>
               <StatusCardTitle badge="yellow">
-                Requested for unlock
+                Requested for unlock [t275]
               </StatusCardTitle>
               <div className="space-y-1">
                 <div className="text-size-18 font-bold text-text-1 tabular-nums">
@@ -138,7 +138,7 @@ const K2Overview = () => {
         <StatusCard>
           {k2Data && (
             <>
-              <StatusCardTitle badge="gray">Tokens locked</StatusCardTitle>
+              <StatusCardTitle badge="gray">Tokens locked [t276]</StatusCardTitle>
               <div className="space-y-1">
                 <div className="flex flex-col items-center space-between">
                   <span className="text-size-18 font-bold text-text-1 w-full">
@@ -153,7 +153,7 @@ const K2Overview = () => {
                         href={ROUTES.ALLOCATE}
                         className="underline text-text-1 hover:text-gray-700"
                       >
-                        Allocated to carbon classes:
+                        Allocated to carbon classes: [t277]
                       </Link>{' '}
                       {formatAmountWithCommas(allocated)} K2
                     </div>
@@ -169,7 +169,7 @@ const K2Overview = () => {
                     }
                     className="w-full border-border-strong"
                   >
-                    Request unlock
+                    Request unlock [t278]
                   </Button>
                 )}
                 {!lock?.canRequestUnlock &&
@@ -213,17 +213,17 @@ const K2VariableRewards = () => {
       {k2Data && protocolData && (
         <>
           <VariableRewardsHeader
-            title="Variable Rewards"
+            title="Variable Rewards [t279]"
             timestamp={`As of ${formatCurrentTime()}`}
-            description="K2 incentives received from your locked K2 tokens. These incentives depend on protocol parameters, are variable, non-guaranteed, and may be zero."
+            description="K2 incentives received from your locked K2 tokens. These incentives depend on protocol parameters, are variable, non-guaranteed, and may be zero. [t280]"
           />
           <VariableRewardsItem>
             <VariableRewardsItemTitle
-              title="Incentives (K2)"
+              title="Incentives (K2) [t281]"
               aprValue={formatPercentage(
                 protocolData.midnightInfos.k2ApyForK2 ?? 0
               )}
-              aprTooltip="Percent represents current incentive rate. This is an estimate, is not guaranteed, can change, and may be zero."
+              aprTooltip="Percent represents current incentive rate. This is an estimate, is not guaranteed, can change, and may be zero. [t282]"
             />
             <VariableRewardsItemContent>
               <div className="flex flex-1 flex-col">
@@ -231,7 +231,7 @@ const K2VariableRewards = () => {
                   {formatAmountWithCommas(k2Data.k2ClaimableAmount, 'auto')} K2
                 </span>
                 <span className="text-size-12 text-text-3">
-                  Accrued to date:{' '}
+                  Accrued to date: [t283]{' '}
                   {formatAmountWithCommas(
                     k2Data.k2AccruedClaimableAmount,
                     'auto'
@@ -243,8 +243,8 @@ const K2VariableRewards = () => {
           </VariableRewardsItem>
           <VariableRewardsItem>
             <VariableRewardsItemTitle
-              title="Protocol Distribution (kVCM)"
-              tooltip="kVCM incentives received by your locked K2 tokens. These incentives depend on protocol parameters, are variable, non-guaranteed, and may be zero."
+              title="Protocol Distribution (kVCM) [t284]"
+              tooltip="kVCM incentives received by your locked K2 tokens. These incentives depend on protocol parameters, are variable, non-guaranteed, and may be zero. [t285]"
             />
             <VariableRewardsItemContent>
               <div className="flex flex-1 flex-col">
@@ -253,7 +253,7 @@ const K2VariableRewards = () => {
                   kVCM
                 </span>
                 <span className="text-size-12 text-text-3">
-                  Accrued to date:{' '}
+                  Accrued to date: [t286]{' '}
                   {formatAmountWithCommas(
                     k2Data.kvcmAccruedClaimableAmount,
                     'auto'

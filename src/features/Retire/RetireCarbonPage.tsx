@@ -56,7 +56,7 @@ export default function RetirePage() {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-2 text-text-1">
-        <PageTitle>Retire Carbon</PageTitle>
+        <PageTitle>Retire Carbon [t090]</PageTitle>
         <PageDescription>
           Purchase a carbon offset and receive a receipt with proof of
           retirement instantly. Powered by{' '}
@@ -68,7 +68,7 @@ export default function RetirePage() {
           >
             Carbonmark
           </a>
-          , our partner in carbon retirements.
+          , our partner in carbon retirements. [t091]
         </PageDescription>
       </div>
       <div className="flex flex-col gap-4 lg:flex-row mx-auto w-full max-w-[96rem] justify-center">
