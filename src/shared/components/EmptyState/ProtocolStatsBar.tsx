@@ -16,6 +16,10 @@ export const ProtocolStatsBar = () => {
     (sum, carbonClass) => sum + (carbonClass.supplyTonnes ?? 0),
     0
   );
+  const totalCarbonClassValueUSD = carbonClasses.reduce(
+    (sum, carbonClass) => sum + (carbonClass.valueUSD ?? 0),
+    0
+  );
 
   const stats = [
     {
@@ -23,10 +27,10 @@ export const ProtocolStatsBar = () => {
       label: 'tonnes in curated carbon classes',
     },
     { value: formatPriceUSD(kvcmLockedUSD), label: 'kVCM locked' },
-    { value: formatPriceUSD(k2LockedUSD), label: 'K2 deposited' },
+    { value: formatPriceUSD(k2LockedUSD), label: 'K2 locked' },
     {
-      value: String(carbonClasses.length),
-      label: 'active carbon classes',
+      value: formatPriceUSD(totalCarbonClassValueUSD),
+      label: 'carbon class supply',
     },
   ];
 

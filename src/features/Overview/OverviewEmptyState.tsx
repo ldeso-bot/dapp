@@ -23,7 +23,7 @@ export const OverviewEmptyState = () => {
           Open Infrastructure for Carbon Markets.
         </span>
       }
-      description="Lock kVCM and K2 into incentivized Klima strategies to support carbon markets."
+      description="Participate in the protocol powering transparent, on-chain carbon markets."
       flowItems={overviewFlowItems}
       cta={emptyStateButtonConfig}
       protocolStatsBar={<ProtocolStatsBar />}

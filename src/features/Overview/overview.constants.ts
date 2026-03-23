@@ -16,19 +16,19 @@ export const overviewFlowItems = [
   createFlowItem(
     WalletIcon,
     'Your Inputs',
-    'kVCM, K2, and liquidity tokens in your wallet.',
+    'kVCM, K2, and liquidity tokens ready to put to work.',
     0
   ),
   createFlowItem(
     LockIcon,
     'Klima Protocol',
-    'Lock and stake capital in fixed-term strategies.',
+    'Open infrastructure for carbon market execution.',
     1
   ),
   createFlowItem(
     ClimateIcon,
     'Climate Impact',
-    'Liquidity and carbon credit retirement.',
+    'Deeper liquidity and higher-integrity carbon markets.',
     2
   ),
 ];
@@ -40,7 +40,7 @@ export const overviewCarbonStats: StatItem[] = [
   },
   {
     value: 'Flexible',
-    label: 'Variable duration locks and lock types.',
+    label: 'Multiple lock durations and allocation strategies.',
   },
   {
     value: 'Impactful',
@@ -51,13 +51,13 @@ export const overviewCarbonStats: StatItem[] = [
 export const overviewInfoCards = {
   title: 'How it works',
   description: 'Three ways to use kVCM and K2 inside Klima.',
-  showSteps: true,
+  showSteps: false,
   cards: [
     {
       icon: LockIcon,
-      title: 'Lock kVCM',
+      title: 'Lock and allocate kVCM',
       description:
-        'Lock kVCM for a fixed term to receive incentives. Allocate to carbon classes to increase execution rates for classes you support.',
+        'Lock kVCM for a fixed term. Receive incentives, and allocate to carbon classes to increase execution rates for classes you support.',
       cta: {
         text: 'Learn more',
         activeView: 'kvcm',
@@ -65,9 +65,9 @@ export const overviewInfoCards = {
     },
     {
       icon: SaveAltIcon,
-      title: 'Deposit K2',
+      title: 'Lock and allocate K2',
       description:
-        'Lock K2 to receive variable incentives. Allocate to carbon classes to narrow the spread and make trading easier.',
+        'Lock K2 for a fixed term. Receive variable incentives, and allocate to carbon classes to narrow the spread and make trading easier.',
       cta: {
         text: 'Learn more',
         activeView: 'k2',
